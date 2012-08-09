@@ -1,4 +1,4 @@
 .PHONY: install
 
 install:
-	ln -fs bashrc $(HOME)/.bashrc
+	ln -fs `readlink -f bashrc` $(HOME)/.bashrc
