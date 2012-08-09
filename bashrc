@@ -1,5 +1,5 @@
-echo $SSH_TTY 1>/tmp/aaa1
-echo `tty` 1>>/tmp/aaa1
+[ -z "$PS1" ] && return
+
 # prompt string colored for each server
 set_ps() {
     local whoami=$(whoami|cut -b1-3)
