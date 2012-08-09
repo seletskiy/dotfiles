@@ -41,6 +41,7 @@ export HISTCONTROL=erasedups
 export PATH=$HOME/bin:$PATH
 export HISTSIZE=10000
 export EDITOR=vim
+export LC_ALL=en_US.utf-8
 
 # term detection for ssh (rxvt-unicode is not supported wide)
 if [ "$TERM" == "rxvt-unicode-256color" ]; then
