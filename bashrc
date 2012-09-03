@@ -5,7 +5,7 @@ set_ps() {
     local whoami=$(whoami|cut -b1-3)
     local ps_sty_bold='\[\033[01m\]'
     local ps_sty_id=`get_color_by_hostname`
-    local ps_sty_path='\[\033[00m\]\[\033[01;34\]'
+    local ps_sty_path='\[\033[00m\]\[\033[01;34m\]'
     local ps_sty_reset='\[\033[00m\]'
     local hostname=`hostname`
     if [ $UID -eq 0 ]; then
@@ -36,7 +36,7 @@ get_color_by_hostname() {
     local fg_col_idx=$(( echo "ibase=16" ; echo -n $sig_bg ; echo %${#fgs[@]} ) | bc)
     local fg_col=${fgs[$fg_col_idx]}
 
-    echo '\[\033[4'$bg_col'm\]\[\033[3'$fg_col'm\]'
+    echo '\[\033[3'$fg_col';4'$bg_col'm\]'
 }
 
 set_ps
