@@ -18,7 +18,7 @@ get_color_by_hostname() {
     local sig=$(hostname | md5sum | cut -b1-2 | tr '[:lower:]' '[:upper:]')
     local sig_fg=$(echo $sig | cut -b1)
     local sig_bg=$(echo $sig | cut -b2)
-    local bg_col=$(( echo "ibase=16" ; echo -n $sig_fg ; echo %7 ) | bc)
+    local bg_col=$(( echo "ibase=16" ; echo -n $sig_fg ; echo %8 ) | bc)
 
     # only complimentary colors
     local fg_bg_0=(1 2 3 4 5 6 7)
