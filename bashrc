@@ -7,10 +7,11 @@ set_ps() {
     local ps_sty_id=`get_color_by_hostname`
     local ps_sty_path='\[\033[00m\]\[\033[01;34\]'
     local ps_sty_reset='\[\033[00m\]'
+    local hostname=`hostname`
     if [ $UID -eq 0 ]; then
         export PS1="$ps_sty_bold\h$ps_sty_path\w$ps_sty_reset# "
     else
-        export PS1="$ps_sty_bold$ps_sty_id$whoami@\h$ps_sty_path\w$ps_sty_reset\$ "
+        export PS1="$ps_sty_bold$ps_sty_id$whoami@$hostname$ps_sty_path\w$ps_sty_reset\$ "
     fi
 }
 
