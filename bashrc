@@ -27,7 +27,7 @@ get_color_by_hostname() {
     local fg_bg_2=(0 1 2 7)
     local fg_bg_3=(0 1 2 7)
     local fg_bg_4=(0 6 7)
-    local fg_bg_5=(0 4 6 7)
+    local fg_bg_5=(6 7)
     local fg_bg_6=(0 1 7)
     local fg_bg_7=(0 1 2 3 4 5 6)
 
