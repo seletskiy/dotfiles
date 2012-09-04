@@ -3,15 +3,15 @@
 # prompt string colored for each server
 set_ps() {
     local whoami=$(whoami|cut -b1-3)
-    local ps_sty_bold='\[\033[01m\]'
-    local ps_sty_id=`get_color_by_hostname`
-    local ps_sty_path='\[\033[00m\]\[\033[01;34m\]'
-    local ps_sty_reset='\[\033[00m\]'
+    local sty_bold='\[\033[01m\]'
+    local sty_id=`get_color_by_hostname`
+    local sty_path='\[\033[00m\]\[\033[01;34m\]'
+    local sty_reset='\[\033[00m\]'
     local hostname=`hostname`
     if [ $UID -eq 0 ]; then
-        export PS1="$ps_sty_bold\h$ps_sty_path\w$ps_sty_reset# "
+        export PS1="$sty_bold\h$sty_path\w$sty_reset# "
     else
-        export PS1="$ps_sty_bold$ps_sty_id$whoami@$hostname$ps_sty_path\w$ps_sty_reset\$ "
+        export PS1="$sty_bold$sty_id$whoami@$hostname$sty_path\w$sty_reset\$ "
     fi
 }
 
@@ -24,11 +24,11 @@ get_color_by_hostname() {
     # only complimentary colors
     local fg_bg_0=(1 2 3 4 5 6 7)
     local fg_bg_1=(0 4 6 7)
-    local fg_bg_2=(0 1 2 5 7)
-    local fg_bg_3=(0 1 5 7)
+    local fg_bg_2=(0 1 2 7)
+    local fg_bg_3=(0 1 2 7)
     local fg_bg_4=(0 6 7)
     local fg_bg_5=(0 4 6 7)
-    local fg_bg_6=(0 1 5 7)
+    local fg_bg_6=(0 1 7)
     local fg_bg_7=(0 1 2 3 4 5 6)
 
     local fg_bg_x=fg_bg_$bg_col
