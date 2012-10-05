@@ -1,0 +1,16 @@
+[user]
+	email = s.seletskiy@office.ngs.ru
+	name = Seletskiy Stanislav
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+	sh = auto
+[merge]
+	tool = vimdiff
+
+[diff "phpf"]
+	xfuncname = "^[\t ]*(((public|protected|private|static)[\t ]+)?function.*)$"
+
+[core]
+	attributesfile = /home/s.seletskiy/.gitattributes
