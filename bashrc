@@ -7,7 +7,7 @@ set_ps() {
     local sty_id=`get_color_by_hostname`
     local sty_path='\[\033[00m\]\[\033[01;34m\]'
     local sty_reset='\[\033[00m\]'
-    local hostname=`hostname`
+    local hostname=`hostname -s`
     if [ $UID -eq 0 ]; then
         export PS1="$sty_bold\h$sty_path\w$sty_reset# "
     else
@@ -16,7 +16,7 @@ set_ps() {
 }
 
 get_color_by_hostname() {
-    local sig=$(hostname | md5sum | cut -b1-2 | tr '[:lower:]' '[:upper:]')
+    local sig=$(hostname -s | md5sum | cut -b1-2 | tr '[:lower:]' '[:upper:]')
     local sig_fg=$(echo $sig | cut -b1)
     local sig_bg=$(echo $sig | cut -b2)
     local bg_col=$(( echo "ibase=16" ; echo -n $sig_fg ; echo %8 ) | bc)
