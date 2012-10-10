@@ -5,7 +5,8 @@ Section "ServerLayout"
 	Screen         "right-screen" 2560 0
 EndSection
 
-Section "Module"
+Section "Extensions"
+	Option "Composite" "disable"
 EndSection
 
 Section "ServerFlags"
@@ -15,12 +16,12 @@ EndSection
 Section "InputClass"
 	Identifier      "Keyboard Defaults"
 	MatchIsKeyboard "yes"
-	Option	    "XkbOptions" "terminate:ctrl_alt_bksp,grp:caps_toggle"
-	Option      "XkbLayout" "us, ru"
+	Option	        "XkbOptions" "terminate:ctrl_alt_bksp,grp:caps_toggle"
+	Option          "XkbLayout" "us, ru"
 EndSection
 
 Section "Monitor"
-	Identifier   "left-monitor"
+	Identifier  "left-monitor"
 	Option	    "DPMS" "true"
 	Option	    "PreferredMode" "1280x1024"
 	Option	    "TargetRefresh" "60"
@@ -28,7 +29,7 @@ Section "Monitor"
 EndSection
 
 Section "Monitor"
-	Identifier   "middle-monitor"
+	Identifier  "middle-monitor"
 	Option	    "DPMS" "true"
 	Option	    "PreferredMode" "1280x1024"
 	Option	    "TargetRefresh" "60"
@@ -36,40 +37,34 @@ Section "Monitor"
 EndSection
 
 Section "Monitor"
-	Identifier   "right-monitor"
-	Option	    "DPMS" "true"
-	Option	    "PreferredMode" "1920x1080"
-	Option	    "TargetRefresh" "60"
-	Option	    "Rotate" "left"
+	Identifier  "right-monitor"
+	VertRefresh 56.0 - 75.0
 EndSection
 
 Section "Device"
 	Identifier  "gpu-first-hdmi"
 	Driver      "nvidia"
-	#Option	    "SWCursor" "true"
 	BusID       "PCI:1:0:0"
-EndSection
-
-Section "Device"
-	Identifier  "gpu-second-vga"
-	Driver      "nvidia"
-	#Option	    "SWCursor" "true"
-	BusID       "PCI:6:0:0"
 EndSection
 
 Section "Device"
 	Identifier  "gpu-second-hdmi"
 	Driver      "nvidia"
-	#Option	    "SWCursor" "true"
-	BusID       "PCI:6:0:0"
+	BusID       "PCI:5:0:0"
+	Option      "MetaModes" "DFP-1: nvidia-auto-select { Rotation=left }"
 	Screen      1
-	Option      "Monitor-DFP-1" "right-monitor"
 EndSection
 
+Section "Device"
+	Identifier  "gpu-second-vga"
+	Driver      "nvidia"
+	BusID       "PCI:5:0:0"
+EndSection
 
 Section "Screen"
 	Identifier "left-screen"
 	Device     "gpu-second-vga"
+	Monitor    "left-monitor"
 	DefaultDepth     24
 	SubSection "Display"
 		Viewport 0 0
@@ -80,6 +75,7 @@ EndSection
 Section "Screen"
 	Identifier "middle-screen"
 	Device     "gpu-first-hdmi"
+	Monitor    "middle-monitor"
 	DefaultDepth     24
 	SubSection "Display"
 		Viewport 0 0
@@ -90,11 +86,12 @@ EndSection
 Section "Screen"
 	Identifier "right-screen"
 	Device     "gpu-second-hdmi"
-	Monitor "right-monitor"
+	Monitor    "right-monitor"
 	DefaultDepth     24
 	SubSection "Display"
 		Viewport 0 0
 		Depth     24
+		Modes "1920x1080"
 	EndSubSection
 EndSection
 
