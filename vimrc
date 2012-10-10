@@ -6,10 +6,8 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
-"Bundle 'git@github.com:seletskiy/vim-autoclose'
 Bundle 'Raimondi/delimitMate'
 Bundle 'nevar/erlang-syntax'
-Bundle 'git@github.com:/FuzzyFinder'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Gundo'
 Bundle 'L9'
@@ -18,16 +16,17 @@ Bundle 'matchit.zip'
 Bundle 'Shougo/neocomplcache'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Rainbow-Parenthesis'
-Bundle 'git@github.com:/vim-refugi'
+Bundle 'git@github.com:seletskiy/vim-refugi'
 Bundle 'wojtekmach/vim-rename'
 Bundle 'repeat.vim'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'surround.vim'
 Bundle 'tpope/vim-unimpaired'
-Bundle 'git@github.com:/xptemplate'
-Bundle 'git@github.com:/smarty.vim'
+Bundle 'git@github.com:seletskiy/xptemplate'
+Bundle 'git@github.com:seletskiy/smarty.vim'
 Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
 Bundle 'PHP-correct-Indenting'
+Bundle 'wincent/Command-T'
 
 set background=light
 colorscheme solarized
@@ -46,21 +45,12 @@ set undofile
 set undodir=$HOME/.vim/tmp/
 set directory=$HOME/.vim/tmp/
 
-set guifont=Monospace\ 9
-set guioptions=
-
-set nottyfast
-
-let g:slimv_swank_cmd = '! mit-scheme --load ~/.vim/bundle/slimv/slime/contrib/swank-mit-scheme.scm &'
-"let g:autoclose_vim_commentmode = 1
-"let g:autoclose_on = 1
-
+set ttyfast
 
 "let g:showfuncctagsbin="ctags"
 map <F3> :TlistToggle<CR>
 au BufEnter *Tag_List* set nornu
 
-map <F11> :FufRenewCache<CR>
 map <F12> :bufdo bd!<CR><BAR>:tabo<CR>:enew<CR>
 
 " Автозапись файла при запуске внешней программы
@@ -78,7 +68,6 @@ set hls
 " Клавиша <LEADER>
 let mapleader="\<space>"
 
-map <LEADER>a ysi)farray<CR>
 imap <C-E> <C-P>
 imap <C-T> <C-N>
 
@@ -103,32 +92,12 @@ if !exists('g:neocomplcache_keyword_patterns')
 endif
 let g:neocomplcache_keyword_patterns['php'] = '</\?\%(\h[[:alnum:]_-]*\s*\)\?\%(/\?>\)\?\|\$\h\w*\|\h\w*\%(\%(\\\|::\)\w*\)*\%(()\?\)\?\|[а-я]\+'
 
-"let g:UltiSnipsSnippetDirectories=["MySnips"]
-"let g:UltiSnipsFallback="g:AutoCloseJumpAfterPair()"
-
-let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_Close_On_Select = 1
-let Tlist_WinWidth = 40
-let Tlist_Show_One_File = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Sort_Type = "name"
-let tlist_php_settings = 'php;c:class;d:constant;m:member;f:function'
-
-
-set cc=80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150
-set winminheight=0
-set winheight=30
+set cc=
+for i in range(80, 150)
+    exec "set cc+=" . i
+endfor
 
 let g:fuf_coveragefile_exclude = '\v\~$|\.(o|exe|dll|bak|orig|swp|beam|pyc)$|TEST|(^|[/\\])\.(hg|git|bzr)($|[/\\])|doc/|tests/coverage/|erlang/releases/(files|reltool.config)\@!'
-
-" Открывать выбранный файл в новой вкладке по <CR>
-let g:fuf_keyOpenTabpage = '<Nul>'
-
-" Открывать выбранный файл в текущей вкладке по <C-CR>
-let g:fuf_keyOpen = '<Nul>'
-let g:fuf_keyOpenSplit = '<Nul>'
-let g:fuf_keyNextMode = '<Nul>'
-let g:fuf_keyPrevMode = '<Nul>'
 
 let g:EasyMotion_leader_key = '<Leader>'
 
@@ -136,43 +105,7 @@ set history=500
 
 command! W silent w !sudo tee % > /dev/null <bar> e
 
-let g:fuf_dataDir='/tmp/fuf'
-
-fun! g:OpenFuzzyTab(type)
-    let handler = fuf#getRunningHandler()
-    if bufname(handler.bufNrPrev) == ''
-        call handler.onCr(1)
-    else
-        call handler.onCr(a:type)
-    endif
-
-    return ''
-endfun
-
-fun! g:InitFuzzyTabFileWithCurrentBufferDir()
-    :FufFileWithCurrentBufferDir
-    inoremap <buffer> <CR> <C-r>=g:OpenFuzzyTab(1)<CR>
-    inoremap <buffer> <C-H> <C-r>=g:OpenFuzzyTab(2)<CR>
-    inoremap <buffer> <TAB> <C-r>=g:OpenFuzzyTab(4)<CR>
-endfun
-
-fun! g:InitFuzzyTabCoverageFile()
-    :FufCoverageFile
-    inoremap <buffer> <CR> <C-r>=g:OpenFuzzyTab(1)<CR>
-    inoremap <buffer> <C-H> <C-r>=g:OpenFuzzyTab(2)<CR>
-    inoremap <buffer> <TAB> <C-r>=g:OpenFuzzyTab(4)<CR>
-endfun
-
-fun! g:InitFuzzyBuffer()
-    :FufBuffer
-    inoremap <buffer> <CR> <C-r>=g:OpenFuzzyTab(1)<CR>
-    inoremap <buffer> <C-H> <C-r>=g:OpenFuzzyTab(2)<CR>
-    inoremap <buffer> <TAB> <C-r>=g:OpenFuzzyTab(4)<CR>
-endfun
-
-map <C-T> :call g:InitFuzzyTabFileWithCurrentBufferDir()<CR>
-map <C-D> :call g:InitFuzzyTabCoverageFile()<CR>
-map <C-U> :call g:InitFuzzyBuffer()<CR>
+map <C-T> <Leader>t
 
 let g:surround_102 = "\1function: \1(\r)"
 
@@ -205,52 +138,12 @@ augroup dir_autocreate
 	autocmd BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
 augroup end
 
-map \ :call g:CycleTabs()<CR>
-
-let g:CycleTabsLastTab = 1
-let g:CycleTabsLastTabPrev = 1
-fun! g:CycleTabs()
-	if g:CycleTabsLastTabPrev == tabpagenr() || g:CycleTabsLastTabPrev > tabpagenr('$')
-		normal gt
-	else
-		exec "normal " . g:CycleTabsLastTabPrev . "gt"
-	endif
-endfun
-
-au TabEnter * let g:CycleTabsLastTabPrev = g:CycleTabsLastTab | let g:CycleTabsLastTab = tabpagenr()
-"let g:LayoutSwitcher = '/home/s.seletskiy/bin/xkb-switch'
-"let g:LayoutInInsertMode = "us"
-"au InsertLeave * let g:LayoutInInsertMode=substitute(system(g:LayoutSwitcher), '\n', '', 'g') | call system(g:LayoutSwitcher . "-W -s us")
-"au InsertEnter * call system(g:LayoutSwitcher . " -W -s " . g:LayoutInInsertMode)
-
 let html_no_rendering=1
 
-
-"hi TabLineNum guibg=DarkGrey gui=underline,underline term=bold,underline ctermbg=LightGray cterm=bold,underline
-"hi TabLineFill cterm=underline ctermbg=194
-"hi TabLine cterm=underline
-"hi StatusLine ctermbg=195 cterm=none ctermfg=black
-"hi StatusLineNC ctermbg=253 cterm=none ctermfg=black
-"hi PMenu ctermbg=253 ctermfg=black cterm=none
-"hi PMenuSel ctermbg=247 ctermfg=white cterm=bold
-"hi TabLineMod gui=bold guifg=Black guibg=Yellow term=bold cterm=bold,underline ctermbg=Yellow ctermfg=Black
-"hi TabLineSelMod term=bold cterm=bold ctermbg=Yellow ctermfg=Black
-"hi Visual ctermbg=254
-
-"hi SpecialKey ctermfg=240 ctermbg=238
-
-"au FileType * match ExtraWhitespace /\s\+$\| \+\ze\t\|[^\t]\zs\t\+/
-"hi clear ExtraWhitespace
-"au FileType php match ExtraWhitespace /\s\+$\| \+\ze\t\|[^\t]\zs\t\+\|^\t*\zs \+\*\@!/
-"au FileType php call ToggleExtraWhitespaces()
-au FileType php inoremap {<CR> {<CR>}<C-O>O
+"au FileType php inoremap {<CR> {<CR>}<C-O>O
 
 let g:solarized_hitrail = 1
 nnoremap + :call g:SolarizedHiTrailToggle()<CR>
-
-"au BufEnter * hi! TabLineMod cterm=reverse,underline cterm=reverse ctermfg=3
-"au BufEnter * hi! TabLineSelMod cterm=reverse,underline cterm=reverse ctermfg=3
-
 
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%v%)\ %P
 set laststatus=2
@@ -269,26 +162,17 @@ au FileType erlang set expandtab ts=4 sw=4
 au FileType erlang set comments=:%%%,:%%,:%
 
 au BufNewFile *.php exec "normal I<?php\<C-O>2o"
-au BufNewFile *.py exec "normal I# coding=utf8\<C-O>"
+au BufNewFile *.py exec "normal I# coding=utf8\<ESC>o\<BS>\<BS>\<ESC>o"
 au FileType * runtime syntax/RainbowParenthsis.vim
 au BufEnter */data/projects/* set noexpandtab
 
-"set t_Co=256
-
 filetype plugin on
 filetype indent on
-
-"nmap <C-T> :FufFileWithCurrentBufferDir<CR>
-"nmap <C-D> :FufCoverageFile<CR>
-
-"set showtabline=2
 
 set t_kB=[Z
 
 set incsearch
 
-
-"imap <ins> <C-R>=system('xclip -o -selection cliboard')<CR>
 map <ins> i<ins><esc>
 
 noremap <leader>v V`]
@@ -298,13 +182,6 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
-
-"set <M-J>=j
-"set <M-K>=k
-"nnoremap <C-PageUp> <C-W>j<C-W>_
-"nnoremap <C-PageDown> <C-W>k<C-W>_
-"inoremap <C-PageUp> <ESC><C-PageUp>
-"inoremap <C-PageDown> <ESC><C-PageDown>
 
 inoremap jj <ESC>
 nnoremap ? ?\v
@@ -343,13 +220,6 @@ let g:xptemplate_nav_next = '<C-J>'
 let g:xptemplate_nav_cancel = '<ENTER>'
 let g:xptemplate_fallback = "<C-O>:call g:MyXPTfallback()<CR>"
 
-"let g:UltiSnipsExpandTrigger="<nul>"
-"let g:UltiSnipsFallbackExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<tab>"
-"let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-"let g:UltiSnipsFallbackCmd="call g:AutoCloseJumpAfterPair()"
-
 hi erlangEdocTag cterm=bold ctermfg=14
 hi erlangFunHead cterm=bold ctermfg=4
 
@@ -358,8 +228,6 @@ smap <TAB> <C-J>
 vmap <TAB> <C-\>
 
 inoremap <expr><C-y> neocomplcache#close_popup()
-"inoremap <c-p> <c-o>:call XPTupdate()<cr><c-p>
-"inoremap <c-n> <c-o>:call XPTupdate()<cr><c-n>
 
 fun! g:MyExpandTab()
 	if col('.') > 0
