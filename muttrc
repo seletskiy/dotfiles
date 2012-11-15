@@ -3,6 +3,9 @@ set ssl_verify_dates=no
 #mailboxes imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/
 mailboxes =INBOX
 
+alternative_order  text/plain text/html
+auto_view text/html
+
 set index_format="%4C %Z %{%d/%m %T} %-20.20L %s"
 
 set header_cache="~/.mutt_headers_cache"
