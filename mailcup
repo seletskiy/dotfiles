@@ -1,2 +1,0 @@
-text/html;                      elinks %s; nametemplate=%s.html
-text/html;                      elinks -dump -dump-charset %{charset} %s; nametemplate=%s.html; copiousoutput
