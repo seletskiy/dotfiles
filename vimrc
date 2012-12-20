@@ -1,7 +1,7 @@
-" Режим совместимости выключен
+" no compatible with vi
 set nocompatible
 
-"call pathogen#runtime_append_all_bundles()
+" basic vundle settings
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 
@@ -29,58 +29,115 @@ Bundle 'PHP-correct-Indenting'
 Bundle 'wincent/Command-T'
 Bundle 'Lokaltog/vim-powerline'
 
-let g:solarized_termcolors = 256
+" syntax on!
+syntax on
+" allow using filetype plugin detection and indenting
+filetype plugin on
+filetype indent on
 
+" solarized colorscheme
+let g:solarized_termcolors = 256
 colorscheme solarized
 set background=dark
 
-" Кодировка по умолчанию
+" editing in utf-8 by default
 set encoding=utf-8
-set penc=cp1251
 
-set tm=400
+" printing in utf-8
+set printencoding=cp1251
 
-" Изменение режима автодополения в командной строке
+" 400 ms is enough bitwixt two key presses
+set timeoutlen=400
+
+" wildmenu is the best for selecting in command line
 set wildmenu
 
-" Хранение временных файлов и бесконечный UNDO
+" infinite undo
 set undofile
 set undodir=$HOME/.vim/tmp/
 set directory=$HOME/.vim/tmp/
 
+" really fast! do not really see difference...
 set ttyfast
 
-"let g:showfuncctagsbin="ctags"
-map <F3> :TlistToggle<CR>
-au BufEnter *Tag_List* set nornu
+" autowrite on :! commands
+set autowrite
+
+" slow as hell!
+set relativenumber
+
+" hide without saving. why? i don't remember, really...
+set hidden
+
+" highlig
+set hlsearch
+
+" incremental search rules
+set incsearch
+
+" command line history length
+set history=500
+
+" ignore case when there are only lower letters in pattern
+set smartcase
+
+" do not expand tab by default
+set noexpandtab
+
+" smart, as ai
+set autoindent
+
+" indent width
+set shiftwidth=4
+
+" <tab> and <bs> length in insert mode
+set softtabstop=4
+
+" length of <tab> in spaces
+set tabstop=4
+
+" autocomplete list numbers
+" autoinsert comment leader
+" do not wrap line after oneletter word
+set formatoptions=qrn1tol
+
+" without folds it is better, really
+set nofoldenable
+
+" erase it all with fire!
+set backspace=2
+
+" show statusline always, it's so cuuuute ^_^
+set laststatus=2
+
+" use /g flag as default in search-n-replace
+set gdefault
+
+" unix filetype by default
+set filetype=unix
+
+" WTF?
+"set t_kB=[Z
+
+
+" the <leader> key
+let mapleader="\<space>"
 
 map <F12> :bufdo bd!<CR><BAR>:tabo<CR>:enew<CR>
 
-" Автозапись файла при запуске внешней программы
-set autowrite
-
-" Относительные номера строк (тормозит!)
-set relativenumber
-
-" Возможность скрывать буфферы без их сохранения
-set hidden
-
-" Подсветка поиска
-set hls
-
-" Клавиша <LEADER>
-let mapleader="\<space>"
-
-let g:Powerline_symbols = 'fancy'
-
+" use <c-e> and <c-t> for autocompletion
 imap <C-E> <C-P>
 imap <C-T> <C-N>
 
+" one key press for one ident level
 noremap > >>
 noremap < <<
 
+let g:Powerline_symbols = 'fancy'
+
 let delimitMate_matchpairs = "(:),[:],{:}"
 
+" useful search plugin from dahu
 nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
 au BufEnter * hi SPM1 ctermbg=1 ctermfg=7
 au BufEnter * hi SPM2 ctermbg=2 ctermfg=7
@@ -89,11 +146,7 @@ au BufEnter * hi SPM4 ctermbg=4 ctermfg=7
 au BufEnter * hi SPM5 ctermbg=5 ctermfg=7
 au BufEnter * hi SPM6 ctermbg=6 ctermfg=7
 
-let g:yankring_history_file = 'tmp/yankring.log'
-let g:yankring_enabled = 1
-
 let g:neocomplcache_enable_at_startup = 1
-"let g:neocomplcache_enable_auto_select = 1
 inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
 if !exists('g:neocomplcache_keyword_patterns')
 	let g:neocomplcache_keyword_patterns = {}
@@ -108,42 +161,11 @@ augroup hilight_over_80
     au VimResized * set cc= | for i in range(80, &columns) | exec "set cc+=" . i | endfor
 augroup end
 
-let g:fuf_coveragefile_exclude = '\v\~$|\.(o|exe|dll|bak|orig|swp|beam|pyc)$|TEST|(^|[/\\])\.(hg|git|bzr)($|[/\\])|doc/|tests/coverage/|erlang/releases/(files|reltool.config)\@!'
-
-let g:EasyMotion_leader_key = '<Leader>'
-
-set history=500
-
-command! W silent w !sudo tee % > /dev/null <bar> e
+command! W silent w !sudo tee % > /dev/null <bar> e!
 
 map <C-T> <Leader>t
 
 let g:surround_102 = "\1function: \1(\r)"
-
-" Поиск в режиме игнорирования регистра
-set ignorecase
-set smartcase
-
-set noexpandtab
-set autoindent
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
-
-" Распознавать списки, дополнять комментарии,
-" не переносить строку после односимвольного слова
-set formatoptions=qrn1tol
-
-" Не сворачивать текст
-set nofoldenable
-
-" BS стирает все
-set backspace=2
-
-syntax on
-
-command! -nargs=1 Sig !sig <args>
-nmap <F4> :Sig
 
 augroup dir_autocreate
 	autocmd BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
@@ -151,38 +173,20 @@ augroup end
 
 let html_no_rendering=1
 
-"au FileType php inoremap {<CR> {<CR>}<C-O>O
-
-let g:solarized_hitrail = 1
-nnoremap + :call g:SolarizedHiTrailToggle()<CR>
-
-set statusline=%<%f\ %h%m%r%=%-14.(%l,%v%)\ %P
-set laststatus=2
-set gdefault
-
-set filetype=unix
-
 au FileType html set ft=htmldjango
 au FileType sql set ft=mysql
 au FileType tex :e ++enc=cp1251
 au FileType tex syn on
-au BufEnter *.conf set ft=nginx
-au BufEnter *.conf syn on
+au BufEnter /data/projects/*.conf set ft=nginx
+au BufEnter /data/projects/*.conf syn on
 au FileType * set expandtab
 au FileType erlang set expandtab ts=4 sw=4
 au FileType erlang set comments=:%%%,:%%,:%
 
 au BufNewFile *.php exec "normal I<?php\<C-O>2o"
 au BufNewFile *.py exec "normal I# coding=utf8\<ESC>o\<BS>\<BS>\<ESC>o"
-au FileType * runtime syntax/RainbowParenthsis.vim
+"au FileType * runtime syntax/RainbowParenthsis.vim
 au BufEnter */data/projects/* set noexpandtab
-
-filetype plugin on
-filetype indent on
-
-set t_kB=[Z
-
-set incsearch
 
 map <ins> i<ins><esc>
 
