@@ -1,11 +1,14 @@
-# Configuration file for dircolors, a utility to help you set the
-# LS_COLORS environment variable used by GNU ls with the --color option.
-# Copyright (C) 1996, 1999-2010 Free Software Foundation, Inc.
-# Copying and distribution of this file, with or without modification,
-# are permitted provided the copyright notice and this notice are preserved.
-# The keywords COLOR, OPTIONS, and EIGHTBIT (honored by the
-# slackware version of dircolors) are recognized but ignored.
-# Below, there should be one TERM entry for each termtype that is colorizable
+
+# Dark 256 color solarized theme for the color GNU ls utility.
+# Used and tested with dircolors (GNU coreutils) 8.5
+#
+# @author  {@link http://sebastian.tramp.name Sebastian Tramp}
+# @license http://sam.zoy.org/wtfpl/  Do What The Fuck You Want To Public License (WTFPL)
+#
+# More Information at
+# https://github.com/seebi/dircolors-solarized
+
+# Term Section
 TERM Eterm
 TERM ansi
 TERM color-xterm
@@ -40,9 +43,11 @@ TERM rxvt-cygwin
 TERM rxvt-cygwin-native
 TERM rxvt-unicode
 TERM rxvt-unicode256
+TERM rxvt-unicode-256color
 TERM screen
 TERM screen-256color
 TERM screen-256color-bce
+TERM screen-256color-s
 TERM screen-bce
 TERM screen-w
 TERM screen.linux
@@ -53,6 +58,11 @@ TERM xterm-256color
 TERM xterm-88color
 TERM xterm-color
 TERM xterm-debian
+
+## Documentation
+#
+# standard colors
+#
 # Below are the color init strings for the basic file types. A color init
 # string consists of one or more of the following numeric codes:
 # Attribute codes:
@@ -61,18 +71,23 @@ TERM xterm-debian
 # 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
 # Background color codes:
 # 40=black 41=red 42=green 43=yellow 44=blue 45=magenta 46=cyan 47=white
-
-## dircolors 256 COLOR SUPPORT (see here: http://www.mail-archive.com/bug-coreutils@gnu.org/msg11030.html)
+#
+#
+# 256 color support
+# see here: http://www.mail-archive.com/bug-coreutils@gnu.org/msg11030.html)
+#
 # Text 256 color coding:
 # 38;5;COLOR_NUMBER
 # Background 256 color coding:
 # 48;5;COLOR_NUMBER
 
+## Special files
+
 NORMAL 00;38;5;244 # no color code at all
 #FILE 00 # regular file: use no color at all
 RESET 0 # reset to "normal" color
 DIR 00;38;5;33 # directory 01;34
-LINK 01;38;5;33 # symbolic link. (If you set this to 'target' instead of a
+LINK 01;38;5;37 # symbolic link. (If you set this to 'target' instead of a
  # numerical value, the color is as for the file pointed to.)
 MULTIHARDLINK 00 # regular file with more than one link
 FIFO 48;5;230;38;5;136;01 # pipe
@@ -89,21 +104,8 @@ OTHER_WRITABLE 48;5;235;38;5;33 # dir that is other-writable (o+w) and not stick
 STICKY 48;5;33;38;5;230 # dir with the sticky bit set (+t) and not other-writable
 # This is for files with execute permission:
 EXEC 01;38;5;64
-# List any file extensions like '.gz' or '.tar' that you would like ls
-# to colorize below. Put the extension, a space, and the color init string.
-# (and any comments you want to add after a '#')
-# If you use DOS-style suffixes, you may want to uncomment the following:
-#.cmd 01;32 # executables (bright green)
-#.exe 01;32
-#.com 01;32
-#.btm 01;32
-#.bat 01;32
-# Or if you want to colorize scripts even if they do not have the
-# executable bit actually set.
-#.sh 01;32
-#.csh 01;32
 
- # archives or compressed (violet + bold for compression)
+## Archives or compressed (violet + bold for compression)
 .tar    00;38;5;61
 .tgz    01;38;5;61
 .arj    01;38;5;61
@@ -134,8 +136,9 @@ EXEC 01;38;5;64
 .7z     01;38;5;61
 .rz     01;38;5;61
 .apk    01;38;5;61
+.gem    01;38;5;61
 
-# image formats (yellow)
+# Image formats (yellow)
 .jpg    00;38;5;136
 .JPG    00;38;5;136 #stupid but needed
 .jpeg   00;38;5;136
@@ -161,24 +164,56 @@ EXEC 01;38;5;64
 .cgm    00;38;5;136
 .emf    00;38;5;136
 .eps    00;38;5;136
+.CR2    00;38;5;136
+.ico    00;38;5;136
 
-# files of interest (base1 + bold)
-.pdf    01;38;5;245
-.tex    01;38;5;245
-.rdf    01;38;5;245
-.owl    01;38;5;245
-.n3     01;38;5;245
-.tt     01;38;5;245
-.nt     01;38;5;245
+# Files of special interest (base1 + bold)
+.tex             01;38;5;245
+.rdf             01;38;5;245
+.owl             01;38;5;245
+.n3              01;38;5;245
+.ttl             01;38;5;245
+.nt              01;38;5;245
+.torrent         01;38;5;245
+.xml             01;38;5;245
+*Makefile        01;38;5;245
+*Rakefile        01;38;5;245
+*build.xml       01;38;5;245
+*rc              01;38;5;245
+*1               01;38;5;245
+.nfo             01;38;5;245
+*README          01;38;5;245
+*README.txt      01;38;5;245
+*readme.txt      01;38;5;245
+.md              01;38;5;245
+*README.markdown 01;38;5;245
+.ini             01;38;5;245
+.yml             01;38;5;245
+.cfg             01;38;5;245
+.conf            01;38;5;245
+.c               01;38;5;245
+.cpp             01;38;5;245
+.cc              01;38;5;245
 
 # "unimportant" files as logs and backups (base01)
-.log    00;38;5;240
-.bak    00;38;5;240
-.aux    00;38;5;240
-.bbl    00;38;5;240
-.blg    00;38;5;240
+.log        00;38;5;240
+.bak        00;38;5;240
+.aux        00;38;5;240
+.bbl        00;38;5;240
+.blg        00;38;5;240
+*~          00;38;5;240
+*#          00;38;5;240
+.part       00;38;5;240
+.incomplete 00;38;5;240
+.swp        00;38;5;240
+.tmp        00;38;5;240
+.temp       00;38;5;240
+.o          00;38;5;240
+.pyc        00;38;5;240
+.class      00;38;5;240
+.cache      00;38;5;240
 
-# audio formats (orange)
+# Audio formats (orange)
 .aac    00;38;5;166
 .au     00;38;5;166
 .flac   00;38;5;166
@@ -190,13 +225,14 @@ EXEC 01;38;5;64
 .ogg    00;38;5;166
 .ra     00;38;5;166
 .wav    00;38;5;166
+.m4a    00;38;5;166
 # http://wiki.xiph.org/index.php/MIME_Types_and_File_Extensions
 .axa    00;38;5;166
 .oga    00;38;5;166
 .spx    00;38;5;166
 .xspf   00;38;5;166
 
-# video formats (as audio + bold)
+# Video formats (as audio + bold)
 .mov    01;38;5;166
 .mpg    01;38;5;166
 .mpeg   01;38;5;166
@@ -218,8 +254,13 @@ EXEC 01;38;5;64
 .fli    01;38;5;166
 .flv    01;38;5;166
 .gl     01;38;5;166
+.m2ts   01;38;5;166
+.divx   01;38;5;166
+.webm   01;38;5;166
 # http://wiki.xiph.org/index.php/MIME_Types_and_File_Extensions
 .axv 01;38;5;166
 .anx 01;38;5;166
 .ogv 01;38;5;166
 .ogx 01;38;5;166
+
+
