@@ -1,16 +1,9 @@
 Section "ServerLayout"
 	Identifier     "triple-head"
+	Option	       "Xinerama" "on"
 	Screen       0 "left-screen" 0 550
-	Screen         "middle-screen" 1280 550
-	Screen         "right-screen" 2560 0
-EndSection
-
-Section "Extensions"
-	Option "Composite" "disable"
-EndSection
-
-Section "ServerFlags"
-	Option	    "Xinerama" "on"
+	Screen       1 "middle-screen" 1280 550
+	Screen       2 "right-screen" 2560 0
 EndSection
 
 Section "InputClass"
@@ -38,32 +31,44 @@ EndSection
 
 Section "Monitor"
 	Identifier  "right-monitor"
-	VertRefresh 56.0 - 75.0
-EndSection
-
-Section "Device"
-	Identifier  "gpu-first-hdmi"
-	Driver      "nvidia"
-	BusID       "PCI:1:0:0"
+	Option	    "DPMS" "true"
+	Option	    "PreferredMode" "1920x1080"
+	Option      "Absolute" "2560 550"
+	Option	    "TargetRefresh" "60"
+	Option	    "Rotate" "left"
 EndSection
 
 Section "Device"
 	Identifier  "gpu-second-hdmi"
 	Driver      "nvidia"
 	BusID       "PCI:5:0:0"
-	Option      "MetaModes" "DFP-1: nvidia-auto-select { Rotation=left }"
-	Screen      1
+	Screen      0
+	Option      "ZaphodHeads" "HDMI-A-2" 
+	Option      "Monitor-HDMI-2" "left-monitor" 
 EndSection
 
 Section "Device"
-	Identifier  "gpu-second-vga"
+	Identifier  "gpu-first-hdmi"
 	Driver      "nvidia"
-	BusID       "PCI:5:0:0"
+	BusID       "PCI:1:0:0"
+	Screen      0
+	Option      "Monitor-HDMI-1" "middle-monitor" 
+	Option      "ZaphodHeads" "HDMI-A-1"
+EndSection
+
+Section "Device"
+	Identifier  "gpu-first-vga"
+	Driver      "nvidia"
+	BusID       "PCI:1:0:0"
+	Screen      1
+	Option      "ZaphodHeads" "VGA-1"
+	Option      "Monitor-VGA-1" "right-monitor" 
+	Option      "MetaModes" "CRT-1: nvidia-auto-select { Rotation=left }"
 EndSection
 
 Section "Screen"
 	Identifier "left-screen"
-	Device     "gpu-second-vga"
+	Device     "gpu-second-hdmi"
 	Monitor    "left-monitor"
 	DefaultDepth     24
 	SubSection "Display"
@@ -78,24 +83,18 @@ Section "Screen"
 	Monitor    "middle-monitor"
 	DefaultDepth     24
 	SubSection "Display"
-		Viewport 0 0
 		Depth     24
+		Viewport  0 0
 	EndSubSection
 EndSection
 
 Section "Screen"
 	Identifier "right-screen"
-	Device     "gpu-second-hdmi"
+	Device     "gpu-first-vga"
 	Monitor    "right-monitor"
 	DefaultDepth     24
 	SubSection "Display"
-		Viewport 0 0
 		Depth     24
-		Modes "1920x1080"
+		Viewport  0 0
 	EndSubSection
 EndSection
-
-Section "DRI"
-	Mode         0666
-EndSection
-
