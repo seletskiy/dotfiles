@@ -54,6 +54,7 @@ alias g='grep'
 alias ack='ack-grep'
 alias vimdiff='vim -d'
 alias wget="wget -P $HOME/downloads/"
+alias ssh='TERM=rxvt-unicode ssh'
 
 # complex aliases
 rm() { mkdir -p $HOME/trash/ && mv "${@}" $HOME/trash/ ; }
@@ -74,7 +75,7 @@ fi
 
 # ls colors for solarized theme
 if [ -a "$HOME/.dir_colors_solarized" ]; then
-    eval `dircolors $HOME/.dircolors-solarized`
+    eval `dircolors $HOME/.dircolors`
 fi
 
 # shell options
