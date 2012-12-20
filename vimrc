@@ -7,7 +7,7 @@ call vundle#rc()
 
 Bundle 'gmarik/vundle'
 Bundle 'Raimondi/delimitMate'
-Bundle 'nevar/erlang-syntax'
+Bundle 'nevar/revim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Gundo'
 Bundle 'L9'
@@ -27,9 +27,12 @@ Bundle 'git@github.com:seletskiy/smarty.vim'
 Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
 Bundle 'PHP-correct-Indenting'
 Bundle 'wincent/Command-T'
+Bundle 'Lokaltog/vim-powerline'
 
-set background=light
+let g:solarized_termcolors = 256
+
 colorscheme solarized
+set background=dark
 
 " Кодировка по умолчанию
 set encoding=utf-8
@@ -68,8 +71,13 @@ set hls
 " Клавиша <LEADER>
 let mapleader="\<space>"
 
+let g:Powerline_symbols = 'fancy'
+
 imap <C-E> <C-P>
 imap <C-T> <C-N>
+
+noremap > >>
+noremap < <<
 
 let delimitMate_matchpairs = "(:),[:],{:}"
 
@@ -91,11 +99,14 @@ if !exists('g:neocomplcache_keyword_patterns')
 	let g:neocomplcache_keyword_patterns = {}
 endif
 let g:neocomplcache_keyword_patterns['php'] = '</\?\%(\h[[:alnum:]_-]*\s*\)\?\%(/\?>\)\?\|\$\h\w*\|\h\w*\%(\%(\\\|::\)\w*\)*\%(()\?\)\?\|[а-я]\+'
+if !exists('g:neocomplcache_omni_patterns')
+  let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.python = ''
 
-set cc=
-for i in range(80, 150)
-    exec "set cc+=" . i
-endfor
+augroup hilight_over_80
+    au VimResized * set cc= | for i in range(80, &columns) | exec "set cc+=" . i | endfor
+augroup end
 
 let g:fuf_coveragefile_exclude = '\v\~$|\.(o|exe|dll|bak|orig|swp|beam|pyc)$|TEST|(^|[/\\])\.(hg|git|bzr)($|[/\\])|doc/|tests/coverage/|erlang/releases/(files|reltool.config)\@!'
 
@@ -296,7 +307,7 @@ function! MyTabLine()
         let s .= (i == t ? '%1*' : '%2*')
         for bi in buflist
             if getbufvar(bi, "&modified") 
-                let s .= (i == t ? '%#TabLineSelMod#' : '%#TabLineMod#')
+                let s .= '%#TabLineMod#'
                 break
             else
                 let s .= (i == t ? '%#TabLineSel#' : '%#TabLineNum#')
