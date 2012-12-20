@@ -8,4 +8,6 @@ install:
 	ln -fs `readlink -f irssi` $(HOME)/.irssi
 	ln -fs `readlink -f terminfo` $(HOME)/.terminfo
 	ln -fs `readlink -f xresources` $(HOME)/.XResources
+	mkdir -p $(HOME)/.config/
+	ln -fs `readlink -f awesome` $(HOME)/.config/awesome/
 
