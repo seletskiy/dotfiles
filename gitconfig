@@ -14,3 +14,5 @@
 
 [core]
 	attributesfile = /home/s.seletskiy/.gitattributes
+[push]
+	default = simple
