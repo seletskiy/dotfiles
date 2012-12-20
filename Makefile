@@ -7,4 +7,5 @@ install:
 	ln -fs `readlink -f vim` $(HOME)/.vim
 	ln -fs `readlink -f irssi` $(HOME)/.irssi
 	ln -fs `readlink -f terminfo` $(HOME)/.terminfo
+	ln -fs `readlink -f xresources` $(HOME)/.XResources
 
