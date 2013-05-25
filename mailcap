@@ -1,2 +1,2 @@
-text/html;                      google-chrome %s; needsterminal
+text/html;                      chromium %s; needsterminal
 image/*;                        feh %s
