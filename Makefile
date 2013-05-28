@@ -20,7 +20,7 @@ config:
 	mkdir -p $(HOME)/.config/
 
 i3: config
-	ln -fsT `readlink -f i3` $(HOME)/.i3/
+	ln -fsT `readlink -f i3` $(HOME)/.i3
 
 mutt:
 	ln -fsT `readlink -f muttrc` $(HOME)/.muttrc
