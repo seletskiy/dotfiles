@@ -6,14 +6,14 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
-Bundle 'Raimondi/delimitMate'
+"Bundle 'Raimondi/delimitMate'
+Bundle 'kana/vim-smartinput'
 Bundle 'nevar/revim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Gundo'
 Bundle 'L9'
 Bundle 'dahu/SearchParty'
 Bundle 'matchit.zip'
-Bundle 'Shougo/neocomplcache'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Rainbow-Parenthesis'
 Bundle 'git@github.com:seletskiy/vim-refugi'
@@ -22,12 +22,19 @@ Bundle 'repeat.vim'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'surround.vim'
 Bundle 'tpope/vim-unimpaired'
-Bundle 'git@github.com:seletskiy/xptemplate'
 Bundle 'git@github.com:seletskiy/smarty.vim'
 Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
 Bundle 'PHP-correct-Indenting'
-Bundle 'wincent/Command-T'
+Bundle 'git@github.com:seletskiy/Command-T'
 Bundle 'Lokaltog/vim-powerline'
+Bundle 'SirVer/ultisnips'
+Bundle 'scrooloose/syntastic'
+"Bundle 'Shougo/neocomplcache'
+Bundle 'epmatsw/ag.vim'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'paradigm/vim-multicursor'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'lyokha/vim-xkbswitch'
 
 " syntax on!
 syntax on
@@ -35,10 +42,56 @@ syntax on
 filetype plugin on
 filetype indent on
 
-" solarized colorscheme
-let g:solarized_termcolors = 256
-colorscheme solarized
-set background=dark
+fun! g:LightRoom()
+    set background=light
+    call s:ApplyColorscheme()
+    hi underlined cterm=underline
+    hi LineNr ctermfg=249 ctermbg=none
+	hi SignColumn ctermfg=240 ctermbg=none
+    hi Normal ctermbg=none
+    hi TabLine ctermfg=1 ctermbg=7 cterm=none
+    hi ColorColumn ctermbg=230
+
+    hi TabLineFill ctermfg=1 ctermbg=7 cterm=none
+    hi TabLineSel ctermbg=13 ctermfg=15 cterm=bold
+    hi TabLineMod ctermbg=1 ctermfg=15 cterm=bold
+
+    let g:Powerline_colorscheme = 'solarized'
+    if exists(':PowerlineReloadColorscheme') == 2
+        PowerlineReloadColorscheme
+    endif
+endfun
+
+fun! g:DarkRoom()
+    set background=dark
+    call s:ApplyColorscheme()
+    hi underlined cterm=underline
+    hi LineNr ctermfg=238 ctermbg=none
+	hi SignColumn ctermfg=240 ctermbg=none
+    hi Normal ctermbg=none
+    hi ColorColumn ctermbg=235
+
+    hi TabLine ctermfg=247 ctermbg=236 cterm=none
+    hi TabLineFill ctermfg=247 ctermbg=236 cterm=none
+    hi TabLineSel ctermbg=148 ctermfg=22 cterm=bold
+    hi TabLineMod ctermbg=1 ctermfg=15 cterm=bold
+
+    let g:Powerline_colorscheme = 'default'
+    if exists(':PowerlineReloadColorscheme') == 2
+        PowerlineReloadColorscheme
+    endif
+endfun
+
+fun! s:ApplyColorscheme()
+    let g:solarized_termcolors = 256
+    let g:solarized_contrast = 'high'
+    colorscheme solarized
+    hi! link WildMenu PmenuSel 
+    hi erlangEdocTag cterm=bold ctermfg=14
+    hi erlangFunHead cterm=bold ctermfg=4
+endfun
+
+call g:LightRoom()
 
 " editing in utf-8 by default
 set encoding=utf-8
@@ -113,21 +166,20 @@ set laststatus=2
 " use /g flag as default in search-n-replace
 set gdefault
 
-" unix filetype by default
-set filetype=unix
+let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
+let g:XkbSwitchEnabled = 1
 
 " WTF?
 "set t_kB=[Z
 
-
 " the <leader> key
 let mapleader="\<space>"
 
+cmap w!! %!sudo tee > /dev/null %
 map <F12> :bufdo bd!<CR><BAR>:tabo<CR>:enew<CR>
 
 " use <c-e> and <c-t> for autocompletion
-imap <C-E> <C-P>
-imap <C-T> <C-N>
+imap <C-T> <C-O>:call search("[)}\"'`\\]]", "c")<CR><Right>
 
 " one key press for one ident level
 noremap > >>
@@ -135,7 +187,7 @@ noremap < <<
 
 let g:Powerline_symbols = 'fancy'
 
-let delimitMate_matchpairs = "(:),[:],{:}"
+let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
 
 " useful search plugin from dahu
 nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
@@ -146,19 +198,28 @@ au BufEnter * hi SPM4 ctermbg=4 ctermfg=7
 au BufEnter * hi SPM5 ctermbg=5 ctermfg=7
 au BufEnter * hi SPM6 ctermbg=6 ctermfg=7
 
-let g:neocomplcache_enable_at_startup = 1
-inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
-if !exists('g:neocomplcache_keyword_patterns')
-	let g:neocomplcache_keyword_patterns = {}
+"let g:neocomplcache_enable_at_startup = 1
+"inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
+"if !exists('g:neocomplcache_keyword_patterns')
+"    let g:neocomplcache_keyword_patterns = {}
+"endif
+"let g:neocomplcache_keyword_patterns['php'] = '</\?\%(\h[[:alnum:]_-]*\s*\)\?\%(/\?>\)\?\|\$\h\w*\|\h\w*\%(\%(\\\|::\)\w*\)*\%(()\?\)\?\|[а-я]\+'
+""if !exists('g:neocomplcache_omni_patterns')
+""  let g:neocomplcache_omni_patterns = {}
+""endif
+""let g:neocomplcache_omni_patterns.python = ''
+""let g:neocomplcache_enable_fuzzy_completion = 1
+""let g:neocomplcache_fuzzy_completion_start_length = 2
+"inoremap <expr><C-y> neocomplcache#close_popup()
+
+let g:CommandTUseGitLsFiles = 1
+if &term =~ "screen" || &term =~ "xterm"
+    let g:CommandTCancelMap     = ['<ESC>', '<C-c>']
 endif
-let g:neocomplcache_keyword_patterns['php'] = '</\?\%(\h[[:alnum:]_-]*\s*\)\?\%(/\?>\)\?\|\$\h\w*\|\h\w*\%(\%(\\\|::\)\w*\)*\%(()\?\)\?\|[а-я]\+'
-if !exists('g:neocomplcache_omni_patterns')
-  let g:neocomplcache_omni_patterns = {}
-endif
-let g:neocomplcache_omni_patterns.python = ''
 
 augroup hilight_over_80
-    au VimResized * set cc= | for i in range(80, &columns) | exec "set cc+=" . i | endfor
+    au!
+    au VimResized,VimEnter * set cc= | for i in range(80, &columns) | exec "set cc+=" . i | endfor
 augroup end
 
 command! W silent w !sudo tee % > /dev/null <bar> e!
@@ -168,6 +229,7 @@ map <C-T> <Leader>t
 let g:surround_102 = "\1function: \1(\r)"
 
 augroup dir_autocreate
+    au!
 	autocmd BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
 augroup end
 
@@ -183,9 +245,13 @@ au FileType * set expandtab
 au FileType erlang set expandtab ts=4 sw=4
 au FileType erlang set comments=:%%%,:%%,:%
 
-au BufNewFile *.php exec "normal I<?php\<C-O>2o"
-au BufNewFile *.py exec "normal I# coding=utf8\<ESC>o\<BS>\<BS>\<ESC>o"
-"au FileType * runtime syntax/RainbowParenthsis.vim
+augroup skeletons
+    au!
+    au BufNewFile *.php exec "normal I<?php\<ESC>2o"
+    au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
+    au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
+augroup end
+
 au BufEnter */data/projects/* set noexpandtab
 
 map <ins> i<ins><esc>
@@ -229,74 +295,71 @@ map <Leader>7 7gt
 map <Leader>8 8gt
 map <Leader>9 9gt
 
-let g:xptemplate_brace_complete = 0
-let g:xptemplate_key = '<C-\>'
-let g:xptemplate_nav_next = '<C-J>'
-let g:xptemplate_nav_cancel = '<ENTER>'
-let g:xptemplate_fallback = "<C-O>:call g:MyXPTfallback()<CR>"
+set completeopt-=preview
 
-hi erlangEdocTag cterm=bold ctermfg=14
-hi erlangFunHead cterm=bold ctermfg=4
+"let g:xptemplate_brace_complete = 0
+"let g:xptemplate_key = '<C-\>'
+"let g:xptemplate_nav_next = '<C-J>'
+"let g:xptemplate_nav_cancel = '<ENTER>'
+"let g:xptemplate_fallback = "<C-O>:call g:MyXPTfallback()<CR>"
 
-imap <TAB> <C-R>=g:MyExpandTab()<CR>
-smap <TAB> <C-J>
-vmap <TAB> <C-\>
+"imap <TAB> <C-R>=g:MyExpandTab()<CR>
+"smap <TAB> <C-J>
+"vmap <TAB> <C-\>
 
-inoremap <expr><C-y> neocomplcache#close_popup()
+"fun! g:MyExpandTab()
+"    if col('.') > 0
+"        let column = col('.') - 1
+"    else
+"        let column = 0
+"    endif
 
-fun! g:MyExpandTab()
-	if col('.') > 0
-		let column = col('.') - 1
-	else
-		let column = 0
-	endif
+"    let ln = strpart(getline('.'), 0, column)
+"    let g:MyExpandTabPumWasVisible = pumvisible()
+"    if pumvisible()
+"        "call feedkeys("\<C-Y>")
+"    endif
+"    let is_string = 0
+"    let stack = synstack(line("."), column)
+"    if len(stack) > 0
+"        for id in stack
+"            if synIDattr(id, "name") =~ '\w\+String'
+"                let is_string = 1
+"            endif
+"        endfor
+"    endif
+"    if ln =~ '\v\$\w*$|\[\w*$' || is_string
+"        let x = b:xptemplateData
+"        if x.renderContext.processing > 0
+"            call feedkeys("\<C-J>")
+"        else
+"            call feedkeys("\<Plug>delimitMateS-Tab")
+"            "call g:AutoCloseJumpAfterPair()
+"        endif
+"    else
+"        call feedkeys("\<C-\>")
+"    endif
 
-	let ln = strpart(getline('.'), 0, column)
-	let g:MyExpandTabPumWasVisible = pumvisible()
-	if pumvisible()
-		"call feedkeys("\<C-Y>")
-	endif
-	let is_string = 0
-	let stack = synstack(line("."), column)
-	if len(stack) > 0
-		for id in stack
-			if synIDattr(id, "name") =~ '\w\+String'
-				let is_string = 1
-			endif
-		endfor
-	endif
-    if ln =~ '\v\$\w*$|\[\w*$' || is_string
-        let x = b:xptemplateData
-        if x.renderContext.processing > 0
-            call feedkeys("\<C-J>")
-        else
-            call feedkeys("\<Plug>delimitMateS-Tab")
-            "call g:AutoCloseJumpAfterPair()
-        endif
-    else
-        call feedkeys("\<C-\>")
-    endif
+"    return ""
+"endfun
 
-    return ""
-endfun
-
-fun! g:MyXPTfallback()
-    let ln = strpart(getline('.'), 0, col('.') - 1)
-    if ln =~ '\v^\s*$'
-        call feedkeys("\<TAB>", 'n')
-    else
-        let x = b:xptemplateData
-		"if g:MyExpandTabPumWasVisible
-		"    call feedkeys("\<C-J>")
-		"endif
-        if x.renderContext.processing > 0
-            call feedkeys("\<C-J>")
-        else
-            call feedkeys("\<Plug>delimitMateS-Tab")
-            "call g:AutoCloseJumpAfterPair()
-        endif
-    endif
-endfun
+"fun! g:MyXPTfallback()
+"    let ln = strpart(getline('.'), 0, col('.') - 1)
+"    if ln =~ '\v^\s*$'
+"        call feedkeys("\<TAB>", 'n')
+"    else
+"        let x = b:xptemplateData
+"        "if g:MyExpandTabPumWasVisible
+"        "    call feedkeys("\<C-J>")
+"        "endif
+"        if x.renderContext.processing > 0
+"            call feedkeys("\<C-J>")
+"        else
+"            call feedkeys("\<Plug>delimitMateS-Tab")
+"            "call g:AutoCloseJumpAfterPair()
+"        endif
+"    endif
+"endfun
 
 let g:myTabLine_Cache = {}
 
