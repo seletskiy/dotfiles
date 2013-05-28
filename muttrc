@@ -1,41 +1,29 @@
 set ssl_verify_dates=no
+set ssl_verify_host=no
+set sleep_time=0
+set index_format="%4C %Z %{%d/%m %T} %-20.20L %s"
+set sendmail=/usr/bin/msmtp
+set markers=no
+set editor=vim
+set imap_check_subscribed
+set mail_check=60
+set sort=threads
+set narrow_tree=yes
+set metoo
+set alias_file=~/.mutt/aliases
+set certificate_file=~/.mutt/certificates
+set header_cache=~/.mutt/header_cache
+
+unset imap_passive
 
 mailboxes =INBOX
 
+source $alias_file
+source ~/.mutt/solarized_$BACKGROUND
+source ~/.mutt/accounts
+
 alternative_order text/plain text/html
 auto_view text/html
-
-set sleep_time=0
-set index_format="%4C %Z %{%d/%m %T} %-20.20L %s"
-
-set header_cache="~/.mutt_headers_cache"
-
-set sendmail="/usr/bin/msmtp"
-account-hook imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/ '\
-    set from="Селецкий Станислав <s.seletskiy@office.ngs.ru>"\
-        imap_pass=PASSWORD\
-        folder=imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/\
-        record="+Sent"\
-        postponed="+Drafts"'
-
-set spoolfile='imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru'
-
-set markers=no
-
-set editor="vim"
-
-set imap_check_subscribed
-unset imap_passive
-
-# Reduce polling frequency to a sane level
-set mail_check=60
-
-set sort=date
-
-set alias_file=~/.mutt_aliases
-source $alias_file
-source ~/.solarized_dark.muttrc
-set metoo
 
 bind index \e[7~ first-entry
 bind index \e[8~ last-entry

@@ -1,0 +1,8 @@
+account-hook imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/ '\
+    set from="Селецкий Станислав <s.seletskiy@office.ngs.ru>"\
+    imap_pass={{PASSWORD}}\
+    folder=imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/\
+    record="+Sent"\
+    postponed="+Drafts"'
+
+set spoolfile='imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru'
