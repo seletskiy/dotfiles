@@ -4,9 +4,11 @@
 import fileinput
 import re
 
-from sys import argv, stderr, exit
+from sys import argv, stderr, stdout, exit
 from os.path import isfile
 from getpass import getpass
+
+utf8stdout = open(1, 'w', encoding='utf-8', closefd=1)
 
 if len(argv) < 2:
     print('Usage: %s <filename>' % (argv[0]), file=stderr)
@@ -28,4 +30,4 @@ for line in open(argv[1], 'r', encoding='utf-8').readlines():
             print(placeholder + ': ', file=stderr, end='')
             answer = input()
         line = line.replace(placeholder, answer)
-    print(str(line.encode('utf-8')), end='')
+    print(line, file=utf8stdout, end='')
