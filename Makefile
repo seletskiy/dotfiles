@@ -1,4 +1,4 @@
-common: gitconfig dircolors vim terminfo xorg i3 mutt zsh
+common: gitconfig dircolors vim terminfo xorg i3 mutt zsh bin
 
 gitconfig:
 	ln -fsT `readlink -f gitconfig` $(HOME)/.gitconfig
@@ -24,7 +24,7 @@ xinit:
 config:
 	mkdir -p $(HOME)/.config/
 
-i3: config
+i3:
 	ln -fsT `readlink -f i3` $(HOME)/.i3
 
 mutt:
@@ -38,3 +38,6 @@ zsh:
 	ln -fsT `readlink -f zsh` $(HOME)/.zsh
 	./_template.py zsh/prompt.sh.template > $(HOME)/.zsh/prompt.sh
 	./_template.py zsh/background.sh.template > $(HOME)/.zsh/background.sh
+
+bin:
+	ln -fsT `readlink -f bin` $(HOME)/bin

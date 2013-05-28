@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo /dnd Меня здесь нет. > ~/.mcabber/mcabber.fifo
+slock
+echo /online - > ~/.mcabber/mcabber.fifo

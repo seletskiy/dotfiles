@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ ! -n "$DISPLAY" ]; then
+    /usr/local/bin/vim "${@}"
+else
+    /usr/local/bin/vim --remote-tab-silent "${@}"
+    /usr/local/bin/vim --remote-send ":call Pl#UpdateStatusline(1)<CR>"
+    i3-msg 'workspace 2' &> /dev/null
+    /usr/local/bin/vim --remote-tab-wait-silent "${@}"
+fi
