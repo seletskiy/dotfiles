@@ -1,2 +1,4 @@
 vim/bundle/
 vim/tmp/
+zsh/prompt.sh
+zsh/background.sh
