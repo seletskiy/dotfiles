@@ -1,4 +1,4 @@
-common: gitconfig dircolors vim terminfo xorg i3 mutt zsh bin
+common: gitconfig dircolors vim terminfo xorg i3 mutt zsh bin fonts
 
 gitconfig:
 	ln -fsT `readlink -f gitconfig` $(HOME)/.gitconfig
@@ -41,3 +41,7 @@ zsh:
 
 bin:
 	ln -fsT `readlink -f bin` $(HOME)/bin
+
+fonts:
+	ln -fsT `readlink -f fonts` $(HOME)/fonts
+
