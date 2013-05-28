@@ -16,8 +16,7 @@ if not isfile(argv[1]):
     print('%s is not a file' % (argv[1]), file=stderr)
     exit(2)
 
-print('File %s' % argv[1], file=stderr)
-for line in open(argv[1], 'r').readlines():
+for line in open(argv[1], 'r', encoding='utf-8').readlines():
     while True:
         match = re.search(r'\{\{[^}]+}}', line)
         if not match:
@@ -29,4 +28,4 @@ for line in open(argv[1], 'r').readlines():
             print(placeholder + ': ', file=stderr, end='')
             answer = input()
         line = line.replace(placeholder, answer)
-    print(line, end='')
+    print(str(line.encode('utf-8')), end='')
