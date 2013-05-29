@@ -1,0 +1,25 @@
+diff --git a/autoload/Powerline/Colorschemes/solarized.vim b/autoload/Powerline/Colorschemes/solarized.vim
+index c4bf42c..480b373 100644
+--- a/autoload/Powerline/Colorschemes/solarized.vim
++++ b/autoload/Powerline/Colorschemes/solarized.vim
+@@ -36,19 +36,13 @@ let g:Powerline#Colorschemes#solarized#colorscheme = Pl#Colorscheme#Init([
+ 		\ 's': ['base3',  'yellow',   ['bold']],
+ 		\ }),
+ 	\
+-	\ Pl#Hi#Segments(['branch'], {
+-		\ 'n': ['base2',   'base02'],
+-		\ 'N': ['base02',  'base1'],
+-		\ 'i': ['base2',   'base00'],
+-		\ }),
+-	\
+   \ Pl#Hi#Segments(['scrollpercent', 'raw', 'filesize'], {
+ 		\ 'n': ['base2',   'base0'],
+ 		\ 'N': ['base00',  'base2'],
+ 		\ 'i': ['base2',   'base1'],
+ 		\ }),
+ 	\
+-	\ Pl#Hi#Segments(['fileinfo', 'filename'], {
++	\ Pl#Hi#Segments(['branch', 'fileinfo', 'filename'], {
+ 		\ 'n': ['base2',   'base01',   ['bold']],
+ 		\ 'N': ['base01',  'base2' ],
+ 		\ 'i': ['base3',   'base1',    ['bold']],
