@@ -16,10 +16,10 @@ terminfo:
 xorg: xinit xresources
 
 xresources:
-	ln -fsT `readlink -f xresources` $(HOME)/.XResources
+	ln -fsT `readlink -f xresources` $(HOME)/.Xresources
 
 xinit:
-	ln -fsT `readlink -f xinit` $(HOME)/.xinit
+	ln -fsT `readlink -f xinitrc` $(HOME)/.xinitrc
 
 config:
 	mkdir -p $(HOME)/.config/
@@ -43,5 +43,5 @@ bin:
 	ln -fsT `readlink -f bin` $(HOME)/bin
 
 fonts:
-	ln -fsT `readlink -f fonts` $(HOME)/fonts
+	ln -fsT `readlink -f fonts` $(HOME)/.fonts
 
