@@ -9,6 +9,7 @@ dircolors:
 vim:
 	ln -fsT `readlink -f vimrc` $(HOME)/.vimrc
 	ln -fsT `readlink -f vim` $(HOME)/.vim
+	cd $(HOME)/.vim/bundle/vim-powerline/ && patch -p1 < $(HOME)/.vim/vim-powerline-solarized.patch
 
 terminfo:
 	ln -fsT `readlink -f terminfo` $(HOME)/.terminfo
