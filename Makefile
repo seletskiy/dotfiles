@@ -1,15 +1,20 @@
+# Configuration that should present anywhere.
 common: git terminal vim xorg i3 mutt zsh bin fonts
 
+# Laptop specific target
+# Here and next TARGET is a special variable used in recipes to choose
+# right config to use.
 laptop: TARGET=laptop
 laptop: common
-	# laptop configuration set has been installed
+	# Laptop configuration set has been installed.
 
+# Conf groups listed next.
 git: $(HOME)/.gitconfig
 
 vim: $(HOME)/.vimrc $(HOME)/.vim $(HOME)/.vim/bundle/vim-powerline/autoload/Powerline/Colorschemes/solarized.vim
 
 terminal: $(HOME)/.terminfo $(HOME)/.dircolors
-	
+
 xorg: $(HOME)/.xinitrc $(HOME)/.Xresources
 
 mutt: $(HOME)/.muttrc $(HOME)/.mutt $(HOME)/.mutt/aliases $(HOME)/.mutt/accounts
@@ -23,9 +28,11 @@ bin: $(HOME)/bin
 fonts: $(HOME)/.fonts
 	fc-cache -f
 
+# Shorthand functions.
 link = $(shell ln -fvsrT $(1) $(2) >&2)
 template = $(shell ./_template.py $(1).template > $(2))
 
+# Exact configuration files listed next.
 $(HOME)/.i3/i3status.conf: i3/i3status.conf.*
 	$(call link,i3/i3status.conf.$(TARGET),$(HOME)/.i3/i3status.conf)
 
