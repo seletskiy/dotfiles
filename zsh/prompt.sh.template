@@ -1,1 +1,2 @@
 export LAMBDA="{{LAMBDA}}"
+export LAMBDA_COLOR="{{LAMBDA_COLOR}}"
