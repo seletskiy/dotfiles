@@ -1,48 +1,90 @@
-common: gitconfig dircolors vim terminfo xorg i3 mutt zsh bin fonts
+common: git terminal vim xorg i3 mutt zsh bin fonts
 
-gitconfig:
-	ln -fsT `readlink -f gitconfig` $(HOME)/.gitconfig
+laptop: TARGET=laptop
+laptop: common
+	# laptop configuration set has been installed
 
-dircolors:
-	ln -fsT `readlink -f dircolors_dark` $(HOME)/.dircolors
+git: $(HOME)/.gitconfig
 
-vim:
-	ln -fsT `readlink -f vimrc` $(HOME)/.vimrc
-	ln -fsT `readlink -f vim` $(HOME)/.vim
-	cd $(HOME)/.vim/bundle/vim-powerline/ && patch -p1 < $(HOME)/.vim/vim-powerline-solarized.patch
+vim: $(HOME)/.vimrc $(HOME)/.vim $(HOME)/.vim/bundle/vim-powerline/autoload/Powerline/Colorschemes/solarized.vim
 
-terminfo:
-	ln -fsT `readlink -f terminfo` $(HOME)/.terminfo
+terminal: $(HOME)/.terminfo $(HOME)/.dircolors
+	
+xorg: $(HOME)/.xinitrc $(HOME)/.Xresources
 
-xorg: xinit xresources
+mutt: $(HOME)/.muttrc $(HOME)/.mutt $(HOME)/.mutt/aliases $(HOME)/.mutt/accounts
 
-xresources:
-	ln -fsT `readlink -f xresources` $(HOME)/.Xresources
+zsh: $(HOME)/.zshrc $(HOME)/.zsh $(HOME)/.zsh/prompt.sh $(HOME)/.zsh/background.sh
 
-xinit:
-	ln -fsT `readlink -f xinitrc` $(HOME)/.xinitrc
+i3: $(HOME)/.i3 $(HOME)/.i3/i3status.conf
 
-config:
-	mkdir -p $(HOME)/.config/
+bin: $(HOME)/bin
 
-i3:
-	ln -fsT `readlink -f i3` $(HOME)/.i3
+fonts: $(HOME)/.fonts
+	fc-cache -f
 
-mutt:
-	ln -fsT `readlink -f muttrc` $(HOME)/.muttrc
-	ln -fsT `readlink -f mutt` $(HOME)/.mutt
+link = $(shell ln -fvsrT $(1) $(2) >&2)
+template = $(shell ./_template.py $(1).template > $(2))
+
+$(HOME)/.i3/i3status.conf: i3/i3status.conf.*
+	$(call link,i3/i3status.conf.$(TARGET),$(HOME)/.i3/i3status.conf)
+
+$(HOME)/.vim/autoload/Powerline/Colorschemes/solarized.vim:
+	patch -d$(HOME)/.vim/bundle/vim-powerline/ -Np1 < $(HOME)/.vim/vim-powerline-solarized.patch || exit 0
+
+$(HOME)/.gitconfig:
+	$(call link,gitconfig,$@)
+
+$(HOME)/.dircolors:
+	$(call link,dircolors_$(BACKGROUND),$@)
+
+$(HOME)/.vimrc:
+	$(call link,vimrc,$@)
+
+$(HOME)/.vim:
+	$(call link,vim,$@)
+
+$(HOME)/.terminfo:
+	$(call link,terminfo,$@)
+
+$(HOME)/.Xresources:
+	$(call link,xresources,$@)
+
+$(HOME)/.xinitrc:
+	$(call link,xinitrc,$@)
+
+$(HOME)/.config:
+	mkdir -p $@
+
+$(HOME)/.i3:
+	$(call link,i3,$@)
+
+$(HOME)/.muttrc:
+	$(call link,muttrc,$@)
+
+$(HOME)/.mutt:
+	$(call link,mutt,$@)
+
+$(HOME)/.mutt/aliases:
 	echo -n >> $(HOME)/.mutt/aliases
-	./_template.py mutt/accounts.template > $(HOME)/.mutt/accounts
 
-zsh:
-	ln -fsT `readlink -f zshrc` $(HOME)/.zshrc
-	ln -fsT `readlink -f zsh` $(HOME)/.zsh
-	./_template.py zsh/prompt.sh.template > $(HOME)/.zsh/prompt.sh
-	./_template.py zsh/background.sh.template > $(HOME)/.zsh/background.sh
+$(HOME)/.mutt/accounts:
+	$(call template,mutt/accounts,$@)
 
-bin:
-	ln -fsT `readlink -f bin` $(HOME)/bin
+$(HOME)/.zshrc:
+	$(call link,zshrc,$@)
 
-fonts:
-	ln -fsT `readlink -f fonts` $(HOME)/.fonts
+$(HOME)/.zsh:
+	$(call link,zsh,$@)
 
+$(HOME)/.zsh/prompt.sh:
+	$(call template,zsh/prompt.sh,$@)
+
+$(HOME)/.zsh/background.sh:
+	$(call template,zsh/background.sh,$@)
+
+$(HOME)/bin:
+	$(call link,bin,$@)
+
+$(HOME)/.fonts:
+	$(call link,fonts,$@)
