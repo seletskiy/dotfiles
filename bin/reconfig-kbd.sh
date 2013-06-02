@@ -4,4 +4,5 @@ export XAUTHORITY=/home/s.seletskiy/.Xauthority
 export DISPLAY=:0.0
 
 xmodmap -e 'keycode 66 = ISO_Next_Group ISO_Next_Group'
-nohup bash -c 'sleep 1 ; xset r rate 190 50' &
+nohup bash -c 'sleep 1 ; xset r rate 190 50' &> /dev/null &
+setxkbmap -layout us,ru -option grp:caps_toggle
