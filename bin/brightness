@@ -1,0 +1,19 @@
+#!/bin/bash
+
+SYS=/sys/class/backlight/psb-bl/
+CUR=$(cat $SYS/brightness)
+
+if [ $CUR -le 10 ]; then
+	STEP=1
+else
+	STEP=10
+fi
+
+if [ $# -eq 0 ]; then
+	cat $SYS/actual_brightness
+elif [ $1 == "up" ]; then
+	echo echo $(($CUR+$STEP)) \> $SYS/brightness
+	echo $(($CUR+$STEP)) > $SYS/brightness
+elif [ $1 == "down" ]; then
+	echo $(($CUR-$STEP)) > $SYS/brightness
+fi
