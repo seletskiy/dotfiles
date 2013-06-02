@@ -1,5 +1,12 @@
 # Configuration that should present anywhere.
-common: git terminal vim xorg i3 mutt zsh bin fonts
+common: check-target git terminal vim xorg i3 mutt zsh bin fonts
+
+check-target:
+	# This Makefile should be invoked either with:
+	#   make laptop
+	#   make home
+	#   make work
+	[ "$(TARGET)" ] || exit 1
 
 # Laptop specific target
 # Here and next TARGET is a special variable used in recipes to choose
@@ -15,7 +22,7 @@ vim: $(HOME)/.vimrc $(HOME)/.vim $(HOME)/.vim/bundle/vim-powerline/autoload/Powe
 
 terminal: $(HOME)/.terminfo $(HOME)/.dircolors
 
-xorg: $(HOME)/.xinitrc $(HOME)/.Xresources
+xorg: $(HOME)/.xinitrc $(HOME)/.Xresources /etc/systemd/system/x11.service /etc/X11/xorg.conf
 
 mutt: $(HOME)/.muttrc $(HOME)/.mutt $(HOME)/.mutt/aliases $(HOME)/.mutt/accounts
 
@@ -29,12 +36,13 @@ fonts: $(HOME)/.fonts
 	fc-cache -f
 
 # Shorthand functions.
-link = $(shell ln -fvsrT $(1) $(2) >&2)
+link = $(shell ln -fvsT $(1) `readlink -f $(2)` >&2)
+sulink = $(shell sudo ln -fvsT `readlink -f $(1)` $(2) >&2)
 template = $(shell ./_template.py $(1).template > $(2))
 
 # Exact configuration files listed next.
 $(HOME)/.i3/i3status.conf: i3/i3status.conf.*
-	$(call link,i3/i3status.conf.$(TARGET),$(HOME)/.i3/i3status.conf)
+	$(call link,i3/i3status.conf.$(TARGET),$(HOME)/.i3/i3status.conf) /etc/systemd/system/x11.service
 
 $(HOME)/.vim/autoload/Powerline/Colorschemes/solarized.vim:
 	patch -d$(HOME)/.vim/bundle/vim-powerline/ -Np1 < $(HOME)/.vim/vim-powerline-solarized.patch || exit 0
@@ -59,6 +67,14 @@ $(HOME)/.Xresources:
 
 $(HOME)/.xinitrc:
 	$(call link,xinitrc,$@)
+
+/etc/systemd/system/x11.service: systemd/x11.service
+	$(call sulink,systemd/x11.service,$@)
+	sudo systemctl daemon-reload
+	sudo systemctl enable x11.service
+
+/etc/X11/xorg.conf: xorg.conf.*
+	$(call sulink,xorg.conf.$(TARGET),$@)
 
 $(HOME)/.config:
 	mkdir -p $@
