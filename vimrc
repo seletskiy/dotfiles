@@ -251,6 +251,7 @@ augroup skeletons
 augroup end
 
 au BufEnter */data/projects/* set noexpandtab
+au BufEnter Makefile set noexpandtab
 
 map <ins> i<ins><esc>
 
