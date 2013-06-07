@@ -36,7 +36,7 @@ fonts: $(HOME)/.fonts
 	fc-cache -f
 
 # Shorthand functions.
-link = $(shell ln -fvsT $(1) `readlink -f $(2)` >&2)
+link = $(shell ln -fvsT `readlink -f $(1)` $(2) >&2)
 sulink = $(shell sudo ln -fvsT `readlink -f $(1)` $(2) >&2)
 template = $(shell ./_template.py $(1).template > $(2))
 
