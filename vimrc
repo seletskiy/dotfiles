@@ -28,7 +28,7 @@ Bundle 'PHP-correct-Indenting'
 Bundle 'git@github.com:seletskiy/Command-T'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'SirVer/ultisnips'
-Bundle 'scrooloose/syntastic'
+"Bundle 'scrooloose/syntastic'
 Bundle 'epmatsw/ag.vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
@@ -89,7 +89,11 @@ fun! s:ApplyColorscheme()
     hi erlangFunHead cterm=bold ctermfg=4
 endfun
 
-call g:LightRoom()
+if $BACKGROUND == 'light'
+    call g:LightRoom()
+else
+    call g:DarkRoom()
+endif
 
 " editing in utf-8 by default
 set encoding=utf-8

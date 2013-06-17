@@ -26,7 +26,7 @@ xorg: $(HOME)/.xinitrc $(HOME)/.Xresources /etc/systemd/system/x11.service /etc/
 
 mutt: $(HOME)/.muttrc $(HOME)/.mutt $(HOME)/.mutt/aliases $(HOME)/.mutt/accounts
 
-zsh: $(HOME)/.zshrc $(HOME)/.zsh $(HOME)/.zsh/prompt.sh $(HOME)/.zsh/background.sh
+zsh: $(HOME)/.zshrc $(HOME)/.zsh $(HOME)/.zsh/prompt.sh
 
 i3: $(HOME)/.i3 $(HOME)/.i3/i3status.conf
 
@@ -64,9 +64,11 @@ $(HOME)/.terminfo:
 
 $(HOME)/.Xresources:
 	$(call link,xresources,$@)
+	$(call link,xresources.dark,$@)
+	$(call link,xresources.light,$@)
 
 $(HOME)/.xinitrc:
-	$(call link,xinitrc,$@)
+	$(call template,xinitrc,$@)
 
 /etc/systemd/system/x11.service: systemd/x11.service
 	$(call sulink,systemd/x11.service,$@)
@@ -102,9 +104,6 @@ $(HOME)/.zsh:
 
 $(HOME)/.zsh/prompt.sh:
 	$(call template,zsh/prompt.sh,$@)
-
-$(HOME)/.zsh/background.sh:
-	$(call template,zsh/background.sh,$@)
 
 $(HOME)/bin:
 	$(call link,bin,$@)

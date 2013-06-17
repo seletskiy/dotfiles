@@ -6,3 +6,4 @@ mutt/accounts
 mutt/aliases
 mutt/header_cache
 i3/i3status.conf
+xinitrc
