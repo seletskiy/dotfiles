@@ -240,7 +240,6 @@ augroup end
 
 let html_no_rendering=1
 
-au FileType html set ft=htmldjango
 au FileType sql set ft=mysql
 au FileType tex :e ++enc=cp1251
 au FileType tex syn on
