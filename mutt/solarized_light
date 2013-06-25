@@ -102,17 +102,7 @@ color quoted3       color160        default
 color quoted4       color166        default        
 
 color signature     color249        default        
-#color bold          color254        default        
-#color underline     color254        default        
-#color normal        color240        default        
-#
-color body          color239        default        "[;:][-o][)/(|]"    # emoticons
-color body          color239        default        "[;:][)(|]"         # emoticons
-color body          color239        default        "[*]?((N)?ACK|CU|LOL|SCNR|BRB|BTW|CWYL|\
-                                                     |FWIW|vbg|GD&R|HTH|HTHBE|IMHO|IMNSHO|\
-                                                     |IRL|RTFM|ROTFL|ROFL|YMMV)[*]?"
-color body          color239        default        "[ ][*][^*]*[*][ ]?" # more emoticon?
-color body          color239        default        "[ ]?[*][^*]*[*][ ]" # more emoticon?
+mono body           bold        default        "[ ][*][^*]*[*][ ]?" # more emoticon?
 
 ## pgp
 
