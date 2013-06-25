@@ -18,11 +18,14 @@ laptop: common
 # Conf groups listed next.
 git: $(HOME)/.gitconfig
 
-vim: $(HOME)/.vimrc $(HOME)/.vim $(HOME)/.vim/bundle/vim-powerline/autoload/Powerline/Colorschemes/solarized.vim
+vim: $(HOME)/.vimrc $(HOME)/.vim\
+	$(HOME)/.vim/bundle/vim-powerline/autoload/Powerline/Colorschemes/solarized.vim
 
 terminal: $(HOME)/.terminfo $(HOME)/.dircolors
 
-xorg: $(HOME)/.xinitrc $(HOME)/.Xresources /etc/systemd/system/x11.service /etc/X11/xorg.conf
+xorg: $(HOME)/.xinitrc $(HOME)/.Xresources $(HOME)/.Xresources.dark\
+	$(HOME)/.Xresources.light /etc/systemd/system/x11.service\
+	/etc/X11/xorg.conf
 
 mutt: $(HOME)/.muttrc $(HOME)/.mutt $(HOME)/.mutt/aliases $(HOME)/.mutt/accounts
 
@@ -64,7 +67,11 @@ $(HOME)/.terminfo:
 
 $(HOME)/.Xresources:
 	$(call link,xresources,$@)
+
+$(HOME)/.Xresources.dark:
 	$(call link,xresources.dark,$@)
+
+$(HOME)/.Xresources.light:
 	$(call link,xresources.light,$@)
 
 $(HOME)/.xinitrc:

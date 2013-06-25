@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    if [ -r ~/.config/background ]; then
+        cat ~/.config/background
+    else
+        echo light
+    fi
+
+    exit 0
+fi
+
+echo $1 > ~/.config/background
+
+xrdb -merge ~/.Xresources.$1
+cat ~/.i3/config.base ~/.i3/config.$1 > ~/.i3/config
+i3-msg reload
