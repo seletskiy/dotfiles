@@ -34,6 +34,9 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'lyokha/vim-xkbswitch'
 
+set rtp-=~/.vim
+set rtp^=~/.vim
+
 " syntax on!
 syntax on
 " allow using filetype plugin detection and indenting
