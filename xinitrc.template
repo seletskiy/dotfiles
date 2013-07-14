@@ -1,6 +1,7 @@
 export SHELL=/bin/zsh
 export TERMINAL=urxvt{{TERM_MODE}}
 export PATH=/home/s.seletskiy/bin/:$PATH
+export GOPATH=/home/s.seletskiy/sources/go
 
 xset +fp /usr/share/fonts/local
 xset fp rehash
