@@ -91,7 +91,7 @@ fun! s:ApplyColorscheme()
     hi erlangFunHead cterm=bold ctermfg=4
 endfun
 
-if system('background') == 'light'
+if system('background') == "light\n"
     call g:LightRoom()
 else
     call g:DarkRoom()
