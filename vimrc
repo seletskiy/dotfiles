@@ -25,7 +25,7 @@ Bundle 'git@github.com:seletskiy/smarty.vim'
 Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
 Bundle 'PHP-correct-Indenting'
 Bundle 'git@github.com:seletskiy/Command-T'
-Bundle 'Lokaltog/vim-powerline'
+Bundle 'bling/vim-airline'
 Bundle 'SirVer/ultisnips'
 "Bundle 'scrooloose/syntastic'
 Bundle 'epmatsw/ag.vim'
@@ -35,6 +35,17 @@ Bundle 'lyokha/vim-xkbswitch'
 
 set rtp-=~/.vim
 set rtp^=~/.vim
+
+let g:airline_solarized_reduced = 0
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'solarized'
+let g:airline_left_sep = '⮀'
+let g:airline_left_alt_sep = '⮁'
+let g:airline_right_sep = '⮂'
+let g:airline_right_alt_sep = '⮃'
+let g:airline_fugitive_prefix = '⭠'
+let g:airline_linecolumn_prefix = '⭡'
+let g:airline_readonly_symbol = '⭤'
 
 " syntax on!
 syntax on
@@ -55,11 +66,6 @@ fun! g:LightRoom()
     hi TabLineFill ctermfg=1 ctermbg=7 cterm=none
     hi TabLineSel ctermbg=13 ctermfg=15 cterm=bold
     hi TabLineMod ctermbg=1 ctermfg=15 cterm=bold
-
-    let g:Powerline_colorscheme = 'solarized'
-    if exists(':PowerlineReloadColorscheme') == 2
-        PowerlineReloadColorscheme
-    endif
 endfun
 
 fun! g:DarkRoom()
@@ -75,11 +81,6 @@ fun! g:DarkRoom()
     hi TabLineFill ctermfg=247 ctermbg=236 cterm=none
     hi TabLineSel ctermbg=148 ctermfg=22 cterm=bold
     hi TabLineMod ctermbg=1 ctermfg=15 cterm=bold
-
-    let g:Powerline_colorscheme = 'default'
-    if exists(':PowerlineReloadColorscheme') == 2
-        PowerlineReloadColorscheme
-    endif
 endfun
 
 fun! s:ApplyColorscheme()
