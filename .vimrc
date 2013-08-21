@@ -1,7 +1,5 @@
-" no compatible with vi
 set nocompatible
 
-" basic vundle settings
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 
@@ -32,8 +30,43 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'lyokha/vim-xkbswitch'
 
+syntax on
+filetype plugin on
+filetype indent on
+
+" Hack to ensure, that ~/.vim is looked first
 set rtp-=~/.vim
 set rtp^=~/.vim
+
+set encoding=utf-8
+set printencoding=cp1251
+set timeoutlen=400
+set wildmenu
+set undofile
+set undodir=$HOME/.vim/tmp/
+set directory=$HOME/.vim/tmp/
+set ttyfast
+set autowrite
+set relativenumber
+"set hidden
+set hlsearch
+set incsearch
+set history=500
+set smartcase
+set expandtab
+set autoindent
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set backspace=2
+set laststatus=2
+set gdefault
+set completeopt-=preview
+
+" autocomplete list numbers
+" autoinsert comment leader
+" do not wrap line after oneletter word
+set formatoptions=qrn1tol
 
 let g:airline_solarized_reduced = 0
 let g:airline_powerline_fonts = 1
@@ -46,219 +79,29 @@ let g:airline_fugitive_prefix = '⭠'
 let g:airline_linecolumn_prefix = '⭡'
 let g:airline_readonly_symbol = '⭤'
 
-" syntax on!
-syntax on
-" allow using filetype plugin detection and indenting
-filetype plugin on
-filetype indent on
-
-fun! g:LightRoom()
-    set background=light
-    call s:ApplyColorscheme()
-    hi underlined cterm=underline
-    hi LineNr ctermfg=249 ctermbg=none
-	hi SignColumn ctermfg=240 ctermbg=none
-    hi Normal ctermbg=none
-    hi TabLine ctermfg=1 ctermbg=7 cterm=none
-    hi ColorColumn ctermbg=230
-
-    hi TabLineFill ctermfg=1 ctermbg=7 cterm=none
-    hi TabLineSel ctermbg=13 ctermfg=15 cterm=bold
-    hi TabLineMod ctermbg=1 ctermfg=15 cterm=bold
-endfun
-
-fun! g:DarkRoom()
-    set background=dark
-    call s:ApplyColorscheme()
-    hi underlined cterm=underline
-    hi LineNr ctermfg=238 ctermbg=none
-	hi SignColumn ctermfg=240 ctermbg=none
-    hi Normal ctermbg=none
-    hi ColorColumn ctermbg=235
-
-    hi TabLine ctermfg=247 ctermbg=236 cterm=none
-    hi TabLineFill ctermfg=247 ctermbg=236 cterm=none
-    hi TabLineSel ctermbg=148 ctermfg=22 cterm=bold
-    hi TabLineMod ctermbg=1 ctermfg=15 cterm=bold
-endfun
-
-fun! s:ApplyColorscheme()
-    let g:solarized_termcolors = 256
-    let g:solarized_contrast = 'high'
-    colorscheme solarized
-    hi! link WildMenu PmenuSel 
-    hi erlangEdocTag cterm=bold ctermfg=14
-    hi erlangFunHead cterm=bold ctermfg=4
-endfun
-
-if system('background') == "light\n"
-    call g:LightRoom()
-else
-    call g:DarkRoom()
-endif
-
-" editing in utf-8 by default
-set encoding=utf-8
-
-" printing in utf-8
-set printencoding=cp1251
-
-" 400 ms is enough bitwixt two key presses
-set timeoutlen=400
-
-" wildmenu is the best for selecting in command line
-set wildmenu
-
-" infinite undo
-set undofile
-set undodir=$HOME/.vim/tmp/
-set directory=$HOME/.vim/tmp/
-
-" really fast! do not really see difference...
-set ttyfast
-
-" autowrite on :! commands
-set autowrite
-
-" slow as hell!
-set relativenumber
-
-" hide without saving. why? i don't remember, really...
-set hidden
-
-" highlig
-set hlsearch
-
-" incremental search rules
-set incsearch
-
-" command line history length
-set history=500
-
-" ignore case when there are only lower letters in pattern
-set smartcase
-
-" do not expand tab by default
-set noexpandtab
-
-" smart, as ai
-set autoindent
-
-" indent width
-set shiftwidth=4
-
-" <tab> and <bs> length in insert mode
-set softtabstop=4
-
-" length of <tab> in spaces
-set tabstop=4
-
-" autocomplete list numbers
-" autoinsert comment leader
-" do not wrap line after oneletter word
-set formatoptions=qrn1tol
-
-" without folds it is better, really
-set nofoldenable
-
-" erase it all with fire!
-set backspace=2
-
-" show statusline always, it's so cuuuute ^_^
-set laststatus=2
-
-" use /g flag as default in search-n-replace
-set gdefault
-
 let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
 let g:XkbSwitchEnabled = 1
-
-" WTF?
-"set t_kB=[Z
-
-" the <leader> key
 let mapleader="\<space>"
 
-cmap w!! %!sudo tee > /dev/null %
-map <F12> :bufdo bd!<CR><BAR>:tabo<CR>:enew<CR>
-
-" use <c-e> and <c-t> for autocompletion
-imap <C-T> <C-O>:call search("[)}\"'`\\]]", "c")<CR><Right>
-
-" one key press for one ident level
-noremap > >>
-noremap < <<
-
 let g:Powerline_symbols = 'fancy'
-
 let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
 
-" useful search plugin from dahu
-nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
-au BufEnter * hi SPM1 ctermbg=1 ctermfg=7
-au BufEnter * hi SPM2 ctermbg=2 ctermfg=7
-au BufEnter * hi SPM3 ctermbg=3 ctermfg=7
-au BufEnter * hi SPM4 ctermbg=4 ctermfg=7
-au BufEnter * hi SPM5 ctermbg=5 ctermfg=7
-au BufEnter * hi SPM6 ctermbg=6 ctermfg=7
-
-"let g:neocomplcache_enable_at_startup = 1
-"inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
-"if !exists('g:neocomplcache_keyword_patterns')
-"    let g:neocomplcache_keyword_patterns = {}
-"endif
-"let g:neocomplcache_keyword_patterns['php'] = '</\?\%(\h[[:alnum:]_-]*\s*\)\?\%(/\?>\)\?\|\$\h\w*\|\h\w*\%(\%(\\\|::\)\w*\)*\%(()\?\)\?\|[а-я]\+'
-""if !exists('g:neocomplcache_omni_patterns')
-""  let g:neocomplcache_omni_patterns = {}
-""endif
-""let g:neocomplcache_omni_patterns.python = ''
-""let g:neocomplcache_enable_fuzzy_completion = 1
-""let g:neocomplcache_fuzzy_completion_start_length = 2
-"inoremap <expr><C-y> neocomplcache#close_popup()
+let g:myTabLine_Cache = {}
 
 let g:CommandTUseGitLsFiles = 1
 if &term =~ "screen" || &term =~ "xterm"
-    let g:CommandTCancelMap     = ['<ESC>', '<C-c>']
+    let g:CommandTCancelMap = ['<ESC>', '<C-c>']
 endif
 
-augroup hilight_over_80
-    au!
-    au VimResized,VimEnter * set cc= | for i in range(80, &columns) | exec "set cc+=" . i | endfor
-augroup end
-
-command! W silent w !sudo tee % > /dev/null <bar> e!
-
-map <C-T> <Leader>t
-
 let g:surround_102 = "\1function: \1(\r)"
-
-augroup dir_autocreate
-    au!
-	autocmd BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
-augroup end
-
 let html_no_rendering=1
 
-au FileType sql set ft=mysql
-au FileType tex :e ++enc=cp1251
-au FileType tex syn on
-au BufEnter /data/projects/*.conf set ft=nginx
-au BufEnter /data/projects/*.conf syn on
-au FileType * set expandtab
-au FileType erlang set expandtab ts=4 sw=4
-au FileType erlang set comments=:%%%,:%%,:%
+cmap w!! %!sudo tee > /dev/null %
 
-augroup skeletons
-    au!
-    au BufNewFile *.php exec "normal I<?php\<ESC>2o"
-    au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
-    au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
-augroup end
-
-au BufEnter */data/projects/* set noexpandtab
-au BufEnter Makefile set noexpandtab
+imap <C-T> <C-O>:call search("[)}\"'`\\]]", "c")<CR><Right>
 
 map <ins> i<ins><esc>
+map <C-T> <Leader>t
 
 noremap <leader>v V`]
 noremap <leader>p "1p
@@ -268,26 +111,30 @@ nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 
-inoremap jj <ESC>
 nnoremap ? ?\v
 vnoremap ? ?\v
 nnoremap / /\v
 vnoremap / /\v
+
 nnoremap <TAB> %
 vnoremap <TAB> %
+
+noremap > >>
+noremap < <<
 imap <silent> <S-TAB> <C-O><<
 vmap <silent> <TAB> >gv
 vmap <silent> <S-TAB> <gv
 vmap <silent> > >gv
 vmap <silent> < <gv
 
+inoremap jj <ESC>
 nnoremap j gj
 nnoremap k gk
 
 nnoremap <F1> <ESC>
-
 nmap <F2> :w<CR>
 imap <F2> <ESC><F2>
+map <F12> :bufdo bd!<CR><BAR>:tabo<CR>:enew<CR>
 
 map <Leader>1 1gt
 map <Leader>2 2gt
@@ -299,74 +146,46 @@ map <Leader>7 7gt
 map <Leader>8 8gt
 map <Leader>9 9gt
 
-set completeopt-=preview
+nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
 
-"let g:xptemplate_brace_complete = 0
-"let g:xptemplate_key = '<C-\>'
-"let g:xptemplate_nav_next = '<C-J>'
-"let g:xptemplate_nav_cancel = '<ENTER>'
-"let g:xptemplate_fallback = "<C-O>:call g:MyXPTfallback()<CR>"
+augroup syntax_hacks
+    au!
+    au BufEnter * hi SPM1 ctermbg=1 ctermfg=7
+    au BufEnter * hi SPM2 ctermbg=2 ctermfg=7
+    au BufEnter * hi SPM3 ctermbg=3 ctermfg=7
+    au BufEnter * hi SPM4 ctermbg=4 ctermfg=7
+    au BufEnter * hi SPM5 ctermbg=5 ctermfg=7
+    au BufEnter * hi SPM6 ctermbg=6 ctermfg=7
+augroup end
 
-"imap <TAB> <C-R>=g:MyExpandTab()<CR>
-"smap <TAB> <C-J>
-"vmap <TAB> <C-\>
+augroup hilight_over_80
+    au!
+    au VimResized,VimEnter * set cc= | for i in range(80, &columns) | exec "set cc+=" . i | endfor
+augroup end
 
-"fun! g:MyExpandTab()
-"    if col('.') > 0
-"        let column = col('.') - 1
-"    else
-"        let column = 0
-"    endif
+augroup dir_autocreate
+    au!
+	autocmd BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
+augroup end
 
-"    let ln = strpart(getline('.'), 0, column)
-"    let g:MyExpandTabPumWasVisible = pumvisible()
-"    if pumvisible()
-"        "call feedkeys("\<C-Y>")
-"    endif
-"    let is_string = 0
-"    let stack = synstack(line("."), column)
-"    if len(stack) > 0
-"        for id in stack
-"            if synIDattr(id, "name") =~ '\w\+String'
-"                let is_string = 1
-"            endif
-"        endfor
-"    endif
-"    if ln =~ '\v\$\w*$|\[\w*$' || is_string
-"        let x = b:xptemplateData
-"        if x.renderContext.processing > 0
-"            call feedkeys("\<C-J>")
-"        else
-"            call feedkeys("\<Plug>delimitMateS-Tab")
-"            "call g:AutoCloseJumpAfterPair()
-"        endif
-"    else
-"        call feedkeys("\<C-\>")
-"    endif
+augroup skeletons
+    au!
+    au BufNewFile *.php exec "normal I<?php\<ESC>2o"
+    au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
+    au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
+augroup end
 
-"    return ""
-"endfun
+augroup ft_customization
+    au!
+    au BufEnter php set noexpandtab
+    au FileType sql set ft=mysql
+    au FileType tex :e ++enc=cp1251
+    au BufEnter /data/projects/*.conf set ft=nginx
+    au BufEnter /data/projects/*.conf syn on
+    au FileType erlang set comments=:%%%,:%%,:%
+augroup end
 
-"fun! g:MyXPTfallback()
-"    let ln = strpart(getline('.'), 0, col('.') - 1)
-"    if ln =~ '\v^\s*$'
-"        call feedkeys("\<TAB>", 'n')
-"    else
-"        let x = b:xptemplateData
-"        "if g:MyExpandTabPumWasVisible
-"        "    call feedkeys("\<C-J>")
-"        "endif
-"        if x.renderContext.processing > 0
-"            call feedkeys("\<C-J>")
-"        else
-"            call feedkeys("\<Plug>delimitMateS-Tab")
-"            "call g:AutoCloseJumpAfterPair()
-"        endif
-"    endif
-"endfun
-
-let g:myTabLine_Cache = {}
-
+set tabline=%!MyTabLine()
 function! MyTabLine()
     let s = ''
     let t = tabpagenr()
@@ -454,4 +273,67 @@ function! MyTabLine()
     return s
 endfunction
 
-set tabline=%!MyTabLine()
+
+command! QuickFixOpenAll call QuickFixOpenAll()
+function! QuickFixOpenAll()
+    if empty(getqflist())
+        return
+    endif
+    let s:prev_val = ""
+    for d in getqflist()
+        let s:curr_val = bufname(d.bufnr)
+        if (s:curr_val != s:prev_val)
+            exec "edit " . s:curr_val
+        endif
+        let s:prev_val = s:curr_val
+    endfor
+endfunction
+
+fun! g:LightRoom()
+    set background=light
+    call s:ApplyColorscheme()
+    hi underlined cterm=underline
+    hi LineNr ctermfg=249 ctermbg=none
+	hi SignColumn ctermfg=240 ctermbg=none
+    hi Normal ctermbg=none
+    hi TabLine ctermfg=1 ctermbg=7 cterm=none
+    hi ColorColumn ctermbg=230
+
+    hi TabLineFill ctermfg=1 ctermbg=7 cterm=none
+    hi TabLineSel ctermbg=13 ctermfg=15 cterm=bold
+    hi TabLineMod ctermbg=1 ctermfg=15 cterm=bold
+
+    let g:airline_solarized_bg='light'
+endfun
+
+fun! g:DarkRoom()
+    set background=dark
+    call s:ApplyColorscheme()
+    hi underlined cterm=underline
+    hi LineNr ctermfg=238 ctermbg=none
+	hi SignColumn ctermfg=240 ctermbg=none
+    hi Normal ctermbg=none
+    hi ColorColumn ctermbg=235
+
+    hi TabLine ctermfg=247 ctermbg=236 cterm=none
+    hi TabLineFill ctermfg=247 ctermbg=236 cterm=none
+    hi TabLineSel ctermbg=148 ctermfg=22 cterm=bold
+    hi TabLineMod ctermbg=1 ctermfg=15 cterm=bold
+
+    let g:airline_solarized_bg='dark'
+endfun
+
+fun! s:ApplyColorscheme()
+    let g:solarized_termcolors = 16
+    let g:solarized_contrast = 'high'
+    colorscheme solarized
+    hi! link WildMenu PmenuSel 
+    hi erlangEdocTag cterm=bold ctermfg=14
+    hi erlangFunHead cterm=bold ctermfg=4
+endfun
+
+if system('background') == "light\n"
+    call g:LightRoom()
+else
+    call g:DarkRoom()
+endif
