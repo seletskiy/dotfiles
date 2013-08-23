@@ -75,9 +75,10 @@ let g:airline_left_sep = '⮀'
 let g:airline_left_alt_sep = '⮁'
 let g:airline_right_sep = '⮂'
 let g:airline_right_alt_sep = '⮃'
-let g:airline_fugitive_prefix = '⭠'
+let g:airline_branch_prefix = '⭠'
 let g:airline_linecolumn_prefix = '⭡'
 let g:airline_readonly_symbol = '⭤'
+let g:airline_whitespace_symbol = '✶'
 
 let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
 let g:XkbSwitchEnabled = 1
@@ -324,7 +325,7 @@ fun! g:DarkRoom()
 endfun
 
 fun! s:ApplyColorscheme()
-    let g:solarized_termcolors = 16
+    let g:solarized_termcolors = 256
     let g:solarized_contrast = 'high'
     colorscheme solarized
     hi! link WildMenu PmenuSel 
