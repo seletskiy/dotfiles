@@ -16,7 +16,7 @@ Bundle 'Rainbow-Parenthesis'
 Bundle 'git@github.com:seletskiy/vim-refugi'
 Bundle 'wojtekmach/vim-rename'
 Bundle 'repeat.vim'
-Bundle 'altercation/vim-colors-solarized'
+Bundle 'git@github.com:seletskiy/vim-colors-solarized'
 Bundle 'surround.vim'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'git@github.com:seletskiy/smarty.vim'
@@ -79,6 +79,7 @@ let g:airline_branch_prefix = '⭠'
 let g:airline_linecolumn_prefix = '⭡'
 let g:airline_readonly_symbol = '⭤'
 let g:airline_whitespace_symbol = '✶'
+let g:airline#extensions#tabline#enabled = 1
 
 let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
 let g:XkbSwitchEnabled = 1
@@ -185,95 +186,6 @@ augroup ft_customization
     au BufEnter /data/projects/*.conf syn on
     au FileType erlang set comments=:%%%,:%%,:%
 augroup end
-
-set tabline=%!MyTabLine()
-function! MyTabLine()
-    let s = ''
-    let t = tabpagenr()
-    let i = 1
-    while i <= tabpagenr('$')
-        let buflist = tabpagebuflist(i)
-        let winnr = tabpagewinnr(i)
-        " let s .= '%' . i . 'T'
-        let s .= (i == t ? '%1*' : '%2*')
-        for bi in buflist
-            if getbufvar(bi, "&modified")
-                let s .= '%#TabLineMod#'
-                break
-            else
-                let s .= (i == t ? '%#TabLineSel#' : '%#TabLineNum#')
-            endif
-        endfor
-        let s .= ' '
-        let s .= i
-        let s .= ' %*'
-        let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
-        let s .= ' '
-        let bufnr = buflist[winnr - 1]
-        let file = bufname(bufnr)
-        let buftype = getbufvar(bufnr, 'buftype')
-        if buftype == 'nofile' || strlen(file) == 0
-            if file =~ '\/.'
-                let file = substitute(file, '.*\/\ze.', '', '')
-            endif
-        else
-            if !has_key(g:myTabLine_Cache, file)
-                let g:myTabLine_Cache[file] = fnamemodify(file, ':p:.')
-            endif
-            let file = g:myTabLine_Cache[file]
-            let splitted = split(file, '[/\\]')
-            let file = ''
-            if len(splitted) > 4
-                let path = splitted[-5:-2]
-            else
-                let path = splitted[:-2]
-            endif
-            for part in path
-                let file .= part[0]
-            endfor
-            if splitted != []
-                let filename = splitted[-1]
-            else
-                let filename = ""
-            endif
-            if len(filename) > 10
-                let filenameSplitted = split(filename, '\.\([^.]\+$\)\@=')
-                if len(filenameSplitted) < 2
-                    let extension = ''
-                else
-                    let extension = '.' . filenameSplitted[1]
-                endif
-                let name = filenameSplitted[0]
-                let name = substitute(name, '\..*\.', '..', '')
-                let name = name[0] . substitute(name[1:-2], '[aeyuio]', '', 'g') . name[-1:]
-                let lastPart = name . extension
-            else
-                if len(filename) > 0
-                    let lastPart = filename
-                else
-                    let lastPart = ''
-                endif
-            endif
-            "if len(file) >= 8
-            "    let file = file[0:2] . '..' . file[-2:]
-            "endif
-            if len(lastPart) > 0
-                let file .= '/' . lastPart
-            endif
-        endif
-        if file == ''
-            let file = '[No Name]'
-        endif
-        let s .= file
-        let s .= (i == t ? '%#TabLineSel#' : '%#TabLineFill#')
-        let s .= ' '
-        let i = i + 1
-    endwhile
-    let s .= '%T%#TabLineFill#%='
-    let s .= (tabpagenr('$') > 1 ? '%999X' : '')
-    return s
-endfunction
-
 
 command! QuickFixOpenAll call QuickFixOpenAll()
 function! QuickFixOpenAll()
