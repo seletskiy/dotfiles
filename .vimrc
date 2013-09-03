@@ -166,7 +166,7 @@ augroup end
 
 augroup dir_autocreate
     au!
-	autocmd BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
+    autocmd BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
 augroup end
 
 augroup skeletons
@@ -197,7 +197,7 @@ function! MyTabLine()
         " let s .= '%' . i . 'T'
         let s .= (i == t ? '%1*' : '%2*')
         for bi in buflist
-            if getbufvar(bi, "&modified") 
+            if getbufvar(bi, "&modified")
                 let s .= '%#TabLineMod#'
                 break
             else
@@ -208,7 +208,7 @@ function! MyTabLine()
         let s .= i
         let s .= ' %*'
         let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
-		let s .= ' '
+        let s .= ' '
         let bufnr = buflist[winnr - 1]
         let file = bufname(bufnr)
         let buftype = getbufvar(bufnr, 'buftype')
@@ -295,7 +295,7 @@ fun! g:LightRoom()
     call s:ApplyColorscheme()
     hi underlined cterm=underline
     hi LineNr ctermfg=249 ctermbg=none
-	hi SignColumn ctermfg=240 ctermbg=none
+    hi SignColumn ctermfg=240 ctermbg=none
     hi Normal ctermbg=none
     hi TabLine ctermfg=1 ctermbg=7 cterm=none
     hi ColorColumn ctermbg=230
@@ -312,7 +312,7 @@ fun! g:DarkRoom()
     call s:ApplyColorscheme()
     hi underlined cterm=underline
     hi LineNr ctermfg=238 ctermbg=none
-	hi SignColumn ctermfg=240 ctermbg=none
+    hi SignColumn ctermfg=240 ctermbg=none
     hi Normal ctermbg=none
     hi ColorColumn ctermbg=235
 
@@ -328,7 +328,7 @@ fun! s:ApplyColorscheme()
     let g:solarized_termcolors = 256
     let g:solarized_contrast = 'high'
     colorscheme solarized
-    hi! link WildMenu PmenuSel 
+    hi! link WildMenu PmenuSel
     hi erlangEdocTag cterm=bold ctermfg=14
     hi erlangFunHead cterm=bold ctermfg=4
 endfun
