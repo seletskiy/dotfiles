@@ -17,6 +17,12 @@ ensure_dir() {
             echo "can not create dir: $dir"
             exit 2
         fi
+    else
+        if [[ "$(readlink -f $dir)" != "$dir" ]]; then
+            echo "looks like '$dir' is a existing symlink to another dir"
+            echo "readlink '$dir' = '$(readlink -f $dir)'"
+            exit 3
+        fi
     fi
 }
 
@@ -32,11 +38,11 @@ install_file() {
         fi
     fi
 
+    ensure_dir $(dirname $target_name)
+
     if [[ "$(readlink -f $file_name)" = "$(readlink -f $target_name)" ]]; then
         return 0
     fi
-
-    ensure_dir $(dirname $target_name)
 
     echo "symlink: $file_name -> $target_name"
 
