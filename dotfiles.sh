@@ -85,12 +85,7 @@ install_template() {
                 break
             fi
 
-            grep -qi password <<< "$placeholder"
-            if [[ $? -eq 0 ]]; then
-                local silent=-s
-            else
-                local silent=
-            fi
+            local silent=$(grep -qi password <<< "$placeholder" && echo -s)
 
             read -p"$placeholder: " $silent value
 
@@ -108,11 +103,7 @@ fi
 IFS=$'\n'
 placeholder_base=xxxx
 for file_name in $(git ls-files); do
-    if [[ $file_name = rootfs/* ]]; then
-        base_dir=/
-    else
-        base_dir=~/
-    fi
+    base_dir=$([[ $file_name != rootfs/* ]] && echo ~)/
 
     case $file_name in
         $(basename $0))
