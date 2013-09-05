@@ -115,7 +115,7 @@ for file_name in $(git ls-files); do
     fi
 
     case $file_name in
-        $0)
+        $(basename $0))
             # skip me
             ;;
         *.\$*)
