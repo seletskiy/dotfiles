@@ -81,7 +81,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+#bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -93,9 +93,9 @@ bindsym $mod+3 workspace 3
 bindsym $mod+q workspace q
 bindsym $mod+w workspace w
 bindsym $mod+e workspace e
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
+bindsym $mod+a workspace a
+bindsym $mod+s workspace s
+bindsym $mod+d workspace d
 
 workspace 1 output xinerama-0
 workspace 2 output xinerama-1
@@ -103,9 +103,9 @@ workspace 3 output xinerama-2
 workspace q output xinerama-0
 workspace w output xinerama-1
 workspace e output xinerama-2
-workspace 4 output xinerama-0
-workspace 5 output xinerama-1
-workspace 6 output xinerama-2
+workspace a output xinerama-0
+workspace s output xinerama-1
+workspace d output xinerama-2
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -114,9 +114,9 @@ bindsym $mod+Shift+3 move container to workspace 3
 bindsym $mod+Shift+q move container to workspace q
 bindsym $mod+Shift+w move container to workspace w
 bindsym $mod+Shift+e move container to workspace e
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+a move container to workspace a
+bindsym $mod+Shift+s move container to workspace s
+bindsym $mod+Shift+d move container to workspace d
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -173,6 +173,7 @@ bindcode 232 exec sudo brightness down
 
 for_window [class="google-chrome"] border none
 for_window [title="Keyboard Status Monitor"] floating enable
+for_window [class="fontforge"] floating enable
 
 hide_edge_borders both
 
