@@ -114,6 +114,9 @@ for file_name in $(git ls-files); do
     base_dir=$([[ $file_name != rootfs/* ]] && echo ~)/
 
     case $file_name in
+        *README*)
+            # skip all readme
+            ;;
         $(basename $0))
             # skip me
             ;;
