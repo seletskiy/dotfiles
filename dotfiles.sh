@@ -100,6 +100,14 @@ if [[ "$HOME" = "/root" ]]; then
     exit 1
 fi
 
+if [[ "$1" != "install" ]]; then
+    echo 'Usage: [$placeholder=value ...] '$0' (install|help|-h|--help)'
+    echo
+    echo Known placeholders:
+    echo '* $profile=work|home|laptop'
+    exit 1
+fi
+
 IFS=$'\n'
 placeholder_base=xxxx
 for file_name in $(git ls-files); do
