@@ -11,7 +11,7 @@ URxvt.termName: rxvt-unicode-256color
 URxvt.iso14755: False
 URxvt.iso14755_52: False
 URxvt.internalBorder: 0
-URxvt.perl-ext-common: default,matcher
+URxvt.perl-ext-common: default,url-select
 URxvt.url-select.launcher: /usr/bin/chromium
 URxvt.perl-ext: default,url-select,clipboard
 URxvt.keysym.M-u: perl:url-select:select_next
