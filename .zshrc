@@ -45,3 +45,4 @@ source $ZSH_CUSTOM/prompt.sh
 
 alias S='sudo'
 alias S!='sudo `fc -ln -1`'
+alias ssh='TERM=xterm ssh'
