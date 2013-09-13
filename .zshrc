@@ -43,3 +43,5 @@ export EDITOR=vim
 
 source $ZSH_CUSTOM/prompt.sh
 source $ZSH_CUSTOM/aliases.sh
+
+eval `dircolors ~/.dircolors.$BACKGROUND`
