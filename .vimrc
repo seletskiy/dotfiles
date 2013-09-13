@@ -19,15 +19,19 @@ Bundle 'repeat.vim'
 Bundle 'git@github.com:seletskiy/vim-colors-solarized'
 Bundle 'surround.vim'
 Bundle 'tpope/vim-unimpaired'
-Bundle 'git@github.com:seletskiy/smarty.vim'
+"Bundle 'git@github.com:seletskiy/smarty.vim'
 Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
 Bundle 'PHP-correct-Indenting'
-Bundle 'git@github.com:seletskiy/Command-T'
+"Bundle 'git@github.com:seletskiy/Command-T'
+Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/vimproc'
+Bundle 'yuku-t/unite-git'
 Bundle 'bling/vim-airline'
 Bundle 'SirVer/ultisnips'
 Bundle 'epmatsw/ag.vim'
 Bundle 'Valloric/YouCompleteMe'
-Bundle 'airblade/vim-gitgutter'
+"Bundle 'airblade/vim-gitgutter'
+Bundle 'mhinz/vim-signify'
 Bundle 'lyokha/vim-xkbswitch'
 
 syntax on
@@ -79,6 +83,13 @@ let g:airline#extensions#tabline#left_alt_sep = '│'
 let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
 
+call unite#custom#source('file,file/new,buffer,file_rec',
+    \ 'matchers', 'matcher_fuzzy')
+
+function! s:unite_my_settings()
+    imap <buffer> <C-R> <Plug>(unite_redraw)
+endfunction
+
 let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
 let g:XkbSwitchEnabled = 1
 let mapleader="\<space>"
@@ -100,8 +111,7 @@ cmap w!! %!sudo tee > /dev/null %
 
 imap <C-T> <C-O>:call search("[)}\"'`\\]]", "c")<CR><Right>
 
-map <ins> i<ins><esc>
-map <C-T> <Leader>t
+map <C-T> :Unite -start-insert file_rec<CR>
 
 noremap <leader>v V`]
 noremap <leader>p "1p
@@ -147,6 +157,11 @@ map <Leader>8 8gt
 map <Leader>9 9gt
 
 nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
+
+augroup unite_setting
+    au!
+    autocmd FileType unite call s:unite_my_settings()
+augroup end
 
 augroup syntax_hacks
     au!
@@ -235,7 +250,7 @@ fun! g:DarkRoom()
 endfun
 
 fun! s:ApplyColorscheme()
-    let g:solarized_termcolors = 256
+    let g:solarized_termcolors = 16
     let g:solarized_contrast = 'high'
     colorscheme solarized
     hi! link WildMenu PmenuSel
