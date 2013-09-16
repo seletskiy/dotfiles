@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ "$BACKGROUND" ]; then
-    echo $BACKGROUND
-    exit 0
-fi
-
 if [ -z "$1" ]; then
+    if [ "$BACKGROUND" ]; then
+        echo $BACKGROUND
+        exit 0
+    fi
+
     if [ -r ~/.config/background ]; then
         cat ~/.config/background
     else
