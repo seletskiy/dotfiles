@@ -37,6 +37,8 @@ plugins=(git history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
 
+unsetopt correct
+
 # Customize to your needs...
 export PATH=~/bin:$PATH
 export EDITOR=vim
