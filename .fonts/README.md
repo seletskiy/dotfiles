@@ -15,3 +15,6 @@ Motivation
 
 * powerline symbols:  
 ![powerline](https://f.cloud.github.com/assets/674812/1171913/cd3ba6fc-2111-11e3-941e-83688514fdbe.png)
+
+* cyrrilic characters:  
+![cyrrilic](https://f.cloud.github.com/assets/674812/1173928/4d0435ce-2140-11e3-8a1f-aca6755177f7.png)
