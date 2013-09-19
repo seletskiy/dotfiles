@@ -97,13 +97,6 @@ let mapleader="\<space>"
 let g:Powerline_symbols = 'fancy'
 let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
 
-let g:myTabLine_Cache = {}
-
-let g:CommandTUseGitLsFiles = 1
-if &term =~ "screen" || &term =~ "xterm"
-    let g:CommandTCancelMap = ['<ESC>', '<C-c>']
-endif
-
 let g:surround_102 = "\1function: \1(\r)"
 let html_no_rendering=1
 
@@ -155,6 +148,11 @@ map <Leader>6 6gt
 map <Leader>7 7gt
 map <Leader>8 8gt
 map <Leader>9 9gt
+
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <Esc>b <S-Left>
+cnoremap <Esc>f <S-Right>
 
 nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
 
