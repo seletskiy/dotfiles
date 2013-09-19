@@ -1,5 +1,7 @@
 unalias _
 
+alias ssh='TERM=xterm ssh'
+
 alias gdc='git diff --cached'
 alias gss='git status -s'
 alias gl='git log --oneline --graph --decorate --all'
