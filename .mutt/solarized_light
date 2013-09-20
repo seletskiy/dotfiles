@@ -102,7 +102,6 @@ color quoted3       color160        default
 color quoted4       color166        default        
 
 color signature     color249        default        
-mono body           bold        default        "[ ][*][^*]*[*][ ]?" # more emoticon?
 
 ## pgp
 
