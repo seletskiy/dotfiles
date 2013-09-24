@@ -82,6 +82,7 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '│'
 let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
+let g:airline#extensions#tabline#show_buffers = 0
 
 call unite#custom#source('file,file/new,buffer,file_rec',
     \ 'matchers', 'matcher_fuzzy')
