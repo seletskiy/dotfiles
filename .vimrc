@@ -174,7 +174,7 @@ augroup end
 
 augroup hilight_over_80
     au!
-    au VimResized,VimEnter * set cc= | for i in range(80, &columns) | exec "set cc+=" . i | endfor
+    au VimResized,VimEnter * set cc= | for i in range(80, &columns > 80 ? &columns : 80) | exec "set cc+=" . i | endfor
 augroup end
 
 augroup dir_autocreate
