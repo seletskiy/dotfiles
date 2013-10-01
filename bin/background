@@ -20,5 +20,5 @@ echo $1 > ~/.config/background
 export BACKGROUND=$1
 xrdb -merge ~/.Xresources.$1
 cat ~/.i3/config.base ~/.i3/config.$1 > ~/.i3/config
-gdb -ex 'attach '`pgrep -x i3` -ex 'call putenv("BACKGROUND='$1'")' -ex 'detach' -ex 'quit' &> /dev/null
+sudo gdb -ex 'attach '`pgrep -x i3` -ex 'call putenv("BACKGROUND='$1'")' -ex 'detach' -ex 'quit' &> /dev/null
 i3-msg reload &> /dev/null
