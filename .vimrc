@@ -162,6 +162,12 @@ augroup unite_setting
     autocmd FileType unite call s:unite_my_settings()
 augroup end
 
+augroup erlang_indent
+    au!
+    au FileType erlang filetype indent off
+    au FileType erlang set cindent
+augroup end
+
 augroup syntax_hacks
     au!
     au BufEnter * hi SPM1 ctermbg=1 ctermfg=7
