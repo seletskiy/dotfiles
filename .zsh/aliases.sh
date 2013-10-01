@@ -16,8 +16,12 @@ alias grs='git remote set-url'
 alias gpl='git pull --rebase'
 
 zle -N prepend-sudo prepend_sudo
-bindkey "^S" prepend-sudo
+bindkey "^T" prepend-sudo
 function prepend_sudo() {
-    BUFFER="sudo "$BUFFER
+    if [ "$BUFFER" ]; then
+        BUFFER="sudo "$BUFFER
+    else
+        BUFFER="sudo "$(fc -ln -1)
+    fi
     CURSOR=$(($CURSOR+5))
 }
