@@ -91,6 +91,14 @@ function! s:unite_my_settings()
     imap <buffer> <C-R> <Plug>(unite_redraw)
 endfunction
 
+function! s:unite_rec_git_or_file()
+    if fugitive#head() == ""
+        :Unite -start-insert file_rec
+    else
+        :Unite -start-insert git_cached git_untracked
+    endif
+endfunction
+
 let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
 let g:XkbSwitchEnabled = 1
 let mapleader="\<space>"
@@ -105,7 +113,7 @@ cmap w!! %!sudo tee > /dev/null %
 
 imap <C-T> <C-O>:call search("[)}\"'`\\]]", "c")<CR><Right>
 
-map <C-T> :Unite -start-insert file_rec<CR>
+map <C-T> :call <SID>unite_rec_git_or_file()<CR>
 
 noremap <leader>v V`]
 noremap <leader>p "1p
