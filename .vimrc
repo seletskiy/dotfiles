@@ -167,13 +167,13 @@ nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
 
 augroup unite_setting
     au!
-    autocmd FileType unite call s:unite_my_settings()
+    au FileType unite call s:unite_my_settings()
 augroup end
 
 augroup erlang_indent
     au!
-    au FileType erlang filetype indent off
-    au FileType erlang set cindent
+    au FileType erlang set indentexpr=""
+    au BufEnter *.erl,rebar.config,*.hrl set ai
 augroup end
 
 augroup syntax_hacks
@@ -193,7 +193,7 @@ augroup end
 
 augroup dir_autocreate
     au!
-    autocmd BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
+    au BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
 augroup end
 
 augroup skeletons
