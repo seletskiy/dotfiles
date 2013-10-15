@@ -84,7 +84,7 @@ let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
 let g:airline#extensions#tabline#show_buffers = 0
 
-call unite#custom#source('file,file/new,buffer,file_rec',
+call unite#custom#source('file,file/new,buffer,file_rec,git_cached,git_untracked',
     \ 'matchers', 'matcher_fuzzy')
 
 function! s:unite_my_settings()
