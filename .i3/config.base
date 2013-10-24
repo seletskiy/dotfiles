@@ -122,46 +122,14 @@ bindsym $mod+Shift+d move container to workspace d
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-# resize window (you can also use the mouse for that)
-mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
-#bindsym $mod+r mode "resize"
+bindsym Ctrl+Insert exec sh -c 'xsel | xclip -selection clipbord'
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
     status_command i3status -c ~/.i3/i3status.conf
     mode hide
-    #colors {
-    #        background #eee8d5
-    #        statusline #839496
-    #        focused_workspace #cb4b1g #cb4b16 #fdf6e3
-    #        inactive_workspace #859900 #fdf6e3 #839496
-    #}
 }
 
 bindsym $mod+Shift+Ctrl+l exec xautolock -locknow
@@ -178,3 +146,5 @@ for_window [class="fontforge"] floating enable
 hide_edge_borders both
 
 new_window 1pixel
+
+workspace_auto_back_and_forth yes
