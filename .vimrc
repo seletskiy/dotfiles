@@ -146,7 +146,7 @@ nnoremap k gk
 nnoremap <F1> <ESC>
 nmap <F2> :w<CR>
 imap <F2> <ESC><F2>
-map <F12> :bufdo bd!<CR><BAR>:tabo<CR>:enew<CR>
+map <F12> :silent! :bufdo! :execute "e! <BAR> bd!"<CR><BAR>:tabo<CR>:enew<CR>
 
 map <Leader>1 1gt
 map <Leader>2 2gt
