@@ -33,6 +33,7 @@ Bundle 'Valloric/YouCompleteMe'
 "Bundle 'airblade/vim-gitgutter'
 Bundle 'mhinz/vim-signify'
 Bundle 'lyokha/vim-xkbswitch'
+Bundle 'scrooloose/syntastic'
 
 syntax on
 filetype plugin on
@@ -71,6 +72,9 @@ set completeopt-=preview
 " autoinsert comment leader
 " do not wrap line after oneletter word
 set formatoptions=qrn1tol
+
+set list
+set lcs=eol:¶,trail:·,tab:\ \ 
 
 let g:airline_solarized_reduced = 0
 let g:airline_powerline_fonts = 1
@@ -146,7 +150,6 @@ nnoremap k gk
 nnoremap <F1> <ESC>
 nmap <F2> :w<CR>
 imap <F2> <ESC><F2>
-map <F12> :silent! :bufdo! :execute "e! <BAR> bd!"<CR><BAR>:tabo<CR>:enew<CR>
 
 map <Leader>1 1gt
 map <Leader>2 2gt
@@ -237,6 +240,8 @@ fun! g:LightRoom()
     hi Normal ctermbg=none
     hi TabLine ctermfg=1 ctermbg=7 cterm=none
     hi ColorColumn ctermbg=230
+    hi SpecialKey term=bold cterm=bold ctermfg=1
+    hi NonText ctermfg=7 cterm=none term=none
 
     let g:airline_solarized_bg='light'
 endfun
@@ -249,6 +254,8 @@ fun! g:DarkRoom()
     hi SignColumn ctermfg=240 ctermbg=none
     hi Normal ctermbg=none
     hi ColorColumn ctermbg=235
+    hi SpecialKey term=bold cterm=bold ctermfg=1
+    hi NonText ctermfg=0 cterm=none term=none
 
     let g:airline_solarized_bg='dark'
 endfun
