@@ -115,6 +115,12 @@ handle_call(${1:_Message}, ${2:_From}, ${3:_State}) ->
     $4;
 endsnippet
 
+snippet hin "Generic Server handle_info callback"
+handle_info(${1:_Message}, ${2:_From}, ${3:_State}) ->
+    $4;
+endsnippet
+
+
 snippet rp "Generic Server handle_ca* reply answer"
 {reply, ${1:Reply}, ${2:State}}
 endsnippet
