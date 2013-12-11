@@ -14,6 +14,7 @@ alias gpo='git push origin'
 alias gr='git remote'
 alias grs='git remote set-url'
 alias gpl='git pull --rebase'
+alias gcl='git clone'
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
