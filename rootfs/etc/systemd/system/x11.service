@@ -2,7 +2,7 @@
 Description=Start X11
 
 [Service]
-ExecStart=/bin/sh /usr/bin/startx
+ExecStart=/usr/bin/startx
 User=s.seletskiy
 WorkingDirectory=/home/s.seletskiy/
 
