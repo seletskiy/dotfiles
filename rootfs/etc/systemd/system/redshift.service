@@ -1,0 +1,11 @@
+[Unit]
+Description=Redshift
+After=x.service
+
+[Service]
+User=s.seletskiy
+ExecStart=/home/s.seletskiy/bin/redshift
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=multi-user.target
