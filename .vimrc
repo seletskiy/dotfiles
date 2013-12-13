@@ -216,6 +216,12 @@ augroup ft_customization
     au FileType erlang set comments=:%%%,:%%,:%
 augroup end
 
+augroup go_src
+    au!
+    au FileType go setl noexpandtab
+    au BufWritePost *.go Fmt
+augroup end
+
 command! QuickFixOpenAll call QuickFixOpenAll()
 function! QuickFixOpenAll()
     if empty(getqflist())
