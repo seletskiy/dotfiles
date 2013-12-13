@@ -240,7 +240,7 @@ fun! g:LightRoom()
     hi Normal ctermbg=none
     hi TabLine ctermfg=1 ctermbg=7 cterm=none
     hi ColorColumn ctermbg=230
-    hi SpecialKey term=bold cterm=bold ctermfg=1
+    hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=7 cterm=none term=none
 
     let g:airline_solarized_bg='light'
@@ -254,7 +254,7 @@ fun! g:DarkRoom()
     hi SignColumn ctermfg=240 ctermbg=none
     hi Normal ctermbg=none
     hi ColorColumn ctermbg=235
-    hi SpecialKey term=bold cterm=bold ctermfg=1
+    hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=0 cterm=none term=none
 
     let g:airline_solarized_bg='dark'
