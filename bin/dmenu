@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec /usr/bin/dmenu -nb '#eee8d5' -nf '#657b83' -sb '#cb4b16' -sf '#fdf6e3' "${@}"
+exec /usr/bin/dmenu -fn '-*-clean-*-*-*-*-12-*-*-*-*-*-*-r' -nb '#eee8d5' -nf '#657b83' -sb '#cb4b16' -sf '#fdf6e3' "${@}"
