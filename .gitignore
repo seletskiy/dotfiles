@@ -1,2 +1,3 @@
 *.swp
 .i3/config
+.mutt/aliases
