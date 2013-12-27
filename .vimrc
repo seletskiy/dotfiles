@@ -88,6 +88,8 @@ let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
 let g:airline#extensions#tabline#show_buffers = 0
 
+let g:syntastic_always_populate_loc_list = 1
+
 call unite#custom#source('file,file/new,buffer,file_rec,git_cached,git_untracked',
     \ 'matchers', 'matcher_fuzzy')
 
@@ -208,7 +210,7 @@ augroup end
 
 augroup ft_customization
     au!
-    au BufEnter php set noexpandtab
+    au BufEnter php setl noexpandtab
     au FileType sql set ft=mysql
     au FileType tex :e ++enc=cp1251
     au BufEnter /data/projects/*.conf set ft=nginx
@@ -219,7 +221,6 @@ augroup end
 augroup go_src
     au!
     au FileType go setl noexpandtab
-    au BufWritePost *.go Fmt
 augroup end
 
 command! QuickFixOpenAll call QuickFixOpenAll()
@@ -256,7 +257,7 @@ fun! g:DarkRoom()
     set background=dark
     call s:ApplyColorscheme()
     hi underlined cterm=underline
-    hi LineNr ctermfg=238 ctermbg=none
+    hi LineNr ctermfg=240 ctermbg=none
     hi SignColumn ctermfg=240 ctermbg=none
     hi Normal ctermbg=none
     hi ColorColumn ctermbg=235
