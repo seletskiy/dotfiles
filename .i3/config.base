@@ -138,6 +138,7 @@ bindsym $mod+p [con_mark="quick_p"] focus
 # finds out, if available)
 bar {
     status_command i3status -c ~/.i3/i3status.conf
+    font pango:Monaco Regular 10
     mode hide
 }
 
