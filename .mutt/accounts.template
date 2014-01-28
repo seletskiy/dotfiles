@@ -1,15 +1,7 @@
-set from="Селецкий Станислав <s.seletskiy@office.ngs.ru>"
-set record="+Sent"
-set postponed="+Drafts"
-
-account-hook imap://s.seletskiy@office.ngs.ru@office.ngs.ru/ '\
+account-hook imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/ '\
     set \
-    imap_pass={{PASSWORD_OFFICE}}\
-    folder=imap://mail.office.ngs.ru/INBOX'
-
-account-hook imap://s.seletskiy@office.ngs.ru@mail.ngs.ru.mail.t/ '\
-    set \
-    imap_pass={{PASSWORD_TEST}}\
-    folder=imap://mail.ngs.ru.mail.t/INBOX'
-
-set spoolfile='imap://s.seletskiy@office.ngs.ru@mail.ngs.ru.mail.t/'
+    imap_pass={{PASSWORD}}\
+    folder=imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/\
+    record="+Sent"\
+    postponed="+Drafts"'
+set spoolfile='imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru'
