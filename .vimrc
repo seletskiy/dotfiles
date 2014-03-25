@@ -31,11 +31,11 @@ Bundle 'SirVer/ultisnips'
 Bundle 'epmatsw/ag.vim'
 Bundle 'Valloric/YouCompleteMe'
 "Bundle 'airblade/vim-gitgutter'
-Bundle 'mhinz/vim-signify'
 Bundle 'lyokha/vim-xkbswitch'
 Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'tpope/vim-sleuth'
+Bundle 'Blackrush/vim-gocode'
 
 syntax on
 filetype plugin on
@@ -92,6 +92,10 @@ let g:airline#extensions#tabline#right_alt_sep = ''
 let g:airline#extensions#tabline#show_buffers = 0
 
 let g:syntastic_always_populate_loc_list = 1
+
+let g:syntastic_mode_map = { 'mode': 'passive',
+                           \ 'active_filetypes': ['ruby', 'php'],
+                           \ 'passive_filetypes': [''] }
 
 call unite#custom#source('file,file/new,buffer,file_rec,git_cached,git_untracked',
     \ 'matchers', 'matcher_fuzzy')
