@@ -29,9 +29,11 @@ ensure_dir() {
 install_file() {
     local file_name=$1
     local target_name=$2
+    local symlink=s
 
     if [[ $target_name = /rootfs/* ]]; then
         target_name=${target_name##/rootfs}
+        symlink=
         if [[ $EUID -gt 0 ]]; then
             echo "installing to $target_name requires sudo"
             return 1
@@ -44,9 +46,8 @@ install_file() {
         return 0
     fi
 
-    echo "symlink: $file_name -> $target_name"
-
-    ln -sfT $(readlink -f $file_name) $target_name
+    echo "$(sed 's/s/sym/;t;chard' <<< "$symlink")link: $file_name -> $target_name"
+    ln -fT$symlink $(readlink -f $file_name) $target_name
 }
 
 install_template() {
@@ -88,6 +89,7 @@ install_template() {
             local silent=$(grep -qi password <<< "$placeholder" && echo -s)
 
             read -p"$placeholder: " $silent value
+            sed 's/-s//;t;d' <<< "$silent" >&2
 
             line=${line/$placeholder/$value}
         done
