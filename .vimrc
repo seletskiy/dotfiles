@@ -34,6 +34,8 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'mhinz/vim-signify'
 Bundle 'lyokha/vim-xkbswitch'
 Bundle 'scrooloose/syntastic'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'tpope/vim-sleuth'
 
 syntax on
 filetype plugin on
@@ -67,6 +69,7 @@ set backspace=2
 set laststatus=2
 set gdefault
 set completeopt-=preview
+set nowrap
 
 " autocomplete list numbers
 " autoinsert comment leader
@@ -115,7 +118,7 @@ let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
 let g:surround_102 = "\1function: \1(\r)"
 let html_no_rendering=1
 
-cmap w!! %!sudo tee > /dev/null %
+cmap w!! %!sudo tee > /dev/null % <bar> e!
 
 imap <C-T> <C-O>:call search("[)}\"'`\\]]", "c")<CR><Right>
 
