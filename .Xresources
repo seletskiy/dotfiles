@@ -1,7 +1,7 @@
 URxvt.loginShell: true
 URxvt.transparent: false
 URxvt.scrollBar: false
-URxvt.cursorBlink: true
+URxvt.cursorBlink: false
 URxvt.saveLines: 4096
 URxvt.font: xft:Monaco:style=Regular:pixelsize=12
 URxvt.boldFont: xft:Monaco:style=Bold:pixelsize=12
