@@ -117,7 +117,7 @@ let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
 let g:surround_102 = "\1function: \1(\r)"
 let html_no_rendering=1
 
-cmap w!! %!sudo tee > /dev/null % <bar> e!
+cmap w!! %!sudo dd of=%
 
 imap <C-T> <C-O>:call search("[)}\"'`\\]]", "c")<CR><Right>
 
