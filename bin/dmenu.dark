@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec /usr/bin/dmenu -fn 'Monaco-10' -nb '#073642' -nf '#839496' -sb '#cb4b16' -sf '#fdf6e3' "${@}"
