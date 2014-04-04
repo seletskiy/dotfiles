@@ -3,7 +3,7 @@ Description=Redshift
 After=x.service
 
 [Service]
-Type=forking
+Type=simple
 User=s.seletskiy
 ExecStart=/home/s.seletskiy/bin/redshift
 Environment=DISPLAY=:0
