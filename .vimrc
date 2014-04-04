@@ -4,7 +4,7 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
-Bundle 'kana/vim-smartinput'
+Bundle 'Raimondi/delimitMate'
 Bundle 'nevar/revim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Gundo'
@@ -18,11 +18,8 @@ Bundle 'wojtekmach/vim-rename'
 Bundle 'repeat.vim'
 Bundle 'git@github.com:seletskiy/vim-colors-solarized'
 Bundle 'surround.vim'
-"Bundle 'tpope/vim-unimpaired'
-"Bundle 'git@github.com:seletskiy/smarty.vim'
 Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
 Bundle 'PHP-correct-Indenting'
-"Bundle 'git@github.com:seletskiy/Command-T'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/vimproc'
 Bundle 'yuku-t/unite-git'
@@ -30,7 +27,6 @@ Bundle 'bling/vim-airline'
 Bundle 'SirVer/ultisnips'
 Bundle 'epmatsw/ag.vim'
 Bundle 'Valloric/YouCompleteMe'
-"Bundle 'airblade/vim-gitgutter'
 Bundle 'lyokha/vim-xkbswitch'
 Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
@@ -55,7 +51,6 @@ set directory=$HOME/.vim/tmp/
 set ttyfast
 set autowrite
 set relativenumber
-"set hidden
 set hlsearch
 set incsearch
 set history=500
