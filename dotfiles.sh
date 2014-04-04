@@ -29,7 +29,7 @@ ensure_dir() {
 install_file() {
     local file_name=$1
     local target_name=$2
-    local symlink=s
+    local symlink=1
 
     if [[ $target_name = /rootfs/* ]]; then
         target_name=${target_name##/rootfs}
@@ -42,12 +42,22 @@ install_file() {
 
     ensure_dir $(dirname $target_name)
 
-    if [[ "$(readlink -f $file_name)" = "$(readlink -f $target_name)" ]]; then
+    if [ "$(readlink -f $file_name)" = "$(readlink -f $target_name)" ]; then
         return 0
     fi
 
-    echo "$(sed 's/s/sym/;t;chard' <<< "$symlink")link: $file_name -> $target_name"
-    ln -fT$symlink $(readlink -f $file_name) $target_name
+    diff -q $file_name $target_name &>/dev/null
+    if [ $? -eq 0 ]; then
+        return 0
+    fi
+
+    if [ "$symlink" ]; then
+        echo "link: $file_name -> $target_name"
+        ln -fTs $(readlink -f $file_name) $target_name
+    else
+        echo "cp: $file_name -> $target_name"
+        cp $(readlink -f $file_name) $target_name
+    fi
 }
 
 install_template() {
