@@ -16,3 +16,4 @@ URxvt.url-select.launcher: /usr/bin/chromium
 URxvt.perl-ext: default,url-select,clipboard
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.chdir: /home/s.seletskiy/
+URxvt.pointerBlank: true
