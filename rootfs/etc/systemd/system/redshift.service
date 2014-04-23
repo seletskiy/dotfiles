@@ -1,6 +1,7 @@
 [Unit]
 Description=Redshift
-After=x.service
+After=x11.service
+Requires=x11.service
 
 [Service]
 Type=simple
