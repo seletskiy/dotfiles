@@ -21,5 +21,6 @@ export BACKGROUND=$1
 xrdb -merge ~/.Xresources.$1
 cat ~/.i3/config.base ~/.i3/config.$1 > ~/.i3/config
 ln -fs ~/bin/dmenu.$1 ~/bin/dmenu
+ln -fs ~/.mcabber/mcabberrc.$1 ~/.mcabber/mcabberrc.theme
 sudo gdb -ex 'attach '`pgrep -x i3` -ex 'call putenv("BACKGROUND='$1'")' -ex 'detach' -ex 'quit' &> /dev/null
 i3-msg reload &> /dev/null
