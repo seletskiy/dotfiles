@@ -32,6 +32,7 @@ Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'tpope/vim-sleuth'
 Bundle 'Blackrush/vim-gocode'
+Bundle 'kshenoy/vim-signature'
 
 syntax on
 filetype plugin on
@@ -91,6 +92,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_mode_map = { 'mode': 'passive',
                            \ 'active_filetypes': ['ruby', 'php'],
                            \ 'passive_filetypes': [''] }
+
+let g:SignatureMarkOrder = "\m"
 
 call unite#custom#source('file,file/new,buffer,file_rec,git_cached,git_untracked',
     \ 'matchers', 'matcher_fuzzy')
@@ -246,6 +249,7 @@ fun! g:LightRoom()
     hi underlined cterm=underline
     hi LineNr ctermfg=249 ctermbg=none
     hi SignColumn ctermfg=240 ctermbg=none
+    hi Exception ctermfg=201
     hi Normal ctermbg=none
     hi TabLine ctermfg=1 ctermbg=7 cterm=none
     hi ColorColumn ctermbg=230
@@ -261,6 +265,7 @@ fun! g:DarkRoom()
     hi underlined cterm=underline
     hi LineNr ctermfg=240 ctermbg=none
     hi SignColumn ctermfg=240 ctermbg=none
+    hi Exception ctermfg=201
     hi Normal ctermbg=none
     hi ColorColumn ctermbg=235
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
