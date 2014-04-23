@@ -4,7 +4,7 @@ After=x11.service
 Requires=x11.service
 
 [Service]
-Type=simple
+Type=forking
 User=s.seletskiy
 ExecStart=/home/s.seletskiy/bin/redshift
 Environment=DISPLAY=:0
