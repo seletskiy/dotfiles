@@ -3,7 +3,7 @@ unalias _
 alias ssh='TERM=xterm ssh'
 
 alias gdc='git diff --cached'
-alias gss='git status -s'
+alias gs='git status -s'
 alias gl='git log --oneline --graph --decorate --all'
 alias gc='git commit -v'
 alias gcm='git commit -m'
