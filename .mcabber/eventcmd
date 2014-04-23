@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "${@}" >> /tmp/mcabber.log
+
+TIMEOUT=0.10
+BLINKS=10
+
+led_on()  { xset led named "Scroll Lock" ; }
+led_off() { xset -led named "Scroll Lock" ; }
+lock()    { exec 200<$0 ; flock 200 || exit 1 ; }
+
+if [ "$1" == "UNREAD" ]; then
+    if [ ${2%% *} -gt 0 ]; then
+        lock
+        for i in `seq 1 $BLINKS`; do
+            led_on  ; sleep $TIMEOUT
+            led_off ; sleep $TIMEOUT
+        done
+        led_on
+    else
+        lock
+        led_off
+    fi
+fi
