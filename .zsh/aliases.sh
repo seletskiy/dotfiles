@@ -16,6 +16,9 @@ alias grs='git remote set-url'
 alias gpl='git pull --rebase'
 alias gcl='git clone'
 
+bindkey "^P" history-substring-search-up
+bindkey "^N" history-substring-search-down
+
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
 function prepend_sudo() {
