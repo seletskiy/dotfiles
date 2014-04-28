@@ -15,6 +15,7 @@ alias gr='git remote'
 alias grs='git remote set-url'
 alias gpl='git pull --rebase'
 alias gcl='git clone'
+alias gst='git stash'
 
 bindkey "^P" history-substring-search-up
 bindkey "^N" history-substring-search-down
