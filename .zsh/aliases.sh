@@ -12,10 +12,12 @@ alias gcm!='git commit --amend -m'
 alias gp='git push'
 alias gpo='git push origin'
 alias gr='git remote'
-alias grs='git remote set-url'
+alias gres='git remote set-url'
 alias gpl='git pull --rebase'
 alias gcl='git clone'
 alias gst='git stash'
+alias grc='git rebase --continue'
+alias gra='git rebase --abort'
 
 bindkey "^P" history-substring-search-up
 bindkey "^N" history-substring-search-down
