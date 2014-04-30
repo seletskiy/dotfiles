@@ -30,7 +30,6 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'lyokha/vim-xkbswitch'
 Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
-Bundle 'tpope/vim-sleuth'
 Bundle 'Blackrush/vim-gocode'
 Bundle 'kshenoy/vim-signature'
 
@@ -95,21 +94,6 @@ let g:syntastic_mode_map = { 'mode': 'passive',
 
 let g:SignatureMarkOrder = "\m"
 
-call unite#custom#source('file,file/new,buffer,file_rec,git_cached,git_untracked',
-    \ 'matchers', 'matcher_fuzzy')
-
-function! s:unite_my_settings()
-    imap <buffer> <C-R> <Plug>(unite_redraw)
-endfunction
-
-function! s:unite_rec_git_or_file()
-    if fugitive#head() == ""
-        :Unite -start-insert file_rec
-    else
-        :Unite -start-insert git_cached git_untracked
-    endif
-endfunction
-
 let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
 let g:XkbSwitchEnabled = 1
 let mapleader="\<space>"
@@ -120,11 +104,35 @@ let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
 let g:surround_102 = "\1function: \1(\r)"
 let html_no_rendering=1
 
-cmap w!! %!sudo dd of=%
+let g:unite_split_rule = "botright"
+let g:unite_source_history_yank_enable = 1
+let g:unite_enable_start_insert = 1
+let g:unite_source_history_yank_file = $HOME.'/.vim/yankring.txt'
 
-imap <C-T> <C-O>:call search("[)}\"'`\\]]", "c")<CR><Right>
+call unite#custom#source(
+    \ 'file,file/new,buffer,file_rec,git_cached,git_untracked',
+    \ 'matchers', 'matcher_fuzzy')
+
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+function! s:unite_my_settings()
+    imap <buffer> <C-R> <Plug>(unite_redraw)
+endfunction
+
+function! s:unite_rec_git_or_file()
+    if fugitive#head() == ""
+        :Unite file_rec
+    else
+        :Unite git_cached git_untracked
+    endif
+endfunction
+
+cmap w!! w !sudo dd of=%
+
+imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
 map <C-T> :call <SID>unite_rec_git_or_file()<CR>
+map <C-Y> :Unite history/yank<CR>
 
 noremap <leader>v V`]
 noremap <leader>p "1p
@@ -255,6 +263,7 @@ fun! g:LightRoom()
     hi ColorColumn ctermbg=230
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=7 cterm=none term=none
+    hi MatchParen ctermbg=250
 
     let g:airline_solarized_bg='light'
 endfun
@@ -270,6 +279,7 @@ fun! g:DarkRoom()
     hi ColorColumn ctermbg=235
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=0 cterm=none term=none
+    hi MatchParen ctermbg=250
 
     let g:airline_solarized_bg='dark'
 endfun
