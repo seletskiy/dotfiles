@@ -1,5 +1,3 @@
-*cursorColor:           #ffffff
-
 #define S_base03        #002b36
 #define S_base02        #073642
 #define S_base01        #586e75
@@ -12,7 +10,7 @@
 *background:            S_base03
 *foreground:            S_base0
 *fadeColor:             S_base03
-*cursorColor:           S_base1
+*cursorColor:           #ffffff
 *pointerColorBackground:S_base01
 *pointerColorForeground:S_base1
 
