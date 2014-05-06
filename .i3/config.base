@@ -145,6 +145,7 @@ bar {
 bindsym $mod+Shift+Ctrl+l exec xautolock -locknow
 bindsym $mod+minus scratchpad show
 bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+grave exec kuake
 
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
@@ -152,6 +153,7 @@ bindcode 232 exec sudo brightness down
 for_window [class="google-chrome"] border none
 for_window [title="Keyboard Status Monitor"] floating enable
 for_window [class="fontforge"] floating enable
+for_window [instance="kuake_terminal"] floating enable
 
 hide_edge_borders both
 

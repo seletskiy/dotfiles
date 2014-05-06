@@ -1,0 +1,27 @@
+#!/bin/bash
+
+NAME=kuake_terminal
+
+main() {
+    if [[ "$1" ]]; then
+        while [[ -z "$terminal_id" ]]; do
+            local terminal_id=$(xdotool search --classname $NAME)
+        done
+        i3-msg -q '[instance="'$NAME'"] move scratchpad'
+    else
+        local terminal_id=$(xdotool search --classname $NAME)
+    fi
+
+    if [[ -z "$terminal_id" ]]; then
+        urxvt -name $NAME &
+        main 1
+    else
+        read screen_num screen_x screen_y screen_width screen_height <<<$(xscreeninfo)
+        eval `xdotool getwindowgeometry --shell $terminal_id`
+        i3-msg -q '[instance="'$NAME'"] scratchpad show'
+        xdotool windowmove --sync $terminal_id  $screen_x $screen_y
+        xdotool windowsize --sync $terminal_id $screen_width $(($screen_height*75/100))
+    fi
+}
+
+main
