@@ -1,0 +1,12 @@
+#!/usr/bin/python2
+# Print some information about the X environment, the monitor setup, currently active window and cursor position
+import gtk.gdk
+
+screen = gtk.gdk.screen_get_default()
+monitors = int(screen.get_n_monitors())
+display = gtk.gdk.display_get_default()
+pointer = display.get_pointer()
+
+cursor_monitor = screen.get_monitor_at_point(pointer[1],pointer[2])
+geometry = screen.get_monitor_geometry(cursor_monitor)
+print "%d %d %d %d %d" % (cursor_monitor, geometry.x, geometry.y, geometry.width, geometry.height)
