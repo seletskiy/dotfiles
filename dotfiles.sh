@@ -29,15 +29,11 @@ ensure_dir() {
 install_file() {
     local file_name=$1
     local target_name=$2
-    local symlink=1
+    local rootfs=
 
     if [[ $target_name = /rootfs/* ]]; then
         target_name=${target_name##/rootfs}
-        symlink=
-        if [[ $EUID -gt 0 ]]; then
-            echo "installing to $target_name requires sudo"
-            return 1
-        fi
+        rootfs=1
     fi
 
     ensure_dir $(dirname $target_name)
@@ -51,12 +47,12 @@ install_file() {
         return 0
     fi
 
-    if [ "$symlink" ]; then
+    if [ "$rootfs" ]; then
+        echo "sudo cp: $file_name -> $target_name"
+        sudo cp $(readlink -f $file_name) $target_name
+    else
         echo "link: $file_name -> $target_name"
         ln -fTs $(readlink -f $file_name) $target_name
-    else
-        echo "cp: $file_name -> $target_name"
-        cp $(readlink -f $file_name) $target_name
     fi
 }
 
@@ -106,11 +102,6 @@ install_template() {
         echo $line
     done >> $target_name
 }
-
-if [[ "$HOME" = "/root" ]]; then
-    echo "you should use -E flag to run as sudo"
-    exit 1
-fi
 
 if [[ "$1" != "install" ]]; then
     echo 'Usage: [$placeholder=value ...] '$0' (install|help|-h|--help)'
