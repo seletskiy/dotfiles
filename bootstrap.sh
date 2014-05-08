@@ -38,8 +38,10 @@ install_pkg() {
     local pkgname="$1"
     local force="$2"
 
-    if ! `pacman -Qqu $pkgname >&/dev/null`; then
-        [ $force -gt 1 ] || return
+    if ! `pacman -Qs $pkgname >&/dev/null`; then
+        if ! `pacman -Qu $pkgname >&/dev/null`; then
+            [ $force -gt 1 ] || return
+        fi
     fi
 
     echo "PKG $pkgname"
@@ -84,3 +86,4 @@ ntp
 ! $ sudo ntpd -gq
 
 https://aur.archlinux.org/packages/i3pystatus-git/
+urxvt-perls
