@@ -38,16 +38,16 @@ install_file() {
 
     ensure_dir $(dirname $target_name)
 
-    if [ "$(readlink -f $file_name)" = "$(readlink -f $target_name)" ]; then
+    if [[ "$(readlink -f $file_name)" = "$(readlink -f $target_name)" ]]; then
         return 0
     fi
 
     diff -q $file_name $target_name &>/dev/null
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]]; then
         return 0
     fi
 
-    if [ "$rootfs" ]; then
+    if [[ "$rootfs" ]]; then
         echo "sudo cp: $file_name -> $target_name"
         sudo cp $(readlink -f $file_name) $target_name
     else
@@ -126,7 +126,7 @@ for file_name in $(git ls-files); do
         *.\$*)
             placeholder_base=$(sed 's/\.\$\w*$//' <<< $file_name)
             placeholder_value=$(eval echo $file_name)
-            if [ "$placeholder_value" = "$placeholder_base". ]; then
+            if [[ "$placeholder_value" = "$placeholder_base". ]]; then
                 echo "placeholder variable is not set: $file_name"
                 exit 1
             fi
