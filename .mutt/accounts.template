@@ -1,8 +1,8 @@
-account-hook imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/ '\
+account-hook imap://{{ADDRESS}}@{{SERVER}}/ '\
     set \
     imap_pass={{PASSWORD}}\
-    from="{{FROM}}"\
-    folder=imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru/\
+    from="{{FULL NAME}}"\
+    folder=imap://{{ADDRESS}}@{{SERVER}}/\
     record="+Sent"\
     postponed="+Drafts"'
-set spoolfile='imap://s.seletskiy@office.ngs.ru@mail.office.ngs.ru'
+set spoolfile='imap://{{ADDRESS}}@{{SERVER}}'
