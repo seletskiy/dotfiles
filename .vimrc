@@ -32,6 +32,8 @@ Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Blackrush/vim-gocode'
 Bundle 'kshenoy/vim-signature'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'michaeljsmith/vim-indent-object'
 
 syntax on
 filetype plugin on
@@ -133,6 +135,8 @@ imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
 map <C-T> :call <SID>unite_rec_git_or_file()<CR>
 map <C-Y> :Unite history/yank<CR>
+
+map <ESC>t :UltiSnipsEdit<CR>
 
 noremap <leader>v V`]
 noremap <leader>p "1p
@@ -291,6 +295,8 @@ fun! s:ApplyColorscheme()
     hi! link WildMenu PmenuSel
     hi erlangEdocTag cterm=bold ctermfg=14
     hi erlangFunHead cterm=bold ctermfg=4
+    hi Search cterm=none term=none ctermbg=180 ctermfg=15
+    hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 endfun
 
 if system('background') == "light\n"
