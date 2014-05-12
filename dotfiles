@@ -5,41 +5,55 @@ require 'tempfile'
 
 def main(profile, action)
     if action == nil
-        puts "usage goes here"
+        puts "Usage: #{$0} <profile> install|rejoin"
         exit
     end
-
-    rejoin = action == 'rejoin'
 
     placeholder_expanded = 'xxx'
     placeholder_base = nil
     `git ls-files`.split("\n").each() do |file_name|
-        target_dir = File.expand_path('~/')
+        target_dir = File.expand_path('~') + '/'
         if file_name.start_with?('rootfs/')
             target_dir = '/'
         end
 
+        source_type = nil
         case file_name
         when /README/
             # skip readme
         when /(dotfiles|bootstrap).rb$/
-            # skip self
+            # skip installation scripts
         when /(.*)\.(\$.*$)/
             placeholder_base = $1
             placeholder_expanded = file_name.sub($2, profile)
         when /^#{placeholder_expanded}$/
-            install_file(file_name, target_dir + placeholder_base)
+            #install_file(file_name, target_dir + placeholder_base)
+            source_type = :file
+            target_name = target_dir + placeholder_base
         when /^#{placeholder_base}\./
-            # skip
+            # skip unneeded files
         when /\.template$/
-            install_template(file_name,
-                target_dir + file_name.sub(/\.template$/, ''))
+            source_type = :template
+            target_name = target_dir + file_name.sub(/\.template$/, '')
         else
-            install_file(file_name, target_dir + file_name)
+            source_type = :file
+            target_name = target_dir + file_name
+        end
+
+        # @TODO: how to refactor that?
+        case [source_type, action]
+        when :file, 'install'
+            install_file(file_name, target_name)
+        when :file, 'rejoin'
+            rejoin_file(file_name, target_name)
+        when :template, 'install'
+            install_template(file_name, target_name)
+        when :template, 'rejoin'
+            rejoin_template(file_name, target_name)
         end
     end
 
-    if rejoin
+    if action == 'rejoin'
         exec('git status -s')
     end
 end
@@ -51,28 +65,16 @@ end
 
 def remove_rootfs_prefix(source)
     if source.start_with?('/rootfs')
-        return source[6..-1], true
+        return source[7..-1], true
     else
         return source, false
     end
 end
 
-def files_are_identical(source, destination)
-    if not File.exist?(destination)
-        return false
-    end
-
-    if FileUtils.identical?(source, destination)
-        return true
-    end
-
-    return false
-end
-
 def install_file(source, destination)
     destination, rootfs = remove_rootfs_prefix(destination)
 
-    if files_are_identical(source, destination)
+    if File.exist?(destination) && FileUtils.identical?(source, destination)
         return
     end
 
@@ -87,40 +89,30 @@ end
 
 def rejoin_file(source, destination)
     destination, _ = remove_rootfs_prefix(destination)
-    if File.exist?(destination)
-        `cp #{destination} #{source}`
+
+    if !File.exist?(destination) || FileUtils.identical?(source, destination)
+        return
     end
+
+    `cp -p #{destination} #{source}`
 end
 
 def get_user_input(prompt, silent)
     flag = silent ? 's' : ''
-    value = `read -#{flag}p"#{promopt}" && echo -n $REPLY`
+    value = `read -#{flag}p"#{prompt}" && echo -n $REPLY`
     if silent
         puts
     end
     return value
 end
 
-def is_file_newer(source, destination)
-    if not File.exist?(destination)
-        return true
-    end
-
-    if File.ctime(destination) >= File.ctime(source)
-        return false
-    end
-
-    return true
-end
-
 def filter_lines(lines, template)
-    return lines.select{|l| not l[/^#{template}$/]}
+    return lines.select{|l| !l[/^#{template}$/]}
 end
 
-def rejoin_template(source, destination)
-    if not File.exist?(destination)
-        return
-    end
+def diff_template(source, destination)
+    s = Tempfile.new('dotfiles')
+    d = Tempfile.new('dotfiles')
 
     filtered_source = File.open(source).each_line()
     filtered_destination = File.open(destination).each_line()
@@ -134,16 +126,35 @@ def rejoin_template(source, destination)
         end
     end
 
-    s = Tempfile.new('dotfiles_s')
-    d = Tempfile.new('dotfiles_d')
-
-    s.write(filtered_source.join("\n"))
-    d.write(filtered_destination.join("\n"))
-
+    s.write(filtered_source.join(''))
+    d.write(filtered_destination.join(''))
     s.close()
     d.close()
 
-    puts `diff #{s.path} #{d.path}`
+    patch = Tempfile.new('dotfiles_patch')
+
+    `diff -u #{s.path} #{d.path} > #{patch.path}`
+    s.unlink()
+    d.unlink()
+
+    if $?.to_i == 0
+        patch.unlink()
+        return nil
+    end
+
+    return patch
+end
+
+def rejoin_template(source, destination)
+    if !File.exist?(destination)
+        return
+    end
+
+    patch = diff_template(source, destination)
+    if patch
+        `patch #{source} --no-backup-if-mismatch -sT < #{patch.path}`
+        patch.unlink()
+    end
 end
 
 def query_all_placeholders(line, cache)
@@ -151,7 +162,7 @@ def query_all_placeholders(line, cache)
         placeholder = $1
 
         value = cache[placeholder]
-        if not value
+        if !value
             value = get_user_input("#{placeholder}: ",
                 placeholder =~ /PASSWORD/)
             cache[placeholder] = value
@@ -166,7 +177,7 @@ end
 def install_template(source, destination)
     ensure_dir(source)
 
-    if not is_file_newer(source, destination)
+    if !diff_template(source, destination)
         return
     end
 
