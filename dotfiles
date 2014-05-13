@@ -110,7 +110,7 @@ end
 
 def get_user_input(prompt, silent)
     flag = silent ? 's' : ''
-    value = `read -#{flag}p"#{prompt}" && echo -n $REPLY`
+    value = `read -e#{flag}p"#{prompt}" && echo -n $REPLY`
     if silent
         puts
     end
@@ -126,9 +126,6 @@ def diff_template(source, destination)
         return true
     end
 
-    s = Tempfile.new('dotfiles')
-    d = Tempfile.new('dotfiles')
-
     filtered_source = File.open(source).each_line()
     filtered_destination = File.open(destination).each_line()
 
@@ -141,6 +138,8 @@ def diff_template(source, destination)
         end
     end
 
+    s = Tempfile.new('dotfiles')
+    d = Tempfile.new('dotfiles')
     s.write(filtered_source.join(''))
     d.write(filtered_destination.join(''))
     s.close()
@@ -198,16 +197,15 @@ def install_template(source, destination)
 
     puts("generating: #{destination}")
 
-    destination_temp = Tempfile.new('dotfiles')
-
+    expanded_lines = []
     cache = {'{{DOTFILES_PROFILE}}' => ENV['DOTFILES_PROFILE']}
     File.open(source).each_line() do |line|
-        destination_temp.write(query_all_placeholders(line, cache))
+        expanded_lines << query_all_placeholders(line, cache)
     end
 
-    destination_temp.close()
-
-    `mv #{destination_temp.path} #{destination}`
+    File.open(destination, 'w') do |f|
+        f.puts(expanded_lines.join(""))
+    end
 end
 
 main(ARGV[0], ARGV[1])
