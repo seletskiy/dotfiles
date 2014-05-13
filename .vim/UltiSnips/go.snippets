@@ -1,0 +1,65 @@
+clearsnippets
+
+snippet f "func"
+func ${1:FuncName}($2)${3: }{
+	${4:// @TODO}
+}
+endsnippet
+
+snippet tf "func (type)"
+func (${1/^\*?(.).*/\l$1/} ${1:Type}) ${2:FuncName}($3)${4: }{
+	${5:// @TODO}
+}
+endsnippet
+
+snippet ts "type struct"
+type ${1:TypeName} struct {
+	${2:// @TODO}
+}
+endsnippet
+
+snippet t "type"
+type ${1:TypeName} ${2:description}
+endsnippet
+
+snippet p "package"
+package ${1:name}
+endsnippet
+
+snippet ft "func Test"
+func Test${1:FuncName}(t *testing.T) {
+	${2:// @TODO}
+}
+endsnippet
+
+snippet ti "interface"
+type ${1:SmthDoer} interface {
+	${2:// @TODO}
+}
+endsnippet
+
+snippet todo "@TODO"
+// @TODO $0
+endsnippet
+
+snippet i "if "
+if $1 {
+	$0
+}
+endsnippet
+
+snippet ifer "if err != nil"
+if err != nil {
+	return err
+}
+endsnippet
+
+snippet iferp "if err != nil panic"
+if err != nil {
+	panic(err)
+}
+endsnippet
+
+snippet r "return"
+return $0
+endsnippet
