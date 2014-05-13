@@ -8,7 +8,7 @@ Ultimate feature
 ================
 
 Unlike many other dotfiles installation scripts, this one provides not only
-one-way installation process, but joining changes made back to the repo.
+one-way installation process, but can join changes made back to the repo.
 
 Just invoke `./dotfiles rejoin` and all changes made in local configuration
 will be merged back to the repo. It smart enough to join changes even to the
