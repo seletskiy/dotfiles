@@ -1,8 +1,11 @@
 #!/usr/bin/env ruby
 
-def main(requested_profile, requested_force)
+def main(requested_profile)
     if ENV['DOTFILES_PROFILE'] && !requested_profile
         requested_profile = ENV['DOTFILES_PROFILE']
+        requested_force = 0
+    else
+        requested_force = 1
     end
 
     if !requested_profile
@@ -106,7 +109,7 @@ def install_pkg(pkgname, force)
     end
 end
 
-main(ARGV[0], ARGV[1] == 'force' ? 1 : 0)
+main(ARGV[0])
 
 __END__
 
@@ -117,8 +120,8 @@ __END__
 # ** packages from aur specified with URL;
 # ** packages from github specified with URL;
 # ** command should be prefixed with $;
-# ** if line begins with !, "force" should be specified as second argument
-#    on the cmd line to run/install.
+# ** if line begins with !, action will take place only if <profile> is
+#    explicitly specified on script invokation;
 
 -        $ ./dotfiles install
 -      ! $ sudo pacman -Syu --noconfirm
@@ -129,3 +132,5 @@ __END__
 
 work     https://aur.archlinux.org/packages/i3pystatus-git/
 -        urxvt-perls
+
+# @TODO: add many other things here

@@ -1,8 +1,37 @@
 Installation
 ============
 
-Run `sudo -E profile=work|home|laptop ./dotfiles install` to install all
-configuration file for specified profile.
+Run `./bootstrap <profile>` to install all packages and configuration files
+for specified profile. It should bring system to the desired consistent state.
+
+Ultimate feature
+================
+
+Unlike many other dotfiles installation scripts, this one provides not only
+one-way installation process, but joining changes made back to the repo.
+
+Just invoke `./dotfiles rejoin` and all changes made in local configuration
+will be merged back to the repo. It smart enough to join changes even to the
+template files!
+
+Bootstraping and configuring
+============================
+
+There are two installation scripts called `./bootstrap` and `./dotfiles`.
+
+`./dotfiles` is exist to work with configuration.
+
+`./bootstrap` brings system to consistent state.
+
+All changes that should be done on new branded fresh installed system are
+described in the end of `./bootstrap` script, so look at them, they are pretty
+descriptive by they own.
+
+Assumed workflow is:
+
+* once on fresh installed system: `./bootstrap <profile>`;
+* every next time when update is needed: `./boostrap`;
+* every next time when local configuration changed: `./dotfiles rejoin`;
 
 Agreements
 ==========
@@ -12,21 +41,20 @@ directory, that contains global system configuration files that are located
 in /.
 
 All missing directories would be created.
-All missing files would by symlinked.
+All missing files would by symlinked (files under rootds will be copied).
 
 If filename ends on `.template`, than same file without `.template` would be
 created and all `{{PLACEHOLDER}}` strings in that file would be replaced with
 user prompted values.
 
-If filename ends on `.$placeholder`, then `placeholder=value` should be specified
-as environment variable on invokation of `./dotfiles.sh` (see usage for more info),
-and file, that ends on specified `.value` would be symlinked. Example: if
-there are files:
+If filename ends on `.$profile`, then file without `.$profile` would be created
+with contents taked from file, that name ends in specified profile name.
+Example: if there are files:
 
 * xorg.conf.$profile,
 * xorg.conf.laptop,
 * xorg.conf.work,
 * xorg.conf.home,
 
-then `$profile` variable would be requested and filename, that evaluated from
-`xorg.conf.$profile` would be symlinked into `xorg.conf`.
+then  filename, that evaluated from `xorg.conf.$profile` would be linked/copied
+into `xorg.conf`.
