@@ -67,6 +67,7 @@ set laststatus=2
 set gdefault
 set completeopt-=preview
 set nowrap
+set updatetime=500
 
 " autocomplete list numbers
 " autoinsert comment leader
@@ -102,6 +103,7 @@ let mapleader="\<space>"
 
 let g:Powerline_symbols = 'fancy'
 let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
+let g:ycm_allow_changing_updatetime = 0
 
 let g:surround_102 = "\1function: \1(\r)"
 let html_no_rendering=1
@@ -238,6 +240,12 @@ augroup end
 augroup go_src
     au!
     au FileType go setl noexpandtab
+augroup end
+
+augroup rnu_nu
+    au!
+    au CursorMoved * if &rnu | set nornu nu | endif
+    au CursorHold  * if &nu | set rnu | endif
 augroup end
 
 command! QuickFixOpenAll call QuickFixOpenAll()
