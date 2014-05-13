@@ -1,0 +1,131 @@
+#!/usr/bin/env ruby
+
+def main(requested_profile, requested_force)
+    if ENV['DOTFILES_PROFILE'] && !requested_profile
+        requested_profile = ENV['DOTFILES_PROFILE']
+    end
+
+    if !requested_profile
+        puts("Usage: #{$0} [<profile>] [force]")
+        exit
+    end
+
+    ENV['DOTFILES_PROFILE'] = requested_profile
+
+    DATA.each_line() {|line|
+        line = line.strip()
+        if line =~ /^\s*($|#)/
+            next
+        end
+
+        profile, force, action = parse_line(line)
+        if !action
+            puts "invalid spec: #{line}"
+            next
+        end
+
+        if profile != '-' && profile != requested_profile
+            next
+        end
+
+        if force > requested_force
+            next
+        end
+
+        case action
+        when /^\$/
+            run_command(action.sub(/^\$\s*/, ''), requested_force)
+        when /^https:\/\/aur./
+            install_aur(action, requested_force)
+        else
+            install_pkg(action, requested_force)
+        end
+    }
+end
+
+def parse_line(line)
+    profile, action = line.split(/\s+/, 2)
+    if !action
+        return nil, nil, nil
+    end
+
+    force = action[/^!*/].length
+    return profile, force, action[force..-1].strip()
+end
+
+def run_command(cmd, force)
+    puts("CMD #{cmd}")
+    `#{cmd} >&2`
+end
+
+def install_aur(url, force)
+    pkgname = url.sub(/.*\/([^\/]+)\/?$/, '\1')
+    tarurl = url.sub(/\/((..)[^\/]*)\/?$/, '/\2/\1/\1.tar.gz')
+
+    `pacman -Qqs #{pkgname}`
+    if $?.to_i == 0 && force <= 0
+        return
+    end
+
+    installed_version=`pacman -Qi #{pkgname} | awk '/Version/{print $3}'`
+
+    puts("AUR #{pkgname}")
+
+    tempdir = `mktemp -d`.strip()
+    `cd #{tempdir} && curl #{tarurl} | tar xz >&2`
+    Dir.chdir(tempdir + '/' + pkgname)
+
+    if `source ./PKGBUILD && type pkgver`[/is a function/]
+        puts("package version is dynamic, needs to build a package")
+        pkgver=`source ./PKGBUILD && echo $pkgver`
+    else
+        pkgver=nil
+    end
+
+    if installed_version != pkgver
+        `makepkg -rsi --noconfirm --needed >&2`
+    end
+
+    `rm -rf #{tempdir}`
+end
+
+def install_pkg(pkgname, force)
+    `pacman -Qs #{pkgname}`
+    if $?.to_i == 0
+        `pacman -Qu #{pkgname}`
+        if $?.to_i > 0
+            return
+        end
+    end
+
+    puts("PKG #{pkgname}")
+
+    `sudo pacman -S #{pkgname} --noconfirm >&2`
+    if $?.to_i > 0
+        puts "failed to install package"
+    end
+end
+
+main(ARGV[0], ARGV[1] == 'force' ? 1 : 0)
+
+__END__
+
+# Real packages goes here.
+# * first column is profile name ("-" for all profiles);
+# * second column is install specification:
+# ** packages from official repo specified with theirs name;
+# ** packages from aur specified with URL;
+# ** packages from github specified with URL;
+# ** command should be prefixed with $;
+# ** if line begins with !, "force" should be specified as second argument
+#    on the cmd line to run/install.
+
+-        $ ./dotfiles install
+-      ! $ sudo pacman -Syu --noconfirm
+
+-        ntp
+-      ! $ sudo timedatectl set-timezone Asia/Novosibirsk
+-      ! $ sudo killall -0 ntpd || sudo ntpd -gq
+
+work     https://aur.archlinux.org/packages/i3pystatus-git/
+-        urxvt-perls

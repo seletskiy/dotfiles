@@ -46,9 +46,10 @@ export EDITOR=vim
 
 export GOPATH=~/.go/
 
+export DOTFILES_PROFILE={{DOTFILES_PROFILE}}
+
 source $ZSH_CUSTOM/prompt.sh
 source $ZSH_CUSTOM/aliases.sh
-
 
 if [ "$BACKGROUND" ]; then
     eval `dircolors ~/.dircolors.$BACKGROUND`

@@ -3,11 +3,22 @@
 require 'fileutils'
 require 'tempfile'
 
-def main(profile, action)
+def main(action, profile)
     if action == nil
-        puts "Usage: #{$0} <profile> install|rejoin"
+        puts("Usage: #{$0} install [<profile>] | rejoin")
         exit
     end
+
+    if ENV['DOTFILES_PROFILE'] && !profile
+        profile = ENV['DOTFILES_PROFILE']
+    end
+
+    if !profile
+        puts("<profile> should be specified")
+        exit
+    end
+
+    ENV['DOTFILES_PROFILE'] = profile
 
     placeholder_expanded = 'xxx'
     placeholder_base = nil
@@ -21,7 +32,7 @@ def main(profile, action)
         case file_name
         when /README/
             # skip readme
-        when /(dotfiles|bootstrap).rb$/
+        when /^(dotfiles|bootstrap)$/
             # skip installation scripts
         when /(.*)\.(\$.*$)/
             placeholder_base = $1
@@ -42,13 +53,13 @@ def main(profile, action)
 
         # @TODO: how to refactor that?
         case [source_type, action]
-        when :file, 'install'
+        when [:file, 'install']
             install_file(file_name, target_name)
-        when :file, 'rejoin'
+        when [:file, 'rejoin']
             rejoin_file(file_name, target_name)
-        when :template, 'install'
+        when [:template, 'install']
             install_template(file_name, target_name)
-        when :template, 'rejoin'
+        when [:template, 'rejoin']
             rejoin_template(file_name, target_name)
         end
     end
@@ -111,6 +122,10 @@ def filter_lines(lines, template)
 end
 
 def diff_template(source, destination)
+    if !File.exist?(destination)
+        return true
+    end
+
     s = Tempfile.new('dotfiles')
     d = Tempfile.new('dotfiles')
 
@@ -185,7 +200,7 @@ def install_template(source, destination)
 
     destination_temp = Tempfile.new('dotfiles')
 
-    cache = {}
+    cache = {'{{DOTFILES_PROFILE}}' => ENV['DOTFILES_PROFILE']}
     File.open(source).each_line() do |line|
         destination_temp.write(query_all_placeholders(line, cache))
     end
