@@ -134,6 +134,6 @@ __END__
 
 work     https://aur.archlinux.org/packages/i3pystatus-git/
 -        urxvt-perls
--        https://aur.archlinux.org/packages/google-chrome/
 
-# @TODO: add many other things here
+-        https://aur.archlinux.org/packages/libgcrypt15/
+-        https://aur.archlinux.org/packages/google-chrome/
