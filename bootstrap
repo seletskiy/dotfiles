@@ -90,10 +90,12 @@ def install_aur(url, force)
     end
 
     `rm -rf #{tempdir}`
+
+    Dir.chdir('/')
 end
 
 def install_pkg(pkgname, force)
-    `pacman -Qs #{pkgname}`
+    `pacman -Qs '^#{pkgname}$'`
     if $?.to_i == 0
         `pacman -Qu #{pkgname}`
         if $?.to_i > 0
