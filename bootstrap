@@ -70,7 +70,7 @@ def install_aur(url, force)
         return
     end
 
-    installed_version=`pacman -Qi #{pkgname} | awk '/Version/{print $3}'`
+    installed_version=`pacman -Qi #{pkgname} 2>&1 | awk '/Version/{print $3}'`
 
     puts("AUR #{pkgname}")
 
@@ -78,7 +78,7 @@ def install_aur(url, force)
     `cd #{tempdir} && curl #{tarurl} | tar xz >&2`
     Dir.chdir(tempdir + '/' + pkgname)
 
-    if `source ./PKGBUILD && type pkgver`[/is a function/]
+    if `source ./PKGBUILD && type pkgver 2>&1`[/is a function/]
         puts("package version is dynamic, needs to build a package")
         pkgver=`source ./PKGBUILD && echo $pkgver`
     else
