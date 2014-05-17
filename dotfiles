@@ -51,17 +51,7 @@ def main(action, profile)
             target_name = target_dir + file_name
         end
 
-        # @TODO: how to refactor that?
-        case [source_type, action]
-        when [:file, 'install']
-            install_file(file_name, target_name)
-        when [:file, 'rejoin']
-            rejoin_file(file_name, target_name)
-        when [:template, 'install']
-            install_template(file_name, target_name)
-        when [:template, 'rejoin']
-            rejoin_template(file_name, target_name)
-        end
+        self.send(:"#{action}_#{source_type}", file_name, target_name)
     end
 
     if action == 'rejoin'
