@@ -51,7 +51,9 @@ def main(action, profile)
             target_name = target_dir + file_name
         end
 
-        self.send(:"#{action}_#{source_type}", file_name, target_name)
+        if source_type
+            self.send(:"#{action}_#{source_type}", file_name, target_name)
+        end
     end
 
     if action == 'rejoin'
