@@ -1,9 +1,12 @@
 #!/bin/bash
 
-NAME=kuake_terminal
+set -x
+
+NAME=${1:-kuake_terminal}
+shift
 
 main() {
-    if [[ "$1" ]]; then
+    if [[ "$1" == "1" ]]; then
         while [[ -z "$terminal_id" ]]; do
             local terminal_id=$(xdotool search --classname $NAME)
         done
@@ -12,9 +15,15 @@ main() {
         local terminal_id=$(xdotool search --classname $NAME)
     fi
 
+    shift
+
     if [[ -z "$terminal_id" ]]; then
-        urxvt -name $NAME &
-        main 1
+        if [[ "${@}" ]]; then
+            urxvt -name $NAME -e "${@}" &
+        else
+            urxvt -name $NAME &
+        fi
+        main 1 "${@}"
     else
         read screen_num screen_x screen_y screen_width screen_height <<<$(xscreeninfo)
         eval `xdotool getwindowgeometry --shell $terminal_id`
@@ -24,4 +33,4 @@ main() {
     fi
 }
 
-main
+main 0 "${@}"

@@ -34,6 +34,8 @@ Bundle 'Blackrush/vim-gocode'
 Bundle 'kshenoy/vim-signature'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-notes'
 
 syntax on
 filetype plugin on
@@ -248,6 +250,8 @@ augroup rnu_nu
     au CursorHold  * if &nu | set rnu | endif
 augroup end
 
+com! StartNoting call g:StartNoting()
+
 command! QuickFixOpenAll call QuickFixOpenAll()
 function! QuickFixOpenAll()
     if empty(getqflist())
@@ -276,6 +280,8 @@ fun! g:LightRoom()
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=7 cterm=none term=none
     hi MatchParen ctermbg=250
+    hi Search cterm=none term=none ctermbg=180 ctermfg=15
+    hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 
     let g:airline_solarized_bg='light'
 endfun
@@ -292,6 +298,8 @@ fun! g:DarkRoom()
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=0 cterm=none term=none
     hi MatchParen ctermbg=250
+    hi Search cterm=none term=none ctermbg=180 ctermfg=0
+    hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 
     let g:airline_solarized_bg='dark'
 endfun
@@ -303,8 +311,13 @@ fun! s:ApplyColorscheme()
     hi! link WildMenu PmenuSel
     hi erlangEdocTag cterm=bold ctermfg=14
     hi erlangFunHead cterm=bold ctermfg=4
-    hi Search cterm=none term=none ctermbg=180 ctermfg=15
-    hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
+endfun
+
+fun! g:StartNoting()
+    e ~/.notes
+    set showtabline=0
+    set laststatus=0
+    au CursorHold * write
 endfun
 
 if system('background') == "light\n"

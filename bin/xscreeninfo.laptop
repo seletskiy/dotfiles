@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# just to speed up on laptop
+xrandr | grep '+$' | awk '{print 0,0,$1}' | tr x ' '

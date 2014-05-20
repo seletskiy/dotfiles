@@ -146,6 +146,7 @@ bindsym $mod+Shift+Ctrl+l exec xautolock -locknow
 bindsym $mod+minus scratchpad show
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+grave exec kuake
+bindsym $mod+equal exec kuake notepad vim '+StartNoting'
 
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
