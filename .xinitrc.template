@@ -11,4 +11,5 @@ sudo bash -c 'echo 1 > /proc/sys/kernel/sysrq'
 xautolock -time 5 -locker ~/bin/lock-screen &
 background {{BACKGROUND}}
 export BACKGROUND=$(background)
+syndaemon -dtki 2
 exec i3 --force-xinerama -V
