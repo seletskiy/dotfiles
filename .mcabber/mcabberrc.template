@@ -50,6 +50,12 @@ alias dnd      = status dnd
 alias rs       = roster search
 alias se       = buffer search_backward
 
+alias b        = roster search a.baranov
+alias h        = roster search d.khasanov
+alias z        = roster search o.zhurko
+alias p        = roster search e.persienko
+alias o        = roster search a.platonov
+
 # Ctrl-r (18) bound to /roster unread_next
 bind 18 = roster unread_next
 # Ctrl-x (24) bound to /roster alternate

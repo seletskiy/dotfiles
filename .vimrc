@@ -79,6 +79,8 @@ set formatoptions=qrn1tol
 set list
 set lcs=eol:¶,trail:·,tab:\ \ 
 
+let g:notes_directories = ['~/.notes']
+
 let g:airline_solarized_reduced = 0
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'solarized'
@@ -314,10 +316,10 @@ fun! s:ApplyColorscheme()
 endfun
 
 fun! g:StartNoting()
-    e ~/.notes
     set showtabline=0
     set laststatus=0
-    au CursorHold * write
+    Note reading
+    au CursorHold * if !&ro | write | endif
 endfun
 
 if system('background') == "light\n"
