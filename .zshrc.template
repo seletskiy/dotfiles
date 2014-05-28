@@ -41,12 +41,8 @@ unsetopt correct
 unsetopt correct_all
 
 # Customize to your needs...
-export PATH=~/bin:~/.go/bin/:$PATH
-export EDITOR=vim
-
-export GOPATH=~/.go/
-
 export DOTFILES_PROFILE={{DOTFILES_PROFILE}}
+export PATH=$HOME/bin:$HOME/.go/bin/:$PATH
 
 source $ZSH_CUSTOM/prompt.sh
 source $ZSH_CUSTOM/aliases.sh

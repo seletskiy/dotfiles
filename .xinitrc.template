@@ -1,7 +1,8 @@
 export SHELL=/bin/zsh
-export TERMINAL=urxvt{{TERM_MODE}}
-export PATH=/home/s.seletskiy/bin/:$PATH
-export GOPATH=/home/s.seletskiy/sources/go
+export TERMINAL=urxvt
+export PATH=$HOME/bin:$HOME/.go/bin/:$PATH
+export EDITOR=vim
+export GOPATH=~/.go/
 
 xset +fp /usr/share/fonts/local
 xset fp rehash
@@ -9,6 +10,7 @@ xrdb -merge ~/.Xresources
 ~/bin/reconfig-kbd.sh
 sudo bash -c 'echo 1 > /proc/sys/kernel/sysrq'
 xautolock -time 5 -locker ~/bin/lock-screen &
+dunst -nb '#000000' -nf '#ffffff' -nto 3 -geom 0x0-0-0 -follow mouse &
 background {{BACKGROUND}}
 export BACKGROUND=$(background)
 syndaemon -dtki 2

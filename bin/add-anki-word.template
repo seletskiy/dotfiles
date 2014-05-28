@@ -1,0 +1,4 @@
+#!/bin/bash
+
+notify-send "$(echo $(xclip -o) \
+    | runki --user={{ANKI USER}} --pass={{ANKI PASS}} --deck={{ANKI DECK}})"
