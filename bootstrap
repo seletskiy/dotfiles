@@ -137,3 +137,5 @@ work     https://aur.archlinux.org/packages/i3pystatus-git/
 
 -        https://aur.archlinux.org/packages/libgcrypt15/
 -        https://aur.archlinux.org/packages/google-chrome/
+
+-        dunst
