@@ -19,6 +19,8 @@ alias gst='git stash'
 alias grc='git rebase --continue'
 alias gra='git rebase --abort'
 
+alias -g L='| less'
+
 bindkey "^P" history-substring-search-up
 bindkey "^N" history-substring-search-down
 
