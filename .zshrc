@@ -41,8 +41,7 @@ unsetopt correct
 unsetopt correct_all
 
 # Customize to your needs...
-export DOTFILES_PROFILE={{DOTFILES_PROFILE}}
-export PATH=$HOME/bin:$HOME/.go/bin/:$PATH
+source ~/.zprofile
 
 source $ZSH_CUSTOM/prompt.sh
 source $ZSH_CUSTOM/aliases.sh
