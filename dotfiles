@@ -21,7 +21,7 @@ def main(action, profile)
     ENV['DOTFILES_PROFILE'] = profile
 
     placeholder_expanded = 'xxx'
-    placeholder_base = nil
+    placeholder_base = 'xxx'
     `git ls-files`.split("\n").each() do |file_name|
         target_dir = File.expand_path('~') + '/'
         if file_name.start_with?('rootfs/')
@@ -77,6 +77,8 @@ end
 def install_file(source, destination)
     destination, rootfs = remove_rootfs_prefix(destination)
 
+    ensure_dir(destination)
+
     if File.exist?(destination) && FileUtils.identical?(source, destination)
         return
     end
@@ -118,8 +120,8 @@ def diff_template(source, destination)
         return true
     end
 
-    filtered_source = File.open(source).each_line()
-    filtered_destination = File.open(destination).each_line()
+    filtered_source = File.open(source).each_line().to_a
+    filtered_destination = File.open(destination).each_line().to_a
 
     File.open(source).each_line() do |line|
         pattern = line.split(/{{.+?}}/).map{|p| Regexp.escape(p)}.join('.*')
