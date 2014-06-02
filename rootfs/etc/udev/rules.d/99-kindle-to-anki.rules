@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="partition", ENV{ID_VENDOR_ID}=="1949", RUN+="/usr/bin/su s.seletskiy -lc 'DISPLAY=:0 kindle-to-anki $env{DEVNAME}'"

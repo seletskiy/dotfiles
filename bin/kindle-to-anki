@@ -1,0 +1,17 @@
+#!/bin/bash
+
+PARTITION=$1
+TMP=$(mktemp -d)
+
+sudo mount $PARTITION $TMP
+
+notify-send "kindle: starting words sync"
+
+count=$(kindle-filter-words "$TMP/documents/My Clippings.txt" \
+	| tac \
+	| runki --cut 10 \
+	| wc -l)
+
+notify-send "kindle: $count new words"
+
+sudo umount $TMP
