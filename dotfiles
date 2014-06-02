@@ -183,7 +183,7 @@ def query_all_placeholders(line, cache)
 end
 
 def install_template(source, destination)
-    ensure_dir(source)
+    ensure_dir(destination)
 
     if !diff_template(source, destination)
         return
