@@ -1,5 +1,5 @@
 #!/bin/bash
 
 word=$(xclip -o)
-notify-send "<$word>"
-notify-send "$(runki --user={{USER}} --pass={{PASSWORD}} --deck={{DECK}} <<< "$word")"
+notify-send "translate: $word"
+notify-send "$(runki <<< "$word")"
