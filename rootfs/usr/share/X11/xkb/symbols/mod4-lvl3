@@ -1,0 +1,4 @@
+partial
+xkb_symbols "lvl3" {
+    modifier_map Mod4 { <LVL3> };
+};

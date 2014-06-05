@@ -4,5 +4,8 @@ export XAUTHORITY=/home/s.seletskiy/.Xauthority
 export DISPLAY=:0.0
 
 xset r rate 200 60
-setxkbmap -layout us,ru
-xmodmap -e 'keycode 66 = ISO_Next_Group ISO_Next_Group 0x0 0x0'
+setxkbmap \
+    -symbols \
+        "pc+us+ru:2+hjkl-ru+level3(lwin_switch)+mod4-lvl3+terminate(ctrl_alt_bksp)+capslock-groupshift" \
+    -compat \
+        "complete+hjkl"

@@ -1,0 +1,19 @@
+partial
+xkb_compatibility "hjkl" {
+    interpret KP_Left {
+        repeat= True;
+        action= RedirectKey(keycode=<LEFT>, clearmods=Super);
+    };
+    interpret KP_Right {
+        repeat= True;
+        action= RedirectKey(keycode=<RGHT>, clearmods=Super);
+    };
+    interpret KP_Up {
+        repeat= True;
+        action= RedirectKey(keycode=<UP>, clearmods=Super);
+    };
+    interpret KP_Down {
+        repeat= True;
+        action= RedirectKey(keycode=<DOWN>, clearmods=Super);
+    };
+};
