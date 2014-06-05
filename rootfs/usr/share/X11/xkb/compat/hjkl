@@ -1,3 +1,4 @@
+# hjkl -> arrow keys remapping fix
 partial
 xkb_compatibility "hjkl" {
     interpret KP_Left {

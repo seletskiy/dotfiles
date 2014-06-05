@@ -1,3 +1,4 @@
+# remapping hjkl to arrow keys with shift support
 partial alphanumeric_keys
 xkb_symbols "hjkl" {
     key <AC06> {
