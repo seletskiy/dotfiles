@@ -34,3 +34,23 @@ function prepend_sudo() {
     fi
     CURSOR=$(($CURSOR+5))
 }
+
+zle -N insert-prev-word insert_prev_word
+bindkey "\e." insert-prev-word
+function insert_prev_word() {
+    if (( _altdot_histno != HISTNO || _ilw_cursor != $CURSOR )); then
+        _altdot_histno=$HISTNO
+        _altdot_word=-1
+        _altdot_line=-1
+    else
+        _altdot_word=$((_altdot_word-1))
+    fi
+
+    smart-insert-last-word $_altdot_line $_altdot_word 1
+
+    if [[ $? -gt 0 ]]; then
+        _altdot_word=0
+        _altdot_line=$((_altdot_line-1))
+        insert_prev_word
+    fi
+}
