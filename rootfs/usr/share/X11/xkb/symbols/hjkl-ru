@@ -21,4 +21,24 @@ xkb_symbols "hjkl" {
         symbols[Group1]= [               l,               L, KP_Right, KP_Right ],
         symbols[Group2]= [     Cyrillic_de,     Cyrillic_DE, KP_Right, KP_Right ]
     };
+    key <AD07> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               u,               U, KP_Home, KP_Home ],
+        symbols[Group2]= [    Cyrillic_ghe,    Cyrillic_GHE, KP_Home, KP_Home ]
+    };
+    key <AD08> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               i,               I, KP_Prior, KP_Prior ],
+        symbols[Group2]= [    Cyrillic_sha,    Cyrillic_SHA, KP_Prior, KP_Prior ]
+    };
+    key <AD09> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               o,               O, KP_Next, KP_Next   ],
+        symbols[Group2]= [  Cyrillic_shcha,  Cyrillic_SHCHA, KP_Next, KP_Next   ]
+    };
+    key <AD10> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               p,               P, KP_End, KP_End ],
+        symbols[Group2]= [     Cyrillic_ze,     Cyrillic_ZE, KP_End, KP_End ]
+    };
 };

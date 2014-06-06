@@ -17,4 +17,20 @@ xkb_compatibility "hjkl" {
         repeat= True;
         action= RedirectKey(keycode=<DOWN>, clearmods=Super);
     };
+    interpret KP_Prior {
+        repeat= True;
+        action= RedirectKey(keycode=<PGUP>, clearmods=Super);
+    };
+    interpret KP_Next {
+        repeat= True;
+        action= RedirectKey(keycode=<PGDN>, clearmods=Super);
+    };
+    interpret KP_Home {
+        repeat= True;
+        action= RedirectKey(keycode=<HOME>, clearmods=Super);
+    };
+    interpret KP_End {
+        repeat= True;
+        action= RedirectKey(keycode=<END>, clearmods=Super);
+    };
 };

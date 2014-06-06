@@ -1,0 +1,8 @@
+# remap real arrow keys to some dead space
+default
+xkb_keycodes "disable-arrows" {
+    <LEFT> = 252;
+    <RGHT> = 253;
+    <UP> = 254;
+    <DOWN> = 255;
+};
