@@ -36,6 +36,7 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'michaeljsmith/vim-indent-object'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-notes'
+Bundle 'cespare/vim-toml'
 
 syntax on
 filetype plugin on
