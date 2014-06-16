@@ -10,7 +10,6 @@ xrdb -merge ~/.Xresources
 ~/bin/reconfig-kbd.sh
 sudo bash -c 'echo 1 > /proc/sys/kernel/sysrq'
 xautolock -time 5 -locker ~/bin/lock-screen &
-dunst -nb '#000000' -nf '#ffffff' -nto 3 -geom 0x0-0-0 -follow mouse &
 background {{BACKGROUND}}
 export BACKGROUND=$(background)
 syndaemon -dtki 2
