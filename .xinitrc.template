@@ -9,7 +9,7 @@ xset fp rehash
 xrdb -merge ~/.Xresources
 ~/bin/reconfig-kbd.sh
 sudo bash -c 'echo 1 > /proc/sys/kernel/sysrq'
-xautolock -time 5 -locker ~/bin/lock-screen &
+xautolock -time 15 -locker ~/bin/lock-screen &
 background {{BACKGROUND}}
 export BACKGROUND=$(background)
 syndaemon -dtki 2
