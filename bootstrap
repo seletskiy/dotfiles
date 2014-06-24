@@ -70,7 +70,8 @@ def install_aur(url, force)
         return
     end
 
-    installed_version=`pacman -Qi #{pkgname} 2>&1 | awk '/Version/{print $3}'`
+    installed_version = `pacman -Qi #{pkgname} 2>&1 | awk '/Version/{print $3}'`
+    installed_version.strip!()
 
     puts("AUR #{pkgname}")
 
@@ -80,9 +81,13 @@ def install_aur(url, force)
 
     if `source ./PKGBUILD && type pkgver 2>&1`[/is a function/]
         puts("package version is dynamic, needs to build a package")
-        pkgver=`source ./PKGBUILD && echo $pkgver`
+        pkgver = nil
     else
-        pkgver=nil
+        pkgver = `source ./PKGBUILD && echo $pkgver`.strip()
+        pkgrel = `source ./PKGBUILD && echo $pkgrel`.strip()
+        if pkgrel != ""
+            pkgver = pkgver + "-" + pkgrel
+        end
     end
 
     if installed_version != pkgver
