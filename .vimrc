@@ -144,6 +144,7 @@ map <C-T> :call <SID>unite_rec_git_or_file()<CR>
 map <C-Y> :Unite history/yank<CR>
 
 map <ESC>t :UltiSnipsEdit<CR>
+map <C-W> :w\|bw<CR>
 
 noremap <leader>v V`]
 noremap <leader>p "1p
