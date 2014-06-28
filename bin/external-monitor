@@ -1,0 +1,10 @@
+#!/bin/bash
+
+IFS='' outputs=$(xrandr | egrep -o '.*( connected [0-9]?|disconnected [0-9])')
+
+egrep '[0-9]$' <<< "$outputs" | \
+    cut -f1 -d' ' | xargs -II -n1 xrandr --output I --off
+
+xrandr --output $(awk '/ con/{print $1; exit}' <<< $outputs) --preferred
+
+i3-msg restart
