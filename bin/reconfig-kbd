@@ -3,7 +3,8 @@
 export XAUTHORITY=/home/s.seletskiy/.Xauthority
 export DISPLAY=:0.0
 
-xset r rate 200 60
+xset r rate 150 80
+
 setxkbmap \
     -keycodes \
         "evdev+aliases(qwerty)+disable-arrows" \
