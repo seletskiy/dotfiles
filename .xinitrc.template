@@ -7,7 +7,7 @@ export GOPATH=~/.go/
 xset +fp /usr/share/fonts/local
 xset fp rehash
 xrdb -merge ~/.Xresources
-~/bin/reconfig-kbd.sh
+~/bin/reconfig-kbd
 sudo bash -c 'echo 1 > /proc/sys/kernel/sysrq'
 xautolock -time 15 -locker ~/bin/lock-screen &
 background {{BACKGROUND}}
