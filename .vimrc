@@ -37,6 +37,7 @@ Bundle 'michaeljsmith/vim-indent-object'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-notes'
 Bundle 'cespare/vim-toml'
+Bundle 'osyo-manga/vim-over'
 
 syntax on
 filetype plugin on
@@ -136,15 +137,17 @@ function! s:unite_rec_git_or_file()
     endif
 endfunction
 
-cmap w!! w !sudo dd of=%
+" Ctrl+Backspace
+cmap <C-H> <C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
 map <C-T> :call <SID>unite_rec_git_or_file()<CR>
 map <C-Y> :Unite history/yank<CR>
 
-map <ESC>t :UltiSnipsEdit<CR>
-map <C-W> :w\|bw<CR>
+map <leader>t :UltiSnipsEdit<CR>G
+map <leader>~ :tabnew ~/.vimrc<CR>
+map ZZ :w\|bw<CR>
 
 noremap <leader>v V`]
 noremap <leader>p "1p
@@ -165,7 +168,7 @@ vnoremap <TAB> %
 noremap > >>
 noremap < <<
 imap <silent> <S-TAB> <C-O><<
-vmap <silent> <TAB> >gv
+"vmap <silent> <TAB> >gv
 vmap <silent> <S-TAB> <gv
 vmap <silent> > >gv
 vmap <silent> < <gv
@@ -194,6 +197,8 @@ cnoremap <Esc>b <S-Left>
 cnoremap <Esc>f <S-Right>
 
 nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
+
+nnoremap <leader>r :OverCommandLine<cr>%s/
 
 augroup unite_setting
     au!
@@ -230,6 +235,7 @@ augroup skeletons
     au!
     au BufNewFile *.php exec "normal I<?php\<ESC>2o"
     au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
+    au BufNewFile *.go exec "normal Ipackage \<C-R>=expand('%:p:h:t')\<CR>"
     au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
 augroup end
 
@@ -253,6 +259,11 @@ augroup rnu_nu
     au!
     au CursorMoved * if &rnu && line('.') != s:prev_line | set nornu nu | endif
     au CursorHold  * if &nu | set rnu | let s:prev_line = line('.') | endif
+augroup end
+
+augroup vimrc
+    au!
+    au BufWritePost ~/.vimrc source % | AirlineRefresh
 augroup end
 
 com! StartNoting call g:StartNoting()

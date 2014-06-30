@@ -12,7 +12,7 @@ func (${1/^\*?(.).*/\l$1/} ${1:Type}) ${2:FuncName}($3)${4: }{
 }
 endsnippet
 
-snippet ts "type struct"
+snippet s "type struct"
 type ${1:TypeName} struct {
 	${2:// @TODO}
 }
@@ -23,10 +23,10 @@ type ${1:TypeName} ${2:description}
 endsnippet
 
 snippet p "package"
-package ${1:name}
+package ${1:`!v expand('%:p:h:t')`}
 endsnippet
 
-snippet ft "func Test"
+snippet te "func Test"
 func Test${1:FuncName}(t *testing.T) {
 	${2:// @TODO}
 }
@@ -44,7 +44,7 @@ endsnippet
 
 snippet i "if "
 if $1 {
-	$0
+	${VISUAL}$0
 }
 endsnippet
 
@@ -62,4 +62,21 @@ endsnippet
 
 snippet r "return"
 return $0
+endsnippet
+
+snippet fs "... string"
+${1:Name} string$0
+endsnippet
+
+snippet exp "test expected"
+actual := ${1:"Something"}
+if actual != ${2:"Actual"} {
+	t.Fatal("unexpected", actual)
+}
+endsnippet
+
+snippet e "else" w
+ else {
+	$0
+}
 endsnippet
