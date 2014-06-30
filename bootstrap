@@ -15,7 +15,7 @@ def main(requested_profile)
 
     ENV['DOTFILES_PROFILE'] = requested_profile
 
-    DATA.each_line() {|line|
+    open('profile.txt', 'r').each_line() {|line|
         line = line.strip()
         if line =~ /^\s*($|#)/
             next
@@ -117,34 +117,3 @@ def install_pkg(pkgname, force)
 end
 
 main(ARGV[0])
-
-__END__
-
-# Real packages goes here.
-# * first column is profile name ("-" for all profiles);
-# * second column is install specification:
-# ** packages from official repo specified with theirs name;
-# ** packages from aur specified with URL;
-# ** packages from github specified with URL;
-# ** command should be prefixed with $;
-# ** if line begins with !, action will take place only if <profile> is
-#    explicitly specified on script invokation;
-
--      ! $ git pull --rebase
--        $ ./dotfiles install
--      ! $ sudo pacman -Syu --noconfirm
-
--        ntp
--      ! $ sudo timedatectl set-timezone Asia/Novosibirsk
--      ! $ sudo killall -0 ntpd || sudo ntpd -gq
-
-work     https://aur.archlinux.org/packages/i3pystatus-git/
--        urxvt-perls
-
--        https://aur.archlinux.org/packages/libgcrypt15/
--        https://aur.archlinux.org/packages/google-chrome/
-
--        dunst
--        https://aur.archlinux.org/packages/gtk-theme-absolute/
--        https://aur.archlinux.org/packages/ttf-ms-fonts/
--        slock

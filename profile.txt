@@ -1,0 +1,32 @@
+###
+### Packages and commands to bootstrap goes here.
+###
+### Few rules:
+###
+###     1) first column is a profile name ("-" for all profiles);
+###     2) second column is bootstrap specification:
+###        a) packages from official repo specified with theirs name;
+###        b) packages from aur specified with URL;
+###        c) packages from github specified with URL;
+###        d) command should be prefixed with $;
+###        e) if line begins with !, action will take place only if <profile> is
+###           explicitly specified on bootstrap script invokation;
+
+-      ! $ git pull --rebase
+-        $ ./dotfiles install
+
+-      ! $ sudo pacman -Syu --noconfirm
+
+-        ntp
+-      ! $ sudo timedatectl set-timezone Asia/Novosibirsk
+-      ! $ sudo killall -0 ntpd || sudo ntpd -gq
+
+-        urxvt-perls
+
+-        https://aur.archlinux.org/packages/libgcrypt15/
+-        https://aur.archlinux.org/packages/google-chrome/
+
+-        dunst
+
+-        https://aur.archlinux.org/packages/gtk-theme-absolute/
+-        https://aur.archlinux.org/packages/ttf-ms-fonts/
