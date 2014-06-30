@@ -130,6 +130,7 @@ __END__
 # ** if line begins with !, action will take place only if <profile> is
 #    explicitly specified on script invokation;
 
+-      ! $ git pull --rebase
 -        $ ./dotfiles install
 -      ! $ sudo pacman -Syu --noconfirm
 
