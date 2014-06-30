@@ -30,3 +30,5 @@
 
 -        https://aur.archlinux.org/packages/gtk-theme-absolute/
 -        https://aur.archlinux.org/packages/ttf-ms-fonts/
+
+-        ranger
