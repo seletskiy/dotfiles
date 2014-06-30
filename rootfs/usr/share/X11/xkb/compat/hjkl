@@ -5,7 +5,15 @@ xkb_compatibility "hjkl" {
         repeat= True;
         action= RedirectKey(keycode=<LEFT>, clearmods=Super);
     };
+    interpret Left {
+        repeat= True;
+        action= RedirectKey(keycode=<LEFT>, clearmods=Super);
+    };
     interpret KP_Right {
+        repeat= True;
+        action= RedirectKey(keycode=<RGHT>, clearmods=Super);
+    };
+    interpret Right {
         repeat= True;
         action= RedirectKey(keycode=<RGHT>, clearmods=Super);
     };
@@ -13,7 +21,15 @@ xkb_compatibility "hjkl" {
         repeat= True;
         action= RedirectKey(keycode=<UP>, clearmods=Super);
     };
+    interpret Up {
+        repeat= True;
+        action= RedirectKey(keycode=<UP>, clearmods=Super);
+    };
     interpret KP_Down {
+        repeat= True;
+        action= RedirectKey(keycode=<DOWN>, clearmods=Super);
+    };
+    interpret Down {
         repeat= True;
         action= RedirectKey(keycode=<DOWN>, clearmods=Super);
     };
@@ -21,7 +37,15 @@ xkb_compatibility "hjkl" {
         repeat= True;
         action= RedirectKey(keycode=<PGUP>, clearmods=Super);
     };
+    interpret Prior {
+        repeat= True;
+        action= RedirectKey(keycode=<PGUP>, clearmods=Super);
+    };
     interpret KP_Next {
+        repeat= True;
+        action= RedirectKey(keycode=<PGDN>, clearmods=Super);
+    };
+    interpret Next {
         repeat= True;
         action= RedirectKey(keycode=<PGDN>, clearmods=Super);
     };
@@ -29,7 +53,15 @@ xkb_compatibility "hjkl" {
         repeat= True;
         action= RedirectKey(keycode=<HOME>, clearmods=Super);
     };
+    interpret Home {
+        repeat= True;
+        action= RedirectKey(keycode=<HOME>, clearmods=Super);
+    };
     interpret KP_End {
+        repeat= True;
+        action= RedirectKey(keycode=<END>, clearmods=Super);
+    };
+    interpret End {
         repeat= True;
         action= RedirectKey(keycode=<END>, clearmods=Super);
     };
