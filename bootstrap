@@ -15,7 +15,7 @@ def main(requested_profile)
 
     ENV['DOTFILES_PROFILE'] = requested_profile
 
-    open('profile.txt', 'r').each_line() {|line|
+    open('profiles.txt', 'r').each_line() {|line|
         line = line.strip()
         if line =~ /^\s*($|#)/
             next
