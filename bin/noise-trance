@@ -1,0 +1,7 @@
+
+xvfb-run --server-args='-screen 0, 1024x768x16' bash -c "
+    echo 1 - Tibetan Choir && google-chrome-stable --app='http://mynoise.net/NoiseMachines/throatSingingDroneGenerator.php?c=0&l=71685638282124292518' &> /dev/null &
+    sleep 5s &&
+    echo 2 - African Trance && google-chrome-stable --app='http://mynoise.net/NoiseMachines/polyrhythmBeatGenerator.php?c=0&l=25301245001600000000&a=1' &> /dev/null &&
+    echo 3 - Himalayan Bowls && google-chrome-stable --app='http://mynoise.net/NoiseMachines/singingBowlsDroneGenerator.php?c=0&l=31373215163737212334' &> /dev/null &&
+    wait"
