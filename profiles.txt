@@ -32,3 +32,5 @@
 -        https://aur.archlinux.org/packages/ttf-ms-fonts/
 
 -        ranger
+
+-        https://aur.archlinux.org/packages/chrome-editor/
