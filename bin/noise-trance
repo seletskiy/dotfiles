@@ -1,3 +1,4 @@
+#!/bin/bash
 
 xvfb-run --server-args='-screen 0, 1024x768x16' bash -c "
     echo 1 - Tibetan Choir && google-chrome-stable --app='http://mynoise.net/NoiseMachines/throatSingingDroneGenerator.php?c=0&l=71685638282124292518' &> /dev/null &
