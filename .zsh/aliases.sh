@@ -20,6 +20,9 @@ alias grc='git rebase --continue'
 alias gra='git rebase --abort'
 
 alias -g L='| less'
+alias -g G='| grep'
+
+alias w1='watch -n1 '
 
 bindkey "^P" history-substring-search-up
 bindkey "^N" history-substring-search-down
