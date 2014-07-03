@@ -34,3 +34,5 @@
 -        ranger
 
 -        https://aur.archlinux.org/packages/chrome-editor/
+
+-        https://aur.archlinux.org/packages/ffcast/

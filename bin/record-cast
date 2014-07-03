@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec ffcast -wvvv ffmpeg -- -vcodec ffv1 -qscale 0 -y ${@}
