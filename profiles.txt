@@ -35,4 +35,5 @@
 
 -        https://aur.archlinux.org/packages/chrome-editor/
 
+-        gifsicle
 -        https://aur.archlinux.org/packages/ffcast/
