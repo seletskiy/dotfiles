@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ $# -lt 2 || "$1" == "-h" ]]; then
+    echo usage: "$0 <video.avi> <output.gif>"
+    exit 1
+fi
+
+
 temp_dir=$(mktemp -d)
 
 ffmpeg -i $1 -r 10 $temp_dir/out%06d.png
