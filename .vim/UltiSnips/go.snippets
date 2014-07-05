@@ -80,3 +80,31 @@ snippet e "else" w
 	$0
 }
 endsnippet
+
+snippet stat "temp snippet"
+actual := (Status{Severity: $1, Message: \`${2:blah}\`}).String()$0
+endsnippet
+
+snippet ci "const iota"
+const (
+	${1:CONSTANT} = iota$0
+)
+endsnippet
+
+snippet as "anon struct" w
+struct {
+	$1
+}{
+	$0
+}
+endsnippet
+
+global !p
+def to_undercase(name):
+	s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+	return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+endglobal
+
+snippet "((\w+)\s*(\w+)) js$" "json annotation" br
+`!p snip.rv=match.group(1)` \`json:"`!p snip.rv=to_undercase(match.group(2))`"\`
+endsnippet

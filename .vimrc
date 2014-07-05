@@ -139,6 +139,7 @@ endfunction
 
 " Ctrl+Backspace
 cmap <C-H> <C-W>
+cmap <Esc>d <S-Right><C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
@@ -146,7 +147,9 @@ map <C-T> :call <SID>unite_rec_git_or_file()<CR>
 map <C-Y> :Unite history/yank<CR>
 
 map <leader>t :UltiSnipsEdit<CR>G
+map <leader>T y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
 map <leader>~ :tabnew ~/.vimrc<CR>
+" there also ZZ mapping for
 map ZZ :w\|bw<CR>
 
 noremap <leader>v V`]
@@ -168,10 +171,13 @@ vnoremap <TAB> %
 noremap > >>
 noremap < <<
 imap <silent> <S-TAB> <C-O><<
-"vmap <silent> <TAB> >gv
-vmap <silent> <S-TAB> <gv
+
+nnoremap Q qq
+
 vmap <silent> > >gv
 vmap <silent> < <gv
+
+vmap <expr> @ feedkeys(':norm @' . nr2char(getchar()) . "\<CR>")
 
 inoremap jj <ESC>
 nnoremap j gj
@@ -198,7 +204,8 @@ cnoremap <Esc>f <S-Right>
 
 nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
 
-nnoremap <leader>r :OverCommandLine<cr>%s/
+nnoremap <leader>r :OverCommandLine<cr>%s/\v
+vnoremap <leader>r :OverCommandLine<cr>s/\v
 
 augroup unite_setting
     au!
@@ -235,7 +242,7 @@ augroup skeletons
     au!
     au BufNewFile *.php exec "normal I<?php\<ESC>2o"
     au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
-    au BufNewFile *.go exec "normal Ipackage \<C-R>=expand('%:p:h:t')\<CR>"
+    au BufNewFile *.go exec "normal Ipackage \<C-R>=len(systemlist('ls '.expand('%:t').'/')) > 0 ? expand('%:p:h:t') : 'main'\<CR>"
     au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
 augroup end
 
@@ -264,6 +271,11 @@ augroup end
 augroup vimrc
     au!
     au BufWritePost ~/.vimrc source % | AirlineRefresh
+augroup end
+
+augroup snippets
+    au!
+    au FileType snippets map <buffer> ZZ :w\|b#<CR>
 augroup end
 
 com! StartNoting call g:StartNoting()
@@ -298,6 +310,7 @@ fun! g:LightRoom()
     hi MatchParen ctermbg=250
     hi Search cterm=none term=none ctermbg=180 ctermfg=15
     hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
+    hi Error ctermfg=7 ctermbg=1
 
     let g:airline_solarized_bg='light'
 endfun
