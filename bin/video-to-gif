@@ -1,14 +1,14 @@
 #!/bin/bash
 
 if [[ $# -lt 2 || "$1" == "-h" ]]; then
-    echo usage: "$0 <video.avi> <output.gif>"
+    echo usage: "$0 <video.avi> <output.gif> [parallel_processes_count]"
     exit 1
 fi
 
 
 temp_dir=$(mktemp -d)
 
-ffmpeg -i $1 -r 10 $temp_dir/out%06d.png
+ffmpeg -i $1 -r ${3:-2} $temp_dir/out%06d.png
 
 ls -1 $temp_dir/out*.png | xargs -P10 -II -n1 convert -verbose I I.gif
 
