@@ -8,9 +8,9 @@ fi
 
 temp_dir=$(mktemp -d)
 
-ffmpeg -i $1 -r ${3:-2} $temp_dir/out%06d.png
+ffmpeg -i $1 -r 10 $temp_dir/out%06d.png
 
-ls -1 $temp_dir/out*.png | xargs -P10 -II -n1 convert -verbose I I.gif
+ls -1 $temp_dir/out*.png | xargs -P${3:-2} -II -n1 convert -verbose I I.gif
 
 gifsicle --delay=8 --optimize --loop $temp_dir/*.gif > $2
 
