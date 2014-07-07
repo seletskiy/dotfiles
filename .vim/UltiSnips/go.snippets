@@ -91,7 +91,7 @@ const (
 )
 endsnippet
 
-snippet as "anon struct" w
+snippet ass "anon struct with fields" w
 struct {
 	$1
 }{
@@ -109,8 +109,23 @@ snippet "((\w+)\s*(\w+)) js$" "json annotation" br
 `!p snip.rv=match.group(1)` \`json:"`!p snip.rv=to_undercase(match.group(2))`"\`
 endsnippet
 
-snippet fm "main function"
+snippet fm "func main"
 func main() {
 	$0
 }
 endsnippet
+
+snippet fas "anon struct"
+${1:Name} struct {
+	$0
+}
+endsnippet
+
+snippet fi "field int"
+${1:Name} int
+endsnippet
+
+snippet fb "field bool"
+${1:Name} bool
+endsnippet
+>>>>>>> Stashed changes

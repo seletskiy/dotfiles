@@ -150,7 +150,8 @@ map <C-Y> :Unite history/yank<CR>
 map <leader>t :UltiSnipsEdit<CR>G
 map <leader>T y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
 map <leader>~ :tabnew ~/.vimrc<CR>
-" there also ZZ mapping for
+
+" there also ZZ mapping for snippets
 map ZZ :w\|bw<CR>
 
 noremap <leader>v V`]
@@ -243,7 +244,7 @@ augroup skeletons
     au!
     au BufNewFile *.php exec "normal I<?php\<ESC>2o"
     au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
-    au BufNewFile *.go exec "normal Ipackage \<C-R>=len(systemlist('ls '.expand('%:t').'/')) > 0 ? expand('%:p:h:t') : 'main'\<CR>"
+    au BufNewFile *.go exec "normal Ipackage \<C-R>=len(systemlist('ls '.expand('%:p:h').'/')) > 0 ? expand('%:p:h:t') : 'main'\<CR>"
     au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
 augroup end
 
