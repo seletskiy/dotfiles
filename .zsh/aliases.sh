@@ -69,3 +69,8 @@ function smart-insert-prev-word() {
         smart-insert-last-word $_altdot_line $_altdot_word 1
     fi
 }
+
+bindkey "^[[11^" noop
+zle -N noop noop
+function noop()  {
+}
