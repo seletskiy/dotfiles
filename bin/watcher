@@ -1,0 +1,9 @@
+#!/bin/bash
+
+inotifywait -m -r -e close_write --exclude '[^gm][^lo]$' --format %f . |
+    while read name
+    do
+        echo -e '\e[1;44;1;37m> '$name'\e[0m'
+        ${@}
+    done
+
