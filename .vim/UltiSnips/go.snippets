@@ -108,3 +108,9 @@ endglobal
 snippet "((\w+)\s*(\w+)) js$" "json annotation" br
 `!p snip.rv=match.group(1)` \`json:"`!p snip.rv=to_undercase(match.group(2))`"\`
 endsnippet
+
+snippet fm "main function"
+func main() {
+	$0
+}
+endsnippet

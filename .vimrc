@@ -30,7 +30,8 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'lyokha/vim-xkbswitch'
 Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
-Bundle 'Blackrush/vim-gocode'
+"Bundle 'Blackrush/vim-gocode'
+Bundle 'fatih/vim-go'
 Bundle 'kshenoy/vim-signature'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'michaeljsmith/vim-indent-object'
@@ -204,8 +205,8 @@ cnoremap <Esc>f <S-Right>
 
 nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
 
-nnoremap <leader>r :OverCommandLine<cr>%s/\v
-vnoremap <leader>r :OverCommandLine<cr>s/\v
+nnoremap H :OverCommandLine<cr>%s/\v
+vnoremap H :OverCommandLine<cr>s/\v
 
 augroup unite_setting
     au!
@@ -259,6 +260,8 @@ augroup end
 augroup go_src
     au!
     au FileType go setl noexpandtab
+    au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+    au FileType go nmap K <Plug>(go-run)
 augroup end
 
 let s:prev_line = 0
