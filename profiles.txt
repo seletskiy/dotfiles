@@ -39,3 +39,5 @@
 -        https://aur.archlinux.org/packages/ffcast/
 
 -        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
+
+-        feh
