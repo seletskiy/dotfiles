@@ -16,6 +16,7 @@ URxvt.url-select.launcher: /usr/bin/google-chrome-stable
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
-URxvt.keysym.M-slash:  perl:aAtt:skeleton-complete
+URxvt.keysym.M-slash: perl:aAtt:skeleton-WORD-complete
+URxvt.keysym.M-question: perl:aAtt:skeleton-complete
 URxvt.chdir: /home/s.seletskiy/
 URxvt.pointerBlank: true
