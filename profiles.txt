@@ -38,6 +38,6 @@
 -        gifsicle
 -        https://aur.archlinux.org/packages/ffcast/
 
--        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
 -        feh
+-        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git/
 -        https://aur.archlinux.org/packages/runki/
