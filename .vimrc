@@ -262,6 +262,7 @@ augroup go_src
     au!
     au FileType go setl noexpandtab
     au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+    au FileType go nmap <Leader>r <Plug>(go-run)
     au FileType go nmap K <Plug>(go-run)
 augroup end
 
