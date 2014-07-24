@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec ssh s.s
+urxvt -e ssh s.s
