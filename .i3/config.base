@@ -127,7 +127,7 @@ bindsym $mod+minus [instance="^(?!kuake)"] scratchpad show
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+grave exec kuake
 bindsym $mod+equal exec kuake notepad vim '+StartNoting'
-bindsym $mod+Escape exec anki-add-word
+bindsym $mod+Shift+Ctrl+t exec anki-add-word
 
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
