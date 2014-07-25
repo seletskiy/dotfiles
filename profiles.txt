@@ -46,5 +46,10 @@
 -      ! $ sudo usermod -aG operator s.seletskiy
 
 -        https://aur.archlinux.org/packages/profile-sync-daemon/
--        $ mkdir -p ~/.config/google-chrome/cache
--        $ ln -sfT ~/.config/google-chrome/cache ~/.cache/google-chrome
+-      ! $ mkdir -p ~/.config/google-chrome/cache
+-      ! $ ln -sfT ~/.config/google-chrome/cache ~/.cache/google-chrome
+
+-      ! $ grub-mkconfig -o /boot/grub/grub.cfg
+
+-        cpupower
+-      ! $ sudo systemctl enable cpupower

@@ -1,11 +1,14 @@
 GRUB_DEFAULT=0
 GRUB_DISTRIBUTOR="Arch"
-GRUB_CMDLINE_LINUX_DEFAULT="quiet elevator=noop zfs=zroot acpi_osi=Linux acpi_backlight=vendor fsck.mode=skip zfs_force=1"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet elevator=noop zfs=zroot acpi_osi=Linux acpi_backlight=vendor fsck.mode=skip"
 GRUB_CMDLINE_LINUX=""
 
 GRUB_PRELOAD_MODULES="part_gpt part_msdos"
 
+GRUB_TIMEOUT=0
 GRUB_HIDDEN_TIMEOUT=1
 GRUB_HIDDEN_TIMEOUT_QUIET=true
 
 GRUB_TERMINAL_INPUT=console
+GRUB_GFXMODE=640x480
+GRUB_GFXPAYLOAD_LINUX=text
