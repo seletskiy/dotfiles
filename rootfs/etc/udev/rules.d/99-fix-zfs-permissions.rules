@@ -1,0 +1,1 @@
+ACTION=="add", KERNEL=="zfs", MODE="0660", GROUP="operator"

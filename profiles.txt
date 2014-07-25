@@ -41,3 +41,6 @@
 -        feh
 -        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git/
 -        https://aur.archlinux.org/packages/runki/
+
+-      ! $ sudo groupadd -f operator
+-      ! $ sudo usermod -aG operator s.seletskiy
