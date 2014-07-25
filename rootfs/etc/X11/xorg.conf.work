@@ -1,9 +1,9 @@
 Section "ServerLayout"
 	Identifier     "triple-head"
 	Option	       "Xinerama" "on"
-	Screen       0 "left-screen" 0 550
+	Screen       0 "left-screen" 0 0
 	Screen       1 "middle-screen" 1280 0
-	Screen       2 "right-screen" 2360 550
+	Screen       2 "right-screen" 3200 0
 EndSection
 
 Section "InputClass"
@@ -32,7 +32,6 @@ Section "Monitor"
 	Identifier  "right-monitor"
 	Option	    "DPMS" "true"
 	Option	    "PreferredMode" "1280x1024"
-	Option      "Absolute" "2560 550"
 	Option	    "TargetRefresh" "60"
 	Option	    "Rotate" "normal"
 EndSection
@@ -45,15 +44,14 @@ Section "Device"
 EndSection
 
 Section "Device"
-	Identifier  "gpu-first-vga"
+	Identifier  "gpu-first-hdmi"
 	Driver      "nvidia"
 	BusID       "PCI:1:0:0"
 	Screen      0
-	Option      "MetaModes" "CRT-1: nvidia-auto-select { Rotation=left }"
 EndSection
 
 Section "Device"
-	Identifier  "gpu-first-hdmi"
+	Identifier  "gpu-first-vga"
 	Driver      "nvidia"
 	BusID       "PCI:1:0:0"
 	Screen      1
@@ -72,7 +70,7 @@ EndSection
 
 Section "Screen"
 	Identifier "middle-screen"
-	Device     "gpu-first-vga"
+	Device     "gpu-first-hdmi"
 	Monitor    "middle-monitor"
 	DefaultDepth     24
 	SubSection "Display"
@@ -83,7 +81,7 @@ EndSection
 
 Section "Screen"
 	Identifier "right-screen"
-	Device     "gpu-first-hdmi"
+	Device     "gpu-first-vga"
 	Monitor    "right-monitor"
 	DefaultDepth     24
 	SubSection "Display"
