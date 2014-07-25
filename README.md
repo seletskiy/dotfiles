@@ -24,13 +24,14 @@ There are two installation scripts called `./bootstrap` and `./dotfiles`.
 `./bootstrap` brings system to consistent state.
 
 All changes that should be done on new branded fresh installed system are
-described in the end of `./bootstrap` script, so look at them, they are pretty
+described in `./profiles.txt` so look at them, they are pretty
 descriptive by they own.
 
 Assumed workflow is:
 
 * once on fresh installed system: `./bootstrap <profile>`;
 * every next time when update is needed: `./boostrap`;
+* every next time when full upgrade is needed: `./bootstrap <profile>` (it will also update AUR packages);
 * every next time when local configuration changed: `./dotfiles rejoin`;
 
 Agreements
@@ -43,7 +44,7 @@ in /.
 All missing directories would be created.
 All missing files would by symlinked (files under rootds will be copied).
 
-If filename ends on `.template`, than same file without `.template` would be
+If filename ends on `.template`, then same file without `.template` would be
 created and all `{{PLACEHOLDER}}` strings in that file would be replaced with
 user prompted values.
 
