@@ -77,7 +77,7 @@ endsnippet
 snippet exp "test expected"
 actual := ${1:"Something"}
 if actual != ${2:"Actual"} {
-	t.Fatal("unexpected", actual)
+	t.Fatalf("unexpected %#v", actual)
 }
 endsnippet
 
@@ -154,4 +154,37 @@ endsnippet
 
 snippet pr "fmt.Println" i
 fmt.Println($0)
+endsnippet
+
+snippet play "package main"
+package main
+
+import "fmt"
+
+func main() {
+	$0
+}
+endsnippet
+
+snippet omit "omit section"
+// OMIT
+${0:${VISUAL}}
+// END OMIT
+endsnippet
+
+snippet af "anon func" i
+func($1) $2{
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet vr "var"
+var (
+	$0
+)
+endsnippet
+
+snippet cs "case"
+case $1:
+	$0
 endsnippet
