@@ -168,7 +168,6 @@ nnoremap / /\v
 vnoremap / /\v
 
 nnoremap <TAB> %
-vnoremap <TAB> %
 
 noremap > >>
 noremap < <<
@@ -208,6 +207,8 @@ nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
 
 nnoremap H :OverCommandLine<cr>%s/\v
 vnoremap H :OverCommandLine<cr>s/\v
+
+inoremap <expr> <C-O> (pumvisible() ? feedkeys("\<C-N>") : feedkeys("\<C-O>", 'n')) ? '' : ''
 
 augroup unite_setting
     au!
@@ -261,9 +262,9 @@ augroup end
 augroup go_src
     au!
     au FileType go setl noexpandtab
-    au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+    au FileType go nmap K <Plug>(go-doc-vertical)
     au FileType go nmap <Leader>r <Plug>(go-run)
-    au FileType go nmap K <Plug>(go-run)
+    au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
 let s:prev_line = 0
