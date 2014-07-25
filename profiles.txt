@@ -44,3 +44,7 @@
 
 -      ! $ sudo groupadd -f operator
 -      ! $ sudo usermod -aG operator s.seletskiy
+
+-        https://aur.archlinux.org/packages/profile-sync-daemon/
+-        $ mkdir -p ~/.config/google-chrome/cache
+-        $ ln -sfT ~/.config/google-chrome/cache ~/.cache/google-chrome
