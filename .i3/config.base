@@ -122,7 +122,7 @@ bindsym $mod+o [con_mark="quick_o"] focus
 bindsym $mod+Shift+p mark quick_p
 bindsym $mod+p [con_mark="quick_p"] focus
 
-bindsym Mod1+Shift+Ctrl+l exec xautolock -locknow
+bindsym $mod+Shift+Ctrl+l exec xautolock -locknow
 bindsym $mod+minus [instance="^(?!kuake)"] scratchpad show
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+grave exec kuake
