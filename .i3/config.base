@@ -129,7 +129,10 @@ bindsym $mod+grave exec kuake
 bindsym $mod+equal exec kuake notepad vim '+StartNoting'
 bindsym $mod+Shift+Ctrl+t exec anki-add-word
 
-bindsym Print exec screenshot
+bindsym --release Print exec screenshot
+
+bindcode --release 114 exec --no-startup-id xdotool type →
+bindcode --release 113 exec --no-startup-id xdotool type ←
 
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
