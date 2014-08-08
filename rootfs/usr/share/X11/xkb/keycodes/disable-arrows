@@ -9,4 +9,9 @@ xkb_keycodes "disable-arrows" {
     <RGHT> = 253;
     <UP>   = 254;
     <DOWN> = 255;
+
+    <ARLF> = 113;
+    <ARRT> = 114;
+    <ARUP> = 111;
+    <ARDN> = 116;
 };

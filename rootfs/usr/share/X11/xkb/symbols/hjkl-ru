@@ -41,4 +41,8 @@ xkb_symbols "hjkl" {
         symbols[Group1]= [               p,               P, KP_End, KP_End ],
         symbols[Group2]= [     Cyrillic_ze,     Cyrillic_ZE, KP_End, KP_End ]
     };
+    key  <ARRT> {         [          rightarrow ] };
+    key  <ARLF> {         [          leftarrow ] };
+    key  <ARDN> {         [          downarrow ] };
+    key  <ARUP> {         [          uparrow ] };
 };
