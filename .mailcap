@@ -1,2 +1,2 @@
-text/html;                      chromium %s; needsterminal
+text/html;                      i3-sensible-browser %s; needsterminal
 image/*;                        feh %s
