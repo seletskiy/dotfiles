@@ -12,7 +12,7 @@ URxvt.iso14755: False
 URxvt.iso14755_52: False
 URxvt.internalBorder: 0
 URxvt.perl-ext-common: -scrollback-selection,url-select,keyboard-select,autocomplete-ALL-the-things
-URxvt.url-select.launcher: /usr/bin/google-chrome-stable
+URxvt.url-select.launcher: i3-sensible-browser
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
