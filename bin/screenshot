@@ -1,4 +1,3 @@
 #!/bin/bash
 
-sleep 0.1s
 import -trim ~/`date --rfc-3339=seconds | tr ' ' 'T'`.png
