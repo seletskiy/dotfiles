@@ -30,7 +30,6 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'lyokha/vim-xkbswitch'
 Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
-"Bundle 'Blackrush/vim-gocode'
 Bundle 'fatih/vim-go'
 Bundle 'kshenoy/vim-signature'
 Bundle 'vim-ruby/vim-ruby'
@@ -39,6 +38,8 @@ Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-notes'
 Bundle 'cespare/vim-toml'
 Bundle 'osyo-manga/vim-over'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'inkarkat/argtextobj.vim'
 
 syntax on
 filetype plugin on
@@ -47,6 +48,8 @@ filetype indent on
 " Hack to ensure, that ~/.vim is looked first
 set rtp-=~/.vim
 set rtp^=~/.vim
+
+source ~/.vim/bundle/vim-go/ftplugin/go/godoc.vim
 
 set encoding=utf-8
 set printencoding=cp1251
@@ -203,12 +206,19 @@ cnoremap <C-E> <End>
 cnoremap <Esc>b <S-Left>
 cnoremap <Esc>f <S-Right>
 
-nmap <silent> <space><space> <Plug>SearchPartyHighlightClear
+nmap <silent> <leader><leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHighlightClear")<CR>
+
+map - <Plug>(easymotion-prefix)
 
 nnoremap H :OverCommandLine<cr>%s/\v
 vnoremap H :OverCommandLine<cr>s/\v
 
+nnoremap / :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>/\v
+nnoremap ? :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>?\v
+
 inoremap <expr> <C-O> (pumvisible() ? feedkeys("\<C-N>") : feedkeys("\<C-O>", 'n')) ? '' : ''
+
+map dsf dt(ds)
 
 augroup unite_setting
     au!
@@ -233,7 +243,8 @@ augroup end
 
 augroup hilight_over_80
     au!
-    au VimResized,VimEnter * set cc= | for i in range(80, &columns > 80 ? &columns : 80) | exec "set cc+=" . i | endfor
+    au VimResized,VimEnter * call g:CheckCC()
+    au CursorHold * call g:CheckCC()
 augroup end
 
 augroup dir_autocreate
@@ -262,7 +273,7 @@ augroup end
 augroup go_src
     au!
     au FileType go setl noexpandtab
-    au FileType go nmap K <Plug>(go-doc-vertical)
+    au FileType nnoremap K <Plug>(go-doc-vertical)
     au FileType go nmap <Leader>r <Plug>(go-run)
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
@@ -283,6 +294,8 @@ augroup snippets
     au!
     au FileType snippets map <buffer> ZZ :w\|b#<CR>
 augroup end
+
+com! BufWipe tabo <bar> silent! %bw <bar> enew!
 
 com! StartNoting call g:StartNoting()
 
@@ -353,6 +366,31 @@ fun! g:StartNoting()
     set laststatus=0
     Note reading
     au CursorHold * if !&ro | write | endif
+endfun
+
+fun! g:DisableCC()
+    set cc=""
+endfun
+
+fun! g:CheckCC()
+    if exists("b:mash_search_item")
+        for m in getmatches()
+            if m.id == b:mash_search_item
+                call g:DisableCC()
+                return
+            endif
+        endfor
+    endif
+    try
+        if searchpos(@/, 'nc') == [line('.'), col('.')]
+            call g:DisableCC()
+            return
+        endif
+    catch E35
+    endtry
+    if &columns > 80
+        let &cc=join(range(80, &columns), ',')
+    endif
 endfun
 
 if system('background') == "light\n"
