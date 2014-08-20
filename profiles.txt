@@ -53,3 +53,5 @@
 
 -        cpupower
 -      ! $ sudo systemctl enable cpupower
+
+-        https://aur.archlinux.org/packages/cv/
