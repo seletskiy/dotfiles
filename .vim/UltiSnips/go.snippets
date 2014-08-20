@@ -70,7 +70,7 @@ snippet r "return"
 return $0
 endsnippet
 
-snippet fs "... string"
+snippet fs "... string" i
 ${1:Name} string$0
 endsnippet
 
@@ -127,11 +127,11 @@ ${1:Name} struct {
 }
 endsnippet
 
-snippet fi "field int"
+snippet fi "field int" i
 ${1:Name} int
 endsnippet
 
-snippet fb "field bool"
+snippet fb "field bool" i
 ${1:Name} bool
 endsnippet
 
@@ -142,6 +142,13 @@ endsnippet
 snippet sw "switch"
 switch ${1:name} {
 case ${2:true}:
+	$0
+}
+endsnippet
+
+snippet swt "switch true"
+switch {
+case ${1}:
 	$0
 }
 endsnippet
@@ -187,4 +194,32 @@ endsnippet
 snippet cs "case"
 case $1:
 	$0
+endsnippet
+
+snippet rn "return nil"
+return nil
+endsnippet
+
+snippet ap "append" i
+${1:slice} = append($1, $2)
+endsnippet
+
+snippet ms "make slice" i
+make([]$1, ${2:0})
+endsnippet
+
+snippet mc "make chan" i
+make(chan $1, ${2:0})
+endsnippet
+
+snippet mm "make map" i
+make(map[${1:string}]${2:interface\{\}})
+endsnippet
+
+snippet nn "!= nil" i
+${1:${VISUAL}} != nil
+endsnippet
+
+snippet if "interface" i
+interface{}
 endsnippet
