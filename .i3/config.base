@@ -113,21 +113,19 @@ bindsym $mod+Shift+r restart
 
 bindsym Ctrl+Insert exec sh -c 'xsel | xclip -selection clipbord'
 
-bindsym $mod+Shift+i mark quick_i
-bindsym $mod+i [con_mark="quick_i"] focus
+bindsym $mod+Shift+bracketleft mark quick_1
+bindsym $mod+bracketleft [con_mark="quick_1"] focus
 
-bindsym $mod+Shift+o mark quick_o
-bindsym $mod+o [con_mark="quick_o"] focus
+bindsym $mod+Shift+bracketright mark quick_2
+bindsym $mod+bracketright [con_mark="quick_2"] focus
 
-bindsym $mod+Shift+p mark quick_p
-bindsym $mod+p [con_mark="quick_p"] focus
-
-bindsym $mod+Shift+Ctrl+l exec xautolock -locknow
 bindsym $mod+minus [instance="^(?!kuake)"] scratchpad show
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+grave exec kuake
 bindsym $mod+equal exec kuake notepad vim '+StartNoting'
-bindsym $mod+Shift+Ctrl+t exec anki-add-word
+
+bindsym Mod1+Shift+Ctrl+t exec anki-add-word
+bindsym Mod1+Shift+Ctrl+l exec xautolock -locknow
 
 bindsym --release Print exec screenshot
 
@@ -144,5 +142,3 @@ floating_minimum_size 70 x 15
 hide_edge_borders both
 
 new_window 1pixel
-
-workspace_auto_back_and_forth yes
