@@ -1,0 +1,12 @@
+"3.8.2 (created: 2014/02/13 23:52:43)
+
+set hintchars=hjklasdfgyuiopqwertnmzxcvb
+
+hi CompResult -append font-family: Monaco; font-size: 12px;
+hi CompDesc -append font-family: Monaco; font-size: 12px;
+hi CmdLine>* font-family: Monaco; font-size: 12px;
+hi StatusLine -append font-family: Monaco; font-size: 12px;
+
+source! /home/s.seletskiy/.vimperatorrc.local
+
+" vim: set ft=vimperator:
