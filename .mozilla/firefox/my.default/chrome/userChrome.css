@@ -21,3 +21,7 @@
 .tab-background-end[selected=true]::before {
   min-height: 20px !important;
 }
+
+#ctraddon_puib_separator {
+    display: none;
+}
