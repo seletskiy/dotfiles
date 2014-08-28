@@ -55,3 +55,5 @@
 -      ! $ sudo systemctl enable cpupower
 
 -        https://aur.archlinux.org/packages/cv/
+
+-        https://aur.archlinux.org/packages/fontconfig-infinality
