@@ -28,13 +28,13 @@ xkb_symbols "hjkl" {
     };
     key <AD08> {
         type= "FOUR_LEVEL",
-        symbols[Group1]= [               i,               I, KP_Prior, KP_Prior ],
-        symbols[Group2]= [    Cyrillic_sha,    Cyrillic_SHA, KP_Prior, KP_Prior ]
+        symbols[Group1]= [               i,               I, KP_Next, KP_Next ],
+        symbols[Group2]= [    Cyrillic_sha,    Cyrillic_SHA, KP_Next, KP_Next ]
     };
     key <AD09> {
         type= "FOUR_LEVEL",
-        symbols[Group1]= [               o,               O, KP_Next, KP_Next   ],
-        symbols[Group2]= [  Cyrillic_shcha,  Cyrillic_SHCHA, KP_Next, KP_Next   ]
+        symbols[Group1]= [               o,               O, KP_Prior, KP_Prior   ],
+        symbols[Group2]= [  Cyrillic_shcha,  Cyrillic_SHCHA, KP_Prior, KP_Prior   ]
     };
     key <AD10> {
         type= "FOUR_LEVEL",
