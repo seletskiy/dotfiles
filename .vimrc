@@ -8,7 +8,7 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'nevar/revim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Gundo'
-Bundle 'L9'
+"Bundle 'L9'
 Bundle 'dahu/SearchParty'
 Bundle 'matchit.zip'
 Bundle 'scrooloose/nerdcommenter'
@@ -59,7 +59,7 @@ set undofile
 set undodir=$HOME/.vim/tmp/
 set directory=$HOME/.vim/tmp/
 set ttyfast
-set autowrite
+"set autowrite
 set relativenumber
 set hlsearch
 set incsearch
@@ -76,9 +76,10 @@ set gdefault
 set completeopt-=preview
 set nowrap
 set updatetime=150
+set showtabline=0
 
 " autocomplete list numbers
-" autoinsert comment leader
+" autoinsert comment Leader
 " do not wrap line after oneletter word
 set formatoptions=qrn1tol
 
@@ -91,13 +92,13 @@ let g:airline_solarized_reduced = 0
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'solarized'
 let g:airline#extensions#whitespace#symbol = '☼'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '│'
-let g:airline#extensions#tabline#right_sep = ''
-let g:airline#extensions#tabline#right_alt_sep = ''
-let g:airline#extensions#tabline#show_buffers = 0
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#tab_nr_type = 1
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '│'
+"let g:airline#extensions#tabline#right_sep = ''
+"let g:airline#extensions#tabline#right_alt_sep = ''
+"let g:airline#extensions#tabline#show_buffers = 0
 
 let g:syntastic_always_populate_loc_list = 1
 
@@ -131,13 +132,14 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 
 function! s:unite_my_settings()
     imap <buffer> <C-R> <Plug>(unite_redraw)
+    imap <silent><buffer><expr> <C-T> unite#do_action('split')
 endfunction
 
 function! s:unite_rec_git_or_file()
     if fugitive#head() == ""
-        :Unite file_rec
+        :Unite file_rec buffer
     else
-        :Unite git_cached git_untracked
+        :Unite git_cached git_untracked buffer
     endif
 endfunction
 
@@ -147,18 +149,19 @@ cmap <Esc>d <S-Right><C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
-map <C-T> :call <SID>unite_rec_git_or_file()<CR>
+map <C-P> :call <SID>unite_rec_git_or_file()<CR>
 map <C-Y> :Unite history/yank<CR>
+map <C-U> :Unite buffer<CR>
 
-map <leader>t :UltiSnipsEdit<CR>G
-map <leader>T y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
-map <leader>~ :tabnew ~/.vimrc<CR>
+map <Leader>` :UltiSnipsEdit<CR>G
+vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
+map <Leader>~ :tabnew ~/.vimrc<CR>
 
 " there also ZZ mapping for snippets
 map ZZ :w\|bw<CR>
 
-noremap <leader>v V`]
-noremap <leader>p "1p
+noremap <Leader>v V`]
+noremap <Leader>p "1p
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
@@ -191,22 +194,27 @@ nnoremap <F1> <ESC>
 nmap <F2> :w<CR>
 imap <F2> <ESC><F2>
 
-map <Leader>1 1gt
-map <Leader>2 2gt
-map <Leader>3 3gt
-map <Leader>4 4gt
-map <Leader>5 5gt
-map <Leader>6 6gt
-map <Leader>7 7gt
-map <Leader>8 8gt
-map <Leader>9 9gt
+"map <Leader>1 1gt
+"map <Leader>2 2gt
+"map <Leader>3 3gt
+"map <Leader>4 4gt
+"map <Leader>5 5gt
+"map <Leader>6 6gt
+"map <Leader>7 7gt
+"map <Leader>8 8gt
+"map <Leader>9 9gt
+
+"map <silent> <Leader>b :ls \| exec "b" . input(":b ")<CR>
+
+map <Leader>3 :b #<CR>
+map <Leader>c :cd %:h<CR>
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <Esc>b <S-Left>
 cnoremap <Esc>f <S-Right>
 
-nmap <silent> <leader><leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHighlightClear")<CR>
+nmap <silent> <Leader><Leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHighlightClear")<CR>
 
 map - <Plug>(easymotion-prefix)
 
@@ -275,6 +283,8 @@ augroup go_src
     au FileType go setl noexpandtab
     au FileType nnoremap K <Plug>(go-doc-vertical)
     au FileType go nmap <Leader>r <Plug>(go-run)
+    au FileType go map <Leader>t <Plug>(go-test)
+    au FileType go map <Leader>b <Plug>(go-build)
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
@@ -294,6 +304,13 @@ augroup snippets
     au!
     au FileType snippets map <buffer> ZZ :w\|b#<CR>
 augroup end
+
+augroup quickfix
+    au!
+    au FileType qf call g:DisableCC()
+    au FileType qf set wrap
+augroup end
+
 
 com! BufWipe tabo <bar> silent! %bw <bar> enew!
 
@@ -373,6 +390,9 @@ fun! g:DisableCC()
 endfun
 
 fun! g:CheckCC()
+    if &filetype == 'qf'
+        return
+    endif
     if exists("b:mash_search_item")
         for m in getmatches()
             if m.id == b:mash_search_item
