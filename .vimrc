@@ -135,23 +135,15 @@ function! s:unite_my_settings()
     imap <silent><buffer><expr> <C-T> unite#do_action('split')
 endfunction
 
-function! s:unite_rec_git_or_file()
-    if fugitive#head() == ""
-        :Unite file_rec buffer
-    else
-        :Unite git_cached git_untracked buffer
-    endif
-endfunction
-
 " Ctrl+Backspace
 cmap <C-H> <C-W>
 cmap <Esc>d <S-Right><C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
-map <C-P> :call <SID>unite_rec_git_or_file()<CR>
+map <C-P> :Unite git_cached git_untracked buffer<CR>
 map <C-Y> :Unite history/yank<CR>
-map <C-U> :Unite buffer<CR>
+map <C-U> :Unite file_rec buffer<CR>
 
 map <Leader>` :UltiSnipsEdit<CR>G
 vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
