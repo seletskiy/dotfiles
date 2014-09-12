@@ -14,8 +14,6 @@
 *color7:     #d0cfca
 *color8:     #5d5d5d
 *color9:     #e9605f
-!!*background: #d9d9d9
 *background: #f1f1f1
 *foreground: #444444
-*cursor:     #c5c8c6
-!! #211f1d
+*cursor:     #1c1c1c

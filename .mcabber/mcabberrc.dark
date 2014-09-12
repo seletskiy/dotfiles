@@ -1,21 +1,16 @@
-# dark solarized color theme
-# more infos: http://ethanschoonover.com/solarized
-
-set color_background   = 8
-set color_general      = 13
+set color_background   = 234
+set color_general      = 238
 set color_info         = 12
-set color_msgin        = 14
-set color_msgout       = 10
+set color_msgin        = 252
+set color_msgout       = 240
 set color_msghl        = 2
 set color_bgstatus     = 235
 set color_status       = 9
 set color_roster       = 240
-set color_bgrostersel  = 4
-set color_rostersel    = bright7
+set color_bgrostersel  = 89
+set color_rostersel    = 7
 set color_rosterselmsg = bright7
-set color_rosternewmsg = 2
+set color_rosternewmsg = bright7
 
-color roster o * bright4
-color roster and * 11
-
-# vim:set ft=conf:
+color roster o * 2
+color roster and * 6

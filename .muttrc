@@ -19,11 +19,11 @@ unset imap_passive
 mailboxes =INBOX
 
 source $alias_file
-source ~/.mutt/solarized_$BACKGROUND
+source ~/.mutt/theme_$BACKGROUND
 source ~/.mutt/accounts
 
 alternative_order text/plain text/html
-auto_view text/html
+auto_view text/html text/calendar
 
 bind index \e[7~ first-entry
 bind index \e[8~ last-entry

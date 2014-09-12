@@ -56,7 +56,7 @@ alias p        = roster search e.persienko@
 alias l        = roster search a.platonov@
 alias k        = roster search m.prokopchuk@
 alias o        = roster search s.kostyaev@
-alias s        = roster search d.shaskov@
+alias s        = roster search d.shashkov@
 alias oa       = roster search oapp@
 
 # Ctrl-r (18) bound to /roster unread_next

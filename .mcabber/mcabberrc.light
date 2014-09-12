@@ -8,9 +8,9 @@ set color_msghl        = 136
 set color_bgstatus     = 254
 set color_status       = 166
 set color_roster       = 8
-set color_bgrostersel  = 33
+set color_bgrostersel  = 89
 set color_rostersel    = bright254
 set color_rosterselmsg = 254
-set color_rosternewmsg = 4
+set color_rosternewmsg = bright1
 color roster o * bright29
 color roster and * 14
