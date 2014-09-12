@@ -16,7 +16,8 @@ Bundle 'Rainbow-Parenthesis'
 Bundle 'git@github.com:seletskiy/vim-refugi'
 Bundle 'wojtekmach/vim-rename'
 Bundle 'repeat.vim'
-Bundle 'git@github.com:seletskiy/vim-colors-solarized'
+"Bundle 'git@github.com:seletskiy/vim-colors-solarized'
+Bundle 'junegunn/seoul256.vim'
 Bundle 'surround.vim'
 Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
 Bundle 'PHP-correct-Indenting'
@@ -88,9 +89,8 @@ set lcs=eol:¶,trail:·,tab:\ \
 
 let g:notes_directories = ['~/.notes']
 
-let g:airline_solarized_reduced = 0
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'solarized'
+let g:airline_theme = 'zenburn'
 let g:airline#extensions#whitespace#symbol = '☼'
 "let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#tab_nr_type = 1
@@ -325,46 +325,37 @@ endfunction
 
 fun! g:LightRoom()
     set background=light
+    let g:seoul256_background = 255
     call s:ApplyColorscheme()
     hi underlined cterm=underline
     hi LineNr ctermfg=249 ctermbg=none
-    hi SignColumn ctermfg=240 ctermbg=none
-    hi Exception ctermfg=201
-    hi Normal ctermbg=none
-    hi TabLine ctermfg=1 ctermbg=7 cterm=none
-    hi ColorColumn ctermbg=230
+    hi SignColumn ctermfg=none ctermbg=none
+    hi ColorColumn ctermbg=256
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=7 cterm=none term=none
-    hi MatchParen ctermbg=250
-    hi Search cterm=none term=none ctermbg=180 ctermfg=15
-    hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
-    hi Error ctermfg=7 ctermbg=1
-
-    let g:airline_solarized_bg='light'
+    "hi Search cterm=none term=none ctermbg=180 ctermfg=15
+    "hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 endfun
 
 fun! g:DarkRoom()
     set background=dark
+    let g:seoul256_background = 234
     call s:ApplyColorscheme()
     hi underlined cterm=underline
-    hi LineNr ctermfg=240 ctermbg=none
-    hi SignColumn ctermfg=240 ctermbg=none
-    hi Exception ctermfg=201
-    hi Normal ctermbg=none
-    hi ColorColumn ctermbg=235
+    hi CursorLineNr ctermfg=240 ctermbg=none
+    hi LineNr ctermfg=236 ctermbg=none
+    hi SignColumn ctermfg=none ctermbg=none
+    hi ColorColumn ctermbg=233
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
-    hi NonText ctermfg=0 cterm=none term=none
-    hi MatchParen ctermbg=250
-    hi Search cterm=none term=none ctermbg=180 ctermfg=0
-    hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
-
-    let g:airline_solarized_bg='dark'
+    hi NonText ctermfg=236 cterm=none term=none
+    "hi Search cterm=none term=none ctermbg=180 ctermfg=0
+    "hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 endfun
 
 fun! s:ApplyColorscheme()
     let g:solarized_termcolors = 16
     let g:solarized_contrast = 'high'
-    colorscheme solarized
+    colorscheme seoul256
     hi! link WildMenu PmenuSel
     hi erlangEdocTag cterm=bold ctermfg=14
     hi erlangFunHead cterm=bold ctermfg=4
