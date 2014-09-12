@@ -12,7 +12,7 @@ Bundle 'Gundo'
 Bundle 'dahu/SearchParty'
 Bundle 'matchit.zip'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'Rainbow-Parenthesis'
+Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'git@github.com:seletskiy/vim-refugi'
 Bundle 'wojtekmach/vim-rename'
 Bundle 'repeat.vim'
@@ -90,15 +90,8 @@ set lcs=eol:¶,trail:·,tab:\ \
 let g:notes_directories = ['~/.notes']
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'zenburn'
+let g:airline_theme = 'lucius'
 let g:airline#extensions#whitespace#symbol = '☼'
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#tabline#tab_nr_type = 1
-"let g:airline#extensions#tabline#left_sep = ' '
-"let g:airline#extensions#tabline#left_alt_sep = '│'
-"let g:airline#extensions#tabline#right_sep = ''
-"let g:airline#extensions#tabline#right_alt_sep = ''
-"let g:airline#extensions#tabline#show_buffers = 0
 
 let g:syntastic_always_populate_loc_list = 1
 
@@ -233,12 +226,6 @@ augroup end
 
 augroup syntax_hacks
     au!
-    au BufEnter * hi SPM1 ctermbg=1 ctermfg=7
-    au BufEnter * hi SPM2 ctermbg=2 ctermfg=7
-    au BufEnter * hi SPM3 ctermbg=3 ctermfg=7
-    au BufEnter * hi SPM4 ctermbg=4 ctermfg=7
-    au BufEnter * hi SPM5 ctermbg=5 ctermfg=7
-    au BufEnter * hi SPM6 ctermbg=6 ctermfg=7
 augroup end
 
 augroup hilight_over_80
@@ -303,6 +290,13 @@ augroup quickfix
     au FileType qf set wrap
 augroup end
 
+augroup rainbow
+    au!
+    au VimEnter * RainbowParenthesesToggle
+    au Syntax * RainbowParenthesesLoadRound
+    au Syntax * RainbowParenthesesLoadBraces
+augroup end
+
 
 com! BufWipe tabo <bar> silent! %bw <bar> enew!
 
@@ -328,11 +322,12 @@ fun! g:LightRoom()
     let g:seoul256_background = 255
     call s:ApplyColorscheme()
     hi underlined cterm=underline
+    hi CursorLineNr ctermfg=241 ctermbg=none
     hi LineNr ctermfg=249 ctermbg=none
     hi SignColumn ctermfg=none ctermbg=none
     hi ColorColumn ctermbg=256
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
-    hi NonText ctermfg=7 cterm=none term=none
+    hi NonText ctermfg=254 cterm=none term=none
     "hi Search cterm=none term=none ctermbg=180 ctermfg=15
     "hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 endfun
@@ -347,7 +342,7 @@ fun! g:DarkRoom()
     hi SignColumn ctermfg=none ctermbg=none
     hi ColorColumn ctermbg=233
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
-    hi NonText ctermfg=236 cterm=none term=none
+    hi NonText ctermfg=235 cterm=none term=none
     "hi Search cterm=none term=none ctermbg=180 ctermfg=0
     "hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 endfun
@@ -359,6 +354,23 @@ fun! s:ApplyColorscheme()
     hi! link WildMenu PmenuSel
     hi erlangEdocTag cterm=bold ctermfg=14
     hi erlangFunHead cterm=bold ctermfg=4
+    hi SPM1 ctermbg=1 ctermfg=7
+    hi SPM2 ctermbg=2 ctermfg=7
+    hi SPM3 ctermbg=3 ctermfg=7
+    hi SPM4 ctermbg=4 ctermfg=7
+    hi SPM5 ctermbg=5 ctermfg=7
+    hi SPM6 ctermbg=6 ctermfg=7
+
+    " disable weird standout mode
+    hi ErrorMsg term=none
+    hi Todo term=none
+    hi SignColumn term=none
+    hi FoldColumn term=none
+    hi Folded term=none
+    hi WildMenu term=none
+    hi WarningMsg term=none
+    hi Question term=none
+    hi ErrorMsg term=none
 endfun
 
 fun! g:StartNoting()
