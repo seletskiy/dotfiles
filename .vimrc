@@ -29,8 +29,8 @@ Bundle 'SirVer/ultisnips'
 Bundle 'epmatsw/ag.vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'lyokha/vim-xkbswitch'
-Bundle 'scrooloose/syntastic'
-Bundle 'terryma/vim-multiple-cursors'
+"Bundle 'scrooloose/syntastic'
+Bundle 'kristijanhusak/vim-multiple-cursors'
 Bundle 'fatih/vim-go'
 Bundle 'kshenoy/vim-signature'
 Bundle 'vim-ruby/vim-ruby'
@@ -78,6 +78,7 @@ set completeopt-=preview
 set nowrap
 set updatetime=150
 set showtabline=0
+set cino=(s,m1,+0
 
 " autocomplete list numbers
 " autoinsert comment Leader
@@ -118,7 +119,7 @@ let g:unite_enable_start_insert = 1
 let g:unite_source_history_yank_file = $HOME.'/.vim/yankring.txt'
 
 call unite#custom#source(
-    \ 'file,file/new,buffer,file_rec,git_cached,git_untracked',
+    \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked',
     \ 'matchers', 'matcher_fuzzy')
 
 call unite#filters#sorter_default#use(['sorter_rank'])
@@ -136,7 +137,7 @@ imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
 map <C-P> :Unite git_cached git_untracked buffer<CR>
 map <C-Y> :Unite history/yank<CR>
-map <C-U> :Unite file_rec buffer<CR>
+map <C-U> :Unite file_rec/async buffer<CR>
 
 map <Leader>` :UltiSnipsEdit<CR>G
 vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
@@ -152,6 +153,7 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
+nnoremap <C-_> <C-W>_
 
 nnoremap ? ?\v
 vnoremap ? ?\v
@@ -178,18 +180,6 @@ nnoremap k gk
 nnoremap <F1> <ESC>
 nmap <F2> :w<CR>
 imap <F2> <ESC><F2>
-
-"map <Leader>1 1gt
-"map <Leader>2 2gt
-"map <Leader>3 3gt
-"map <Leader>4 4gt
-"map <Leader>5 5gt
-"map <Leader>6 6gt
-"map <Leader>7 7gt
-"map <Leader>8 8gt
-"map <Leader>9 9gt
-
-"map <silent> <Leader>b :ls \| exec "b" . input(":b ")<CR>
 
 map <Leader>3 :b #<CR>
 map <Leader>c :cd %:h<CR>
@@ -292,11 +282,16 @@ augroup end
 
 augroup rainbow
     au!
-    au VimEnter * RainbowParenthesesToggle
+    au VimEnter * RainbowParenthesesActivate
     au Syntax * RainbowParenthesesLoadRound
     au Syntax * RainbowParenthesesLoadBraces
 augroup end
 
+augroup fix_signcolumn
+    au!
+    au BufEnter * sign define dummy
+    au BufEnter * execute 'sign place 10000 line=1 name=dummy buffer=' . bufnr('')
+augroup end
 
 com! BufWipe tabo <bar> silent! %bw <bar> enew!
 
@@ -328,8 +323,6 @@ fun! g:LightRoom()
     hi ColorColumn ctermbg=256
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=254 cterm=none term=none
-    "hi Search cterm=none term=none ctermbg=180 ctermfg=15
-    "hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 endfun
 
 fun! g:DarkRoom()
@@ -337,14 +330,12 @@ fun! g:DarkRoom()
     let g:seoul256_background = 234
     call s:ApplyColorscheme()
     hi underlined cterm=underline
-    hi CursorLineNr ctermfg=240 ctermbg=none
-    hi LineNr ctermfg=236 ctermbg=none
+    hi CursorLineNr ctermfg=242 ctermbg=none
+    hi LineNr ctermfg=238 ctermbg=none
     hi SignColumn ctermfg=none ctermbg=none
     hi ColorColumn ctermbg=233
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=235 cterm=none term=none
-    "hi Search cterm=none term=none ctermbg=180 ctermfg=0
-    "hi IncSearch term=none cterm=none ctermbg=33 ctermfg=15
 endfun
 
 fun! s:ApplyColorscheme()

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec /usr/bin/redshift -l55.2:82.55 &
