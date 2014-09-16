@@ -54,6 +54,13 @@ if err != nil {
 }
 endsnippet
 
+snippet if2er "if err != nil"
+if err != nil {
+	return ${1:nil}, err
+}
+endsnippet
+
+
 snippet iferp "if err != nil panic"
 if err != nil {
 	panic(err)
@@ -83,7 +90,7 @@ endsnippet
 
 snippet e "else" w
  else {
-	$0
+	${0:${VISUAL}}
 }
 endsnippet
 
@@ -159,8 +166,8 @@ for ${1:_}, ${2:val} := range ${3:Slice} {
 }
 endsnippet
 
-snippet pr "fmt.Println" i
-fmt.Println($0)
+snippet pr "log.Printf(%#v" i
+log.Printf("%#v", $1)
 endsnippet
 
 snippet play "package main"
@@ -222,4 +229,35 @@ endsnippet
 
 snippet if "interface" i
 interface{}
+endsnippet
+
+snippet ts "type switch"
+switch ${1:newVar} := ${2:checkVar}.(type) {
+case ${3:Type}:
+	$0
+}
+endsnippet
+
+snippet ,n ", nil" i
+, nil
+endsnippet
+
+snippet n, ", nil" i
+nil, 
+endsnippet
+
+snippet frr "forever"
+for {
+	$1
+}
+endsnippet
+
+snippet := "blah, err := "
+${1:data}, err := 
+endsnippet
+
+snippet iferf
+if err != nil {
+	t.Fatal(err)
+}
 endsnippet
