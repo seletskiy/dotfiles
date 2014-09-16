@@ -124,6 +124,8 @@ call unite#custom#source(
 
 call unite#filters#sorter_default#use(['sorter_rank'])
 
+let delimitMate_expand_cr = 2
+
 function! s:unite_my_settings()
     imap <buffer> <C-R> <Plug>(unite_redraw)
     imap <silent><buffer><expr> <C-T> unite#do_action('split')
@@ -320,9 +322,10 @@ fun! g:LightRoom()
     hi CursorLineNr ctermfg=241 ctermbg=none
     hi LineNr ctermfg=249 ctermbg=none
     hi SignColumn ctermfg=none ctermbg=none
-    hi ColorColumn ctermbg=256
+    hi ColorColumn ctermbg=15
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=254 cterm=none term=none
+    hi IncSearch cterm=none ctermfg=238 ctermbg=220
 endfun
 
 fun! g:DarkRoom()
@@ -336,11 +339,10 @@ fun! g:DarkRoom()
     hi ColorColumn ctermbg=233
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=235 cterm=none term=none
+    hi IncSearch cterm=none ctermfg=238 ctermbg=220
 endfun
 
 fun! s:ApplyColorscheme()
-    let g:solarized_termcolors = 16
-    let g:solarized_contrast = 'high'
     colorscheme seoul256
     hi! link WildMenu PmenuSel
     hi erlangEdocTag cterm=bold ctermfg=14
