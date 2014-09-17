@@ -122,7 +122,7 @@ call unite#custom#source(
     \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked',
     \ 'matchers', 'matcher_fuzzy')
 
-call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#filters#sorter_default#use(['sorter_selecta'])
 
 let delimitMate_expand_cr = 2
 
@@ -137,9 +137,16 @@ cmap <Esc>d <S-Right><C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
-map <C-P> :Unite git_cached git_untracked buffer<CR>
-map <C-Y> :Unite history/yank<CR>
-map <C-U> :Unite file_rec/async buffer<CR>
+map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
+map <C-Y> :Unite -hide-source-names history/yank<CR>
+map <C-U> :Unite -hide-source-names file_rec/async buffer<CR>
+map <Esc>g :Unite -hide-source-names grep:.<CR>
+
+let g:unite_source_grep_max_candidates = 200
+
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden'
+let g:unite_source_grep_recursive_opt = ''
 
 map <Leader>` :UltiSnipsEdit<CR>G
 vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
@@ -218,6 +225,9 @@ augroup end
 
 augroup syntax_hacks
     au!
+    au FileType diff syn match DiffComment "^#.*"
+    au FileType diff syn match DiffCommentIgnore "^###.*"
+    au FileType diff call g:ApplySyntaxForDiffComments()
 augroup end
 
 augroup hilight_over_80
@@ -291,8 +301,8 @@ augroup end
 
 augroup fix_signcolumn
     au!
-    au BufEnter * sign define dummy
-    au BufEnter * execute 'sign place 10000 line=1 name=dummy buffer=' . bufnr('')
+    "au BufEnter * sign define dummy
+    "au BufEnter * execute 'sign place 10000 line=1 name=dummy buffer=' . bufnr('')
 augroup end
 
 com! BufWipe tabo <bar> silent! %bw <bar> enew!
@@ -406,3 +416,13 @@ if system('background') == "light\n"
 else
     call g:DarkRoom()
 endif
+
+fun! g:ApplySyntaxForDiffComments()
+    if &background == 'light'
+        hi DiffCommentIgnore ctermfg=249 ctermbg=none
+        hi DiffComment ctermfg=16 ctermbg=254
+    else
+        hi DiffCommentIgnore ctermfg=249 ctermbg=none
+        hi DiffComment ctermfg=15 ctermbg=237
+    endif
+endfun
