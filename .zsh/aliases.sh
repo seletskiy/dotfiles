@@ -77,3 +77,10 @@ bindkey "^[[11^" noop
 zle -N noop noop
 function noop()  {
 }
+
+alias gclm='git-clone-me'
+function git-clone-me() {
+    reponame="$1" ; shift
+
+    git clone gh:seletskiy/$reponame "${@}"
+}
