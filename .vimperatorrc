@@ -1,11 +1,12 @@
 "3.8.2 (created: 2014/02/13 23:52:43)
 
-set hintchars=hjklasdfgyuiopqwertnmzxcvb
+set hintchars=qweasdiopjkl
 
 hi CompResult -append font-family: Monaco; font-size: 12px;
 hi CompDesc -append font-family: Monaco; font-size: 12px;
 hi CmdLine>* font-family: Monaco; font-size: 12px;
 hi StatusLine -append font-family: Monaco; font-size: 12px;
+hi Hint font-family:Monaco;background:red;color:white;font-weight:bold;padding:2px;
 
 set editor="sh -c 'i3-msg workspace 2 ; vim --remote-tab-wait-silent $0 ; i3-msg workspace back_and_forth'"
 set gui=none
