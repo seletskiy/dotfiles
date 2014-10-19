@@ -183,6 +183,8 @@ def query_all_placeholders(line, cache)
 end
 
 def install_template(source, destination)
+    destination, rootfs = remove_rootfs_prefix(destination)
+
     ensure_dir(destination)
 
     if !diff_template(source, destination)
@@ -197,8 +199,16 @@ def install_template(source, destination)
         expanded_lines << query_all_placeholders(line, cache)
     end
 
+    if rootfs
+        secure_destination = destination
+        destination = `mktemp`.strip()
+    end
     File.open(destination, 'w') do |f|
         f.puts(expanded_lines.join(""))
+    end
+    if rootfs
+        puts("sudo mv: #{destination} -> #{secure_destination}")
+        `sudo mv #{destination} #{secure_destination}`
     end
 end
 
