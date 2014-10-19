@@ -128,6 +128,9 @@ bindsym Mod1+Shift+Ctrl+t exec anki-add-word
 bindsym Mod1+Shift+Ctrl+l exec xautolock -locknow
 
 bindsym --release Print exec screenshot
+bindsym --release Shift+Print exec screenshot border
+bindsym --release Shift+Ctrl+Print exec screenshot delayed
+bindsym --release $mod+Print exec screenshot select
 
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down

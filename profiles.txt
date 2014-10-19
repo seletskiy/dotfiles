@@ -57,3 +57,6 @@
 -        https://aur.archlinux.org/packages/cv/
 
 -        https://aur.archlinux.org/packages/fontconfig-infinality
+
+-        https://aur.archlinux.org/packages/maim
+-        https://aur.archlinux.org/packages/slop

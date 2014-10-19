@@ -1,3 +1,15 @@
 #!/bin/bash
 
-import -trim ~/`date --rfc-3339=seconds | tr ' ' 'T'`.png
+filename="$HOME/$(date +%F-%T | tr : T).png"
+
+if [ "$1" == "border" ]; then
+    maim -s $filename && notify-send "Screenshot with border ready"
+    convert -bordercolor black -border 1x1 $filename{,.new}
+    mv $filename{.new,}
+elif [ "$1" == "delayed" ]; then
+    maim -d5.0 -s $filename && notify-send "Delayed screenshot ready"
+elif [ "$1" == "select" ]; then
+    slop -b 3 -c 1.0,0.5,0.45,0.8
+else
+    maim -s $filename && notify-send "Screenshot ready"
+fi
