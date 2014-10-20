@@ -27,8 +27,18 @@ alias sctl='sudo systemctl'
 
 alias vim='vim --servername vim'
 
-bindkey "^P" history-substring-search-up
-bindkey "^N" history-substring-search-down
+bindkey -v
+
+bindkey -v "^P" history-substring-search-up
+bindkey -v "^N" history-substring-search-down
+bindkey -v "^A" beginning-of-line
+bindkey -v "$terminfo[kcuu1]" history-substring-search-up
+bindkey -v "$terminfo[kcud1]" history-substring-search-down
+bindkey -v "^R" history-incremental-search-backward
+bindkey -v "$terminfo[kdch1]" delete-char
+bindkey -v "^Q" push-line
+bindkey -v '^A' beginning-of-line
+bindkey -v '^E' end-of-line
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
