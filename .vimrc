@@ -50,7 +50,7 @@ filetype indent on
 set rtp-=~/.vim
 set rtp^=~/.vim
 
-source ~/.vim/bundle/vim-go/ftplugin/go/godoc.vim
+source ~/.vim/bundle/vim-go/ftplugin/go/doc.vim
 
 set encoding=utf-8
 set printencoding=cp1251
@@ -87,6 +87,8 @@ set formatoptions=qrn1tol
 
 set list
 set lcs=eol:¶,trail:·,tab:\ \ 
+
+let g:go_fmt_command = "goimports"
 
 let g:notes_directories = ['~/.notes']
 
