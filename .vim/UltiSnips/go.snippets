@@ -1,5 +1,3 @@
-clearsnippets
-
 snippet f "func"
 func ${1:FuncName}($2)${3: }{
 	$0
@@ -146,6 +144,10 @@ snippet mp "map" i
 map[${1:string}]${2:interface}
 endsnippet
 
+snippet msi "map[string]interface"
+map[string]interface{}
+endsnippet
+
 snippet sw "switch"
 switch ${1:name} {
 case ${2:true}:
@@ -259,5 +261,11 @@ endsnippet
 snippet iferf
 if err != nil {
 	t.Fatal(err)
+}
+endsnippet
+
+snippet fweb "web handler"
+func ${1:HandleSmthing}(w http.ResponseWriter, req *http.Request) {
+	$0
 }
 endsnippet
