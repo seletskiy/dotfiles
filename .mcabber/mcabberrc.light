@@ -1,4 +1,4 @@
-set color_background   = 15
+set color_background   = 255
 set color_general      = 244
 set color_info         = 244
 set color_log          = 244

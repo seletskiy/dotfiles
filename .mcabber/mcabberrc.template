@@ -58,6 +58,10 @@ alias k        = roster search m.prokopchuk@
 alias o        = roster search s.kostyaev@
 alias s        = roster search d.shashkov@
 alias oa       = roster search oapp@
+alias pp       = roster search p.prudnikov@
+
+alias dark     = source ~/.mcabber/mcabberrc.dark
+alias light    = source ~/.mcabber/mcabberrc.light
 
 # Ctrl-r (18) bound to /roster unread_next
 bind 18 = roster unread_next
