@@ -219,6 +219,11 @@ inoremap <expr> <C-O> (pumvisible() ? feedkeys("\<C-N>") : feedkeys("\<C-O>", 'n
 
 map dsf dt(ds)
 
+augroup review_setting
+    au!
+    au FileType diff nnoremap <buffer> <CR> o#<SPACE>
+augroup end
+
 augroup unite_setting
     au!
     au FileType unite call s:unite_my_settings()
