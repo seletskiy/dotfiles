@@ -54,7 +54,7 @@ source ~/.vim/bundle/vim-go/ftplugin/go/godoc.vim
 
 set encoding=utf-8
 set printencoding=cp1251
-set timeoutlen=400
+set timeoutlen=200
 set wildmenu
 set undofile
 set undodir=$HOME/.vim/tmp/
@@ -122,6 +122,9 @@ call unite#custom#source(
     \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked',
     \ 'matchers', 'matcher_fuzzy')
 
+call unite#custom#default_action(
+    \ 'directory', 'cd')
+
 call unite#filters#sorter_default#use(['sorter_selecta'])
 
 let delimitMate_expand_cr = 2
@@ -141,6 +144,7 @@ map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
 map <C-Y> :Unite -hide-source-names history/yank<CR>
 map <C-U> :Unite -hide-source-names file_rec/async buffer<CR>
 map <Esc>g :Unite -hide-source-names grep:.<CR>
+map <Esc>c :Unite -hide-source-names directory:~/sources/<CR>
 
 let g:unite_source_grep_max_candidates = 200
 
