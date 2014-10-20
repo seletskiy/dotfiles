@@ -1,2 +1,3 @@
 text/html;                      i3-sensible-browser %s; needsterminal
 image/*;                        feh %s
+text/calendar;                  goik; copiousoutput
