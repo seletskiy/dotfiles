@@ -1,6 +1,7 @@
 [user]
 	email = s.seletskiy@gmail.com
 	name = Stanislav Seletskiy
+	signingkey = AC87B82D
 [color]
 	branch = auto
 	diff = auto
@@ -16,3 +17,5 @@
 	attributesfile = /home/s.seletskiy/.gitattributes
 [push]
 	default = simple
+[gpg]
+	program = gpg-passphrase
