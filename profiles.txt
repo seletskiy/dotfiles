@@ -33,8 +33,6 @@
 
 -        ranger
 
--        https://aur.archlinux.org/packages/chrome-editor/
-
 -        gifsicle
 -        https://aur.archlinux.org/packages/ffcast/
 
@@ -60,3 +58,5 @@
 
 -        https://aur.archlinux.org/packages/maim
 -        https://aur.archlinux.org/packages/slop
+
+-        https://aur.archlinux.org/packages/oh-my-zsh-git/
