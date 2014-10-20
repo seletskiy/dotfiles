@@ -348,6 +348,7 @@ fun! g:LightRoom()
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=254 cterm=none term=none
     hi IncSearch cterm=none ctermfg=238 ctermbg=220
+    hi Cursor ctermbg=0
 endfun
 
 fun! g:DarkRoom()
@@ -362,6 +363,7 @@ fun! g:DarkRoom()
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=235 cterm=none term=none
     hi IncSearch cterm=none ctermfg=238 ctermbg=220
+    hi Cursor ctermbg=15
 endfun
 
 fun! s:ApplyColorscheme()
