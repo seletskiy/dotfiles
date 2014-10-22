@@ -92,6 +92,10 @@ def install_aur(url, force)
 
     if installed_version != pkgver
         `makepkg -rsi --noconfirm --needed >&2`
+        if $?.to_i > 0
+            puts "failed to install package"
+            exit
+        end
     end
 
     `rm -rf #{tempdir}`
@@ -113,6 +117,7 @@ def install_pkg(pkgname, force)
     `sudo pacman -S #{pkgname} --noconfirm >&2`
     if $?.to_i > 0
         puts "failed to install package"
+        exit
     end
 end
 
