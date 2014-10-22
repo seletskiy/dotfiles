@@ -79,6 +79,7 @@ set nowrap
 set updatetime=150
 set showtabline=0
 set cino=(s,m1,+0
+set comments-=mb:*
 
 " autocomplete list numbers
 " autoinsert comment Leader
@@ -268,7 +269,8 @@ augroup ft_customization
     au FileType tex :e ++enc=cp1251
     au BufEnter /data/projects/*.conf set ft=nginx
     au BufEnter /data/projects/*.conf syn on
-    au FileType erlang set comments=:%%%,:%%,:%
+    au FileType erlang setl comments=:%%%,:%%,:%
+    au FileType php setl comments+=mb:*
 augroup end
 
 augroup go_src
