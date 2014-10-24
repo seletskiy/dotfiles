@@ -50,7 +50,7 @@ filetype indent on
 set rtp-=~/.vim
 set rtp^=~/.vim
 
-source ~/.vim/bundle/vim-go/ftplugin/go/doc.vim
+source ~/.vim/bundle/vim-go/autoload/go/doc.vim
 
 set encoding=utf-8
 set printencoding=cp1251
