@@ -60,3 +60,5 @@
 -        https://aur.archlinux.org/packages/slop
 
 -        https://aur.archlinux.org/packages/oh-my-zsh-git/
+
+-        mcabber
