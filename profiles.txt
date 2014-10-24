@@ -34,6 +34,7 @@
 -        ranger
 
 -        gifsicle
+-        https://aur.archlinux.org/packages/xrectsel/
 -        https://aur.archlinux.org/packages/ffcast/
 
 -        feh
@@ -57,7 +58,7 @@
 -        https://aur.archlinux.org/packages/fontconfig-infinality
 
 -        https://aur.archlinux.org/packages/maim
--        https://aur.archlinux.org/packages/slop
+-        https://aur.archlinux.org/packages/slop-git
 
 -        https://aur.archlinux.org/packages/oh-my-zsh-git/
 
