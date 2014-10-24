@@ -6,10 +6,13 @@ hi CompResult -append font-family: Monaco; font-size: 12px;
 hi CompDesc -append font-family: Monaco; font-size: 12px;
 hi CmdLine>* font-family: Monaco; font-size: 12px;
 hi StatusLine -append font-family: Monaco; font-size: 12px;
-hi Hint font-family:Monaco;background:red;color:white;font-weight:bold;padding:2px;
+hi Hint font-size: 12px; font-weight: bold; text-transform: uppercase; color: white; background-color: red; border-color: ButtonShadow; border-width: 0px; border-style: solid; padding: 0px 1px 0px 1px; font-family: Monaco
 
 set editor="sh -c 'i3-msg workspace 2 ; vim --remote-tab-wait-silent $0 ; i3-msg workspace back_and_forth'"
 set gui=none
+
+nnoremap j 5j
+nnoremap k 5k
 
 source! /home/s.seletskiy/.vimperatorrc.local
 
