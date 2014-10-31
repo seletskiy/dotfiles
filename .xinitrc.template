@@ -5,6 +5,8 @@ export EDITOR=vim
 
 xset +fp /usr/share/fonts/local
 xset fp rehash
+xset s 1200
+xset dpms 1200 1200 1200
 xrdb -merge ~/.Xresources
 ~/bin/reconfig-kbd
 sudo bash -c 'echo 1 > /proc/sys/kernel/sysrq'
