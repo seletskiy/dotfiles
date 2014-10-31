@@ -1,3 +1,7 @@
+html {
+    overflow: hidden;
+}
+
 #TabsToolbar {
     height: 20px !important;
 }
