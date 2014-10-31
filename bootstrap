@@ -15,7 +15,13 @@ def main(requested_profile)
 
     ENV['DOTFILES_PROFILE'] = requested_profile
 
-    open('profiles.txt', 'r').each_line() {|line|
+    if STDIN.tty?
+        input = open('profiles.txt', 'r')
+    else
+        input = STDIN
+    end
+
+    input.each_line() {|line|
         line = line.strip()
         if line =~ /^\s*($|#)/
             next
