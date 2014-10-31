@@ -30,3 +30,6 @@ bind index \e[8~ last-entry
 bind pager \e[7~ top
 bind pager \e[8~ bottom
 bind index @ imap-fetch-mail
+
+macro index \Ca "<change-folder> =Archive<enter>"
+macro index \Co "<change-folder> =INBOX<enter>"
