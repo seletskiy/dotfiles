@@ -18,6 +18,7 @@ alias gcl='git clone'
 alias gst='git stash'
 alias grc='git rebase --continue'
 alias gra='git rebase --abort'
+alias gstd='git stash -u && git stash drop'
 
 alias -g L='| less'
 alias -g G='| grep'
@@ -27,6 +28,8 @@ alias sctl='sudo systemctl'
 
 alias vim='vim --servername vim'
 
+
+export KEYTIMEOUT=1
 bindkey -v
 
 bindkey -v "^P" history-substring-search-up
@@ -39,6 +42,10 @@ bindkey -v "$terminfo[kdch1]" delete-char
 bindkey -v "^Q" push-line
 bindkey -v '^A' beginning-of-line
 bindkey -v '^E' end-of-line
+bindkey -v '^?' backward-delete-char
+bindkey -v '^H' backward-delete-char
+bindkey -v '^W' backward-kill-word
+bindkey -v '^K' vi-kill-eol
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
