@@ -16,24 +16,16 @@ EndSection
 Section "Monitor"
 	Identifier  "left-monitor"
 	Option	    "DPMS" "true"
-	Option	    "PreferredMode" "1280x1024"
-	Option	    "TargetRefresh" "60"
-	Option	    "Rotate" "normal"
 EndSection
 
 Section "Monitor"
 	Identifier  "middle-monitor"
 	Option	    "DPMS" "true"
-	Option	    "PreferredMode" "1920x1080"
-	Option	    "TargetRefresh" "60"
 EndSection
 
 Section "Monitor"
 	Identifier  "right-monitor"
 	Option	    "DPMS" "true"
-	Option	    "PreferredMode" "1280x1024"
-	Option	    "TargetRefresh" "60"
-	Option	    "Rotate" "normal"
 EndSection
 
 Section "Device"
