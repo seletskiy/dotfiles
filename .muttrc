@@ -13,6 +13,7 @@ set metoo
 set alias_file=~/.mutt/aliases
 set certificate_file=~/.mutt/certificates
 set header_cache=~/.mutt/header_cache
+set pager_stop=yes
 
 unset imap_passive
 
