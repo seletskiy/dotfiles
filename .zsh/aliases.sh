@@ -22,6 +22,9 @@ alias gstd='git stash -u && git stash drop'
 
 alias -g L='| less'
 alias -g G='| grep'
+alias -g T='| tail'
+alias -g N1='| tail -n1'
+alias -g X='| xclip'
 
 alias w1='watch -n1 '
 alias sctl='sudo systemctl'

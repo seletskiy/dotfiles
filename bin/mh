@@ -1,0 +1,13 @@
+#!/bin/bash
+
+full=
+if [ "$1" == "-f" ]; then
+    full=x
+    shift
+fi
+
+if [ "$full" == "x" ]; then
+    cat ~/.mcabber/histo/$1*
+else
+    cat ~/.mcabber/histo/$1* | cut -d' ' -f4-
+fi | head -n-2
