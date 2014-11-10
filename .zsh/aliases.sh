@@ -28,7 +28,6 @@ alias sctl='sudo systemctl'
 
 alias vim='vim --servername vim'
 
-
 export KEYTIMEOUT=1
 bindkey -v
 
@@ -46,6 +45,7 @@ bindkey -v '^?' backward-delete-char
 bindkey -v '^H' backward-delete-char
 bindkey -v '^W' backward-kill-word
 bindkey -v '^K' vi-kill-eol
+bindkey -a '^[' vi-insert
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
