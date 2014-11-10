@@ -63,3 +63,7 @@
 -        https://aur.archlinux.org/packages/oh-my-zsh-git/
 
 -        mcabber
+
+work   ! $ mkdir -p ~/public/
+work   ! $ sudo systemctl enable my-http-share
+work   ! $ sudo systemctl start my-http-share

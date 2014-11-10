@@ -133,6 +133,7 @@ bindsym --release Print exec screenshot
 bindsym --release Shift+Print exec screenshot border
 bindsym --release Ctrl+Print exec screenshot delayed
 bindsym --release $mod+Print exec screenshot select
+bindsym --release Ctrl+Shift+Print exec screenshot public
 
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
