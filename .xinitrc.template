@@ -15,4 +15,4 @@ background {{BACKGROUND}}
 export BACKGROUND=$(background)
 syndaemon -dtki 2
 chrome-editor sh -c 'i3-msg "workspace 2" && vim --remote-tab-wait $0 && i3-msg "workspace 2"' &
-exec i3 --force-xinerama -V
+exec i3
