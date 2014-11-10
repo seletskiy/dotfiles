@@ -10,4 +10,4 @@ if [ "$full" == "x" ]; then
     cat ~/.mcabber/histo/$1*
 else
     cat ~/.mcabber/histo/$1* | cut -d' ' -f4-
-fi | head -n-2
+fi
