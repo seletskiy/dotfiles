@@ -48,6 +48,8 @@ bindkey -v '^?' backward-delete-char
 bindkey -v '^H' backward-delete-char
 bindkey -v '^W' backward-kill-word
 bindkey -v '^K' vi-kill-eol
+bindkey -v '^[[Z' reverse-menu-complete
+
 bindkey -a '^[' vi-insert
 
 zle -N prepend-sudo prepend_sudo
