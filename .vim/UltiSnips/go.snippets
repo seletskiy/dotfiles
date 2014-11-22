@@ -46,26 +46,26 @@ if $1 {
 }
 endsnippet
 
-snippet ifer "if err != nil"
+snippet q "if err != nil"
 if err != nil {
 	return err
 }
 endsnippet
 
-snippet if2er "if err != nil"
+snippet qq "if err != nil"
 if err != nil {
 	return ${1:nil}, err
 }
 endsnippet
 
 
-snippet iferp "if err != nil panic"
+snippet qp "if err != nil panic"
 if err != nil {
 	panic(err)
 }
 endsnippet
 
-snippet ifn "if ... == nil"
+snippet qn "if ... == nil"
 if ${1:value} == nil {
 	${0:${VISUAL}}
 }
@@ -258,11 +258,18 @@ snippet := "blah, err := "
 ${1:data}, err := 
 endsnippet
 
-snippet iferf
+snippet qt
 if err != nil {
 	t.Fatal(err)
 }
 endsnippet
+
+snippet qf
+if err != nil {
+	log.Fatalf(\`$1: %s\`, $2, err)
+}
+endsnippet
+
 
 snippet fweb "web handler"
 func ${1:HandleSmthing}(w http.ResponseWriter, req *http.Request) {
