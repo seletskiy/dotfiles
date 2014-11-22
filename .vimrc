@@ -8,7 +8,6 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'nevar/revim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Gundo'
-"Bundle 'L9'
 Bundle 'dahu/SearchParty'
 Bundle 'matchit.zip'
 Bundle 'scrooloose/nerdcommenter'
@@ -16,7 +15,6 @@ Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'git@github.com:seletskiy/vim-refugi'
 Bundle 'wojtekmach/vim-rename'
 Bundle 'repeat.vim'
-"Bundle 'git@github.com:seletskiy/vim-colors-solarized'
 Bundle 'junegunn/seoul256.vim'
 Bundle 'surround.vim'
 Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
@@ -29,7 +27,6 @@ Bundle 'SirVer/ultisnips'
 Bundle 'epmatsw/ag.vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'lyokha/vim-xkbswitch'
-"Bundle 'scrooloose/syntastic'
 Bundle 'kristijanhusak/vim-multiple-cursors'
 Bundle 'fatih/vim-go'
 Bundle 'kshenoy/vim-signature'
@@ -41,6 +38,7 @@ Bundle 'cespare/vim-toml'
 Bundle 'osyo-manga/vim-over'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'inkarkat/argtextobj.vim'
+Bundle 'SchwarzeSonne/ash.vim'
 
 syntax on
 filetype plugin on
@@ -50,7 +48,7 @@ filetype indent on
 set rtp-=~/.vim
 set rtp^=~/.vim
 
-source ~/.vim/bundle/vim-go/autoload/go/doc.vim
+source ~/.vim/bundle/vim-go/ftplugin/go/doc.vim
 
 set encoding=utf-8
 set printencoding=cp1251
@@ -131,7 +129,7 @@ call unite#custom#default_action(
 
 call unite#filters#sorter_default#use(['sorter_selecta'])
 
-let delimitMate_expand_cr = 2
+let delimitMate_expand_cr = 1
 
 function! s:unite_my_settings()
     imap <buffer> <C-R> <Plug>(unite_redraw)
@@ -147,8 +145,8 @@ imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
 map <C-Y> :Unite -hide-source-names history/yank<CR>
 map <C-U> :Unite -hide-source-names file_rec/async buffer<CR>
-map <Esc>g :Unite -hide-source-names grep:.<CR>
-map <Esc>c :Unite -hide-source-names directory:~/sources/<CR>
+map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
+map <C-E><C-E> :Unite -hide-source-names directory:~/sources/<CR>
 
 let g:unite_source_grep_max_candidates = 200
 
@@ -194,6 +192,7 @@ inoremap jj <ESC>
 nnoremap j gj
 nnoremap k gk
 
+inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 nmap <F2> :w<CR>
 imap <F2> <ESC><F2>
@@ -210,13 +209,18 @@ nmap <silent> <Leader><Leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHi
 
 map - <Plug>(easymotion-prefix)
 
-nnoremap H :OverCommandLine<cr>%s/\v
-vnoremap H :OverCommandLine<cr>s/\v
+nnoremap H :OverCommandLine %s/\v<CR>
+vnoremap H :OverCommandLine s/\v<CR>
+
+map L <Leader>*:OverCommandLine %s//<CR>
 
 nnoremap / :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>/\v
 nnoremap ? :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>?\v
 
 inoremap <expr> <C-O> (pumvisible() ? feedkeys("\<C-N>") : feedkeys("\<C-O>", 'n')) ? '' : ''
+
+map <C-E><C-A> :Unite ash_inbox<CR>
+map <C-E><C-R> :UniteResume<CR>
 
 map dsf dt(ds)
 
@@ -379,6 +383,7 @@ fun! s:ApplyColorscheme()
     hi SPM4 ctermbg=4 ctermfg=7
     hi SPM5 ctermbg=5 ctermfg=7
     hi SPM6 ctermbg=6 ctermfg=7
+    hi PmenuSel ctermbg=136 ctermfg=15
 
     " disable weird standout mode
     hi ErrorMsg term=none
