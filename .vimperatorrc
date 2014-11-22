@@ -14,6 +14,8 @@ set gui=none
 nnoremap j 5j
 nnoremap k 5k
 
+map s :tabopen t<space>
+
 source! /home/s.seletskiy/.vimperatorrc.local
 
 " vim: set ft=vimperator:
