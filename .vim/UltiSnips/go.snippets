@@ -5,7 +5,7 @@ func ${1:FuncName}($2)${3: }{
 endsnippet
 
 snippet tf "func (type)"
-func (${1/^\*?(.).*/\l$1/} ${1:Type}) ${2:FuncName}($3)${4: }{
+func (${1/.*([A-Z0-9]|\W)([a-z0-9]+([A-Z0-9]|$))/\l$1$2/} ${1:Type}) ${2:FuncName}($3)${4: }{
 	$0
 }
 endsnippet
@@ -275,4 +275,12 @@ snippet fweb "web handler"
 func ${1:HandleSmthing}(w http.ResponseWriter, req *http.Request) {
 	$0
 }
+endsnippet
+
+snippet rt "return true"
+return true
+endsnippet
+
+snippet rf "return false"
+return false
 endsnippet
