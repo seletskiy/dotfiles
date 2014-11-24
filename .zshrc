@@ -17,6 +17,7 @@ source $ZSH/oh-my-zsh.sh
 
 unsetopt correct
 unsetopt correct_all
+unsetopt extended_glob
 
 source ~/.zprofile
 
