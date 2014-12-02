@@ -122,6 +122,8 @@ let g:unite_source_history_yank_enable = 1
 let g:unite_enable_start_insert = 1
 let g:unite_source_history_yank_file = $HOME.'/.vim/yankring.txt'
 
+let g:go_snippet_engine = 'skip'
+
 let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
 let g:UltiSnipsDisableSnipMate = 1
 
