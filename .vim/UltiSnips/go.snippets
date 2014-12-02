@@ -1,4 +1,4 @@
-snippet f "func"
+snippet fn "func"
 func ${1:FuncName}($2)${3: }{
 	$0
 }
@@ -46,6 +46,12 @@ if $1 {
 }
 endsnippet
 
+snippet ii "if <VISUAL>"
+if ${VISUAL} {
+	$0
+}
+endsnippet
+
 snippet q "if err != nil"
 if err != nil {
 	return err
@@ -90,10 +96,6 @@ snippet e "else" w
  else {
 	${0:${VISUAL}}
 }
-endsnippet
-
-snippet stat "temp snippet"
-actual := (Status{Severity: $1, Message: \`${2:blah}\`}).String()$0
 endsnippet
 
 snippet ci "const iota"
@@ -162,7 +164,7 @@ case ${1}:
 }
 endsnippet
 
-snippet fr "for range"
+snippet f "for range"
 for ${1:_}, ${2:val} := range ${3:Slice} {
 	${0:${VISUAL}}
 }
@@ -254,9 +256,14 @@ for {
 }
 endsnippet
 
-snippet := "blah, err := "
+snippet ae "blah, err := "
 ${1:data}, err := 
 endsnippet
+
+snippet a "blah := "
+${1:data} := 
+endsnippet
+
 
 snippet qt
 if err != nil {
@@ -283,4 +290,22 @@ endsnippet
 
 snippet rf "return false"
 return false
+endsnippet
+
+snippet d "func"
+func (`!v matchlist(getline(search('\v^func \(([^)]+)\)', 'bn')), '\v^func \(([^)]+)\)')[1]`) $1($2)${3: }{
+	$0
+}
+endsnippet
+
+snippet re "return errors.New"
+return errors.New($1)
+endsnippet
+
+snippet y "error"
+error
+endsnippet
+
+snippet lf "log.Printf"
+log.Printf($1)
 endsnippet
