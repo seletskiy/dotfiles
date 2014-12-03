@@ -88,14 +88,14 @@ bindsym $mod+s workspace s
 bindsym $mod+d workspace d
 
 workspace 1 output xinerama-0
-workspace 2 output xinerama-2
-workspace 3 output xinerama-1
+workspace 2 output xinerama-1
+workspace 3 output xinerama-2
 workspace q output xinerama-0
-workspace w output xinerama-2
-workspace e output xinerama-1
+workspace w output xinerama-1
+workspace e output xinerama-2
 workspace a output xinerama-0
-workspace s output xinerama-2
-workspace d output xinerama-1
+workspace s output xinerama-1
+workspace d output xinerama-2
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
