@@ -7,8 +7,8 @@ set color_msghl        = 2
 set color_bgstatus     = 235
 set color_status       = 9
 set color_roster       = 240
-set color_bgrostersel  = 89
-set color_rostersel    = 7
+set color_bgrostersel  = 136
+set color_rostersel    = 16
 set color_rosterselmsg = bright7
 set color_rosternewmsg = bright7
 
