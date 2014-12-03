@@ -1,7 +1,8 @@
-unalias _
+unalias -m '*'
 
 alias ssh='TERM=xterm ssh'
 
+alias ga='git add'
 alias gdc='git diff --cached'
 alias gs='git status -s'
 alias gl='git log --oneline --graph --decorate --all'
@@ -105,4 +106,11 @@ function git-clone-me() {
     reponame="$1" ; shift
 
     git clone gh:seletskiy/$reponame "${@}"
+}
+
+alias grem='git-remote-add-me'
+function git-remote-add-me() {
+    reponame="$1"; shift
+
+    git remote add seletskiy gh:seletskiy/$reponame "${@}"
 }

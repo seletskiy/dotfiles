@@ -1,0 +1,19 @@
+fpath=(~/.zprezto/modules/prompt/functions/ $fpath)
+
+zstyle ':prezto:*:*' color 'yes'
+
+zstyle ':prezto:load' pmodule \
+    'environment' \
+    'terminal' \
+    'editor' \
+    'history' \
+    'directory' \
+    'spectrum' \
+    'utility' \
+    'completion' \
+    'prompt' \
+    'history-substring-search' \
+    'git'
+
+zstyle ':prezto:module:editor' key-bindings 'vi'
+zstyle ':prezto:module:prompt' theme 'lambda17' {{FG_COLOR}} {{BG_COLOR}} {{LAMBDA}}
