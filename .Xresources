@@ -20,3 +20,4 @@ URxvt.keysym.M-slash: perl:aAtt:WORD-complete
 URxvt.keysym.M-question: perl:aAtt:skeleton-complete
 URxvt.chdir: /home/s.seletskiy/
 URxvt.pointerBlank: true
+URxvt.buffered: false
