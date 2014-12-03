@@ -78,6 +78,7 @@ set updatetime=150
 set showtabline=0
 set cino=(s,m1,+0
 set comments-=mb:*
+set lazyredraw
 
 " autocomplete list numbers
 " autoinsert comment Leader
@@ -391,6 +392,7 @@ fun! s:ApplyColorscheme()
     hi SPM5 ctermbg=5 ctermfg=7
     hi SPM6 ctermbg=6 ctermfg=7
     hi PmenuSel ctermbg=136 ctermfg=15
+    hi VertSplit cterm=none ctermbg=none ctermfg=16
 
     " disable weird standout mode
     hi ErrorMsg term=none
