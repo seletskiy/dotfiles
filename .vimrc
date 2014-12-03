@@ -133,11 +133,14 @@ call unite#custom#default_action(
 
 call unite#filters#sorter_default#use(['sorter_selecta'])
 
+"call unite#custom#action('ash_review', 'split', unite#get_kinds('ash_review').action_table.open)
+
 let delimitMate_expand_cr = 1
 
 function! s:unite_my_settings()
     imap <buffer> <C-R> <Plug>(unite_redraw)
     imap <silent><buffer><expr> <C-T> unite#do_action('split')
+    call unite#custom#alias('ash_review', 'split', 'ls')
 endfunction
 
 " Ctrl+Backspace
