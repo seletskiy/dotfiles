@@ -1,3 +1,6 @@
+# why load all that silly prompt themes I'll never use?
+fpath=($(xargs -n1 echo <<< "$fpath" | grep -iv /prompt))
+
 fpath=(~/.zprezto/modules/prompt/functions/ $fpath)
 
 zstyle ':prezto:*:*' color 'yes'
@@ -8,12 +11,13 @@ zstyle ':prezto:load' pmodule \
     'editor' \
     'history' \
     'directory' \
-    'spectrum' \
-    'utility' \
     'completion' \
-    'prompt' \
     'history-substring-search' \
     'git'
 
 zstyle ':prezto:module:editor' key-bindings 'vi'
-zstyle ':prezto:module:prompt' theme 'lambda17' {{FG_COLOR}} {{BG_COLOR}} {{LAMBDA}}
+
+source /usr/share/zsh/functions/Prompts/promptinit
+promptinit
+
+prompt lambda17 {{FG_COLOR}} {{BG_COLOR}} {{LAMBDA}}

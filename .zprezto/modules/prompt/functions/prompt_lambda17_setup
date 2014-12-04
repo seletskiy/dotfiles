@@ -11,6 +11,9 @@ function prompt_lambda17_setup {
     autoload -Uz add-zsh-hook
     add-zsh-hook precmd prompt_lambda17_precmd
 
+    zstyle ':prezto:module:editor:info:keymap:primary' format ' '
+    zstyle ':prezto:module:editor:info:keymap:alternate' format '·'
+
     zstyle ':prezto:module:git:info' verbose 'yes'
     zstyle ':prezto:module:git:info:branch' format '%F{green}%b%f'
     zstyle ':prezto:module:git:info:clean' format ''
@@ -19,19 +22,8 @@ function prompt_lambda17_setup {
         'prompt' ' %F{green}%f$(coalesce "%b" "%p" "%c")${git_info[rprompt]}%s%F{green}%f' \
         'rprompt' '%C%D'
 
-    PROMPT='%B%F{'$1'}%K{'$2'}${lambda_wrap}'$3'${lambda_wrap}%k%f %~%b${(e)git_info[prompt]} '
+    PROMPT='%B%F{'$1'}%K{'$2'}${editor_info[keymap]}'$3'${editor_info[keymap]}%k%f %~%b${(e)git_info[prompt]} '
     RPROMPT=''
-}
-
-function zle-line-init zle-keymap-select {
-    typeset -g lambda_wrap
-    if [[ $KEYMAP == "vicmd" ]]; then
-        lambda_wrap="·"
-    else
-        lambda_wrap=" "
-    fi
-
-    zle reset-prompt
 }
 
 prompt_lambda17_setup "$@"
