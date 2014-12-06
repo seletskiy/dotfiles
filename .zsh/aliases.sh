@@ -1,7 +1,10 @@
 unalias -m '*'
 
-alias ssh='TERM=xterm ssh'
+#alias ssh='TERM=xterm ssh'
 
+alias l='ls'
+alias ls='ls --color=always'
+alias gd='git diff'
 alias ga='git add'
 alias gdc='git diff --cached'
 alias gs='git status -s'
