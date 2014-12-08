@@ -4,6 +4,7 @@ unalias -m '*'
 
 alias l='ls'
 alias ls='ls --color=always'
+alias g='git'
 alias gd='git diff'
 alias ga='git add'
 alias gdc='git diff --cached'
@@ -53,8 +54,10 @@ bindkey -v '^H' backward-delete-char
 bindkey -v '^W' backward-kill-word
 bindkey -v '^K' vi-kill-eol
 bindkey -v '^[[Z' reverse-menu-complete
+bindkey -v '^[d' delete-word
 
 bindkey -a '^[' vi-insert
+bindkey -a '^[d' delete-word
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
