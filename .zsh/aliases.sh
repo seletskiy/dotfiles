@@ -24,6 +24,8 @@ alias gst='git stash'
 alias grc='git rebase --continue'
 alias gra='git rebase --abort'
 alias gstd='git stash -u && git stash drop'
+alias gco='git checkout'
+alias gb='git branch'
 
 alias -g L='| less'
 alias -g G='| grep'
