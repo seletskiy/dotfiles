@@ -125,7 +125,7 @@ let g:unite_source_history_yank_file = $HOME.'/.vim/yankring.txt'
 let g:go_snippet_engine = 'skip'
 
 let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
-let g:UltiSnipsDisableSnipMate = 1
+let g:UltiSnipsEnableSnipMate = 0
 
 call unite#custom#source(
     \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked',
