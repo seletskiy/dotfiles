@@ -15,6 +15,7 @@ function prompt_lambda17_setup {
     zstyle ':prezto:module:editor:info:keymap:alternate' format '·'
 
     zstyle ':prezto:module:git:info' verbose 'yes'
+    zstyle ':prezto:module:git:info:commit' format '%F{yellow}%.7c%f'
     zstyle ':prezto:module:git:info:branch' format '%F{green}%b%f'
     zstyle ':prezto:module:git:info:clean' format ''
     zstyle ':prezto:module:git:info:dirty' format '%F{red}✗%f'
