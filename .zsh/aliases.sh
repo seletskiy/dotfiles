@@ -26,17 +26,26 @@ alias gra='git rebase --abort'
 alias gstd='git stash -u && git stash drop'
 alias gco='git checkout'
 alias gb='git branch'
+alias grh='git reset HEAD'
+
+alias srm='ssh-keygen -R'
 
 alias -g L='| less'
 alias -g G='| grep'
 alias -g T='| tail'
-alias -g N1='| tail -n1'
+alias -g F='| tail -f'
 alias -g X='| xclip'
+alias -g N1='| tail -n1'
 
 alias w1='watch -n1 '
 alias sctl='sudo systemctl'
 
+alias ipa='ip a'
+
 alias vim='vim --servername vim'
+
+alias d='dirs -v'
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 export KEYTIMEOUT=1
 bindkey -v
