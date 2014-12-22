@@ -1,5 +1,6 @@
 unsetopt correct
 unsetopt correct_all
+unsetopt global_rcs
 
 source ~/.zprofile
 
