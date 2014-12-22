@@ -86,7 +86,7 @@ set lazyredraw
 set formatoptions=qrn1tol
 
 set list
-set lcs=eol:¶,trail:·,tab:\ \ 
+set lcs=eol:¶,trail:·,tab:\ \  " <- trailing space here
 
 let g:go_fmt_command = "goimports"
 let g:go_snippet_engine = "skip"
@@ -143,6 +143,7 @@ let delimitMate_expand_cr = 1
 function! s:unite_my_settings()
     imap <buffer> <C-R> <Plug>(unite_redraw)
     imap <silent><buffer><expr> <C-T> unite#do_action('split')
+    imap <silent><buffer><expr> <C-G> unite#do_action('right')
     call unite#custom#alias('ash_review', 'split', 'ls')
 endfunction
 
@@ -333,7 +334,7 @@ augroup fix_signcolumn
     "au BufEnter * execute 'sign place 10000 line=1 name=dummy buffer=' . bufnr('')
 augroup end
 
-com! BufWipe tabo <bar> silent! %bw <bar> enew!
+com! BufWipe exe '1,'.bufnr('$').'bd'
 
 com! StartNoting call g:StartNoting()
 
@@ -364,7 +365,9 @@ fun! g:LightRoom()
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=254 cterm=none term=none
     hi IncSearch cterm=none ctermfg=238 ctermbg=220
-    hi Cursor ctermbg=0
+
+    hi Cursor ctermbg=0 ctermfg=15
+    hi PmenuSel ctermbg=136 ctermfg=15 cterm=bold
 endfun
 
 fun! g:DarkRoom()
@@ -379,7 +382,9 @@ fun! g:DarkRoom()
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=235 cterm=none term=none
     hi IncSearch cterm=none ctermfg=238 ctermbg=220
-    hi Cursor ctermbg=15
+
+    hi Cursor ctermbg=15 ctermfg=0
+    hi PmenuSel ctermbg=136 ctermfg=16 cterm=bold
 endfun
 
 fun! s:ApplyColorscheme()
@@ -393,7 +398,6 @@ fun! s:ApplyColorscheme()
     hi SPM4 ctermbg=4 ctermfg=7
     hi SPM5 ctermbg=5 ctermfg=7
     hi SPM6 ctermbg=6 ctermfg=7
-    hi PmenuSel ctermbg=136 ctermfg=15
     hi VertSplit cterm=none ctermbg=none ctermfg=16
 
     " disable weird standout mode
