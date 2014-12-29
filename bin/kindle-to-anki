@@ -7,7 +7,7 @@ sudo mount $PARTITION $TMP
 
 notify-send "kindle: starting words sync"
 
-count=$(kindle-filter-words "$TMP/documents/My Clippings.txt" \
+count=$(kindle-vocab-words "$TMP/system/vocabulary/vocab.db" \
 	| tac \
 	| runki -s --cut 10 \
 	| wc -l)
