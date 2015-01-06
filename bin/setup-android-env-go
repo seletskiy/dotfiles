@@ -1,0 +1,34 @@
+#!/bin/bash
+
+PLAYGROUND_DIR=$HOME/playground/android/
+
+# use like this:
+# $ cd ~/playground/android/go-mobile/example/libhello
+# $ setup-android-env-go ./all.bash
+
+# https://aur.archlinux.org/packages/android-ndk
+export NDK=/opt/android-ndk
+export PATH=$NDK:$PATH
+
+# $NDK/build/tools/make-standalone-toolchain.sh \
+#   --platform=android-15 \
+#   --arch=arm \
+#   --install-dir=$HOME/android/ndk-toolchain
+export NDK_ROOT=$PLAYGROUND_DIR/ndk-toolchain/
+
+# https://aur.archlinux.org/packages/go-android/
+export GOROOT=/usr/lib/go-android/
+export PATH=$GOROOT/bin:$PATH
+
+# https://aur.archlinux.org/packages/android-sdk/
+export ANDROID_HOME=/opt/android-sdk
+
+export CGO_ENABLED=1
+export GOOS=android
+export GOARCH=arm
+export GOARM=7
+export CC=$NDK_ROOT/bin/arm-linux-androideabi-gcc
+
+export GOPATH=$PLAYGROUND_DIR/go-mobile/
+
+"${@}"
