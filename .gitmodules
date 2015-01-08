@@ -1,0 +1,3 @@
+[submodule ".fonts"]
+	path = .fonts
+	url = github.com:seletskiy/monaco-font
