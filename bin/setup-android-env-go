@@ -29,8 +29,6 @@ export GOARCH=arm
 export GOARM=7
 export CC=$NDK_ROOT/bin/arm-linux-androideabi-gcc
 
-export GOPATH=$PLAYGROUND_DIR/go-mobile/
-
 export PATH=$GOROOT/pkg/tool/linux_amd64/:$PATH
 
 "${@}"
