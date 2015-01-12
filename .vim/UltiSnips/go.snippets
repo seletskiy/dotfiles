@@ -1,17 +1,16 @@
-snippet fn "func"
-func ${1:FuncName}($2)${3: }{
-	$0
-}
-endsnippet
+global !p
+# see ~/.vim/pythonx/go_snippets.py
+from go_snippets import *
+endglobal
 
-snippet tf "func (type)"
-func (${1/.*([A-Z0-9]|\W)([a-z0-9]+([A-Z0-9]|$))/\l$1$2/} ${1:Type}) ${2:FuncName}($3)${4: }{
+snippet n "func"
+func $1($2) $3${3/.+/ /}{
 	$0
 }
 endsnippet
 
 snippet s "type struct"
-type ${1:TypeName} struct {
+type $1 struct {
 	$0
 }
 endsnippet
@@ -21,23 +20,19 @@ type ${1:TypeName} ${2:description}
 endsnippet
 
 snippet p "package"
-package ${1:`!v expand('%:p:h:t')`}
+package ${1:`!p snip.rv=go_guess_package_name_from_file_name(snip.fn)`}
 endsnippet
 
 snippet te "func Test"
-func Test${1:FuncName}(t *testing.T) {
+func Test$1(t *testing.T) {
 	$0
 }
 endsnippet
 
 snippet ti "interface"
-type ${1:SmthDoer} interface {
+type $1 interface {
 	$0
 }
-endsnippet
-
-snippet todo "@TODO"
-// @TODO $0
 endsnippet
 
 snippet i "if "
@@ -82,7 +77,7 @@ return $0
 endsnippet
 
 snippet fs "... string" i
-${1:Name} string$0
+$1 string$0
 endsnippet
 
 snippet exp "test expected"
@@ -112,14 +107,9 @@ struct {
 }
 endsnippet
 
-global !p
-def to_undercase(name):
-	s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-	return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
-endglobal
-
 snippet "((\w+)\s*(\w+)) js$" "json annotation" br
-`!p snip.rv=match.group(1)` \`json:"`!p snip.rv=to_undercase(match.group(2))`"\`
+`!p snip.rv=match.group(1)` \`json:"`!p
+	snip.rv=go_convert_camelcase_to_snakecase(match.group(2))`"\`
 endsnippet
 
 snippet fm "func main"
@@ -277,7 +267,6 @@ if err != nil {
 }
 endsnippet
 
-
 snippet fweb "web handler"
 func ${1:HandleSmthing}(w http.ResponseWriter, req *http.Request) {
 	$0
@@ -292,8 +281,14 @@ snippet rf "return false"
 return false
 endsnippet
 
-snippet d "func"
-func (`!v matchlist(getline(search('\v^func \(([^)]+)\)', 'bn')), '\v^func \(([^)]+)\)')[1]`) $1($2)${3: }{
+snippet d "define method"
+func (`!p snip.rv=' '.join(go_extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
+	$0
+}
+endsnippet
+
+snippet dp "define method on pointer"
+func (`!p snip.rv=' *'.join(go_extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
 	$0
 }
 endsnippet
