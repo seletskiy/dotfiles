@@ -1,48 +1,55 @@
 set nocompatible
 
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !mkdir -p ~/.vim/autoload
+    silent !curl -fLo ~/.vim/autoload/plug.vim
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall
+endif
 
-Bundle 'gmarik/vundle'
-Bundle 'Raimondi/delimitMate'
-Bundle 'nevar/revim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'Gundo'
-Bundle 'dahu/SearchParty'
-Bundle 'matchit.zip'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'git@github.com:seletskiy/vim-refugi'
-Bundle 'wojtekmach/vim-rename'
-Bundle 'repeat.vim'
-Bundle 'junegunn/seoul256.vim'
-Bundle 'surround.vim'
-Bundle 'git@github.com:seletskiy/nginx-vim-syntax'
-Bundle 'PHP-correct-Indenting'
-Bundle 'Shougo/unite.vim'
-Bundle 'Shougo/vimproc'
-Bundle 'yuku-t/unite-git'
-Bundle 'bling/vim-airline'
-Bundle 'SirVer/ultisnips'
-Bundle 'epmatsw/ag.vim'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'lyokha/vim-xkbswitch'
-Bundle 'kristijanhusak/vim-multiple-cursors'
-Bundle 'fatih/vim-go'
-Bundle 'kshenoy/vim-signature'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-notes'
-Bundle 'cespare/vim-toml'
-Bundle 'osyo-manga/vim-over'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'inkarkat/argtextobj.vim'
-Bundle 'SchwarzeSonne/ash.vim'
+call plug#begin('~/.vim/bundle')
+
+Plug 'Raimondi/delimitMate'
+Plug 'nevar/revim', { 'for': 'erlang' }
+Plug 'tpope/vim-fugitive'
+Plug 'Gundo'
+Plug 'dahu/SearchParty'
+Plug 'edsono/vim-matchit', { 'for': 'html' }
+Plug 'scrooloose/nerdcommenter'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'git@github.com:seletskiy/vim-refugi'
+Plug 'wojtekmach/vim-rename', { 'on': 'Rename' }
+Plug 'repeat.vim'
+Plug 'junegunn/seoul256.vim'
+Plug 'surround.vim'
+Plug 'git@github.com:seletskiy/nginx-vim-syntax'
+Plug 'PHP-correct-Indenting', { 'for': 'php' }
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimproc'
+Plug 'yuku-t/unite-git'
+Plug 'bling/vim-airline'
+Plug 'SirVer/ultisnips'
+Plug 'epmatsw/ag.vim'
+Plug 'Valloric/YouCompleteMe'
+Plug 'lyokha/vim-xkbswitch'
+Plug 'kristijanhusak/vim-multiple-cursors'
+Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'kshenoy/vim-signature'
+Plug 'vim-ruby/vim-ruby'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-notes'
+Plug 'cespare/vim-toml'
+Plug 'osyo-manga/vim-over', { 'on': 'OverCommandLine' }
+Plug 'Lokaltog/vim-easymotion'
+Plug 'inkarkat/argtextobj.vim'
+Plug 'SchwarzeSonne/ash.vim'
 
 syntax on
 filetype plugin on
 filetype indent on
+
+call plug#end()
 
 " Hack to ensure, that ~/.vim is looked first
 set rtp-=~/.vim
