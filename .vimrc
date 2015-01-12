@@ -253,8 +253,7 @@ augroup end
 
 augroup syntax_hacks
     au!
-    au FileType diff syn match DiffComment "^#.*"
-    au FileType diff syn match DiffCommentIgnore "^###.*"
+    au FileType diff set nolist
     au FileType diff call g:ApplySyntaxForDiffComments()
 augroup end
 
@@ -454,6 +453,16 @@ else
 endif
 
 fun! g:ApplySyntaxForDiffComments()
+    syn match DiffCommentIgnore "^###.*" containedin=ALL
+    syn match DiffComment "^#.*" containedin=ALL
+    syn match DiffComment "^---.*" containedin=ALL
+    syn match DiffComment "^+++.*" containedin=ALL
+    syn match DiffComment "^@@ .*" containedin=ALL
+    syn match DiffAdded "^+" containedin=ALL
+    syn match DiffRemoved "^-" containedin=ALL
+    syn match DiffContext "^ " containedin=ALL
+
+
     if &background == 'light'
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
         hi DiffComment ctermfg=16 ctermbg=254
@@ -461,4 +470,8 @@ fun! g:ApplySyntaxForDiffComments()
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
         hi DiffComment ctermfg=15 ctermbg=237
     endif
+
+    hi DiffAdded ctermbg=192 ctermfg=123 cterm=bold
+    hi DiffRemoved ctermbg=216 ctermfg=146 cterm=bold
+    hi DiffContext ctermbg=253 ctermfg=253
 endfun
