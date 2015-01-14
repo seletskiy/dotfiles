@@ -1,4 +1,5 @@
 *.swp
+*.pyc
 .i3/config
 .mutt/aliases
 prefs.js
