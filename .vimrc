@@ -122,6 +122,7 @@ let g:Powerline_symbols = 'fancy'
 let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
 let g:ycm_allow_changing_updatetime = 0
 let g:ycm_confirm_extra_conf = 1
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 
 let g:surround_102 = "\1function: \1(\r)"
 let html_no_rendering=1
