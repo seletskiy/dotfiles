@@ -13,11 +13,7 @@ import os
 # `func (someName SomeDataType)` -> `('someName', 'SomeDataType').
 # `type SomeData struct {` -> `('data', 'SomeData').
 def go_extract_prev_method_binding_for_cursor():
-    cursor = vim.current.window.cursor
-    line_number = cursor[0]
-    buffer = vim.current.buffer
-
-    search_space = '\n'.join(buffer[:line_number-1])
+    search_space = _go_get_buffer_before_cursor()
 
     def extract_from_type_definition():
         matches = re.findall(r'(?m)^type (\w+) ', search_space)
@@ -51,3 +47,17 @@ def go_guess_package_name_from_file_name(path):
         return basename
     else:
         return 'main'
+
+def go_get_previous_slice_usage():
+    search_space = _go_get_buffer_before_cursor()
+    matches = re.findall(r'(\w+)\[', search_space)
+    if matches:
+        return matches[-1]
+    return ""
+
+def _go_get_buffer_before_cursor():
+    cursor = vim.current.window.cursor
+    line_number = cursor[0]
+    buffer = vim.current.buffer
+
+    return '\n'.join(buffer[:line_number-1])
