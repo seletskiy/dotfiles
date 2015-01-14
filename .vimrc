@@ -166,6 +166,7 @@ map <C-P> :Unite -hide-source-names buffer git_cached git_untracked<CR>
 map <C-Y> :Unite -hide-source-names history/yank<CR>
 map <C-U> :Unite -hide-source-names buffer file_rec/async<CR>
 map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
+map <C-E><C-H> <Leader>*:exec "Unite -hide-source-names grep:.::".substitute(@/, "\\\\<\\(.*\\)\\\\>", "\\1", "")."(?=\\\\W)"<CR>
 map <C-E><C-E> :Unite -hide-source-names directory:~/sources/<CR>
 map <C-E><C-A> :Unite ash_inbox<CR>
 map <C-E><C-R> :UniteResume<CR>
