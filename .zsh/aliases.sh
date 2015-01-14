@@ -36,6 +36,7 @@ alias -g T='| tail'
 alias -g F='| tail -f'
 alias -g X='| xclip'
 alias -g N1='| tail -n1'
+alias -g R='| xargs -n1'
 
 alias w1='watch -n1 '
 alias sctl='sudo systemctl'
