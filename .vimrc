@@ -166,6 +166,8 @@ map <C-U> :Unite -hide-source-names buffer file_rec/async<CR>
 map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
 map <C-E><C-E> :Unite -hide-source-names directory:~/sources/<CR>
 
+map <C-G><C-G> :Gstatus<CR>
+
 let g:unite_source_grep_max_candidates = 200
 
 let g:unite_source_grep_command = 'ag'
