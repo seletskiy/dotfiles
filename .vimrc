@@ -135,7 +135,7 @@ let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
 let g:UltiSnipsEnableSnipMate = 0
 
 call unite#custom#source(
-    \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked',
+    \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked,directory',
     \ 'matchers', 'matcher_fuzzy')
 
 call unite#custom#default_action(
@@ -160,9 +160,9 @@ cmap <Esc>d <S-Right><C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
 
-map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
+map <C-P> :Unite -hide-source-names buffer git_cached git_untracked<CR>
 map <C-Y> :Unite -hide-source-names history/yank<CR>
-map <C-U> :Unite -hide-source-names file_rec/async buffer<CR>
+map <C-U> :Unite -hide-source-names buffer file_rec/async<CR>
 map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
 map <C-E><C-E> :Unite -hide-source-names directory:~/sources/<CR>
 
