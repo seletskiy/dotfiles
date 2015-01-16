@@ -27,6 +27,7 @@ alias gstd='git stash -u && git stash drop'
 alias gco='git checkout'
 alias gb='git branch'
 alias grh='git reset HEAD'
+alias gi='git add -pi'
 
 alias srm='ssh-keygen -R'
 
