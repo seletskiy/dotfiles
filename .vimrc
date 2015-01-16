@@ -174,6 +174,8 @@ let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden'
 let g:unite_source_grep_recursive_opt = ''
 
+let g:EclimCompletionMethod = 'omnifunc'
+
 map <Leader>` :UltiSnipsEdit<CR>G
 vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
 map <Leader>~ :tabnew ~/.vimrc<CR>
@@ -279,10 +281,12 @@ augroup end
 
 augroup skeletons
     au!
+    " refactor with use of snippets
     au BufNewFile *.php exec "normal I<?php\<ESC>2o"
     au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
-    au BufNewFile *.go exec "normal Ipackage \<C-R>=len(systemlist('ls '.expand('%:p:h').'/')) > 0 ? expand('%:p:h:t') : 'main'\<CR>"
     au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
+
+    au BufNewFile *.go call feedkeys("Ip\<TAB>", "")
 augroup end
 
 augroup ft_customization
