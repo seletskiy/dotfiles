@@ -1,3 +1,6 @@
 [submodule ".fonts"]
 	path = .fonts
 	url = github.com:seletskiy/monaco-font
+[submodule "zsh-prompt-lambda17"]
+	path = .zprezto/modules/prompt/functions
+	url = github.com:seletskiy/zsh-prompt-lambda17
