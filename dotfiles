@@ -38,7 +38,6 @@ def main(action, profile)
             placeholder_base = $1
             placeholder_expanded = file_name.sub($2, profile)
         when /^#{placeholder_expanded}$/
-            #install_file(file_name, target_dir + placeholder_base)
             source_type = :file
             target_name = target_dir + placeholder_base
         when /^#{placeholder_base}\./
@@ -77,7 +76,14 @@ end
 def install_file(source, destination)
     destination, rootfs = remove_rootfs_prefix(destination)
 
-    ensure_dir(destination)
+    # if source is actually a submodule (indistinguishable in git ls-files)
+    if File.exist?(source + "/.git")
+        if File.exist?(destination)
+            if File.realpath(source) == File.realpath(destination)
+                return
+            end
+        end
+    end
 
     if File.exist?(destination) && FileUtils.identical?(source, destination)
         return
