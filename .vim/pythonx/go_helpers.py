@@ -55,6 +55,20 @@ def go_get_previous_slice_usage():
         return matches[-1]
     return ""
 
+def go_split_parenthesis():
+    line_number, column_number = vim.current.window.cursor
+    buffer = vim.current.buffer
+    line = buffer[line_number-1]
+    first_parenthesis = line.find('(')
+    last_parenthesis = line.rfind(')')
+    indent = len(line) - len(line.lstrip("\t"))
+    buffer[line_number:line_number]= [
+        "\t" * (indent + 1) + line[first_parenthesis+1:last_parenthesis] + ",",
+        "\t" * indent + line[last_parenthesis:],
+        "",
+    ]
+    buffer[line_number-1] = line[:first_parenthesis+1]
+
 def _go_get_buffer_before_cursor():
     cursor = vim.current.window.cursor
     line_number = cursor[0]

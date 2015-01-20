@@ -307,6 +307,7 @@ augroup go_src
     au FileType go nmap <Leader>r <Plug>(go-run)
     au FileType go map <Leader>t <Plug>(go-test)
     au FileType go map <Leader>b <Plug>(go-build)
+    au FileType go map <Leader>s :py import go_helpers; go_helpers.go_split_parenthesis()<CR>
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
