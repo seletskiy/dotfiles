@@ -1,0 +1,27 @@
+snippet i "if"
+if ($1) {
+	$0
+}
+endsnippet
+
+snippet v
+Log.v("!!!", String.format("%s", $1));
+endsnippet
+
+snippet t "try"
+try {
+	${0:${VISUAL}}
+} catch(Exception e) {
+	// @TODO
+}
+endsnippet
+
+snippet pr "protected method"
+protected $1 $2($3) {
+	$0
+}
+endsnippet
+
+snippet r "return"
+return 
+endsnippet
