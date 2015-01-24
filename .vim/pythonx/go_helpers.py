@@ -69,6 +69,13 @@ def go_split_parenthesis():
     ]
     buffer[line_number-1] = line[:first_parenthesis+1]
 
+def go_get_previous_declared_var():
+    search_space = _go_get_buffer_before_cursor()
+    matches = re.findall(r'(\w+) :?=', search_space)
+    if matches:
+        return matches[-1]
+    return ""
+
 def _go_get_buffer_before_cursor():
     cursor = vim.current.window.cursor
     line_number = cursor[0]

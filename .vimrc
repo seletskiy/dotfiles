@@ -173,6 +173,8 @@ map <C-E><C-R> :UniteResume<CR>
 
 map <C-G><C-G> :Gstatus<CR>
 
+imap <C-Y> u<TAB>
+
 let g:unite_source_grep_max_candidates = 200
 
 let g:unite_source_grep_command = 'ag'

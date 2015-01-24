@@ -140,14 +140,14 @@ snippet msi "map[string]interface" w
 map[string]interface{}
 endsnippet
 
-snippet sw "switch"
+snippet w "switch"
 switch ${1:name} {
 case ${2:true}:
 	$0
 }
 endsnippet
 
-snippet swt "switch true"
+snippet ww "switch true"
 switch {
 case ${1}:
 	$0
@@ -186,13 +186,17 @@ func($1) $2{
 }
 endsnippet
 
-snippet vr "var"
+snippet v "var ="
+var $1 = $0
+endsnippet
+
+snippet vr "var ("
 var (
-	$0
+	${0:${VISUAL/(?m)^(\s*)var /$1/g}}
 )
 endsnippet
 
-snippet cs "case"
+snippet c "case"
 case $1:
 	$0
 endsnippet
@@ -240,7 +244,7 @@ snippet n, ", nil" i
 nil, 
 endsnippet
 
-snippet frr "forever"
+snippet o "forever"
 for {
 	$1
 }
@@ -315,4 +319,12 @@ endsnippet
 
 snippet w "Description" !b
 var $1 = $2
+endsnippet
+
+snippet co "continue"
+continue
+endsnippet
+
+snippet u "last variable usage" w
+${1:`!p snip.rv=go_get_previous_declared_var()`}
 endsnippet
