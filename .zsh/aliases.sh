@@ -46,7 +46,13 @@ alias ipa='ip a'
 alias vim='vim --servername vim'
 
 alias d='dirs -v'
-for index ({1..9}) alias "$index"="cd +${index}"; unset index
+alias dt='cd ~/sources/dotfiles'
+
+alias p='pacman'
+alias pp='pacman -S'
+
+for index ({1..9}) alias "$index=cd +${index}"; unset index
+for index ({1..9}) alias "$(printf ".%.0s" {1..$index})=cd $(printf "../%.0s" {1..$index})"; unset index
 
 export KEYTIMEOUT=1
 bindkey -v
