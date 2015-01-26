@@ -13,11 +13,12 @@ URxvt.iso14755_52: False
 URxvt.internalBorder: 0
 URxvt.perl-ext-common: -scrollback-selection,url-select,keyboard-select,autocomplete-ALL-the-things
 URxvt.url-select.launcher: i3-sensible-browser
-URxvt.keysym.M-u: perl:url-select:select_next
-URxvt.keysym.M-Escape: perl:keyboard-select:activate
-URxvt.keysym.M-s: perl:keyboard-select:search
-URxvt.keysym.M-slash: perl:aAtt:WORD-complete
-URxvt.keysym.M-question: perl:aAtt:skeleton-complete
+URxvt.keysym.M-u: url-select:select_next
+URxvt.url-select.autocopy: true
+URxvt.keysym.M-Escape: keyboard-select:activate
+URxvt.keysym.M-s: keyboard-select:search
+URxvt.keysym.M-slash: autocomplete-ALL-the-things:WORD-complete
+URxvt.keysym.M-question: autocomplete-ALL-the-things:skeleton-complete
 URxvt.chdir: /home/s.seletskiy/
 URxvt.pointerBlank: true
 URxvt.buffered: false
