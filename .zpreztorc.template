@@ -3,6 +3,9 @@ fpath=($(xargs -n1 echo <<< "$fpath" | grep -iv /prompt))
 
 fpath=(~/.zprezto/modules/prompt/functions/ $fpath)
 
+zstyle ':prezto:*:*' case-sensitive 'yes'
+setopt menu_complete
+
 zstyle ':prezto:*:*' color 'yes'
 
 zstyle ':prezto:load' pmodule \
