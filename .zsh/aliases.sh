@@ -19,6 +19,7 @@ alias gpo='git push origin'
 alias gr='git remote'
 alias gres='git remote set-url'
 alias gpl='git pull --rebase'
+alias gplo='git pull --rebase && git push'
 alias gcl='git clone'
 alias gst='git stash'
 alias grc='git rebase --continue'
@@ -129,8 +130,19 @@ alias gclm='git-clone-me'
 function git-clone-me() {
     reponame="$1" ; shift
 
-    git clone gh:seletskiy/$reponame "${@}"
+    git clone gh:seletskiy/$reponame ~/sources/$1
+    cd ~/sources/$1
 }
+
+alias gclg='git-clone-github'
+function git-clone-github() {
+    reponame="$1" ;
+    dirname="${1:-${reponame#*/}}" && shift 2>/dev/null
+
+    git clone gh:$reponame ~/sources/$dirname
+    cd ~/sources/$dirname
+}
+
 
 alias grem='git-remote-add-me'
 function git-remote-add-me() {
