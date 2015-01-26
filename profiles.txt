@@ -21,7 +21,7 @@
 -      ! $ sudo timedatectl set-timezone Asia/Novosibirsk
 -      ! $ sudo killall -0 ntpd || sudo ntpd -gq
 
--        urxvt-perls
+-        https://aur.archlinux.org/packages/urxvt-perls-git/
 
 -        https://aur.archlinux.org/packages/libgcrypt15/
 -        https://aur.archlinux.org/packages/google-chrome/
