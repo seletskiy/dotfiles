@@ -286,7 +286,7 @@ augroup skeletons
     au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
     au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
 
-    au BufNewFile *.go call feedkeys("Ip\<TAB>", "")
+    au BufNewFile *.go call feedkeys("Ipa\<TAB>", "")
 augroup end
 
 augroup ft_customization

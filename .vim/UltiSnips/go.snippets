@@ -19,7 +19,7 @@ snippet t "type"
 type ${1:TypeName} ${2:description}
 endsnippet
 
-snippet p "package"
+snippet pa "package"
 package ${1:`!p snip.rv=go_guess_package_name_from_file_name(snip.fn)`}
 endsnippet
 
@@ -160,8 +160,8 @@ for ${1:_}, ${2:val} := range ${3:Slice} {
 }
 endsnippet
 
-snippet pr "log.Printf(%#v" i
-log.Printf("%#v", $1)
+snippet p "log.Printf(%#v" i
+log.Printf("`!p snip.rv=path+":"+str(vim.current.window.cursor[0])`%#v", $1)
 endsnippet
 
 snippet play "package main"
