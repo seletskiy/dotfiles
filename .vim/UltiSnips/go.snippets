@@ -5,13 +5,13 @@ endglobal
 
 snippet n "func"
 func $1($2) $3${3/.+/ /}{
-	$0
+	$4
 }
 endsnippet
 
 snippet s "type struct"
 type $1 struct {
-	$0
+	$2
 }
 endsnippet
 
@@ -25,25 +25,25 @@ endsnippet
 
 snippet te "func Test"
 func Test$1(t *testing.T) {
-	$0
+	$2
 }
 endsnippet
 
 snippet ti "interface"
 type $1 interface {
-	$0
+	$2
 }
 endsnippet
 
 snippet i "if "
 if $1 {
-	${0:${VISUAL}}
+	${2:${VISUAL}}
 }
 endsnippet
 
 snippet ii "if <VISUAL>"
 if ${VISUAL} {
-	$0
+	$2
 }
 endsnippet
 
@@ -73,11 +73,11 @@ if ${1:value} == nil {
 endsnippet
 
 snippet r "return"
-return $0
+return 
 endsnippet
 
 snippet fs "... string" i
-$1 string$0
+$1 string
 endsnippet
 
 snippet exp "test expected"
@@ -95,7 +95,7 @@ endsnippet
 
 snippet ci "const iota"
 const (
-	${1:CONSTANT} = iota$0
+	${1:CONSTANT} = iota$2
 )
 endsnippet
 
@@ -103,7 +103,7 @@ snippet ass "anon struct with fields" w
 struct {
 	$1
 }{
-	$0
+	$2
 }
 endsnippet
 
@@ -114,13 +114,13 @@ endsnippet
 
 snippet fm "func main"
 func main() {
-	$0
+	$2
 }
 endsnippet
 
 snippet fas "anon struct"
 ${1:Name} struct {
-	$0
+	$2
 }
 endsnippet
 
@@ -143,14 +143,14 @@ endsnippet
 snippet w "switch"
 switch ${1:name} {
 case ${2:true}:
-	$0
+	$3
 }
 endsnippet
 
 snippet ww "switch true"
 switch {
 case ${1}:
-	$0
+	$1
 }
 endsnippet
 
@@ -160,8 +160,8 @@ for ${1:_}, ${2:val} := range ${3:Slice} {
 }
 endsnippet
 
-snippet p "log.Printf(%#v" i
-log.Printf("`!p snip.rv=path+":"+str(vim.current.window.cursor[0])`%#v", $1)
+snippet p "log.Printf(%#v with filename"  i
+log.Printf("`!p snip.rv=path+":"+str(vim.current.window.cursor[0])` %#v", $1)
 endsnippet
 
 snippet play "package main"
@@ -170,7 +170,7 @@ package main
 import "fmt"
 
 func main() {
-	$0
+	$1
 }
 endsnippet
 
@@ -182,12 +182,12 @@ endsnippet
 
 snippet af "anon func" i
 func($1) $2{
-	${0:${VISUAL}}
+	${3:${VISUAL}}
 }
 endsnippet
 
 snippet v "var ="
-var $1 = $0
+var $1 = 
 endsnippet
 
 snippet vr "var ("
@@ -198,7 +198,7 @@ endsnippet
 
 snippet c "case"
 case $1:
-	$0
+	$2
 endsnippet
 
 snippet rn "return nil"
@@ -232,7 +232,7 @@ endsnippet
 snippet ts "type switch"
 switch ${1:newVar} := ${2:checkVar}.(type) {
 case ${3:Type}:
-	$0
+	$4
 }
 endsnippet
 
@@ -273,7 +273,7 @@ endsnippet
 
 snippet fweb "web handler"
 func ${1:HandleSmthing}(w http.ResponseWriter, req *http.Request) {
-	$0
+	$2
 }
 endsnippet
 
@@ -287,13 +287,13 @@ endsnippet
 
 snippet d "define method"
 func (`!p snip.rv=' '.join(go_extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
-	$0
+	$4
 }
 endsnippet
 
 snippet dp "define method on pointer"
 func (`!p snip.rv=' *'.join(go_extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
-	$0
+	$4
 }
 endsnippet
 
@@ -327,4 +327,10 @@ endsnippet
 
 snippet u "last variable usage" w
 ${1:`!p snip.rv=go_get_previous_declared_var()`}
+endsnippet
+
+snippet L "loc"
+"$1": &Location{
+	$2
+},
 endsnippet
