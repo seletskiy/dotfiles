@@ -71,3 +71,5 @@ work   ! $ sudo systemctl start my-http-share
 -        https://aur.archlinux.org/packages/imgur
 -        https://aur.archlinux.org/packages/eclim/
 -        https://aur.archlinux.org/packages/lsyncd/
+
+-        https://aur.archlinux.org/packages/urxvt-vim-insert/

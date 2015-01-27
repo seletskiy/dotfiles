@@ -11,7 +11,7 @@ URxvt.termName: rxvt-unicode-256color
 URxvt.iso14755: False
 URxvt.iso14755_52: False
 URxvt.internalBorder: 0
-URxvt.perl-ext-common: -scrollback-selection,url-select,keyboard-select,autocomplete-ALL-the-things,fifo
+URxvt.perl-ext-common: -scrollback-selection,url-select,keyboard-select,autocomplete-ALL-the-things,fifo,vim-insert
 URxvt.url-select.launcher: i3-sensible-browser
 URxvt.keysym.M-u: url-select:select_next
 URxvt.url-select.autocopy: true
