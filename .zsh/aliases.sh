@@ -137,8 +137,8 @@ function git-clone-me() {
 
 alias gclg='git-clone-github'
 function git-clone-github() {
-    reponame="$1" ;
-    dirname="${1:-${reponame#*/}}" && shift 2>/dev/null
+    reponame="$1"
+    dirname="${2:-${reponame#*/}}"
 
     git clone gh:$reponame ~/sources/$dirname
     cd ~/sources/$dirname
