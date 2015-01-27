@@ -53,7 +53,10 @@ alias p='pacman'
 alias pp='pacman -S'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
-for index ({1..9}) alias "$(printf ".%.0s" {1..$index})=cd $(printf "../%.0s" {1..$index})"; unset index
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 
 export KEYTIMEOUT=1
 bindkey -v
