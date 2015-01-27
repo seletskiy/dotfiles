@@ -174,5 +174,5 @@ function ssh-urxvt() {
     done
 
     # check terminal is known, if not, fallback to xterm
-    \ssh -t "$@" "infocmp >/dev/null 2>&1 || export TERM=xterm; \$SHELL"
+    \ssh -t "$@" "infocmp >/dev/null 2>&1 || export TERM=xterm; LANG=$LANG \$SHELL"
 }
