@@ -321,6 +321,9 @@ augroup end
 augroup vimrc
     au!
     au BufWritePost ~/.vimrc source % | AirlineRefresh
+    au BufWritePost ~/.vim/pythonx/* exec printf('py import %s; reload(%s)',
+                \ expand('%:t:r'),
+                \ expand('%:t:r'))
 augroup end
 
 augroup snippets
