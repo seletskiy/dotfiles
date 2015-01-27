@@ -10,14 +10,13 @@ endif
 call plug#begin('~/.vim/bundle')
 
 Plug 'Raimondi/delimitMate'
-Plug 'nevar/revim', { 'for': 'erlang' }
+Plug 'nevar/revim', {'for': 'erlang'}
 Plug 'tpope/vim-fugitive'
-Plug 'Gundo'
+Plug 'Gundo', {'on': 'GundoToggle'}
 Plug 'dahu/SearchParty'
-Plug 'edsono/vim-matchit', { 'for': 'html' }
+Plug 'edsono/vim-matchit', {'for': 'html'}
 Plug 'scrooloose/nerdcommenter'
 Plug 'kien/rainbow_parentheses.vim'
-Plug 'git@github.com:seletskiy/vim-refugi'
 Plug 'wojtekmach/vim-rename'
 Plug 'repeat.vim'
 Plug 'junegunn/seoul256.vim'
@@ -28,22 +27,22 @@ Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc'
 Plug 'yuku-t/unite-git'
 Plug 'bling/vim-airline'
-Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips', {'on': []}
 Plug 'epmatsw/ag.vim'
-Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', {'on': []}
 Plug 'lyokha/vim-xkbswitch'
 Plug 'kristijanhusak/vim-multiple-cursors'
-Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'kshenoy/vim-signature'
 Plug 'vim-ruby/vim-ruby'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
 Plug 'cespare/vim-toml'
-Plug 'osyo-manga/vim-over', { 'on': 'OverCommandLine' }
+Plug 'osyo-manga/vim-over', {'on': 'OverCommandLine'}
 Plug 'Lokaltog/vim-easymotion'
 Plug 'inkarkat/argtextobj.vim'
-Plug 'SchwarzeSonne/ash.vim'
+Plug 'kovetskiy/ash.vim'
 
 syntax on
 filetype plugin on
@@ -54,6 +53,9 @@ call plug#end()
 " Hack to ensure, that ~/.vim is looked first
 set rtp-=~/.vim
 set rtp^=~/.vim
+
+" Wow, will it work?
+set rtp-=/usr/share/vim/vimfiles
 
 source ~/.vim/bundle/vim-go/ftplugin/go/doc.vim
 
@@ -143,8 +145,6 @@ call unite#custom#default_action(
 
 call unite#filters#sorter_default#use(['sorter_selecta'])
 
-"call unite#custom#action('ash_review', 'split', unite#get_kinds('ash_review').action_table.open)
-
 let delimitMate_expand_cr = 1
 
 function! s:unite_my_settings()
@@ -154,8 +154,9 @@ function! s:unite_my_settings()
     call unite#custom#alias('ash_review', 'split', 'ls')
 endfunction
 
-" Ctrl+Backspace
+" Ctrl+Backspace in cmd line
 cmap <C-H> <C-W>
+" Alt+d
 cmap <Esc>d <S-Right><C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
@@ -165,6 +166,8 @@ map <C-Y> :Unite -hide-source-names history/yank<CR>
 map <C-U> :Unite -hide-source-names buffer file_rec/async<CR>
 map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
 map <C-E><C-E> :Unite -hide-source-names directory:~/sources/<CR>
+map <C-E><C-A> :Unite ash_inbox<CR>
+map <C-E><C-R> :UniteResume<CR>
 
 map <C-G><C-G> :Gstatus<CR>
 
@@ -240,9 +243,6 @@ nnoremap / :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>/\v
 nnoremap ? :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>?\v
 
 inoremap <expr> <C-O> (pumvisible() ? feedkeys("\<C-N>") : feedkeys("\<C-O>", 'n')) ? '' : ''
-
-map <C-E><C-A> :Unite ash_inbox<CR>
-map <C-E><C-R> :UniteResume<CR>
 
 map dsf dt(ds)
 
@@ -348,6 +348,13 @@ augroup fix_signcolumn
     au!
     "au BufEnter * sign define dummy
     "au BufEnter * execute 'sign place 10000 line=1 name=dummy buffer=' . bufnr('')
+augroup end
+
+augroup plug_load_commands
+  autocmd!
+  autocmd InsertEnter * call plug#load('ultisnips', 'YouCompleteMe')
+                     \| call youcompleteme#Enable()
+                     \| autocmd! plug_load_commands
 augroup end
 
 com! BufWipe exe '1,'.bufnr('$').'bd'
