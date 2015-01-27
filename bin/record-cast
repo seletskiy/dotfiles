@@ -20,4 +20,4 @@ else
     select_arg="-s"
 fi
 
-exec ffcast $select_arg % ffmpeg -f x11grab -show_region 1 -framerate 25 -video_size %s -i %D+%c -codec:v libx264 -b:v 20000k -vf crop="iw-mod(iw\\,2):ih-mod(ih\\,2)" -y "${@}"
+exec ffcast $select_arg % ffmpeg -f x11grab -framerate 25 -video_size %s -i %D+%c -codec:v libx264 -b:v 20000k -vf crop="iw-mod(iw\\,2):ih-mod(ih\\,2)" -y "${@}"
