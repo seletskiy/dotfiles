@@ -18,7 +18,7 @@ Plug 'edsono/vim-matchit', { 'for': 'html' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'git@github.com:seletskiy/vim-refugi'
-Plug 'wojtekmach/vim-rename', { 'on': 'Rename' }
+Plug 'wojtekmach/vim-rename'
 Plug 'repeat.vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'surround.vim'
