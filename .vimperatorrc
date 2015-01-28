@@ -16,6 +16,22 @@ nnoremap k 5k
 
 map s :tabopen t<space>
 
+js var win = window.content.wrappedJSObject;
+js <<EOJS
+var slack_fix_esc = function() {
+    win.addEventListener('load', function () {
+        win.document.onkeydown = function (e) {
+            if (e.keyCode==27) {
+                win.$(':focus').blur();
+            }
+        }
+    })
+}
+EOJS
+
+autocmd!
+autocmd LocationChange slack.com js slack_fix_esc()
+
 source! /home/s.seletskiy/.vimperatorrc.local
 
 " vim: set ft=vimperator:
