@@ -4,3 +4,6 @@
 [submodule "zsh-prompt-lambda17"]
 	path = .zprezto/modules/prompt/functions
 	url = github.com:seletskiy/zsh-prompt-lambda17
+[submodule "pythonx"]
+	path = .vim/pythonx
+	url = github.com:seletskiy/vim-pythonx
