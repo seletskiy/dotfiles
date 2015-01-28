@@ -89,6 +89,9 @@ set cino=(s,m1,+0
 set comments-=mb:*
 set lazyredraw
 
+py import go
+py import util
+
 " autocomplete list numbers
 " autoinsert comment Leader
 " do not wrap line after oneletter word
@@ -123,6 +126,7 @@ let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
 let g:ycm_allow_changing_updatetime = 0
 let g:ycm_confirm_extra_conf = 1
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
 
 let g:surround_102 = "\1function: \1(\r)"
 let html_no_rendering=1
@@ -211,11 +215,12 @@ noremap < <<
 imap <silent> <S-TAB> <C-O><<
 
 nnoremap Q qq
+nnoremap ! :g//norm @q<CR>
+vnoremap ! :g//norm @q<CR>
+vmap <expr> @ feedkeys(':norm @' . nr2char(getchar()) . "\<CR>")
 
 vmap <silent> > >gv
 vmap <silent> < <gv
-
-vmap <expr> @ feedkeys(':norm @' . nr2char(getchar()) . "\<CR>")
 
 inoremap jj <ESC>
 nnoremap j gj
@@ -311,7 +316,9 @@ augroup go_src
     au FileType go nmap <Leader>r <Plug>(go-run)
     au FileType go map <Leader>t <Plug>(go-test)
     au FileType go map <Leader>b <Plug>(go-build)
-    au FileType go map <Leader>s :py import go_helpers; go_helpers.go_split_parenthesis()<CR>
+    au FileType go map <Leader>s go.split_parenthesis()<CR>
+    au FileType go inoremap <C-L> <C-\><C-O>:py go.cycle_by_var_name()<CR>
+    au FileType go smap <C-L> <BS><C-L><C-L>
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
@@ -324,8 +331,8 @@ augroup end
 
 augroup vimrc
     au!
-    au BufWritePost ~/.vimrc source % | AirlineRefresh
-    au BufWritePost ~/.vim/pythonx/* exec printf('py import %s; reload(%s)',
+    au BufWritePost */.vimrc source % | AirlineRefresh
+    au BufWritePost */.vim/pythonx/*.py exec printf('py import %s; reload(%s)',
                 \ expand('%:t:r'),
                 \ expand('%:t:r'))
 augroup end
