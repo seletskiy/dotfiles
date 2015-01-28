@@ -1,6 +1,6 @@
 global !p
-# see ~/.vim/pythonx/go_helpers.py
-from go_helpers import *
+# see ~/.vim/pythonx/go.py
+import go
 endglobal
 
 snippet n "func"
@@ -20,7 +20,7 @@ type ${1:TypeName} ${2:description}
 endsnippet
 
 snippet pa "package"
-package ${1:`!p snip.rv=go_guess_package_name_from_file_name(snip.fn)`}
+package ${1:`!p snip.rv=go.guess_package_name_from_file_name(snip.fn)`}
 endsnippet
 
 snippet te "func Test"
@@ -36,7 +36,7 @@ type $1 interface {
 endsnippet
 
 snippet i "if "
-if $1 {
+if ${1:`!p snip.rv=go.get_last_var_for_snippet()`} {
 	${2:${VISUAL}}
 }
 endsnippet
@@ -67,7 +67,7 @@ if err != nil {
 endsnippet
 
 snippet qn "if ... == nil"
-if ${1:value} == nil {
+if ${1:`!p snip.rv=go.get_last_var_for_snippet()`} == nil {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -109,7 +109,7 @@ endsnippet
 
 snippet "((\w+)\s*(\w+)) js$" "json annotation" br
 `!p snip.rv=match.group(1)` \`json:"`!p
-	snip.rv=go_convert_camelcase_to_snakecase(match.group(2))`"\`
+	snip.rv=go.convert_camelcase_to_snakecase(match.group(2))`"\`
 endsnippet
 
 snippet fm "func main"
@@ -141,7 +141,7 @@ map[string]interface{}
 endsnippet
 
 snippet w "switch"
-switch ${1:name} {
+switch ${1:`!p snip.rv=go.get_last_var_for_snippet()`} {
 case ${2:true}:
 	$3
 }
@@ -155,12 +155,12 @@ case ${1}:
 endsnippet
 
 snippet f "for range"
-for ${1:_}, ${2:val} := range ${3:Slice} {
+for ${1:_}, ${2:val} := range ${3:`!p snip.rv=go.get_last_var_for_snippet()`} {
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet p "log.Printf(%#v with filename"  i
+snippet p "log.Printf(%#v with filename"
 log.Printf("`!p snip.rv=path+":"+str(vim.current.window.cursor[0])` %#v", $1)
 endsnippet
 
@@ -205,8 +205,8 @@ snippet rn "return nil"
 return nil
 endsnippet
 
-snippet ap "append" i
-${1:slice} = append($1, $2)
+snippet u "append" i
+${1:`!p snip.rv=go.get_last_var_for_snippet()`} = append($1, $2)
 endsnippet
 
 snippet ms "make slice" i
@@ -286,13 +286,13 @@ return false
 endsnippet
 
 snippet d "define method"
-func (`!p snip.rv=' '.join(go_extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
+func (`!p snip.rv=' '.join(go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
 	$4
 }
 endsnippet
 
 snippet dp "define method on pointer"
-func (`!p snip.rv=' *'.join(go_extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
+func (`!p snip.rv=' *'.join(go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
 	$4
 }
 endsnippet
@@ -314,10 +314,10 @@ snippet td "todo"
 endsnippet
 
 snippet l "last slice usage" i
-${1:`!p snip.rv=go_get_previous_slice_usage()`}[$2]
+${1:`!p snip.rv=go.get_previous_slice_usage()`}[$2]
 endsnippet
 
-snippet w "Description" !b
+snippet t "Description" !b
 var $1 = $2
 endsnippet
 
@@ -326,7 +326,7 @@ continue
 endsnippet
 
 snippet u "last variable usage" w
-${1:`!p snip.rv=go_get_previous_declared_var()`}
+${1:`!p snip.rv=go.get_previous_declared_var()`}
 endsnippet
 
 snippet L "loc"
