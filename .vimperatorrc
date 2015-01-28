@@ -16,9 +16,9 @@ nnoremap k 5k
 
 map s :tabopen t<space>
 
-js var win = window.content.wrappedJSObject;
 js <<EOJS
 var slack_fix_esc = function() {
+    var win = window.content.wrappedJSObject;
     win.addEventListener('load', function () {
         win.document.onkeydown = function (e) {
             if (e.keyCode==27) {
