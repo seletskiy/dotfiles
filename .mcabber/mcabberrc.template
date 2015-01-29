@@ -59,6 +59,7 @@ alias o        = roster search s.kostyaev@
 alias s        = roster search d.shashkov@
 alias oa       = roster search oapp@
 alias pp       = roster search p.prudnikov@
+alias v        = roster search e.kovetskiy@
 
 alias dark     = source ~/.mcabber/mcabberrc.dark
 alias light    = source ~/.mcabber/mcabberrc.light
