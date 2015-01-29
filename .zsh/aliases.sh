@@ -130,16 +130,17 @@ function noop()  {
 
 alias gclm='git-clone-me'
 function git-clone-me() {
-    reponame="$1" ; shift
+    local reponame="$1" ; shift
+    local clone_path="${1:-$reponame}"
 
-    git clone gh:seletskiy/$reponame ~/sources/$1
-    cd ~/sources/$1
+    git clone gh:seletskiy/$reponame ~/sources/$clone_path
+    cd ~/sources/$clone_path
 }
 
 alias gclg='git-clone-github'
 function git-clone-github() {
-    reponame="$1"
-    dirname="${2:-${reponame#*/}}"
+    local reponame="$1"
+    local dirname="${2:-${reponame#*/}}"
 
     git clone gh:$reponame ~/sources/$dirname
     cd ~/sources/$dirname
@@ -148,7 +149,7 @@ function git-clone-github() {
 
 alias grem='git-remote-add-me'
 function git-remote-add-me() {
-    reponame="$1"; shift
+    local reponame="$1"; shift
 
     git remote add seletskiy gh:seletskiy/$reponame "${@}"
 }
@@ -163,7 +164,7 @@ function ssh-urxvt() {
     fi
 
     # if there more than one arg (hostname) without dash "-", fallback to ssh
-    hostname=''
+    local hostname=''
     for arg in "$@"; do
         if [ ${arg:0:1} != - ]; then
             if [[ -n $hostname ]]; then
