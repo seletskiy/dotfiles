@@ -1,6 +1,11 @@
 # remapping hjkl to arrow keys with shift support
 partial alphanumeric_keys
 xkb_symbols "hjkl" {
+    key <AB07> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               m,               M, KP_Enter,  KP_Enter ],
+        symbols[Group2]= [Cyrillic_softsign, Cyrillic_SOFTSIGN, KP_Enter,  KP_Enter ]
+    };
     key <AC06> {
         type= "FOUR_LEVEL",
         symbols[Group1]= [               h,               H, KP_Left,  KP_Left ],

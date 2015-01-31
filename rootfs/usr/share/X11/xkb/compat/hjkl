@@ -65,4 +65,8 @@ xkb_compatibility "hjkl" {
         repeat= True;
         action= RedirectKey(keycode=<END>, clearmods=Super);
     };
+    interpret KP_Enter {
+        repeat= True;
+        action= RedirectKey(keycode=<RTRN>, clearmods=Super);
+    };
 };
