@@ -17,10 +17,10 @@ r cell-select 14,warp
 f cell-select 15,warp
 v cell-select 16,warp
 
-shift+h move-left,warp
-shift+j move-down,warp
-shift+k move-up,warp
-shift+l move-right,warp
+h move-left,warp
+j move-down,warp
+k move-up,warp
+l move-right,warp
 
 alt+h cut-left,warp
 alt+j cut-down,warp
@@ -28,4 +28,9 @@ alt+k cut-up,warp
 alt+l cut-right,warp
 
 shift+space drag 1
-shift+enter drag 1
+shift+Return drag 1
+
+space click 1
+Return click 1,end
+
+BackSpace grid 1x1
