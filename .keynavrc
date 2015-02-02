@@ -27,10 +27,10 @@ alt+j cut-down,warp
 alt+k cut-up,warp
 alt+l cut-right,warp
 
-shift+space drag 1
-shift+Return drag 1
+shift+space warp,drag 1
+shift+Return warp,drag 1
 
-space click 1
-Return click 1,end
+space warp,click 1
+Return warp,click 1,end
 
-BackSpace grid 1x1
+BackSpace grid 1x1,warp
