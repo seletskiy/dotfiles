@@ -101,6 +101,10 @@ end
 def rejoin_file(source, destination)
     destination, _ = remove_rootfs_prefix(destination)
 
+    if File.directory?(destination)
+        return
+    end
+
     if !File.exist?(destination) || FileUtils.identical?(source, destination)
         return
     end
