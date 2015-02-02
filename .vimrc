@@ -273,6 +273,7 @@ augroup end
 
 augroup syntax_hacks
     au!
+    au BufRead /tmp/vimperator-confluence* set ft=html | :%s/>/&\r/ | :%s/</\r&/ | :%s/\n\n/\r/ | :norm! gg=Gdd
     au FileType diff set nolist
     au FileType diff call g:ApplySyntaxForDiffComments()
 augroup end
