@@ -1,0 +1,17 @@
+ctrl+semicolon start,grid 4x4
+1 cell-select 1
+q cell-select 2
+a cell-select 3
+z cell-select 4
+2 cell-select 5
+w cell-select 6
+s cell-select 7
+x cell-select 8
+3 cell-select 9
+e cell-select 10
+d cell-select 11
+c cell-select 12
+4 cell-select 13
+r cell-select 14
+f cell-select 15
+v cell-select 16

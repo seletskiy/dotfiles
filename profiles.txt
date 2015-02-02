@@ -74,3 +74,4 @@ work   ! $ sudo systemctl start my-http-share
 
 -        https://aur.archlinux.org/packages/urxvt-vim-insert/
 -        https://aur.archlinux.org/packages/ttf-vista-fonts/
+-        https://aur.archlinux.org/packages/keynav/
