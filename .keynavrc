@@ -1,17 +1,31 @@
 ctrl+semicolon start,grid 4x4
-1 cell-select 1
-q cell-select 2
-a cell-select 3
-z cell-select 4
-2 cell-select 5
-w cell-select 6
-s cell-select 7
-x cell-select 8
-3 cell-select 9
-e cell-select 10
-d cell-select 11
-c cell-select 12
-4 cell-select 13
-r cell-select 14
-f cell-select 15
-v cell-select 16
+
+1 cell-select 1,warp
+q cell-select 2,warp
+a cell-select 3,warp
+z cell-select 4,warp
+2 cell-select 5,warp
+w cell-select 6,warp
+s cell-select 7,warp
+x cell-select 8,warp
+3 cell-select 9,warp
+e cell-select 10,warp
+d cell-select 11,warp
+c cell-select 12,warp
+4 cell-select 13,warp
+r cell-select 14,warp
+f cell-select 15,warp
+v cell-select 16,warp
+
+shift+h move-left,warp
+shift+j move-down,warp
+shift+k move-up,warp
+shift+l move-right,warp
+
+alt+h cut-left,warp
+alt+j cut-down,warp
+alt+k cut-up,warp
+alt+l cut-right,warp
+
+shift+space drag 1
+shift+enter drag 1
