@@ -3,18 +3,18 @@
 filename="$HOME/$(date +%F-%T | tr : T).png"
 
 if [ "$1" == "border" ]; then
-    maim -s $filename && notify-send "Screenshot with border ready"
+    maim --nokeyboard -s $filename && notify-send "Screenshot with border ready"
     convert -bordercolor black -border 1x1 $filename{,.new}
     mv $filename{.new,}
 elif [ "$1" == "delayed" ]; then
-    maim -d5.0 -s $filename && notify-send "Delayed screenshot ready"
+    maim --nokeyboard -d5.0 -s $filename && notify-send "Delayed screenshot ready"
 elif [ "$1" == "select" ]; then
-    slop -b 3 -c 1.0,0.5,0.45,0.8
+    slop --nokeyboard -b 3 -c 1.0,0.5,0.45,0.8
 elif [ "$1" == "public" ]; then
-    maim -s $filename
+    maim --nokeyboard -s $filename
     mv $filename ~/public/
     echo http://s.s/$(basename $filename) | xclip
     notify-send "Screenshot ready, path copied to clipboard"
 else
-    maim -s $filename && notify-send "Screenshot ready"
+    maim --nokeyboard -s $filename && notify-send "Screenshot ready"
 fi
