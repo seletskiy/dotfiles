@@ -22,10 +22,10 @@ j move-down,warp
 k move-up,warp
 l move-right,warp
 
-alt+h cut-left,warp
-alt+j cut-down,warp
-alt+k cut-up,warp
-alt+l cut-right,warp
+shift+h cut-left,warp
+shift+j cut-down,warp
+shift+k cut-up,warp
+shift+l cut-right,warp
 
 shift+space warp,drag 1
 shift+Return warp,drag 1
