@@ -27,9 +27,9 @@ Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc'
 Plug 'yuku-t/unite-git'
 Plug 'bling/vim-airline'
-Plug 'SirVer/ultisnips', {'on': []}
+Plug 'SirVer/ultisnips'
 Plug 'epmatsw/ag.vim'
-Plug 'Valloric/YouCompleteMe', {'on': []}
+Plug 'Valloric/YouCompleteMe'
 Plug 'lyokha/vim-xkbswitch'
 Plug 'kristijanhusak/vim-multiple-cursors'
 Plug 'fatih/vim-go', {'for': 'go'}
@@ -43,6 +43,7 @@ Plug 'osyo-manga/vim-over', {'on': 'OverCommandLine'}
 Plug 'Lokaltog/vim-easymotion'
 Plug 'inkarkat/argtextobj.vim'
 Plug 'kovetskiy/ash.vim'
+Plug 'maksimr/vim-jsbeautify'
 
 syntax on
 filetype plugin on
@@ -273,7 +274,7 @@ augroup end
 
 augroup syntax_hacks
     au!
-    au BufRead /tmp/vimperator-confluence* set ft=html | :%s/>/&\r/ | :%s/</\r&/ | :%s/\n\n/\r/ | :norm! gg=Gdd
+    au BufRead /tmp/vimperator-confluence* set ft=html | :call HtmlBeautify()<CR>
     au FileType diff set nolist
     au FileType diff call g:ApplySyntaxForDiffComments()
 augroup end
@@ -360,13 +361,6 @@ augroup fix_signcolumn
     au!
     "au BufEnter * sign define dummy
     "au BufEnter * execute 'sign place 10000 line=1 name=dummy buffer=' . bufnr('')
-augroup end
-
-augroup plug_load_commands
-  autocmd!
-  autocmd InsertEnter * call plug#load('ultisnips', 'YouCompleteMe')
-                     \| call youcompleteme#Enable()
-                     \| autocmd! plug_load_commands
 augroup end
 
 com! BufWipe exe '1,'.bufnr('$').'bd'
