@@ -148,3 +148,25 @@ floating_minimum_size 70 x 15
 hide_edge_borders both
 
 new_window 1pixel
+
+mode "resize" {
+        bindsym u resize shrink width 5 px or 2 ppt
+        bindsym i resize grow height 5 px or 2 ppt
+        bindsym o resize shrink height 5 px or 2 ppt
+        bindsym p resize grow width 5 px or 2 ppt
+
+        bindsym Shift+u resize shrink width 50 px or 10 ppt
+        bindsym Shift+i resize grow height 50 px or 10 ppt
+        bindsym Shift+o resize shrink height 50 px or 10 ppt
+        bindsym Shift+p resize grow width 50 px or 10 ppt
+
+        bindsym h move left
+        bindsym j move down
+        bindsym k move up
+        bindsym l move right
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+BackSpace mode "resize"
