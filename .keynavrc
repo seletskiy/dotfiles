@@ -1,4 +1,6 @@
-ctrl+semicolon start,grid 4x4
+clear
+
+super+semicolon start,grid 4x4
 
 1 cell-select 1,warp
 q cell-select 2,warp
@@ -22,10 +24,10 @@ j move-down,warp
 k move-up,warp
 l move-right,warp
 
-shift+h cut-left,warp
-shift+j cut-down,warp
-shift+k cut-up,warp
-shift+l cut-right,warp
+ctrl+h cut-left,warp
+ctrl+j cut-down,warp
+ctrl+k cut-up,warp
+ctrl+l cut-right,warp
 
 shift+space warp,drag 1
 shift+Return warp,drag 1
@@ -33,4 +35,8 @@ shift+Return warp,drag 1
 space warp,click 1
 Return warp,click 1,end
 
-BackSpace grid 1x1,warp
+BackSpace history-back
+
+slash grid 1x1,warp
+
+Escape end
