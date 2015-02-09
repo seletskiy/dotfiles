@@ -298,6 +298,7 @@ augroup skeletons
     au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
 
     au BufNewFile *.go call feedkeys("Ipa\<TAB>", "")
+    au BufNewFile PKGBUILD call feedkeys("Ipkgbuild\<TAB>", "")
 augroup end
 
 augroup ft_customization
