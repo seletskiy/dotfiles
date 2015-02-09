@@ -21,58 +21,67 @@
 -      ! $ sudo timedatectl set-timezone Asia/Novosibirsk
 -      ! $ sudo killall -0 ntpd || sudo ntpd -gq
 
--        https://aur.archlinux.org/packages/urxvt-perls-git/
-
--        https://aur.archlinux.org/packages/libgcrypt15/
--        https://aur.archlinux.org/packages/google-chrome/
-
--        dunst
-
--        https://aur.archlinux.org/packages/gtk-theme-absolute/
--        https://aur.archlinux.org/packages/ttf-ms-fonts/
-
--        ranger
-
--        gifsicle
--        https://aur.archlinux.org/packages/xrectsel/
--        https://aur.archlinux.org/packages/ffcast/
-
--        feh
--        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git/
--        https://aur.archlinux.org/packages/runki/
+-      ! $ grub-mkconfig -o /boot/grub/grub.cfg
 
 -      ! $ sudo groupadd -f operator
 -      ! $ sudo usermod -aG operator s.seletskiy
 
--        https://aur.archlinux.org/packages/profile-sync-daemon/
+-        https://aur.archlinux.org/packages/libgcrypt15
+-        https://aur.archlinux.org/packages/google-chrome
+
+-        firefox
+
+-        dunst
+
+-        https://aur.archlinux.org/packages/gtk-theme-absolute
+
+-        https://aur.archlinux.org/packages/ttf-ms-fonts
+-        https://aur.archlinux.org/packages/ttf-vista-fonts
+
+-        ranger
+
+-        gifsicle
+
+-        https://aur.archlinux.org/packages/xrectsel
+-        https://aur.archlinux.org/packages/ffcast
+
+-        feh
+
+-        https://aur.archlinux.org/packages/runki
+
+-        https://aur.archlinux.org/packages/profile-sync-daemon
 -      ! $ mkdir -p ~/.config/google-chrome/cache
 -      ! $ ln -sfT ~/.config/google-chrome/cache ~/.cache/google-chrome
-
--      ! $ grub-mkconfig -o /boot/grub/grub.cfg
 
 -        cpupower
 -      ! $ sudo systemctl enable cpupower
 
--        https://aur.archlinux.org/packages/cv/
+-        https://aur.archlinux.org/packages/cv
 
 -        https://aur.archlinux.org/packages/fontconfig-infinality
 
 -        https://aur.archlinux.org/packages/maim
 -        https://aur.archlinux.org/packages/slop-git
 
--        https://aur.archlinux.org/packages/oh-my-zsh-git/
+-        zsh
+-        https://aur.archlinux.org/packages/prezto-git
 
--        mcabber
+-        https://aur.archlinux.org/packages/mcabber-crew-hg
+-        https://aur.archlinux.org/packages/mcabber-module-external-editor
 
-work   ! $ mkdir -p ~/public/
+work   ! $ mkdir -p ~/public
 work   ! $ sudo systemctl enable my-http-share
 work   ! $ sudo systemctl start my-http-share
 
 -        https://aur.archlinux.org/packages/imgur
--        https://aur.archlinux.org/packages/eclim/
--        https://aur.archlinux.org/packages/lsyncd/
 
--        https://aur.archlinux.org/packages/urxvt-vim-insert/
--        https://aur.archlinux.org/packages/ttf-vista-fonts/
--        https://aur.archlinux.org/packages/keynav/
--        https://aur.archlinux.org/packages/mcabber-module-external-editor/
+-        https://aur.archlinux.org/packages/eclim
+
+-        https://aur.archlinux.org/packages/lsyncd
+
+-        rxvt-unicode
+-        https://aur.archlinux.org/packages/urxvt-perls-git
+-        https://aur.archlinux.org/packages/urxvt-vim-insert
+-        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
+
+-        https://aur.archlinux.org/packages/keynav
