@@ -49,7 +49,7 @@ alias d='dirs -v'
 alias dt='cd ~/sources/dotfiles'
 
 alias p='pacman'
-alias pp='pacman -S'
+alias pp='sudo pacman -S'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 alias ..='cd ..'
