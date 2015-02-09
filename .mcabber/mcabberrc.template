@@ -77,5 +77,8 @@ bind 521 = buffer up
 bind 514 = buffer down
 bind M32 = msay toggle
 bind M13 = msay send
+bind M101 = esay
+
+module load editor
 
 source ~/.mcabber/mcabberrc.theme
