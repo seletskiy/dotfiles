@@ -165,7 +165,7 @@ cmap <C-H> <C-W>
 " Alt+d
 cmap <Esc>d <S-Right><C-W>
 
-imap <C-T> <C-R>=strpart(search("[)}\"'`\\]]", "c"), -1, 0)<CR><Right>
+imap <C-T> <C-R>=strpart(search("[)}\"'`\\]>]", "c"), -1, 0)<CR><Right>
 
 map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
 map <C-Y> :Unite -hide-source-names history/yank<CR>
