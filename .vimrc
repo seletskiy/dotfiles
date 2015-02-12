@@ -274,7 +274,6 @@ augroup end
 
 augroup syntax_hacks
     au!
-    au BufRead /tmp/vimperator-confluence* set ft=html | :call HtmlBeautify()<CR>
     au FileType diff set nolist
     au FileType diff call g:ApplySyntaxForDiffComments()
 augroup end
@@ -315,13 +314,13 @@ augroup end
 augroup go_src
     au!
     au FileType go setl noexpandtab
-    au FileType nnoremap K <Plug>(go-doc-vertical)
-    au FileType go nmap <Leader>r <Plug>(go-run)
-    au FileType go map <Leader>t <Plug>(go-test)
-    au FileType go map <Leader>b <Plug>(go-build)
-    au FileType go map <Leader>s go.split_parenthesis()<CR>
-    au FileType go inoremap <C-L> <C-\><C-O>:py go.cycle_by_var_name()<CR>
-    au FileType go smap <C-L> <BS><C-L><C-L>
+    au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
+    au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
+    au FileType go map <buffer> <Leader>t <Plug>(go-test)
+    au FileType go map <buffer> <Leader>b <Plug>(go-build)
+    au FileType go map <buffer> <Leader>s go.split_parenthesis()<CR>
+    au FileType go inoremap <buffer> <C-L> <C-\><C-O>:py go.cycle_by_var_name()<CR>
+    au FileType go smap <buffer> <C-L> <BS><C-L><C-L>
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
@@ -362,6 +361,14 @@ augroup fix_signcolumn
     au!
     "au BufEnter * sign define dummy
     "au BufEnter * execute 'sign place 10000 line=1 name=dummy buffer=' . bufnr('')
+augroup end
+
+augroup confluence
+    au!
+    au BufRead /tmp/vimperator-confluence* set ft=html.confluence | :call HtmlBeautify()<CR>
+
+    " trim empty <p><br/></p> from document
+    au BufRead /tmp/vimperator-confluence* map <buffer> <Leader>t :%s/\v[\ \t\n]+\<p\>([\ \t\n]+\<br\>)?[\ \t\n]+\<\/p\>/<CR>
 augroup end
 
 com! BufWipe exe '1,'.bufnr('$').'bd'
