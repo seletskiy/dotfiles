@@ -19,10 +19,10 @@ r cell-select 14,warp
 p cell-select 15,warp
 semicolon cell-select 16,warp
 
-shift+h move-left,warp
-shift+j move-down,warp
-shift+k move-up,warp
-shift+l move-right,warp
+Left move-left,warp
+Down move-down,warp
+Up move-up,warp
+Right move-right,warp
 
 ctrl+h cut-left,warp
 ctrl+j cut-down,warp
