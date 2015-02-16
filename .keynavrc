@@ -39,4 +39,6 @@ BackSpace history-back
 
 slash grid 1x1,warp
 
+grave grid 1x1,cursorzoom 10 10
+
 Escape end
