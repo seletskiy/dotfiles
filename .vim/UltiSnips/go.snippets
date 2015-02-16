@@ -285,8 +285,10 @@ snippet rf "return false"
 return false
 endsnippet
 
-snippet d "define method"
-func (`!p snip.rv=' '.join(go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
+snippet "(}|d)" "define method" "go.is_struct_bracket(b, l, c)" xrw
+`!p if match.group(1) == "}":
+	snip.rv = "}\n\n"
+`func (`!p snip.rv=' '.join(go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
 	$4
 }
 endsnippet
@@ -333,4 +335,16 @@ snippet L "loc"
 "$1": &Location{
 	$2
 },
+endsnippet
+
+snippet } "else" "go.is_if_bracket(b, l, c)" xw
+} else {
+       $1
+}
+endsnippet
+
+snippet i "if err != nil" "re.match('^\s+[^=]*err\s*:?=', b[l-2])" x
+if err != nil {
+       $1
+}
 endsnippet
