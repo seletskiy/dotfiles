@@ -177,3 +177,24 @@ function ssh-urxvt() {
     # check terminal is known, if not, fallback to xterm
     \ssh -t "$@" "infocmp >/dev/null 2>&1 || export TERM=xterm; LANG=$LANG \$SHELL"
 }
+
+alias mgp='move-to-gopath'
+function move-to-gopath() {
+    local directory=${1:-.}
+    local site=${2:-github.com}
+    local remote=${3:-origin}
+
+    directory=$(readlink -f .)
+    cd $directory
+
+    local repo_path=$(git remote show $remote -n | awk '/Fetch URL/{print $3}' | cut -f2 -d:)
+    local target_path=$GOPATH/src/$site/$repo_path
+
+    mkdir -p $(dirname $target_path)
+
+    mv $directory $target_path
+
+    ln -sf $target_path $directory
+
+    cd $directory
+}
