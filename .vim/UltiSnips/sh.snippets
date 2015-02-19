@@ -1,0 +1,74 @@
+snippet pkgbuild "pkgbuild skeleton" b
+pkgname="$1"
+pkgver=1.0
+pkgrel=1
+pkgdesc="$2"
+url="$3"
+arch=('${4:any}')
+license=('GPL')
+makedepends=()
+source=($5)
+
+pkgver() {
+	cd "${pkgname}"
+	echo $(git rev-list --count master).$(git rev-parse --short master)
+}
+
+build() {
+	cd "$srcdir/${6:$pkgver}"
+
+	$7
+}
+
+package() {
+	$8
+}
+endsnippet
+
+snippet pkgbuild "pkgbuild-go skeleton" "b.name.startswith(os.environ['GOPATH'])" xb
+pkgname="$1"
+pkgver=1.0
+pkgrel=1
+pkgdesc="$2"
+url="$3"
+arch=('${4:any}')
+license=('GPL')
+makedepends=('go')
+
+source=($5)
+
+md5sums=('SKIP')
+
+pkgver() {
+	cd "$pkgname"
+	echo $(git rev-list --count master).$(git rev-parse --short master)
+}
+
+build() {
+	cd "$srcdir/$pkgname"
+
+	rm -rf "$srcdir/.go/src"
+
+	mkdir -p "$srcdir/.go/src"
+
+	export GOPATH=$srcdir/.go
+
+	mv "$srcdir/$pkgname" "$srcdir/.go/src/"
+
+	cd "$srcdir/.go/src/$pkgname/"
+	ln -sf "$srcdir/.go/src/$pkgname/" "$srcdir/$pkgname"
+
+	go get
+}
+
+package() {${6:
+	mkdir -p "$pkgdir/usr/bin"
+	cp "$srcdir/.go/bin/$pkgname" "$pkgdir/usr/bin"}$7
+}
+endsnippet
+
+snippet in "if string empty" b
+if [ -n "$$1" ]; then
+	${2:${VISUAL}}
+fi
+endsnippet
