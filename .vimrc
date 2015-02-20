@@ -321,6 +321,7 @@ augroup go_src
     au FileType go map <buffer> <Leader>s go.split_parenthesis()<CR>
     au FileType go inoremap <buffer> <C-L> <C-\><C-O>:py go.cycle_by_var_name()<CR>
     au FileType go smap <buffer> <C-L> <BS><C-L><C-L>
+    au FileType go inoremap <buffer> . <C-\><C-O>:py go.autoimport()<CR>.
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
