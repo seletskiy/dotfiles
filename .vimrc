@@ -44,6 +44,7 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'inkarkat/argtextobj.vim'
 Plug 'kovetskiy/ash.vim'
 Plug 'maksimr/vim-jsbeautify'
+Plug 'seletskiy/vim-pythonx'
 
 syntax on
 filetype plugin on
