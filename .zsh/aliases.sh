@@ -149,7 +149,11 @@ function git-clone-github() {
 
 alias grem='git-remote-add-me'
 function git-remote-add-me() {
-    local reponame="$1"; shift
+    if [ "$1" ]; then
+        local reponame="$1"; shift
+    else
+        local reponame=$(git remote show origin -n | awk '/Fetch URL/{print $3}' | cut -f2 -d/)
+    fi
 
     git remote add seletskiy gh:seletskiy/$reponame "${@}"
 }
