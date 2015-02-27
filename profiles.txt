@@ -85,3 +85,4 @@ work   ! $ sudo systemctl start my-http-share
 -        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
 
 -        https://aur.archlinux.org/packages/keynav
+-        https://aur.archlinux.org/packages/shift-shift
