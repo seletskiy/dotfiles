@@ -15,5 +15,4 @@ background {{BACKGROUND}}
 export BACKGROUND=$(background)
 syndaemon -dtki 2
 keynav &
-sudo shift-shift -match="{{KEYBOARD}}" &
 exec i3

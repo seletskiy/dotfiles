@@ -1,0 +1,5 @@
+partial modifier_keys
+xkb_symbols "shift_shift" {
+    key <LFSH> { [ Shift_L, ISO_First_Group ] };
+    key <RTSH> { [ Shift_R, ISO_Last_Group ] };
+};
