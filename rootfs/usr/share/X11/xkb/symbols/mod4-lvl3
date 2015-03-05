@@ -1,5 +1,5 @@
 # use lvl3 key as mod4 (for hjkl remapping)
 partial
-xkb_symbols "lvl3" {
+xkb_symbols "mod4-lvl3" {
     modifier_map Mod4 { <LVL3> };
 };

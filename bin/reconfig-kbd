@@ -6,9 +6,20 @@ export DISPLAY=${DISPLAY:-:0.0}
 xset r rate 120 90
 
 setxkbmap \
+\
     -keycodes \
-        "evdev+aliases(qwerty)" \
+"evdev+aliases(qwerty)" \
+\
     -symbols \
-        "pc+us+ru:2+hjkl-ru+level3(lwin_switch)+mod4-lvl3+terminate(ctrl_alt_bksp)+capslock(escape)+altwin(swap_alt_win)+shift-shift+esc-first-group" \
+"pc+us+ru:2"`# common layout settings`\
+"+level3(lwin_switch)"`# use win as lvl3 modifier`\
+"+hjkl-ru"`# map lvl3+hjkl to arrow keys`\
+"+mod4-lvl3"\
+"+terminate(ctrl_alt_bksp)`# terminate X on ctrl+alt+bs`"\
+"+capslock(escape)"`# use capslock as esc`\
+"+altwin(swap_alt_win)"`# swap alt and win`\
+"+shift-shift"`# use lshift+rshift/rshift+lshift for layout switch`\
+"+esc-first-group"`# escape always will switch to main main layout`\
+\
     -compat \
-        "complete+hjkl"
+"complete+hjkl"
