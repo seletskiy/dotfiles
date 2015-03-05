@@ -1,0 +1,4 @@
+partial modifier_keys
+xkb_symbols "esc-first-group" {
+    key <ESC> { [ ISO_First_Group ] };
+};
