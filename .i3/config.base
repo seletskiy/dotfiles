@@ -121,10 +121,9 @@ bindsym $mod+bracketleft [con_mark="quick_1"] focus
 bindsym $mod+Shift+bracketright mark quick_2
 bindsym $mod+bracketright [con_mark="quick_2"] focus
 
-bindsym $mod+minus [instance="^(?!kuake)"] scratchpad show
-bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
+bindsym $mod+Shift+grave move scratchpad
 bindsym $mod+grave exec kuake
-bindsym $mod+equal exec kuake notepad vim '+StartNoting'
 
 bindsym Mod1+Shift+Ctrl+t exec anki-add-word
 bindsym Mod1+Shift+Ctrl+l exec xautolock -locknow

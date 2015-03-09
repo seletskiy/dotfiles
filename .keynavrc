@@ -2,20 +2,20 @@ clear
 
 super+semicolon start,grid 4x4
 
-1 cell-select 1,warp
-q cell-select 2,warp
+q cell-select 1,warp
+a cell-select 2,warp
 u cell-select 3,warp
 j cell-select 4,warp
-2 cell-select 5,warp
-w cell-select 6,warp
+w cell-select 5,warp
+s cell-select 6,warp
 i cell-select 7,warp
 k cell-select 8,warp
-3 cell-select 9,warp
-e cell-select 10,warp
+e cell-select 9,warp
+d cell-select 10,warp
 o cell-select 11,warp
 l cell-select 12,warp
-4 cell-select 13,warp
-r cell-select 14,warp
+r cell-select 13,warp
+f cell-select 14,warp
 p cell-select 15,warp
 semicolon cell-select 16,warp
 
@@ -29,13 +29,12 @@ ctrl+j cut-down,warp
 ctrl+k cut-up,warp
 ctrl+l cut-right,warp
 
-ctrl+space warp,click 3
+minus warp,click 1
+equal warp,click 3
+super+minus warp,drag 1
+super+equal warp,drag 3
 
-shift+space warp,drag 1
-shift+Return warp,drag 1
-
-space warp,click 1
-Return warp,click 1,end
+Return end
 
 BackSpace history-back
 
