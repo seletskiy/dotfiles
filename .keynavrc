@@ -29,6 +29,8 @@ ctrl+j cut-down,warp
 ctrl+k cut-up,warp
 ctrl+l cut-right,warp
 
+ctrl+space warp,click 3
+
 shift+space warp,drag 1
 shift+Return warp,drag 1
 
