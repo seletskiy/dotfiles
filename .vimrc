@@ -210,6 +210,7 @@ nnoremap ? ?\v
 vnoremap ? ?\v
 nnoremap / /\v
 vnoremap / /\v
+vnoremap $ g_
 
 nnoremap <TAB> %
 
