@@ -14,3 +14,52 @@ snippet c2 "2 column layout" w
 	</div>
 </div>
 endsnippet
+
+snippet d "code block" b
+<table class="wysiwyg-macro" data-macro-name="code" style="background-image: url(/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;"
+data-macro-body-type="PLAIN_TEXT">
+	<tbody>
+		<tr>
+			<td class="wysiwyg-macro-body">
+				<pre>
+					${0:${VISUAL}}
+				</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+endsnippet
+
+snippet r "gray" w
+<span style="color: rgb(192, 192, 192);">${0:${VISUAL}}</span>
+endsnippet
+
+snippet t "table" b
+<table class="confluenceTable">
+	<tbody>
+		<tr>
+			<th class="confluenceTh">
+				$1
+			</th>$2
+		</tr>
+	</tbody>
+</table>
+endsnippet
+
+snippet th "table th" b
+<th class="confluenceTh">
+	$1
+</th>
+endsnippet
+
+snippet tr "table tr" b
+<tr>
+	$1
+</tr>
+endsnippet
+
+snippet td "table td" b
+<td class="confluenceTd">
+	$1
+</td>
+endsnippet
