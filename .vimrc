@@ -45,6 +45,7 @@ Plug 'inkarkat/argtextobj.vim'
 Plug 'kovetskiy/ash.vim'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'seletskiy/vim-pythonx'
+Plug 'justinmk/vim-sneak'
 
 syntax on
 filetype plugin on
