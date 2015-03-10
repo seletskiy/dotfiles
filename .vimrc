@@ -373,7 +373,10 @@ augroup confluence
 
     " trim empty <p><br/></p> from document
     au BufRead /tmp/vimperator-confluence* map <buffer> <Leader>t :%s/\v[\ \t\n]+\<p\>([\ \t\n]+\<br\>)?[\ \t\n]+\<\/p\>/<CR>
-    au BufLeave /tmp/vimperator-confluence* silent! %s/\v\>[\ \t\n]+\</></
+
+    " ugly hack to trim all inter-tags whitespaces
+    au BufWritePre /tmp/vimperator-confluence* %s/\v\>[\ \t\n]+\</></
+    au BufWritePost /tmp/vimperator-confluence* silent! undo
 augroup end
 
 com! BufWipe silent! bufdo! bw | enew!
