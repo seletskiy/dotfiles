@@ -369,10 +369,11 @@ augroup end
 
 augroup confluence
     au!
-    au BufRead /tmp/vimperator-confluence* set ft=html.confluence | :call HtmlBeautify()<CR>
+    au BufRead /tmp/vimperator-confluence* set ft=html.confluence | call HtmlBeautify()
 
     " trim empty <p><br/></p> from document
     au BufRead /tmp/vimperator-confluence* map <buffer> <Leader>t :%s/\v[\ \t\n]+\<p\>([\ \t\n]+\<br\>)?[\ \t\n]+\<\/p\>/<CR>
+    au BufLeave /tmp/vimperator-confluence* silent! %s/\v\>[\ \t\n]+\</></
 augroup end
 
 com! BufWipe silent! bufdo! bw | enew!
