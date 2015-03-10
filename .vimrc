@@ -375,7 +375,7 @@ augroup confluence
     au BufRead /tmp/vimperator-confluence* map <buffer> <Leader>t :%s/\v[\ \t\n]+\<p\>([\ \t\n]+\<br\>)?[\ \t\n]+\<\/p\>/<CR>
 augroup end
 
-com! BufWipe exe '1,'.bufnr('$').'bd'
+com! BufWipe silent! bufdo! bw | enew!
 
 com! StartNoting call g:StartNoting()
 
