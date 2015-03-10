@@ -36,4 +36,6 @@ autocmd LocationChange jira.rn setl ht+=| //ul[@id='issuedetails']//*[contains(@
 
 source! /home/s.seletskiy/.vimperatorrc.local
 
+set cpt=slfh
+
 " vim: set ft=vimperator:
