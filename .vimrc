@@ -9,43 +9,158 @@ endif
 
 call plug#begin('~/.vim/bundle')
 
+" start of plugins {{{
+
 Plug 'Raimondi/delimitMate'
+    let delimitMate_expand_cr = 1
+
 Plug 'nevar/revim', {'for': 'erlang'}
+
 Plug 'tpope/vim-fugitive'
+    map <C-G><C-G> :Gstatus<CR>
+
 Plug 'Gundo', {'on': 'GundoToggle'}
+
 Plug 'dahu/SearchParty'
+    nmap <silent> <Leader><Leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHighlightClear")<CR>
+
+    nnoremap / :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>/\v
+    nnoremap ? :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>?\v
+
 Plug 'edsono/vim-matchit', {'for': 'html'}
+
 Plug 'scrooloose/nerdcommenter'
+
 Plug 'kien/rainbow_parentheses.vim'
+
 Plug 'wojtekmach/vim-rename'
+
 Plug 'repeat.vim'
+
 Plug 'junegunn/seoul256.vim'
+
 Plug 'surround.vim'
+
 Plug 'git@github.com:seletskiy/nginx-vim-syntax'
+
 Plug 'PHP-correct-Indenting', { 'for': 'php' }
+
 Plug 'Shougo/unite.vim'
+    let g:unite_split_rule = "botright"
+    let g:unite_source_history_yank_enable = 1
+    let g:unite_enable_start_insert = 1
+    let g:unite_source_history_yank_file = $HOME.'/.vim/yankring.txt'
+
+    augroup unite_custom
+        au!
+        au VimEnter call unite#custom#source(
+            \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked,directory',
+            \ 'matchers', 'matcher_fuzzy')
+
+        au VimEnter call unite#custom#default_action(
+            \ 'directory', 'cd')
+
+        au VimEnter call unite#filters#sorter_default#use(['sorter_selecta'])
+    augroup end
+
+    function! s:unite_my_settings()
+        imap <buffer> <C-R> <Plug>(unite_redraw)
+        imap <silent><buffer><expr> <C-T> unite#do_action('split')
+        imap <silent><buffer><expr> <C-G> unite#do_action('right')
+        call unite#custom#alias('ash_review', 'split', 'ls')
+    endfunction
+
+    let g:unite_source_grep_max_candidates = 200
+
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden'
+    let g:unite_source_grep_recursive_opt = ''
+
+    map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
+    map <C-Y> :Unite -hide-source-names history/yank<CR>
+    map <C-U> :Unite -hide-source-names buffer file_rec/async<CR>
+    map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
+    map <C-E><C-H> <Leader>*:exec "Unite -hide-source-names grep:.::".substitute(@/, "\\\\<\\(.*\\)\\\\>", "\\1", "")."(?=\\\\W)"<CR>
+    map <C-E><C-E> :Unite -hide-source-names directory:~/sources/<CR>
+    map <C-E><C-A> :Unite ash_inbox<CR>
+    map <C-E><C-R> :UniteResume<CR>
+
 Plug 'Shougo/vimproc'
+
 Plug 'yuku-t/unite-git'
+
 Plug 'bling/vim-airline'
+    let g:airline_powerline_fonts = 1
+    let g:airline_theme = 'lucius'
+    let g:airline#extensions#whitespace#symbol = '☼'
+
 Plug 'SirVer/ultisnips'
+    let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
+    let g:UltiSnipsEnableSnipMate = 0
+
+    map <Leader>` :UltiSnipsEdit<CR>G
+    vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
+
 Plug 'epmatsw/ag.vim'
+
 Plug 'Valloric/YouCompleteMe'
+    let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
+    let g:ycm_allow_changing_updatetime = 0
+    let g:ycm_confirm_extra_conf = 1
+    let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+    let g:ycm_collect_identifiers_from_comments_and_strings = 1
+
 Plug 'lyokha/vim-xkbswitch'
+    let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
+    let g:XkbSwitchEnabled = 1
+
 Plug 'kristijanhusak/vim-multiple-cursors'
+
 Plug 'fatih/vim-go', {'for': 'go'}
+    let g:go_fmt_command = "goimports"
+    let g:go_snippet_engine = "skip"
+
+    let g:go_snippet_engine = 'skip'
+
+    source ~/.vim/bundle/vim-go/ftplugin/go/doc.vim
+
 Plug 'kshenoy/vim-signature'
+    let g:SignatureMarkOrder = "\m"
+
 Plug 'vim-ruby/vim-ruby'
+
 Plug 'michaeljsmith/vim-indent-object'
+
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-notes'
+
 Plug 'cespare/vim-toml'
+
 Plug 'osyo-manga/vim-over', {'on': 'OverCommandLine'}
-Plug 'Lokaltog/vim-easymotion'
+    nnoremap H :OverCommandLine %s/\v<CR>
+    vnoremap H :OverCommandLine s/\v<CR>
+
+    map L <Leader>*:OverCommandLine %s//<CR>
+
 Plug 'inkarkat/argtextobj.vim'
+
 Plug 'kovetskiy/ash.vim'
+
 Plug 'maksimr/vim-jsbeautify'
+
 Plug 'seletskiy/vim-pythonx'
+
 Plug 'justinmk/vim-sneak'
+    let g:sneak#streak = 1
+
+    nmap gs <Plug>Sneak_S
+    vmap gs <Plug>Sneak_S
+
+    nmap f <Plug>Sneak_f
+    vmap f <Plug>Sneak_f
+    nmap F <Plug>Sneak_F
+    vmap F <Plug>Sneak_F
+
+" end of plugins }}}
 
 syntax on
 filetype plugin on
@@ -60,8 +175,6 @@ set rtp^=~/.vim
 " Wow, will it work?
 set rtp-=/usr/share/vim/vimfiles
 
-source ~/.vim/bundle/vim-go/ftplugin/go/doc.vim
-
 set encoding=utf-8
 set printencoding=cp1251
 set timeoutlen=200
@@ -70,7 +183,6 @@ set undofile
 set undodir=$HOME/.vim/tmp/
 set directory=$HOME/.vim/tmp/
 set ttyfast
-"set autowrite
 set relativenumber
 set hlsearch
 set incsearch
@@ -92,9 +204,6 @@ set cino=(s,m1,+0
 set comments-=mb:*
 set lazyredraw
 
-py import go
-py import util
-
 " autocomplete list numbers
 " autoinsert comment Leader
 " do not wrap line after oneletter word
@@ -103,64 +212,11 @@ set formatoptions=qrn1tol
 set list
 set lcs=eol:¶,trail:·,tab:\ \  " <- trailing space here
 
-let g:go_fmt_command = "goimports"
-let g:go_snippet_engine = "skip"
-
-let g:notes_directories = ['~/.notes']
-
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'lucius'
-let g:airline#extensions#whitespace#symbol = '☼'
-
-let g:syntastic_always_populate_loc_list = 1
-
-let g:syntastic_mode_map = { 'mode': 'passive',
-                           \ 'active_filetypes': ['ruby', 'php'],
-                           \ 'passive_filetypes': [''] }
-
-let g:SignatureMarkOrder = "\m"
-
-let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
-let g:XkbSwitchEnabled = 1
 let mapleader="\<space>"
 
-let g:Powerline_symbols = 'fancy'
-let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
-let g:ycm_allow_changing_updatetime = 0
-let g:ycm_confirm_extra_conf = 1
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-
-let g:surround_102 = "\1function: \1(\r)"
 let html_no_rendering=1
 
-let g:unite_split_rule = "botright"
-let g:unite_source_history_yank_enable = 1
-let g:unite_enable_start_insert = 1
-let g:unite_source_history_yank_file = $HOME.'/.vim/yankring.txt'
-
-let g:go_snippet_engine = 'skip'
-
-let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
-let g:UltiSnipsEnableSnipMate = 0
-
-call unite#custom#source(
-    \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked,directory',
-    \ 'matchers', 'matcher_fuzzy')
-
-call unite#custom#default_action(
-    \ 'directory', 'cd')
-
-call unite#filters#sorter_default#use(['sorter_selecta'])
-
-let delimitMate_expand_cr = 1
-
-function! s:unite_my_settings()
-    imap <buffer> <C-R> <Plug>(unite_redraw)
-    imap <silent><buffer><expr> <C-T> unite#do_action('split')
-    imap <silent><buffer><expr> <C-G> unite#do_action('right')
-    call unite#custom#alias('ash_review', 'split', 'ls')
-endfunction
+let g:EclimCompletionMethod = 'omnifunc'
 
 " Ctrl+Backspace in cmd line
 cmap <C-H> <C-W>
@@ -169,29 +225,8 @@ cmap <Esc>d <S-Right><C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]>]", "c"), -1, 0)<CR><Right>
 
-map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
-map <C-Y> :Unite -hide-source-names history/yank<CR>
-map <C-U> :Unite -hide-source-names buffer file_rec/async<CR>
-map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
-map <C-E><C-H> <Leader>*:exec "Unite -hide-source-names grep:.::".substitute(@/, "\\\\<\\(.*\\)\\\\>", "\\1", "")."(?=\\\\W)"<CR>
-map <C-E><C-E> :Unite -hide-source-names directory:~/sources/<CR>
-map <C-E><C-A> :Unite ash_inbox<CR>
-map <C-E><C-R> :UniteResume<CR>
-
-map <C-G><C-G> :Gstatus<CR>
-
 imap <C-Y> u<TAB>
 
-let g:unite_source_grep_max_candidates = 200
-
-let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden'
-let g:unite_source_grep_recursive_opt = ''
-
-let g:EclimCompletionMethod = 'omnifunc'
-
-map <Leader>` :UltiSnipsEdit<CR>G
-vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
 map <Leader>~ :tabnew ~/.vimrc<CR>
 
 " there also ZZ mapping for snippets
@@ -242,18 +277,6 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <Esc>b <S-Left>
 cnoremap <Esc>f <S-Right>
-
-nmap <silent> <Leader><Leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHighlightClear")<CR>
-
-map - <Plug>(easymotion-prefix)
-
-nnoremap H :OverCommandLine %s/\v<CR>
-vnoremap H :OverCommandLine s/\v<CR>
-
-map L <Leader>*:OverCommandLine %s//<CR>
-
-nnoremap / :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>/\v
-nnoremap ? :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>?\v
 
 inoremap <expr> <C-O> (pumvisible() ? feedkeys("\<C-N>") : feedkeys("\<C-O>", 'n')) ? '' : ''
 
@@ -361,12 +384,6 @@ augroup rainbow
     au Syntax * RainbowParenthesesLoadBraces
 augroup end
 
-augroup fix_signcolumn
-    au!
-    "au BufEnter * sign define dummy
-    "au BufEnter * execute 'sign place 10000 line=1 name=dummy buffer=' . bufnr('')
-augroup end
-
 augroup confluence
     au!
     au BufRead /tmp/vimperator-confluence* set ft=html.confluence | call HtmlBeautify()
@@ -380,8 +397,6 @@ augroup confluence
 augroup end
 
 com! BufWipe silent! bufdo! bw | enew!
-
-com! StartNoting call g:StartNoting()
 
 command! QuickFixOpenAll call QuickFixOpenAll()
 function! QuickFixOpenAll()
@@ -455,13 +470,6 @@ fun! s:ApplyColorscheme()
     hi WarningMsg term=none
     hi Question term=none
     hi ErrorMsg term=none
-endfun
-
-fun! g:StartNoting()
-    set showtabline=0
-    set laststatus=0
-    Note reading
-    au CursorHold * if !&ro | write | endif
 endfun
 
 fun! g:DisableCC()
