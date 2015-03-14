@@ -31,8 +31,12 @@ ctrl+l cut-right,warp
 
 minus warp,click 1
 equal warp,click 3
-super+minus warp,drag 1
-super+equal warp,drag 3
+
+shift+minus warp,drag 1
+shift+equal warp,drag 3
+
+shift+minus warp,drag 1
+shift+equal warp,drag 3
 
 Return end
 
