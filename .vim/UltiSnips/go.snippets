@@ -244,8 +244,11 @@ case ${3:Type}:
 }
 endsnippet
 
-snippet ,n ", nil" i
-, nil
+snippet , "return ... , nil" "go.is_return_argument(b, l, c)" ix
+, `!p if go.is_in_err_condition(vim.current.buffer, vim.current.window.cursor[0], vim.current.window.cursor[1]):
+	snip.rv = "err"
+else:
+	snip.rv = "nil"`
 endsnippet
 
 snippet n, ", nil" i
