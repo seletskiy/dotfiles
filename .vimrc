@@ -9,6 +9,8 @@ endif
 
 call plug#begin('~/.vim/bundle')
 
+let mapleader="\<space>"
+
 " start of plugins {{{
 
 Plug 'Raimondi/delimitMate'
@@ -211,8 +213,6 @@ set formatoptions=qrn1tol
 
 set list
 set lcs=eol:¶,trail:·,tab:\ \  " <- trailing space here
-
-let mapleader="\<space>"
 
 let html_no_rendering=1
 
