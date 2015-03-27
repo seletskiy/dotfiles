@@ -1,6 +1,6 @@
 global !p
 # see ~/.vim/pythonx/go.py
-import go
+import go, util
 endglobal
 
 snippet n "func"
@@ -74,6 +74,10 @@ endsnippet
 
 snippet r "return"
 return 
+endsnippet
+
+snippet r "return" "re.match('^\s+if err ', util.get_prev_nonempty_line())" xb
+return err
 endsnippet
 
 snippet fs "... string" i
@@ -199,6 +203,10 @@ endsnippet
 snippet c "case"
 case $1:
 	$2
+endsnippet
+
+snippet c "continue" "re.match('^\s+if ', util.get_prev_nonempty_line())" xb
+continue
 endsnippet
 
 snippet rn "return nil"
@@ -327,10 +335,6 @@ snippet co "continue"
 continue
 endsnippet
 
-snippet u "last variable usage" w
-${1:`!p snip.rv=go.get_previous_declared_var()`}
-endsnippet
-
 snippet L "loc"
 "$1": &Location{
 	$2
@@ -347,4 +351,14 @@ snippet i "if err != nil" "re.match('^\s+[^=]*err\s*:?=', b[l-2])" x
 if err != nil {
 	$1
 }
+endsnippet
+
+snippet "(func\s.*\)\s+)([\w\d_\s\{\}\[\]\*\.]+),\s?([\w\d_\s\{\}\[\]\*\.]+)" "return multiple" r
+`!p snip.rv=match.group(1)`(`!p snip.rv=match.group(2)`, `!p snip.rv=match.group(3)`)
+endsnippet
+
+snippet go "go func" b
+go func() {
+	${1:${VISUAL}}
+}()
 endsnippet
