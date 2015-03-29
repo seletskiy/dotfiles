@@ -55,14 +55,14 @@ Plug 'Shougo/unite.vim'
 
     augroup unite_custom
         au!
-        au VimEnter call unite#custom#source(
+        au VimEnter * call unite#custom#source(
             \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked,directory',
             \ 'matchers', 'matcher_fuzzy')
 
-        au VimEnter call unite#custom#default_action(
+        au VimEnter * call unite#custom#default_action(
             \ 'directory', 'cd')
 
-        au VimEnter call unite#filters#sorter_default#use(['sorter_selecta'])
+        au VimEnter * call unite#filters#sorter_default#use(['sorter_selecta'])
     augroup end
 
     function! s:unite_my_settings()
