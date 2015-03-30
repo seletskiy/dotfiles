@@ -3,7 +3,7 @@
 export XAUTHORITY=/home/s.seletskiy/.Xauthority
 export DISPLAY=${DISPLAY:-:0.0}
 
-xset r rate $DOTFILES_RDELAY $DOTFILES_RRATE
+xset r rate 100 160
 
 setxkbmap \
     -keycodes \

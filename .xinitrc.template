@@ -13,8 +13,6 @@ sudo bash -c 'echo 1 > /proc/sys/kernel/sysrq'
 xautolock -time 15 -locker ~/bin/lock-screen &
 background {{BACKGROUND}}
 export BACKGROUND=$(background)
-export DOTFILES_RDELAY=100
-export DOTFILES_RRATE=160
 syndaemon -dtki 2
 keynav &
 exec i3
