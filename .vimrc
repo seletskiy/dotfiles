@@ -24,9 +24,6 @@ Plug 'Gundo', {'on': 'GundoToggle'}
 Plug 'dahu/SearchParty'
     nmap <silent> <Leader><Leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHighlightClear")<CR>
 
-    nnoremap / :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>/\v
-    nnoremap ? :call searchparty#mash#unmash()<CR>:call g:DisableCC()<CR>?\v
-
 Plug 'edsono/vim-matchit', {'for': 'html'}
 
 Plug 'scrooloose/nerdcommenter'
@@ -162,6 +159,10 @@ Plug 'justinmk/vim-sneak'
     vmap F <Plug>Sneak_F
 
 Plug 'kovetskiy/vim-plugvim-utils'
+
+Plug 'seletskiy/vim-nunu'
+
+Plug 'seletskiy/vim-over80'
 
 syntax on
 
@@ -309,12 +310,6 @@ augroup syntax_hacks
     au FileType diff call g:ApplySyntaxForDiffComments()
 augroup end
 
-augroup hilight_over_80
-    au!
-    au VimResized,VimEnter * call g:CheckCC()
-    au CursorHold * call g:CheckCC()
-augroup end
-
 augroup dir_autocreate
     au!
     au BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
@@ -356,13 +351,6 @@ augroup go_src
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
-let s:prev_line = 0
-augroup rnu_nu
-    au!
-    au CursorMoved * if &rnu && line('.') != s:prev_line | set nornu nu | endif
-    au CursorHold  * if &nu | set rnu | let s:prev_line = line('.') | endif
-augroup end
-
 augroup vimrc
     au!
     au BufWritePost */.vimrc source % | AirlineRefresh
@@ -378,7 +366,6 @@ augroup end
 
 augroup quickfix
     au!
-    au FileType qf call g:DisableCC()
     au FileType qf set wrap
 augroup end
 
@@ -475,34 +462,6 @@ fun! s:ApplyColorscheme()
     hi WarningMsg term=none
     hi Question term=none
     hi ErrorMsg term=none
-endfun
-
-fun! g:DisableCC()
-    set cc=""
-endfun
-
-fun! g:CheckCC()
-    if &filetype == 'qf'
-        return
-    endif
-    if exists("b:mash_search_item")
-        for m in getmatches()
-            if m.id == b:mash_search_item
-                call g:DisableCC()
-                return
-            endif
-        endfor
-    endif
-    try
-        if searchpos(@/, 'nc') == [line('.'), col('.')]
-            call g:DisableCC()
-            return
-        endif
-    catch E35
-    endtry
-    if &columns > 80
-        let &cc=join(range(80, &columns), ',')
-    endif
 endfun
 
 if system('background') == "light\n"
