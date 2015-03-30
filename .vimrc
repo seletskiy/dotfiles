@@ -168,7 +168,6 @@ syntax on
 filetype plugin on
 filetype indent on
 
-Plug ''
 call plug#end()
 
 " Hack to ensure, that ~/.vim is looked first
