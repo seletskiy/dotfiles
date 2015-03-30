@@ -11,8 +11,6 @@ call plug#begin('~/.vim/bundle')
 
 let mapleader="\<space>"
 
-" start of plugins {{{
-
 Plug 'Raimondi/delimitMate'
     let delimitMate_expand_cr = 1
 
@@ -163,12 +161,14 @@ Plug 'justinmk/vim-sneak'
     nmap F <Plug>Sneak_F
     vmap F <Plug>Sneak_F
 
-" end of plugins }}}
+Plug 'kovetskiy/vim-plugvim-utils'
 
 syntax on
+
 filetype plugin on
 filetype indent on
 
+Plug ''
 call plug#end()
 
 " Hack to ensure, that ~/.vim is looked first
