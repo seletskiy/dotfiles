@@ -1,3 +1,7 @@
+global !p
+import all
+endglobal
+
 snippet i "if"
 if $1:
 	${0:${VISUAL}}
@@ -15,4 +19,36 @@ endsnippet
 snippet f "for"
 for $1 in $2:
 	${0:${VISUAL}}
+endsnippet
+
+snippet p "print" b
+print(${1:${VISUAL}})
+endsnippet
+
+snippet s "assert" b
+assert 
+endsnippet
+
+snippet "(\s+)if n" "if not" br
+`!p snip.rv = match.group(1)`if not 
+endsnippet
+
+snippet "^i" "import" "True" rx
+import 
+endsnippet
+
+snippet "^import (\w+)" "from ... import" br
+from `!p snip.rv = match.group(1)` import 
+endsnippet
+
+snippet e "self.asserEquals" "all.match_higher_indent(b, (l, c), 'def test')" bx
+self.assertEqual(
+	$1,
+	$2
+)
+endsnippet
+
+snippet d "def test" "all.match_higher_indent(b, (l, c), 'class \w+\(unittest')" bx
+def test$1(self):
+	$2
 endsnippet

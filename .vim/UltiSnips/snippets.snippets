@@ -1,23 +1,21 @@
-#########################
-# SNIPPETS for SNIPPETS #
-#########################
-
-# We use a little hack so that the snippet is expanded
-# and parsed correctly
-snippet s "Snippet definition" !
-`!p snip.rv = "snippet"` ${1:Tab_trigger} "${2:Description}" ${3:!b}
+snippet s "Snippet definition"
+`!p snip.rv = "snippet"` ${1:Tab_trigger} "${2:Description}" ${3:b}
 $0
 `!p snip.rv = "endsnippet"`
 endsnippet
 
-snippet g "Global snippet" !
+snippet g "Global snippet"
 `!p snip.rv = "global"` !p
 $0
 `!p snip.rv = "endglobal"`
 endsnippet
 
-snippet vis "${VISUAL}" i
-\${0:\$\{VISUAL${1:${2:default}${3:/transform/}}\}\}
+snippet v "${VISUAL}" i
+\${${4:1}:\$\{VISUAL${1:${2:default}${3:/transform/}}\}\}
+endsnippet
+
+snippet p "!p snip.rv = " w
+\`!p ${1:snip.rv = }$0\`
 endsnippet
 
 # vim:ft=snippets:
