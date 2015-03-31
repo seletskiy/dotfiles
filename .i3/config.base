@@ -137,6 +137,9 @@ bindsym --release Ctrl+Shift+Print exec screenshot public
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
 
+bindsym $mod+less exec amixer set Master 1%-
+bindsym $mod+greater exec amixer set Master 1%+
+
 for_window [class="google-chrome"] border none
 for_window [instance="^screenkey$"] floating enable
 for_window [class="fontforge"] floating enable
