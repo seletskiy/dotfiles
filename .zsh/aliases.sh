@@ -182,6 +182,12 @@ function ssh-urxvt() {
     \ssh -t "$@" "infocmp >/dev/null 2>&1 || export TERM=xterm; LANG=$LANG \$SHELL"
 }
 
+function _ssh-urxvt() {
+    service="ssh" _ssh "${@}"
+}
+
+compdef _ssh-urxvt ssh-urxvt
+
 alias mgp='move-to-gopath'
 function move-to-gopath() {
     local directory=${1:-.}
@@ -202,3 +208,14 @@ function move-to-gopath() {
 
     cd $directory
 }
+
+function cd-to-vim-bundle() {
+    cd ~/.vim/bundle/$1
+}
+
+_cd-to-vim-bundle() {
+    cd-to-vim-bundle
+    _arguments -C '*:bundles:_directories'
+}
+
+compdef _cd-to-vim-bundle cd-to-vim-bundle
