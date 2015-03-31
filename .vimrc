@@ -11,8 +11,7 @@ call plug#begin('~/.vim/bundle')
 
 let mapleader="\<space>"
 
-Plug 'Raimondi/delimitMate'
-    let delimitMate_expand_cr = 1
+Plug 'ervandew/matchem'
 
 Plug 'nevar/revim', {'for': 'erlang'}
 
@@ -262,7 +261,7 @@ vmap <expr> @ feedkeys(':norm @' . nr2char(getchar()) . "\<CR>")
 vmap <silent> > >gv
 vmap <silent> < <gv
 
-vmap <C-D> $%
+map <C-D> $%
 
 vmap ( S)i
 vmap ) S)%a
