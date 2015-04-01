@@ -1,6 +1,8 @@
 #!/bin/bash
 
-[ -n "$_LOCK" ] || _LOCK=x exec flock -n $0 $0
+echo 1
+[ -n "$_LOCK" ] || _LOCK=x exec flock -on $0 $0
+echo 2
 
 set -x
 
