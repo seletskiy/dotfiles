@@ -2,6 +2,8 @@ unalias -m '*'
 
 alias l='ls'
 alias ls='ls --color=always'
+alias ll='ls -al'
+alias lt='ls -alt'
 alias g='git'
 alias gd='git diff'
 alias ga='git add'
@@ -32,11 +34,13 @@ alias srm='ssh-keygen -R'
 
 alias -g L='| less'
 alias -g G='| grep'
+alias -g Gi='| grep -i'
 alias -g T='| tail'
-alias -g F='| tail -f'
+alias -g F='| less -F'
 alias -g X='| xclip'
 alias -g N1='| tail -n1'
 alias -g R='| xargs -n1'
+alias -g H='| head'
 
 alias w1='watch -n1 '
 alias sctl='sudo systemctl'
@@ -50,6 +54,11 @@ alias dt='cd ~/sources/dotfiles'
 
 alias p='pacman'
 alias pp='sudo pacman -S'
+alias ppr='sudo pacman -R'
+alias pqo='sudo pacman -Qo'
+alias ppu='sudo pacman -U'
+
+alias run-help='man'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 alias ..='cd ..'
@@ -63,10 +72,10 @@ bindkey -v
 bindkey -v "^P" history-substring-search-up
 bindkey -v "^N" history-substring-search-down
 bindkey -v "^A" beginning-of-line
-bindkey -v "$terminfo[kcuu1]" history-substring-search-up
-bindkey -v "$terminfo[kcud1]" history-substring-search-down
+bindkey -v "^[[A" history-substring-search-up
+bindkey -v "^[[B" history-substring-search-down
 bindkey -v "^R" history-incremental-search-backward
-bindkey -v "$terminfo[kdch1]" delete-char
+bindkey -v "^[[3~" delete-char
 bindkey -v "^Q" push-line
 bindkey -v '^A' beginning-of-line
 bindkey -v '^E' end-of-line
@@ -79,6 +88,13 @@ bindkey -v '^[d' delete-word
 
 bindkey -a '^[' vi-insert
 bindkey -a '^[d' delete-word
+bindkey '^[Od' backward-word
+bindkey '^[Oc' forward-word
+bindkey -a '^[Od' backward-word
+bindkey -a '^[Oc' forward-word
+bindkey '^H' backward-kill-word
+
+bindkey -a '?' run-help
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
@@ -165,6 +181,7 @@ function ssh-urxvt() {
     # in case of stdin, stdout or stderr is not a terminal, fallback to ssh
     if [[ ! ( -t 0 && -t 1 && -t 2 ) ]]; then
         \ssh "$@"
+        return
     fi
 
     # if there more than one arg (hostname) without dash "-", fallback to ssh
@@ -173,6 +190,7 @@ function ssh-urxvt() {
         if [ ${arg:0:1} != - ]; then
             if [[ -n $hostname ]]; then
                 \ssh "$@"
+                return
             fi
             hostname=$arg
         fi
