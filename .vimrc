@@ -11,7 +11,10 @@ call plug#begin('~/.vim/bundle')
 
 let mapleader="\<space>"
 
-Plug 'ervandew/matchem'
+Plug 'seletskiy/matchem'
+    au VimEnter * inoremap <expr> <C-O> (pumvisible()
+        \ ? feedkeys("\<C-N>")
+        \ : feedkeys("\<C-R>=g:MatchemRepeatFixupFlush('<C-O>')\<CR>\<C-O>", 'n')) ? '' : ''
 
 Plug 'nevar/revim', {'for': 'erlang'}
 
@@ -282,8 +285,6 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <Esc>b <S-Left>
 cnoremap <Esc>f <S-Right>
-
-inoremap <expr> <C-O> (pumvisible() ? feedkeys("\<C-N>") : feedkeys("\<C-O>", 'n')) ? '' : ''
 
 map dsf dt(ds)
 
