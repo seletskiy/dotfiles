@@ -2,22 +2,22 @@ clear
 
 super+semicolon start,grid 4x4
 
-q cell-select 1,warp
-a cell-select 2,warp
-u cell-select 3,warp
-j cell-select 4,warp
-w cell-select 5,warp
-s cell-select 6,warp
-i cell-select 7,warp
-k cell-select 8,warp
-e cell-select 9,warp
-d cell-select 10,warp
-o cell-select 11,warp
-l cell-select 12,warp
-r cell-select 13,warp
-f cell-select 14,warp
-p cell-select 15,warp
-semicolon cell-select 16,warp
+1 cell-select 1,warp
+q cell-select 2,warp
+a cell-select 3,warp
+z cell-select 4,warp
+2 cell-select 5,warp
+w cell-select 6,warp
+s cell-select 7,warp
+x cell-select 8,warp
+3 cell-select 9,warp
+e cell-select 10,warp
+d cell-select 11,warp
+c cell-select 12,warp
+4 cell-select 13,warp
+r cell-select 14,warp
+f cell-select 15,warp
+v cell-select 16,warp
 
 Left move-left,warp
 Down move-down,warp
@@ -29,21 +29,15 @@ ctrl+j cut-down,warp
 ctrl+k cut-up,warp
 ctrl+l cut-right,warp
 
-minus warp,click 1
-equal warp,click 3
+space warp,click 1
+ctrl+space warp,click 3
 
-shift+minus warp,drag 1
-shift+equal warp,drag 3
-
-shift+minus warp,drag 1
-shift+equal warp,drag 3
+shift+space warp,drag 1
+shift+ctrl+space warp,drag 3
 
 Return end
+Escape end
 
 BackSpace history-back
 
-slash grid 1x1,warp
-
 grave grid 1x1,cursorzoom 10 10
-
-Escape end
