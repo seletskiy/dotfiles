@@ -13,6 +13,6 @@ sudo bash -c 'echo 1 > /proc/sys/kernel/sysrq'
 xautolock -time 15 -locker ~/bin/lock-screen &
 background {{BACKGROUND}}
 export BACKGROUND=$(background)
-syndaemon -dtki 2
+synclient TouchpadOff=1
 keynav &
 exec i3
