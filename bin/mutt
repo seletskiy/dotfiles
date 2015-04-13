@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ "$SHELL" ]; then
+    /usr/bin/mutt
+else:
+    urxvt -e /usr/bin/mutt
+fi

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+launch_cmd=(urxvt -e tmux)
+if [ "$PS1" ]; then
+    launch_cmd=(tmux)
+fi
+
+if tmux has-session -t mcabber; then
+    exec ${launch_cmd[*]} attach -t mcabber
+else
+    rm ~/.mcabber/mcabber.fifo
+    exec ${launch_cmd[*]} new -s mcabber 'TERM=screen-256color-so /usr/bin/mcabber'
+fi
