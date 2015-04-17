@@ -34,13 +34,14 @@ alias srm='ssh-keygen -R'
 
 alias -g L='| less'
 alias -g G='| grep'
-alias -g Gi='| grep -i'
+alias -g GI='| grep -i'
 alias -g T='| tail'
 alias -g F='| less -F'
 alias -g X='| xclip'
 alias -g N1='| tail -n1'
 alias -g R='| xargs -n1'
 alias -g H='| head'
+alias C='cat'
 
 alias w1='watch -n1 '
 alias sctl='sudo systemctl'
@@ -59,6 +60,8 @@ alias pqo='sudo pacman -Qo'
 alias ppu='sudo pacman -U'
 
 alias run-help='man'
+
+alias psx='ps axfu'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 alias ..='cd ..'
