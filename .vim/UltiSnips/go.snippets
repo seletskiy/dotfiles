@@ -1,6 +1,5 @@
 global !p
-# see ~/.vim/pythonx/go.py
-import go, util
+import px.go, px.util
 endglobal
 
 snippet n "func"
@@ -20,7 +19,7 @@ type ${1:TypeName} ${2:description}
 endsnippet
 
 snippet pa "package"
-package ${1:`!p snip.rv=go.guess_package_name_from_file_name(snip.fn)`}
+package ${1:`!p snip.rv=px.go.guess_package_name_from_file_name(snip.fn)`}
 endsnippet
 
 snippet te "func Test"
@@ -76,7 +75,7 @@ snippet r "return"
 return 
 endsnippet
 
-snippet r "return" "re.match('^\s+if err ', util.get_prev_nonempty_line(b, l))" xb
+snippet r "return" "re.match('^\s+if err ', px.util.get_prev_nonempty_line(buffer, line))" eb
 return err
 endsnippet
 
@@ -145,7 +144,7 @@ map[string]interface{}
 endsnippet
 
 snippet w "switch"
-switch ${1:`!p snip.rv=go.get_last_var_for_snippet()`} {
+switch ${1:`!p snip.rv=px.go.get_last_var_for_snippet()`} {
 case ${2:true}:
 	$3
 }
@@ -159,7 +158,7 @@ case ${1}:
 endsnippet
 
 snippet f "for range"
-for ${1:_}, ${2:val} := range ${3:`!p snip.rv=go.get_last_var_for_snippet()`} {
+for ${1:_}, ${2:val} := range ${3:`!p snip.rv=px.go.get_last_var_for_snippet()`} {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -200,12 +199,12 @@ var (
 )
 endsnippet
 
-snippet c "case"
+snippet column "case"
 case $1:
 	$2
 endsnippet
 
-snippet c "continue" "re.match('^\s+if ', util.get_prev_nonempty_line())" xb
+snippet column "continue" "re.match('^\s+if ', px.util.get_prev_nonempty_line(buffer, line))" eb
 continue
 endsnippet
 
@@ -214,7 +213,7 @@ return nil
 endsnippet
 
 snippet u "append" i
-${1:`!p snip.rv=go.get_last_var_for_snippet()`} = append($1, $2)
+${1:`!p snip.rv=px.go.get_last_var_for_snippet()`} = append($1, $2)
 endsnippet
 
 snippet ms "make slice" i
@@ -244,8 +243,8 @@ case ${3:Type}:
 }
 endsnippet
 
-snippet , "return ... , nil" "go.is_return_argument(b, l, c)" ix
-, `!p if go.is_in_err_condition(vim.current.buffer, vim.current.window.cursor[0], vim.current.window.cursor[1]):
+snippet , "return ... , nil" "px.go.is_return_argument(buffer, line, column)" ie
+, `!p if px.go.is_in_err_condition(vim.current.buffer, vim.current.window.cursor[0], vim.current.window.cursor[1]):
 	snip.rv = "err"
 else:
 	snip.rv = "nil"`
@@ -296,16 +295,16 @@ snippet rf "return false"
 return false
 endsnippet
 
-snippet "(}|d)" "define method" "go.is_struct_bracket(b, l, c)" xrw
+snippet "(}|d)" "define method" "px.go.is_struct_bracket(buffer, line, column)" erw
 `!p if match.group(1) == "}":
 	snip.rv = "}\n\n"
-`func (`!p snip.rv=' '.join(go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
+`func (`!p snip.rv=' '.join(px.go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
 	$4
 }
 endsnippet
 
 snippet dp "define method on pointer"
-func (`!p snip.rv=' *'.join(go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
+func (`!p snip.rv=' *'.join(px.go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
 	$4
 }
 endsnippet
@@ -326,11 +325,11 @@ snippet td "todo"
 // @TODO: 
 endsnippet
 
-snippet l "last slice usage" i
-${1:`!p snip.rv=go.get_previous_slice_usage()`}[$2]
+snippet line "last slice usage" i
+${1:`!p snip.rv=px.go.get_previous_slice_usage()`}[$2]
 endsnippet
 
-snippet t "Description" !b
+snippet t "Description" b
 var $1 = $2
 endsnippet
 
@@ -338,13 +337,13 @@ snippet co "continue"
 continue
 endsnippet
 
-snippet } "else" "go.is_if_bracket(b, l, c)" xw
+snippet } "else" "px.go.is_if_bracket(buffer, line, column)" ew
 } else {
 	$1
 }
 endsnippet
 
-snippet i "if err != nil" "re.match('^\s+[^=]*err\s*:?=', b[l-2])" x
+snippet i "if err != nil" "re.match('^\s+[^=]*err\s*:?=', buffer[line-2])" e
 if err != nil {
 	$1
 }

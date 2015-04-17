@@ -1,5 +1,5 @@
 global !p
-import all
+import px.util
 endglobal
 
 snippet i "if"
@@ -33,7 +33,7 @@ snippet "(\s+)if n" "if not" br
 `!p snip.rv = match.group(1)`if not 
 endsnippet
 
-snippet "^i" "import" "True" rx
+snippet "^i" "import" "True" re
 import 
 endsnippet
 
@@ -41,14 +41,14 @@ snippet "^import (\w+)" "from ... import" br
 from `!p snip.rv = match.group(1)` import 
 endsnippet
 
-snippet e "self.asserEquals" "all.match_higher_indent(b, (l, c), 'def test')" bx
+snippet e "self.assertEquals" "px.util.match_higher_indent(buffer, cursor, 'def test')" be
 self.assertEqual(
 	$1,
 	$2
 )
 endsnippet
 
-snippet d "def test" "all.match_higher_indent(b, (l, c), 'class \w+\(unittest')" bx
+snippet d "def test" "px.util.match_higher_indent(buffer, cursor, 'class \w+\(unittest')" be
 def test$1(self):
 	$2
 endsnippet
