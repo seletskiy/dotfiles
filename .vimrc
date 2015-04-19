@@ -120,10 +120,6 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
     let g:go_snippet_engine = "skip"
 
-    let g:go_snippet_engine = 'skip'
-
-    source ~/.vim/bundle/vim-go/ftplugin/go/doc.vim
-
 Plug 'kshenoy/vim-signature'
     let g:SignatureMarkOrder = "\m"
 
