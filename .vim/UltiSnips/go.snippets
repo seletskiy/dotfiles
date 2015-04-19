@@ -35,7 +35,7 @@ type $1 interface {
 endsnippet
 
 snippet i "if "
-if ${1:`!p snip.rv=go.get_last_var_for_snippet()`} {
+if ${1:`!p snip.rv=px.all.get_last_var_for_snippet()`} {
 	${2:${VISUAL}}
 }
 endsnippet
@@ -66,7 +66,7 @@ if err != nil {
 endsnippet
 
 snippet qn "if ... == nil"
-if ${1:`!p snip.rv=go.get_last_var_for_snippet()`} == nil {
+if ${1:`!p snip.rv=px.all.get_last_var_for_snippet()`} == nil {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -111,8 +111,8 @@ struct {
 endsnippet
 
 snippet "((\w+)\s*(\w+)) js$" "json annotation" br
-`!p snip.rv=match.group(1)` \`json:"`!p
-	snip.rv=go.convert_camelcase_to_snakecase(match.group(2))`"\`
+`!p snip.rv=match.group(1)` \`json:"${1:`!p
+snip.rv=px.all.convert_camelcase_to_snakecase(match.group(2))`}"\`
 endsnippet
 
 snippet fm "func main"
@@ -144,7 +144,7 @@ map[string]interface{}
 endsnippet
 
 snippet w "switch"
-switch ${1:`!p snip.rv=px.go.get_last_var_for_snippet()`} {
+switch ${1:`!p snip.rv=px.all.get_last_var_for_snippet()`} {
 case ${2:true}:
 	$3
 }
@@ -158,7 +158,7 @@ case ${1}:
 endsnippet
 
 snippet f "for range"
-for ${1:_}, ${2:val} := range ${3:`!p snip.rv=px.go.get_last_var_for_snippet()`} {
+for ${1:_}, ${2:val} := range ${3:`!p snip.rv=px.all.get_last_var_for_snippet()`} {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -213,7 +213,7 @@ return nil
 endsnippet
 
 snippet u "append" i
-${1:`!p snip.rv=px.go.get_last_var_for_snippet()`} = append($1, $2)
+${1:`!p snip.rv=px.all.get_last_var_for_snippet()`} = append($1, $2)
 endsnippet
 
 snippet ms "make slice" i
@@ -295,9 +295,8 @@ snippet rf "return false"
 return false
 endsnippet
 
-snippet "(}|d)" "define method" "px.go.is_struct_bracket(buffer, line, column)" erw
-`!p if match.group(1) == "}":
-	snip.rv = "}\n\n"
+snippet "^}$" "define method" rw
+`!p snip.rv = "}\n\n"
 `func (`!p snip.rv=' '.join(px.go.extract_prev_method_binding_for_cursor())`) $1($2) $3${3/.+/ /}{
 	$4
 }
