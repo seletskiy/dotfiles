@@ -1,8 +1,6 @@
 #!/bin/bash
 
-[ -n "$_LOCK" ] || _LOCK=x exec flock -on $0 $0
-
-set -x
+[ -n "$_LOCK" ] || _LOCK=x exec flock -n $0 $0
 
 NAME=kuake_${1:-terminal}
 shift
@@ -14,17 +12,17 @@ main() {
         done
         i3-msg -q '[instance="'$NAME'"] move scratchpad'
     else
-        local terminal_id=$(xdotool search --classname $NAME)
+        if pgrep -f $NAME; then
+            while [[ -z "$terminal_id" ]]; do
+                local terminal_id=$(xdotool search --classname $NAME)
+            done
+        fi
     fi
 
     shift
 
     if [[ -z "$terminal_id" ]]; then
-        if [[ "${@}" ]]; then
-            urxvt -name $NAME -e "${@}" &
-        else
-            urxvt -name $NAME &
-        fi
+        i3-msg -q "exec urxvt -name $NAME"
         main 1 "${@}"
     else
         read screen_num screen_x screen_y screen_width screen_height <<<$(xscreeninfo)
