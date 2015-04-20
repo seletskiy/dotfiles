@@ -15,4 +15,5 @@ background {{BACKGROUND}}
 export BACKGROUND=$(background)
 synclient TouchpadOff=1
 keynav &
+while :; do xsel -o|xsel -b; sleep 0.05; done &
 exec i3
