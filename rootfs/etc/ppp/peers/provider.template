@@ -7,4 +7,3 @@ noauth
 nobsdcomp
 nodeflate
 require-mppe
-usepeerdns
