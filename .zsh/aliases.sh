@@ -21,8 +21,10 @@ alias gr='git remote'
 alias gres='git remote set-url'
 alias gpl='git pull --rebase'
 alias gplo='git pull --rebase && git push'
+alias gpls='git stash -u && git pull --rebase && git stash pop'
 alias gcl='git clone'
 alias gst='git stash'
+alias gr='git rebase'
 alias grc='git rebase --continue'
 alias gra='git rebase --abort'
 alias gstd='git stash -u && git stash drop'
@@ -36,13 +38,14 @@ alias srm='ssh-keygen -R'
 alias -g L='| less'
 alias -g G='| grep'
 alias -g GI='| grep -i'
+alias -g Gi=GI
 alias -g T='| tail'
 alias -g F='| less -F'
 alias -g X='| xclip'
-alias -g N1='| tail -n1'
+alias -g T1='| tail -n1'
 alias -g R='| xargs -n1'
 alias -g H='| head'
-alias C='cat'
+alias -g H1='| head -n1'
 
 alias w1='watch -n1 '
 alias sctl='sudo systemctl'
@@ -53,6 +56,7 @@ alias vim='vim --servername vim'
 
 alias d='dirs -v'
 alias dt='cd ~/sources/dotfiles'
+alias kb='cd ~/sources/kb'
 
 alias p='pacman'
 alias pp='sudo pacman -S'
@@ -63,6 +67,8 @@ alias ppu='sudo pacman -U'
 alias run-help='man'
 
 alias psx='ps axfu'
+
+alias a=alias
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 alias ..='cd ..'
