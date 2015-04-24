@@ -23,7 +23,12 @@ vmap c <Esc><Esc>c
 js <<EOJS
 var slack_fix_esc = function() {
     var win = window.content.wrappedJSObject;
+    if (typeof win.escFixApplied != "undefined") {
+        return;
+    }
+
     win.addEventListener('load', function () {
+        win.escFixApplied = true;
         win.document.onkeydown = function (e) {
             if (e.keyCode==27) {
                 win.$(':focus').blur();
