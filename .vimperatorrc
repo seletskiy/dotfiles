@@ -47,4 +47,6 @@ set cpt=slfh
 
 set hto=170
 
+nmap <C-C> :silent execute "!google-chrome-stable \"" + content.location.href + "\" &"<CR>
+
 " vim: set ft=vimperator:
