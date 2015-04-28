@@ -173,12 +173,15 @@ Plug 'seletskiy/vim-nunu'
 
 Plug 'seletskiy/vim-over80'
 
+Plug 'kovetskiy/urxvt.vim'
+    let g:urxvt_fifo = $HOME . '/.tmp/urxvt.fifo'
+
+call plug#end()
+
 syntax on
 
 filetype plugin on
 filetype indent on
-
-call plug#end()
 
 " Hack to ensure, that ~/.vim is looked first
 set rtp-=~/.vim
