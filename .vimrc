@@ -11,11 +11,6 @@ call plug#begin('~/.vim/bundle')
 
 let mapleader="\<space>"
 
-Plug 'seletskiy/matchem'
-    au VimEnter * inoremap <expr> <C-O> (pumvisible()
-        \ ? feedkeys("\<C-N>")
-        \ : feedkeys("\<C-R>=g:MatchemRepeatFixupFlush('<C-O>')\<CR>\<C-O>", 'n')) ? '' : ''
-
 Plug 'nevar/revim', {'for': 'erlang'}
 
 Plug 'tpope/vim-fugitive'
@@ -93,6 +88,22 @@ Plug 'bling/vim-airline'
     let g:airline_powerline_fonts = 1
     let g:airline_theme = 'lucius'
     let g:airline#extensions#whitespace#symbol = '☼'
+
+Plug 'seletskiy/matchem'
+    " required to be setup before ultisnips inclusion
+    let g:UltiSnipsJumpForwardTrigger = '<C-J>'
+    let g:UltiSnipsJumpBackwardTrigger = '<C-K>'
+
+    augroup fix_matchem_and_ultisnips
+        au!
+        " wow, \<lt>lt>c-o> will expand to \<lt>c-o> by feedkeys, and then to
+        " <c-o> by matchem.
+        au VimEnter * inoremap <expr> <C-O> (
+            \ pumvisible()
+                \ ? feedkeys("\<C-N>")
+                \ : feedkeys("\<C-R>=g:MatchemRepeatFixupFlush('\<lt>lt>c-o>')\<CR>\<C-O>", 'n')
+            \ ) ? '' : ''
+    augroup end
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
