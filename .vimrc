@@ -168,6 +168,10 @@ Plug 'justinmk/vim-sneak'
     vmap F <Plug>Sneak_F
 
 Plug 'kovetskiy/vim-plugvim-utils'
+    augroup plugvim_bindings
+        au!
+        au BufRead .vimrc nnoremap <buffer> <Leader>r :call NewPlugFromClipboard()<CR>
+    augroup end
 
 Plug 'seletskiy/vim-nunu'
 
@@ -218,6 +222,7 @@ set showtabline=0
 set cino=(s,m1,+0
 set comments-=mb:*
 set lazyredraw
+set nofoldenable
 
 " autocomplete list numbers
 " autoinsert comment Leader
@@ -469,6 +474,10 @@ fun! s:ApplyColorscheme()
     hi WarningMsg term=none
     hi Question term=none
     hi ErrorMsg term=none
+
+    hi SneakPluginTarget cterm=bold ctermbg=187 ctermfg=88
+    hi SneakStreakMask ctermbg=184 ctermfg=184 cterm=bold
+    hi SneakStreakTarget ctermbg=179 ctermfg=88 cterm=bold
 endfun
 
 if system('background') == "light\n"
