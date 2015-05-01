@@ -62,3 +62,13 @@ class $1TestCase(unittest.TestCase):
 if __name__ == '__main__':
 	unittest.main()
 endsnippet
+
+snippet c "class" b
+class $1:
+	$2
+endsnippet
+
+snippet c "class constructor" "px.util.match_higher_indent(buffer, cursor, '^class')" be
+def __init__(self${1/.+/, /}$1):
+	$2
+endsnippet
