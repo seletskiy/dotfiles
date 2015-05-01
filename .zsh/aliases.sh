@@ -28,6 +28,7 @@ alias gr='git rebase'
 alias grc='git rebase --continue'
 alias gra='git rebase --abort'
 alias gstd='git stash -u && git stash drop'
+alias gstl='git stash -u && git pull --rebase && git stash pop'
 alias gco='git checkout'
 alias gb='git branch'
 alias grh='git reset HEAD'
@@ -71,6 +72,11 @@ alias psx='ps axfu'
 alias a=alias
 
 alias ma='mplayer -novideo'
+
+alias gob='go build'
+alias gog='go get -u'
+
+alias zr='. ~/.zshrc'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 alias ..='cd ..'
