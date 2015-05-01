@@ -1,6 +1,11 @@
 # remapping hjkl to arrow keys with shift support
 partial alphanumeric_keys
 xkb_symbols "hjkl" {
+    key <AB06> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               n,               N, Escape,  Escape ],
+        symbols[Group2]= [Cyrillic_te, Cyrillic_TE, Escape,  Escape ]
+    };
     key <AB07> {
         type= "FOUR_LEVEL",
         symbols[Group1]= [               m,               M, KP_Enter,  KP_Enter ],
@@ -50,6 +55,16 @@ xkb_symbols "hjkl" {
         type= "FOUR_LEVEL",
         symbols[Group1]= [               p,               P, KP_End, KP_End ],
         symbols[Group2]= [     Cyrillic_ze,     Cyrillic_ZE, KP_End, KP_End ]
+    };
+    key <AD11> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               bracketleft,               bracketleft, BackSpace, BackSpace ],
+        symbols[Group2]= [               Cyrillic_ha,               Cyrillic_HA, BackSpace, BackSpace ]
+    };
+    key <AD12> {
+        type= "FOUR_LEVEL",
+        symbols[Group1]= [               bracketright,               bracketright, Delete, Delete ],
+        symbols[Group2]= [               Cyrillic_hardsign,               Cyrillic_HARDSIGN, Delete, Delete ]
     };
     key  <ARRT> {         [          rightarrow ] };
     key  <ARLF> {         [          leftarrow ] };

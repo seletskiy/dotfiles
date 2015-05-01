@@ -116,10 +116,10 @@ bindsym $mod+Shift+r restart
 bindsym Ctrl+Insert exec sh -c 'xsel | xclip -selection clipbord'
 
 bindsym $mod+Shift+bracketleft mark quick_1
-bindsym $mod+bracketleft [con_mark="quick_1"] focus
+bindsym $mod+Ctrl+bracketleft [con_mark="quick_1"] focus
 
 bindsym $mod+Shift+bracketright mark quick_2
-bindsym $mod+bracketright [con_mark="quick_2"] focus
+bindsym $mod+Ctrl+bracketright [con_mark="quick_2"] focus
 
 bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
 bindsym $mod+Shift+grave move scratchpad
