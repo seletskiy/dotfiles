@@ -86,3 +86,4 @@ work   ! $ sudo systemctl start my-http-share
 
 -        https://aur.archlinux.org/packages/keynav
 -        https://aur.archlinux.org/packages/shift-shift
+-        https://aur.archlinux.org/packages/urxvt-fifo
