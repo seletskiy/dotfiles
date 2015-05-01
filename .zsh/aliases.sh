@@ -111,6 +111,12 @@ bindkey -a '?' run-help
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
 function prepend_sudo() {
+    if grep -q '^sudo ' <<< "$BUFFER"; then
+        CURSOR=$(($CURSOR-5))
+        BUFFER=${BUFFER:5}
+        return
+    fi
+
     if [ "$BUFFER" ]; then
         BUFFER="sudo "$BUFFER
     else
