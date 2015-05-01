@@ -108,6 +108,7 @@ Plug 'seletskiy/matchem'
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
     let g:UltiSnipsEnableSnipMate = 0
+    let g:UltiSnipsEditSplit = "horizontal"
 
     map <Leader>` :UltiSnipsEdit<CR>G
     vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
