@@ -70,6 +70,8 @@ alias psx='ps axfu'
 
 alias a=alias
 
+alias ma='mplayer -novideo'
+
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 alias ..='cd ..'
 alias ...='cd ../..'
