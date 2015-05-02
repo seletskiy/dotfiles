@@ -58,12 +58,12 @@ xkb_symbols "hjkl" {
     };
     key <AD11> {
         type= "FOUR_LEVEL",
-        symbols[Group1]= [               bracketleft,               bracketleft, BackSpace, BackSpace ],
+        symbols[Group1]= [               bracketleft,               braceleft, BackSpace, BackSpace ],
         symbols[Group2]= [               Cyrillic_ha,               Cyrillic_HA, BackSpace, BackSpace ]
     };
     key <AD12> {
         type= "FOUR_LEVEL",
-        symbols[Group1]= [               bracketright,               bracketright, Delete, Delete ],
+        symbols[Group1]= [               bracketright,               braceright, Delete, Delete ],
         symbols[Group2]= [               Cyrillic_hardsign,               Cyrillic_HARDSIGN, Delete, Delete ]
     };
     key  <ARRT> {         [          rightarrow ] };
