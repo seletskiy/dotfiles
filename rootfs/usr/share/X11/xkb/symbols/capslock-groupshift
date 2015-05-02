@@ -1,5 +1,0 @@
-# shift+capslock == capslock == layout switch
-default partial hidden modifier_keys
-xkb_symbols "capslock-groupshift" {
-    replace key <CAPS> { [ ISO_Next_Group, ISO_Next_Group ] };
-};
