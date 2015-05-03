@@ -91,7 +91,7 @@ def install_file(source, destination)
 
     if rootfs
         puts("sudo cp: #{source} -> #{destination}")
-        `sudo cp #{source} #{destination}`
+        `sudo cp -ruT #{source} #{destination}`
     else
         puts("symlink: #{source} -> #{destination}")
         `ln -Tsf #{File.realdirpath(source)} #{destination}`
