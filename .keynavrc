@@ -41,3 +41,6 @@ Escape end
 BackSpace history-back
 
 grave grid 1x1,cursorzoom 9 9
+
+y record
+t playback
