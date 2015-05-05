@@ -54,5 +54,6 @@ nmap <C-C> :silent execute "!google-chrome-stable \"" + content.location.href + 
 qmark v https://github.com/kovetskiy/?tab=repositories
 qmark g https://github.com/
 qmark h https://news.ycombinator.com/
+qmark j http://jira.rn/
 
 " vim: set ft=vimperator:
