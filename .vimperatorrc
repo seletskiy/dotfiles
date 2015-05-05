@@ -20,6 +20,8 @@ map { gT
 nmap v cv
 vmap c <Esc><Esc>c
 
+nnoremap % :source ~/.vimperatorrc<CR>:echomsg "Resourced!"<CR>
+
 js <<EOJS
 var slack_fix_esc = function() {
     var win = window.content.wrappedJSObject;
@@ -48,5 +50,9 @@ set cpt=slfh
 set hto=170
 
 nmap <C-C> :silent execute "!google-chrome-stable \"" + content.location.href + "\" &"<CR>
+
+qmark v https://github.com/kovetskiy/?tab=repositories
+qmark g https://github.com/
+qmark h https://news.ycombinator.com/
 
 " vim: set ft=vimperator:
