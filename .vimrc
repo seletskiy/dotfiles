@@ -224,6 +224,8 @@ set cino=(s,m1,+0
 set comments-=mb:*
 set lazyredraw
 set nofoldenable
+set noequalalways
+set winminheight=0
 
 " autocomplete list numbers
 " autoinsert comment Leader
