@@ -20,8 +20,8 @@ setxkbmap \
         "terminate(ctrl_alt_bksp)`# terminate X on ctrl+alt+bs`"\
         "capslock(escape)"`       # use capslock as esc`\
         "altwin(swap_alt_win)"`   # swap alt and win`\
-        "bksp-first-group"`       # backspace switches to eng layout`\
-        "ralt-last-group"`        # right-alt switches to rus layout`\
+        "bksp-last-group"`        # backspace switches to rus layout`\
+        "ralt-first-group"`       # right-alt switches to eng layout`\
         | sed 's/ /+/g') \
     -compat \
         "complete+hjkl" \
