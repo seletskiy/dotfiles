@@ -115,11 +115,11 @@ bindsym $mod+Shift+r restart
 
 bindsym Ctrl+Insert exec sh -c 'xsel | xclip -selection clipbord'
 
-bindsym $mod+Shift+bracketleft mark quick_1
-bindsym $mod+Ctrl+bracketleft [con_mark="quick_1"] focus
+bindsym $mod+Shift+minus mark quick_1
+bindsym $mod+minus [con_mark="quick_1"] focus
 
-bindsym $mod+Shift+bracketright mark quick_2
-bindsym $mod+Ctrl+bracketright [con_mark="quick_2"] focus
+bindsym $mod+Shift+equal mark quick_2
+bindsym $mod+equal [con_mark="quick_2"] focus
 
 bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
 bindsym $mod+Shift+grave move scratchpad
@@ -137,8 +137,8 @@ bindsym --release Ctrl+Shift+Print exec screenshot public
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
 
-bindsym $mod+less exec amixer set Master 1%-
-bindsym $mod+greater exec amixer set Master 1%+
+bindsym $mod+less exec volume 10%-
+bindsym $mod+greater exec volume 10%+
 
 for_window [class="google-chrome"] border none
 for_window [instance="^screenkey$"] floating enable
