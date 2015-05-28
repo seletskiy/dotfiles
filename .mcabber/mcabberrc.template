@@ -60,6 +60,7 @@ alias s        = roster search d.shashkov@
 alias oa       = roster search oapp@
 alias pp       = roster search p.prudnikov@
 alias v        = roster search e.kovetskiy@
+alias i        = roster search o.lisovskaya@
 
 alias dark     = source ~/.mcabber/mcabberrc.dark
 alias light    = source ~/.mcabber/mcabberrc.light
@@ -80,5 +81,6 @@ bind M13 = msay send
 bind M101 = esay
 
 module load editor
+module load focus
 
 source ~/.mcabber/mcabberrc.theme
