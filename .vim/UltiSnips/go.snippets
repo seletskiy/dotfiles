@@ -8,14 +8,18 @@ func $1($2) $3${3/.+/ /}{
 }
 endsnippet
 
-snippet s "type struct"
-type $1 struct {
-	$2
-}
-endsnippet
-
-snippet t "type"
-type ${1:TypeName} ${2:description}
+snippet s "type struct" bw
+`!p
+if re.match("^([\w\[\]{}]+)$", t[2]):
+	type_left = " "
+	type_right = ""
+else:
+	type_left = " struct {\n\t"
+	type_right = "\n}"
+	if re.match("^\w+\(\)", t[2]):
+		type_left = " interface {\n\t"
+`type $1`!p snip.rv=type_left`$2`!p snip.rv=type_right`
+$0
 endsnippet
 
 snippet pa "package"
@@ -24,12 +28,6 @@ endsnippet
 
 snippet te "func Test"
 func Test$1(t *testing.T) {
-	$2
-}
-endsnippet
-
-snippet ti "interface"
-type $1 interface {
 	$2
 }
 endsnippet
