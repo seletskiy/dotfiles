@@ -143,11 +143,32 @@ Plug 'xolox/vim-misc'
 
 Plug 'cespare/vim-toml'
 
-Plug 'osyo-manga/vim-over', {'on': 'OverCommandLine'}
-    nnoremap H :OverCommandLine %s/\v<CR>
-    vnoremap H :OverCommandLine s/\v<CR>
+Plug 'seletskiy/vim-over80'
+
+Plug 'osyo-manga/vim-over'
+    nnoremap H :OverCommandLine %s/<CR>
+    vnoremap H :OverCommandLine s/<CR>
+
+    let g:over#command_line#search#enable_move_cursor = 1
+    let g:over#command_line#search#very_magic = 1
+
+    au VimEnter * nnoremap / :call g:over80#disable_highlight()
+        \ <CR>:OverCommandLine /<CR>
+
+    au VimEnter * vnoremap / :call g:over80#disable_highlight()
+        \ <CR>:'<,'>OverCommandLine /<CR>
+
+    au VimEnter * nnoremap ? :call g:over80#disable_highlight()
+        \ <CR>:OverCommandLine ?<CR>
+
+    au VimEnter * vnoremap ? :call g:over80#disable_highlight()
+        \ <CR>:'<,'>OverCommandLine ?<CR>
+
+    nnoremap g/ /
 
     map L <Leader>*:OverCommandLine %s//<CR>
+
+    au User OverCmdLineExecute call searchparty#mash#mash()
 
 Plug 'inkarkat/argtextobj.vim'
 
@@ -176,10 +197,17 @@ Plug 'kovetskiy/vim-plugvim-utils'
 
 Plug 'seletskiy/vim-nunu'
 
-Plug 'seletskiy/vim-over80'
-
 Plug 'kovetskiy/urxvt.vim'
     let g:urxvt_fifo = $HOME . '/.tmp/urxvt.fifo'
+
+Plug 't9md/vim-choosewin'
+    nmap - <Plug>(choosewin)
+    let g:choosewin_blink_on_land = 0
+    let g:choosewin_color_other = {'cterm': [254, 1]}
+    let g:choosewin_label = '123QWERTASDF'
+    let g:choosewin_tablabel = ''
+    let g:choosewin_label_align = 'left'
+
 
 call plug#end()
 
@@ -263,10 +291,6 @@ nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-_> <C-W>_
 
-nnoremap ? ?\v
-vnoremap ? ?\v
-nnoremap / /\v
-vnoremap / /\v
 vnoremap $ g_
 
 nnoremap <TAB> %
@@ -304,6 +328,8 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <Esc>b <S-Left>
 cnoremap <Esc>f <S-Right>
+
+nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
 
 map dsf dt(ds)
 
@@ -368,7 +394,7 @@ augroup end
 
 augroup vimrc
     au!
-    au BufWritePost */.vimrc source % | AirlineRefresh
+    au BufWritePost */.vimrc source % | call choosewin#color#refresh() | AirlineRefres
     au BufWritePost */.vim/pythonx/*.py exec printf('py import %s; reload(%s)',
                 \ expand('%:t:r'),
                 \ expand('%:t:r'))
@@ -399,8 +425,24 @@ augroup confluence
     au BufRead /tmp/vimperator-confluence* map <buffer> <Leader>t :%s/\v[\ \t\n]+\<p\>([\ \t\n]+\<br\>)?[\ \t\n]+\<\/p\>/<CR>
 
     " ugly hack to trim all inter-tags whitespaces
-    au BufWritePre /tmp/vimperator-confluence* %s/\v\>[\ \t\n]+\</></
-    au BufWritePost /tmp/vimperator-confluence* silent! undo
+    au BufWritePre /tmp/vimperator-confluence* let b:_trim_pattern = '\v\>[\ \t\n]+\<' |
+        \ if search(b:_trim_pattern, 'wn') |
+            \ let b:_trim_successfull = 1 |
+            \ let b:_trim_cursor = [line('.'), col('.')] |
+            \ exe "normal i\<C-G>u\<ESC>" |
+            \ exe "%s/" . b:_trim_pattern . "/></" |
+        \ else |
+            \ let b:_trim_successfull = 0 |
+        \ endif
+    au BufWritePost /tmp/vimperator-confluence* if b:_trim_successfull | 
+        \ silent! undo |
+        \ call cursor(b:_trim_cursor[0], b:_trim_cursor[1]) |
+        \ endif
+augroup end
+
+augroup winfixheight
+    au!
+    au BufwinEnter set winfixheight
 augroup end
 
 com! BufWipe silent! bufdo! bw | enew!
@@ -491,24 +533,38 @@ endif
 
 fun! g:ApplySyntaxForDiffComments()
     syn match DiffCommentIgnore "^###.*" containedin=ALL
-    syn match DiffComment "^#.*" containedin=ALL
-    syn match DiffComment "^---.*" containedin=ALL
-    syn match DiffComment "^+++.*" containedin=ALL
-    syn match DiffComment "^@@ .*" containedin=ALL
+    syn match DiffComment2 "^#.*" containedin=ALL
+    syn match DiffComment2 "^---.*" containedin=ALL
+    syn match DiffComment2 "^+++.*" containedin=ALL
+    syn match DiffComment2 "^@@ .*" containedin=ALL
     syn match DiffAdded "^+" containedin=ALL
     syn match DiffRemoved "^-" containedin=ALL
     syn match DiffContext "^ " containedin=ALL
 
-
     if &background == 'light'
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
-        hi DiffComment ctermfg=16 ctermbg=254
+        hi DiffComment2 ctermfg=16 ctermbg=254
     else
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
-        hi DiffComment ctermfg=15 ctermbg=237
+        hi DiffComment2 ctermfg=15 ctermbg=237
     endif
 
     hi DiffAdded ctermbg=192 ctermfg=123 cterm=bold
     hi DiffRemoved ctermbg=216 ctermfg=146 cterm=bold
     hi DiffContext ctermbg=253 ctermfg=253
 endfun
+
+function! GoogleSearch()
+    let query = input('Google: ')
+
+    python <<EOF
+import urllib
+import vim
+
+query = vim.eval('l:query')
+vim.command("let l:query_encoded = '%s'" % urllib.quote_plus(query))
+EOF
+
+    call vimproc#system('i3-msg "workspace 1"')
+    call vimproc#system('firefox https://google.ru/search?q=' . l:query_encoded)
+endfunction!
