@@ -3,15 +3,22 @@
 if [[ "$1" == "-w" ]]; then
     shift
     select_window=1
+
+    if [ "$2" ]; then
+        window_id="$1"
+        shift
+    fi
 fi
 
 if [[ $# -lt 1 || "$1" == "-h" ]]; then
-    echo usage: "$0 [-w] <video.avi>"
+    echo usage: "$0 [-w [window_id]] <video.avi>"
     exit 1
 fi
 
 if [[ "$select_window" ]]; then
-    window_id=$(xwininfo | awk '/Window id/{print $4}')
+    if [ -z "$window_id" ]; then
+        window_id=$(xwininfo | awk '/Window id/{print $4}')
+    fi
     select_arg="-#$window_id"
     echo "Press ENTER to move focus on target window and start recording."
     read
@@ -20,4 +27,7 @@ else
     select_arg="-s"
 fi
 
-exec ffcast $select_arg % ffmpeg -f x11grab -framerate 25 -video_size %s -i %D+%c -codec:v libx264 -b:v 20000k -vf crop="iw-mod(iw\\,2):ih-mod(ih\\,2)" -y "${@}"
+exec ffcast $select_arg % \
+    ffmpeg -f x11grab -framerate 25 -video_size %s \
+    -i %D+%c -codec:v libx264 -b:v 20000k \
+    -vf crop="iw-mod(iw\\,2):ih-mod(ih\\,2)" -y "${@}"

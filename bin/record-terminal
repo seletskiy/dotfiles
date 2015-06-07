@@ -1,0 +1,46 @@
+#!/bin/bash
+
+if [ "${@}" ]; then
+    initial_command="-e ""${@}"
+else
+    initial_command=""
+fi
+
+current_window_id=$(xdotool getactivewindow)
+
+terminal_name=RECORD_TERMINAL
+
+urxvt -title $terminal_name $initial_command &
+
+urxvt_pid=$!
+
+attempts=10
+while ! urxvt_window_id=$(xdotool search --name $terminal_name 2>/dev/null); do
+    attempts=$(($attempts-1))
+
+    sleep 0.1
+done
+
+if [ $? -gt 0 ]; then
+    exit 1
+fi
+
+i3-msg -q floating enable
+
+~/sources/screenkey/screenkey --no-detach -n --no-sudo -w $urxvt_window_id &
+
+screenkey_pid=$!
+
+xdotool windowfocus $current_window_id
+
+output_video=$(mktemp --suffix .avi)
+urxvt -e record-cast -w $urxvt_window_id $output_video &
+
+ffmpeg_pid=$!
+
+wait $urxvt_pid
+
+kill $ffmpeg_pid
+kill $screenkey_pid
+
+echo "$output_video"
