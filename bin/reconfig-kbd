@@ -22,7 +22,6 @@ setxkbmap \
         "altwin(swap_alt_win)"`   # swap alt and win`\
         "hjkl(fast-numpad)"`      # 1234qwerdf -> 1234567890`\
         "level5(ralt_switch)"`    # right-alt acts as level5 switch \(fast-numpad\)`\
-        "hjkl(lvl3-shift-shift)"` # alt-rshift/lshift for layout change`\
         | sed 's/ /+/g') \
     -compat \
         "complete+hjkl" \
