@@ -1,6 +1,12 @@
 #!/bin/bash
 
+old_volume=$(amixer get Master | grep -o '[0-9]\+%')
+
+volume 0%
+
 echo /dnd Меня здесь нет. > ~/.mcabber/mcabber.fifo
 xkb-switch -s us
 slock
 echo /online - > ~/.mcabber/mcabber.fifo
+
+volume $old_volume
