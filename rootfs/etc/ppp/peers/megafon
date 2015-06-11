@@ -1,0 +1,22 @@
+/dev/ttyUSB0
+921600
+defaultroute
+usepeerdns
+crtscts
+lock
+noauth
+local
+persist
+modem
+nopcomp
+novjccomp
+nobsdcomp
+nodeflate
+noaccomp
+ipcp-accept-local
+ipcp-accept-remote
+noipdefault
+
+user internet
+password internet
+connect "/bin/chat -v -t15 -f /etc/ppp/chatscripts/megafon.chat"
