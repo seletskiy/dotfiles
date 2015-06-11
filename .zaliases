@@ -47,6 +47,7 @@ alias -g T1='| tail -n1'
 alias -g R='| xargs -n1'
 alias -g H='| head'
 alias -g H1='| head -n1'
+alias -g Z='| fzf'
 
 alias w1='watch -n1 '
 alias sctl='sudo systemctl'
@@ -54,6 +55,7 @@ alias sctl='sudo systemctl'
 alias ipa='ip a'
 
 alias vim='vim --servername vim'
+alias vf='vim $(fzf)'
 
 alias d='dirs -v'
 alias dt='cd ~/sources/dotfiles'
@@ -95,7 +97,6 @@ bindkey -v "^N" history-substring-search-down
 bindkey -v "^A" beginning-of-line
 bindkey -v "^[[A" history-substring-search-up
 bindkey -v "^[[B" history-substring-search-down
-bindkey -v "^R" history-incremental-search-backward
 bindkey -v "^[[3~" delete-char
 bindkey -v "^Q" push-line
 bindkey -v '^A' beginning-of-line
