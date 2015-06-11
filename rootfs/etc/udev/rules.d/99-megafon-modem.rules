@@ -1,1 +1,0 @@
-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="12d1", ATTRS{idProduct}=="1506", run+="/bin/usb_modeswitch -v 0x12d1 -p 0x1506 -J"

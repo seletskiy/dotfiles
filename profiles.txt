@@ -93,3 +93,4 @@ work   ! $ sudo systemctl start my-http-share
 -        https://aur.archlinux.org/packages/youtube-viewer-git
 
 -        https://aur.archlinux.org/packages/zgen-git
+laptop   https://aur.archlinux.org/packages/huawei-ussd
