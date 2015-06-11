@@ -64,7 +64,7 @@
 -        https://aur.archlinux.org/packages/slop-git
 
 -        zsh
--        https://aur.archlinux.org/packages/prezto-git
+-        https://aur.archlinux.org/packages/antigen-git
 
 -        https://aur.archlinux.org/packages/mcabber-crew-hg
 -        https://aur.archlinux.org/packages/mcabber-module-external-editor
@@ -87,3 +87,9 @@ work   ! $ sudo systemctl start my-http-share
 -        https://aur.archlinux.org/packages/keynav
 -        https://aur.archlinux.org/packages/shift-shift
 -        https://aur.archlinux.org/packages/urxvt-fifo
+
+-        https://aur.archlinux.org/packages/perl-test-mock-lwp-dispatch
+-        https://aur.archlinux.org/packages/perl-lwp-useragent-cached
+-        https://aur.archlinux.org/packages/youtube-viewer-git
+
+
