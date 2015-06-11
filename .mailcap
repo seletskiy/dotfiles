@@ -1,3 +1,4 @@
 text/html;                      i3-sensible-browser %s; needsterminal
+image/gif;                      ffplay -window_title ffplay_gif_player %s
 image/*;                        feh %s
 text/calendar;                  goik; copiousoutput
