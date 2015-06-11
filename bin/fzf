@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec /bin/fzf --color=fg:242,bg:15,bg+:220,fg+:240,hl:232,hl+:17,info:1,spinner:1,prompt:232 "${@}"

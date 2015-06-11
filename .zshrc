@@ -30,6 +30,8 @@ setopt menu_complete
 source ~/.zprofile
 source ~/.zaliases
 
+source /etc/profile.d/fzf.zsh
+
 source /usr/share/zsh/functions/Prompts/promptinit
 promptinit
 
@@ -38,7 +40,4 @@ prompt lambda17 white red λ
 if [ "$BACKGROUND" ]; then
     eval `dircolors ~/.dircolors.$BACKGROUND`
     export TERM=rxvt-unicode-256color
-    if [ "$TMUX" ]; then
-        export TERM=screen-256color-so
-    fi
 fi
