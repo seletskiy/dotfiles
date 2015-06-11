@@ -20,6 +20,8 @@ map { gT
 nmap v cv
 vmap c <Esc><Esc>c
 
+imap <C-}> <C-I>
+
 nnoremap % :source ~/.vimperatorrc<CR>:echomsg "Resourced!"<CR>
 
 js <<EOJS
@@ -40,14 +42,30 @@ var slack_fix_esc = function() {
 }
 EOJS
 
+js <<EOJS
+var apply_css = function(css) {
+    var win = window.content.wrappedJSObject;
+
+    var style= win.document.createElement('style');
+
+    style.appendChild(win.document.createTextNode(css));
+
+    win.addEventListener('load', function () {
+        win.document.body.appendChild(style);
+    })
+}
+EOJS
+
 autocmd!
 autocmd LocationChange slack.com js slack_fix_esc()
 autocmd LocationChange zabbix.in.ngs.ru setl ht+=| //span[@class='link_menu'] | //div[contains(@class,'app-list-toggle')] | //span[@class='link']
 autocmd LocationChange jira.rn setl ht+=| //ul[@id='issuedetails']//*[contains(@class,'value')] | //div[contains(@class,'ghx-detail-close')]
+autocmd LocationChange keybr.com js apply_css(".supporter, .social-shares { display: none }\n#keyboard-wrap { position: absolute !important; left: -5000px; };")
 
 set cpt=slfh
 
 set hto=170
+set hin=label
 
 nmap <C-C> :silent execute "!google-chrome-stable \"" + content.location.href + "\" &"<CR>
 
@@ -55,5 +73,6 @@ qmark v https://github.com/kovetskiy/?tab=repositories
 qmark g https://github.com/
 qmark h https://news.ycombinator.com/
 qmark j http://jira.rn/
+qmark c http://confluence.rn/
 
 " vim: set ft=vimperator:
