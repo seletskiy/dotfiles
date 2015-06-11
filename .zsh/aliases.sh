@@ -84,6 +84,9 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
+alias vicd="fastcd ~/.vim/bundle/ 1"
+alias gocd="fastcd $GOPATH/src/ 3"
+
 export KEYTIMEOUT=1
 bindkey -v
 
@@ -100,7 +103,6 @@ bindkey -v '^E' end-of-line
 bindkey -v '^?' backward-delete-char
 bindkey -v '^H' backward-delete-char
 bindkey -v '^W' backward-kill-word
-bindkey -v '^K' vi-kill-eol
 bindkey -v '^[[Z' reverse-menu-complete
 bindkey -v '^[d' delete-word
 
@@ -250,14 +252,3 @@ function move-to-gopath() {
 
     cd $directory
 }
-
-function cd-to-vim-bundle() {
-    cd ~/.vim/bundle/$1
-}
-
-_cd-to-vim-bundle() {
-    cd-to-vim-bundle
-    _arguments -C '*:bundles:_directories'
-}
-
-compdef _cd-to-vim-bundle cd-to-vim-bundle
