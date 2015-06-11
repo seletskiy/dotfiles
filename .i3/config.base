@@ -172,4 +172,4 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym $mod+BackSpace mode "resize"
+bindsym $mod+z mode "resize"
