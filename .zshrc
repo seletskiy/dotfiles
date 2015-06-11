@@ -22,4 +22,7 @@ export ZDOTDIR=~
 if [ "$BACKGROUND" ]; then
     eval `dircolors ~/.dircolors.$BACKGROUND`
     export TERM=rxvt-unicode-256color
+    if [ "$TMUX" ]; then
+        export TERM=screen-256color-so
+    fi
 fi
