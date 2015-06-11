@@ -8,7 +8,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 augroup run_after_plug_end
-au!
+    au!
+augroup end
 
 call plug#begin('~/.vim/bundle')
 
@@ -22,6 +23,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'Gundo', {'on': 'GundoToggle'}
 
 Plug 'dahu/SearchParty'
+    au VimEnter * au! SearchPartySearching
+    au BufEnter * let b:searching = 0
+    au CursorHold * call SPAfterSearch()
+
     nmap <silent> <Leader><Leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHighlightClear")<CR>
 
 Plug 'edsono/vim-matchit', {'for': 'html'}
@@ -149,16 +154,16 @@ Plug 'osyo-manga/vim-over'
     let g:over#command_line#search#enable_move_cursor = 1
     let g:over#command_line#search#very_magic = 1
 
-    au User _VimrcRunAfterPlugEnd nnoremap / :call g:over80#disable_highlight()
+    au BufAdd,BufEnter * nnoremap / :call g:over80#disable_highlight()
         \<CR>:OverCommandLine /<CR>
 
-    au User _VimrcRunAfterPlugEnd vnoremap / :call g:over80#disable_highlight()
+    au BufAdd,BufEnter * vnoremap / :call g:over80#disable_highlight()
         \<CR>:'<,'>OverCommandLine /<CR>
 
-    au User _VimrcRunAfterPlugEnd nnoremap ? :call g:over80#disable_highlight()
+    au BufAdd,BufEnter * nnoremap ? :call g:over80#disable_highlight()
         \<CR>:OverCommandLine ?<CR>
 
-    au User _VimrcRunAfterPlugEnd vnoremap ? :call g:over80#disable_highlight()
+    au BufAdd,BufEnter * vnoremap ? :call g:over80#disable_highlight()
         \<CR>:'<,'>OverCommandLine ?<CR>
 
     au User _VimrcRunAfterPlugEnd nnoremap g/ /
@@ -203,12 +208,10 @@ Plug 't9md/vim-choosewin'
     let g:choosewin_tablabel = ''
     let g:choosewin_label_align = 'left'
 
+Plug 'junegunn/fzf'
 
 call plug#end()
 
-augroup end
-
-doautocmd User _VimrcRunAfterPlugEnd
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 
 syntax on
