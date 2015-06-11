@@ -7,6 +7,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall
 endif
 
+augroup run_after_plug_end
+au!
+
 call plug#begin('~/.vim/bundle')
 
 let mapleader="\<space>"
@@ -45,17 +48,14 @@ Plug 'Shougo/unite.vim'
     let g:unite_enable_start_insert = 1
     let g:unite_source_history_yank_file = $HOME.'/.vim/yankring.txt'
 
-    augroup unite_custom
-        au!
-        au VimEnter * call unite#custom#source(
-            \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked,directory',
-            \ 'matchers', 'matcher_fuzzy')
+    au User _VimrcRunAfterPlugEnd call unite#custom#source(
+        \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked,directory',
+        \ 'matchers', 'matcher_fuzzy')
 
-        au VimEnter * call unite#custom#default_action(
-            \ 'directory', 'cd')
+    au User _VimrcRunAfterPlugEnd call unite#custom#default_action(
+        \ 'directory', 'cd')
 
-        au VimEnter * call unite#filters#sorter_default#use(['sorter_selecta'])
-    augroup end
+    au User _VimrcRunAfterPlugEnd call unite#filters#sorter_default#use(['sorter_selecta'])
 
     function! s:unite_my_settings()
         imap <buffer> <C-R> <Plug>(unite_redraw)
@@ -94,16 +94,13 @@ Plug 'seletskiy/matchem'
     let g:UltiSnipsJumpForwardTrigger = '<C-J>'
     let g:UltiSnipsJumpBackwardTrigger = '<C-K>'
 
-    augroup fix_matchem_and_ultisnips
-        au!
-        " wow, \<lt>lt>c-o> will expand to \<lt>c-o> by feedkeys, and then to
-        " <c-o> by matchem.
-        au VimEnter * inoremap <expr> <C-O> (
-            \ pumvisible()
-                \ ? feedkeys("\<C-N>")
-                \ : feedkeys("\<C-R>=g:MatchemRepeatFixupFlush('\<lt>lt>c-o>')\<CR>\<C-O>", 'n')
-            \ ) ? '' : ''
-    augroup end
+    " wow, \<lt>lt>c-o> will expand to \<lt>c-o> by feedkeys, and then to
+    " <c-o> by matchem.
+    au User _VimrcRunAfterPlugEnd inoremap <expr> <C-O> (
+        \ pumvisible()
+            \ ? feedkeys("\<C-N>")
+            \ : feedkeys("\<C-R>=g:MatchemRepeatFixupFlush('\<lt>lt>c-o>')\<CR>\<C-O>", 'n')
+        \ ) ? '' : ''
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
@@ -152,19 +149,20 @@ Plug 'osyo-manga/vim-over'
     let g:over#command_line#search#enable_move_cursor = 1
     let g:over#command_line#search#very_magic = 1
 
-    au VimEnter * nnoremap / :call g:over80#disable_highlight()
-        \ <CR>:OverCommandLine /<CR>
+    au User _VimrcRunAfterPlugEnd nnoremap / :call g:over80#disable_highlight()
+        \<CR>:OverCommandLine /<CR>
 
-    au VimEnter * vnoremap / :call g:over80#disable_highlight()
-        \ <CR>:'<,'>OverCommandLine /<CR>
+    au User _VimrcRunAfterPlugEnd vnoremap / :call g:over80#disable_highlight()
+        \<CR>:'<,'>OverCommandLine /<CR>
 
-    au VimEnter * nnoremap ? :call g:over80#disable_highlight()
-        \ <CR>:OverCommandLine ?<CR>
+    au User _VimrcRunAfterPlugEnd nnoremap ? :call g:over80#disable_highlight()
+        \<CR>:OverCommandLine ?<CR>
 
-    au VimEnter * vnoremap ? :call g:over80#disable_highlight()
-        \ <CR>:'<,'>OverCommandLine ?<CR>
+    au User _VimrcRunAfterPlugEnd vnoremap ? :call g:over80#disable_highlight()
+        \<CR>:'<,'>OverCommandLine ?<CR>
 
-    nnoremap g/ /
+    au User _VimrcRunAfterPlugEnd nnoremap g/ /
+    au User _VimrcRunAfterPlugEnd nnoremap g? ?
 
     map L <Leader>*:OverCommandLine %s//<CR>
 
@@ -190,10 +188,7 @@ Plug 'justinmk/vim-sneak'
     vmap F <Plug>Sneak_F
 
 Plug 'kovetskiy/vim-plugvim-utils'
-    augroup plugvim_bindings
-        au!
-        au BufRead .vimrc nnoremap <buffer> <Leader>r :call NewPlugFromClipboard()<CR>
-    augroup end
+    au BufRead .vimrc nnoremap <buffer> <Leader>r :call NewPlugFromClipboard()<CR>
 
 Plug 'seletskiy/vim-nunu'
 
@@ -210,6 +205,11 @@ Plug 't9md/vim-choosewin'
 
 
 call plug#end()
+
+augroup end
+
+doautocmd User _VimrcRunAfterPlugEnd
+au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 
 syntax on
 
@@ -290,6 +290,7 @@ nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-_> <C-W>_
+nnoremap <C-^> <C-W>20+
 
 vnoremap $ g_
 
@@ -300,8 +301,8 @@ noremap < <<
 imap <silent> <S-TAB> <C-O><<
 
 nnoremap Q qq
-nnoremap ! :g//norm @q<CR>
-vnoremap ! :g//norm @q<CR>
+nnoremap ! :g//norm n@q<CR>
+vnoremap ! :g//norm n@q<CR>
 vmap <expr> @ feedkeys(':norm @' . nr2char(getchar()) . "\<CR>")
 
 vmap <silent> > >gv
