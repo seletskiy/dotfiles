@@ -1,3 +1,5 @@
+ZDOTDIR=~/.antigen/repos
+
 # why load all that silly prompt themes I'll never use?
 fpath=($(xargs -n1 echo <<< "$fpath" | grep -iv /prompt))
 
