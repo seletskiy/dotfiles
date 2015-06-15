@@ -3,3 +3,5 @@
 .i3/config
 .mutt/aliases
 prefs.js
+.zshrc
+.zprezto
