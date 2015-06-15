@@ -9,7 +9,6 @@ endif
 
 augroup run_after_plug_end
     au!
-augroup end
 
 call plug#begin('~/.vim/bundle')
 
@@ -147,7 +146,7 @@ Plug 'cespare/vim-toml'
 
 Plug 'seletskiy/vim-over80'
 
-Plug 'osyo-manga/vim-over'
+Plug 'seletskiy/vim-over'
     nnoremap H :OverCommandLine %s/<CR>
     vnoremap H :OverCommandLine s/<CR>
 
@@ -211,6 +210,8 @@ Plug 't9md/vim-choosewin'
 Plug 'junegunn/fzf'
 
 call plug#end()
+
+augroup end
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 
