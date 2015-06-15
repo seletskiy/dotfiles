@@ -35,7 +35,7 @@ source /etc/profile.d/fzf.zsh
 source /usr/share/zsh/functions/Prompts/promptinit
 promptinit
 
-prompt lambda17 white red λ
+prompt lambda17 {{FG}} {{BG}} {{LAMBDA}}
 
 if [ "$BACKGROUND" ]; then
     eval `dircolors ~/.dircolors.$BACKGROUND`
