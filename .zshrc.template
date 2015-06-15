@@ -1,10 +1,10 @@
 zmodload zsh/zprof
 
 # wow, such integration! https://github.com/tarjoilija/zgen/pull/27
-ln -sf ~/.zgen/sorin-ionescu/prezto-master ~/.zprezto
+ln -sfT ~/.zgen/sorin-ionescu/prezto-master ~/.zprezto
 
 alias compinit='my-compinit'
-function my-compinit() { grep -q ".zgen" <<< "${@}" || \compinit "${@}" }
+function my-compinit() { grep -q ".zgen" <<< "${@}" && \compinit -C "${@}" }
 
 source /usr/share/zsh/scripts/zgen/zgen.zsh
 
