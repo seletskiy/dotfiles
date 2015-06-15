@@ -50,7 +50,8 @@ alias -g H1='| head -n1'
 alias -g Z='| fzf'
 
 alias w1='watch -n1 '
-alias sctl='sudo systemctl'
+alias sc='sudo systemctl'
+alias scr='sudo systemctl restart'
 
 alias ipa='ip a'
 
