@@ -1,1 +1,1 @@
-/bin/fzf --color=bg:-1,bg+:220,fg+:240,hl:1,hl+:17,info:1,spinner:1,prompt:232
+/bin/fzf --color=fg:0,bg:234,bg+:236,fg+:15,hl:248,hl+:220,info:1,spinner:1,prompt:15,pointer:220

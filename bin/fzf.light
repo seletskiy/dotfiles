@@ -1,1 +1,1 @@
-/home/s.seletskiy/sources/dotfiles/bin/fzf
+/bin/fzf --color=fg:248,bg:15,bg+:220,fg+:240,hl:232,hl+:230,info:2,spinner:1,prompt:16,pointer:230
