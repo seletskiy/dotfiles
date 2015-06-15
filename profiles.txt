@@ -92,4 +92,4 @@ work   ! $ sudo systemctl start my-http-share
 -        https://aur.archlinux.org/packages/perl-lwp-useragent-cached
 -        https://aur.archlinux.org/packages/youtube-viewer-git
 
-
+-        https://aur.archlinux.org/packages/zgen-git

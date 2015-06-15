@@ -114,6 +114,8 @@ bindkey -a '^[Od' backward-word
 bindkey -a '^[Oc' forward-word
 bindkey '^H' backward-kill-word
 
+bindkey -v '^K' add-params
+
 bindkey -a '?' run-help
 
 zle -N prepend-sudo prepend_sudo
@@ -251,4 +253,11 @@ function move-to-gopath() {
     ln -sf $target_path $directory
 
     cd $directory
+}
+
+alias s="sed-substitute"
+function sed-substitute() {
+    local regexp="$1"; shift
+
+    sed -res"$regexp" "${@}"
 }
