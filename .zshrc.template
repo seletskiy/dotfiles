@@ -3,14 +3,13 @@ zmodload zsh/zprof
 # wow, such integration! https://github.com/tarjoilija/zgen/pull/27
 ln -sfT ~/.zgen/sorin-ionescu/prezto-master ~/.zprezto
 
-alias compinit='my-compinit'
-function my-compinit() { grep -q ".zgen" <<< "${@}" && \compinit -C "${@}" }
-
 source /usr/share/zsh/scripts/zgen/zgen.zsh
 
 unalias compinit
 
 if ! zgen saved; then
+    zgen load seletskiy/zsh-zgen-compinit-tweak
+
     zgen load sorin-ionescu/prezto
 
     zgen load kovetskiy/zsh-add-params
