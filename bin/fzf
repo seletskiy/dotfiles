@@ -1,3 +1,4 @@
 #!/bin/sh
 
-exec bin/fzf.$(background)
+echo "${@}" | nc localhost 1234
+exec fzf.$(background) "${@}"
