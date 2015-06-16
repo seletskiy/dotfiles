@@ -95,3 +95,4 @@ work   ! $ sudo systemctl start my-http-share
 -        https://aur.archlinux.org/packages/zgen-git
 laptop   https://aur.archlinux.org/packages/huawei-ussd
 -        https://aur.archlinux.org/packages/fzf
+-        https://aur.archlinux.org/packages/xcape-git

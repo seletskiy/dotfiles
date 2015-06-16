@@ -3,6 +3,9 @@
 export XAUTHORITY=/home/s.seletskiy/.Xauthority
 export DISPLAY=${DISPLAY:-:0.0}
 
+killall -q xcape
+xcape -e "Control_L=Tab"
+
 xset r rate 100 140
 
 setxkbmap \
@@ -25,4 +28,10 @@ setxkbmap \
         | sed 's/ /+/g') \
     -compat \
         "complete+hjkl" \
-    -print | xkbcomp - :0
+    -print | (
+        if [ "$1" = "-v" ]; then
+            xkbcomp - :0
+        else
+            xkbcomp - :0 &>/dev/null
+        fi
+    )
