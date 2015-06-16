@@ -59,7 +59,7 @@ alias vim='vim --servername vim'
 alias vf='vim $(fzf)'
 
 alias d='dirs -v'
-alias dt='cd ~/sources/dotfiles'
+alias dt='cd ~/sources/dotfiles && gs'
 alias kb='cd ~/sources/kb'
 
 alias p='pacman'
