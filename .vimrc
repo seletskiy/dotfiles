@@ -26,7 +26,7 @@ Plug 'dahu/SearchParty'
     au BufEnter * let b:searching = 0
     au CursorHold * call SPAfterSearch()
 
-    nmap <silent> <Leader><Leader> :let @/="" \| call feedkeys("\<Plug>SearchPartyHighlightClear")<CR>
+    nmap <silent> <Leader><Leader> :let @/=''<CR><Plug>SearchPartyHighlightClear
 
 Plug 'edsono/vim-matchit', {'for': 'html'}
 
@@ -153,16 +153,16 @@ Plug 'seletskiy/vim-over'
     let g:over#command_line#search#enable_move_cursor = 1
     let g:over#command_line#search#very_magic = 1
 
-    au BufAdd,BufEnter * nnoremap / :call g:over80#disable_highlight()
+    au VimEnter * nnoremap / :call g:over80#disable_highlight()
         \<CR>:OverCommandLine /<CR>
 
-    au BufAdd,BufEnter * vnoremap / :call g:over80#disable_highlight()
+    au VimEnter * vnoremap / :call g:over80#disable_highlight()
         \<CR>:'<,'>OverCommandLine /<CR>
 
-    au BufAdd,BufEnter * nnoremap ? :call g:over80#disable_highlight()
+    au VimEnter * nnoremap ? :call g:over80#disable_highlight()
         \<CR>:OverCommandLine ?<CR>
 
-    au BufAdd,BufEnter * vnoremap ? :call g:over80#disable_highlight()
+    au VimEnter * vnoremap ? :call g:over80#disable_highlight()
         \<CR>:'<,'>OverCommandLine ?<CR>
 
     au User _VimrcRunAfterPlugEnd nnoremap g/ /
@@ -372,7 +372,7 @@ augroup skeletons
     au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
     au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
 
-    au BufNewFile *.go call feedkeys("Ipa\<TAB>", "")
+    au BufNewFile *.go call feedkeys("Ip\<TAB>", "")
     au BufNewFile PKGBUILD call feedkeys("Ipkgbuild\<TAB>", "")
 augroup end
 
