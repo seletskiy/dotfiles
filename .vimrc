@@ -276,8 +276,6 @@ let g:EclimCompletionMethod = 'omnifunc'
 
 " Ctrl+Backspace in cmd line
 cmap <C-H> <C-W>
-" Alt+d
-cmap <Esc>d <S-Right><C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]>]", "c"), -1, 0)<CR><Right>
 
@@ -333,8 +331,6 @@ map <Leader>c :cd %:h<CR>
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
-cnoremap <Esc>b <S-Left>
-cnoremap <Esc>f <S-Right>
 
 nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
 
