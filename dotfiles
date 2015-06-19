@@ -67,9 +67,13 @@ def main(action, profile)
     end
 end
 
-def ensure_dir(file_name)
+def ensure_dir(file_name, sudo)
     dir_name = File.dirname(file_name)
-    `mkdir -p #{dir_name}`
+    if sudo
+        `sudo mkdir -p #{dir_name}`
+    else
+        `mkdir -p #{dir_name}`
+    end
 end
 
 def remove_rootfs_prefix(source)
@@ -202,7 +206,7 @@ end
 def install_template(source, destination)
     destination, rootfs = remove_rootfs_prefix(destination)
 
-    ensure_dir(destination)
+    ensure_dir(destination, rootfs)
 
     if !diff_template(source, destination)
         return
