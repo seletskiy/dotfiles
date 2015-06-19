@@ -96,6 +96,16 @@ alias .....='cd ../../../..'
 alias vicd="fastcd ~/.vim/bundle/ 1"
 alias gocd="fastcd $GOPATH/src/ 3"
 
+alias di='./dotfiles install'
+alias db='dotfiles-bootstrap'
+function dotfiles-bootstrap() {
+    if grep "^https?:" <<< "$1"; then
+        echo "-        $1" | tee -a ./profiles.txt | ./bootstrap -f
+    else
+        grep "${@}" ./profiles.txt | ./bootstrap -f
+    fi
+}
+
 export KEYTIMEOUT=1
 bindkey -v
 
