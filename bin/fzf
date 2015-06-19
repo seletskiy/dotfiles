@@ -1,4 +1,3 @@
 #!/bin/sh
 
-echo "${@}" | nc localhost 1234
-exec fzf.$(background) "${@}"
+exec fzf.$(background) --inline-info "${@}"
