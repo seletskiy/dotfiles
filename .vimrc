@@ -73,6 +73,8 @@ Plug 'Shougo/unite.vim'
     let g:unite_source_grep_command = 'ag'
     let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden'
     let g:unite_source_grep_recursive_opt = ''
+    let g:unite_source_grep_recursive_opt = ''
+    let g:unite_source_grep_search_word_highlight = 'IncSearch'
 
     map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
     map <C-Y> :Unite -hide-source-names history/yank<CR>
