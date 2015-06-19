@@ -137,17 +137,33 @@ def filter_lines(lines, template)
 end
 
 def diff_template(source, destination)
-    if !File.exist?(destination)
-        return true
-    end
-
     filtered_source = File.open(source).each_line().to_a
     filtered_destination = File.open(destination).each_line().to_a
 
-    File.open(source).each_line() do |line|
-        pattern = line.split(/{{.+?}}/).map{|p| Regexp.escape(p)}.join('.*')
+    placeholders = {}
 
-        if pattern[/\.\*/]
+    File.open(source).each_line() do |line|
+        line_contains_plaсeholders = false
+        pattern = line.split(/(?={{)|(?<=}})/).map.with_index{|part, index|
+            if part[/{{.*}}/]
+                line_contains_plaсeholders = true
+                part.sub(/{{(.*)}}/, '(?<\1>.*)')
+            else
+                Regexp.escape(part)
+            end
+        }.join()
+
+        if line_contains_plaсeholders
+            filtered_destination.each() {|line|
+                line.match(pattern) {|match|
+                    match.names.each{|placeholder_name|
+                        placeholders[
+                            "{{#{placeholder_name}}}"
+                        ] = match[placeholder_name]
+                    }
+                }
+            }
+
             filtered_source = filter_lines(filtered_source, pattern)
             filtered_destination = filter_lines(filtered_destination, pattern)
         end
@@ -168,10 +184,10 @@ def diff_template(source, destination)
 
     if $?.to_i == 0
         patch.unlink()
-        return nil
+        return nil, nil
     end
 
-    return patch
+    return patch, placeholders
 end
 
 def rejoin_template(source, destination)
@@ -179,7 +195,7 @@ def rejoin_template(source, destination)
         return
     end
 
-    patch = diff_template(source, destination)
+    patch, _ = diff_template(source, destination)
     if patch
         `patch #{source} --no-backup-if-mismatch -sT < #{patch.path}`
         patch.unlink()
@@ -208,14 +224,23 @@ def install_template(source, destination)
 
     ensure_dir(destination, rootfs)
 
-    if !diff_template(source, destination)
-        return
+    placeholders = {}
+    if File.exist?(destination)
+        patch, placeholders = diff_template(source, destination)
+        if !patch
+            return
+        end
+
+        patch.unlink()
     end
 
     puts("generating: #{destination}")
 
     expanded_lines = []
-    cache = {'{{DOTFILES_PROFILE}}' => ENV['DOTFILES_PROFILE']}
+    cache = {
+        '{{DOTFILES_PROFILE}}' => ENV['DOTFILES_PROFILE']
+    }.merge(placeholders)
+
     File.open(source).each_line() do |line|
         expanded_lines << query_all_placeholders(line, cache)
     end
