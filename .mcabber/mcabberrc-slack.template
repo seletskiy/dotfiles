@@ -1,0 +1,13 @@
+set jid = {{JID}}
+set password = {{PASSWORD}}
+set server = {{SERVER}}
+
+set logging_dir = ~/.mcabber/history-slack/
+set statefile = ~/.mcabber/mcabber-slack.state
+set fifo_name = ~/.mcabber/mcabber-slack.fifo
+
+alias d = roster search devops@
+
+set autojoin = devops@conference.{{SERVER}},stat_s,golang,it-tops,q2-results
+
+source ~/.mcabber/mcabberrc.common

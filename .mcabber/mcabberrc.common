@@ -1,7 +1,3 @@
-set jid = {{JID}}
-set password = {{PASSWORD}}
-set server = {{SERVER}}
-
 set ignore_self_presence = 1
 
 set tls = 1
@@ -13,13 +9,11 @@ set roster_display_filter = ofdna
 
 set logging = 1
 set load_logs = 1
-set logging_dir = ~/.mcabber/histo/
+
 set logging_ignore_status = 1
 
 set log_muc_conf = 1
 set load_muc_logs = 1
-
-set statefile = ~/.mcabber/mcabber.state
 
 set max_history_blocks = 8
 
@@ -27,7 +21,6 @@ set iq_hide_requests = 1
 
 set events_command = ~/.mcabber/eventcmd
 
-set fifo_name = ~/.mcabber/mcabber.fifo
 module load fifo
 
 set url_regex = "(((https?|ftps?)://)|www[.][-a-z0-9.]+|(mailto:))(%[0-9A-F]{2}|[-_.!~*';/?:@&=+$,#[:alnum:]])+"
@@ -42,25 +35,6 @@ set escdelay = 50
 set roster_width=40
 
 set caps_directory = "~/.mcabber/caps"
-
-alias me = say /me
-alias online   = status online
-alias away     = status away
-alias dnd      = status dnd
-alias rs       = roster search
-alias se       = buffer search_backward
-
-alias b        = roster search a.baranov@
-alias h        = roster search d.khasanov@
-alias p        = roster search e.persienko@
-alias l        = roster search a.platonov@
-alias k        = roster search m.prokopchuk@
-alias o        = roster search s.kostyaev@
-alias s        = roster search d.shashkov@
-alias oa       = roster search oapp@
-alias pp       = roster search p.prudnikov@
-alias v        = roster search e.kovetskiy@
-alias i        = roster search o.lisovskaya@
 
 alias dark     = source ~/.mcabber/mcabberrc.dark
 alias light    = source ~/.mcabber/mcabberrc.light
@@ -82,5 +56,12 @@ bind M101 = esay
 
 module load editor
 module load focus
+module load autojoin
+
+alias online = status online
+alias away = status away
+alias dnd = status dnd
+alias s = roster search
+alias se = buffer search_backward
 
 source ~/.mcabber/mcabberrc.theme
