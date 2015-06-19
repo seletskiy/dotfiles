@@ -26,10 +26,10 @@ unsetopt global_rcs
 
 setopt menu_complete
 
+source /etc/profile.d/fzf.zsh
+
 source ~/.zprofile
 source ~/.zaliases
-
-source /etc/profile.d/fzf.zsh
 
 source /usr/share/zsh/functions/Prompts/promptinit
 promptinit
