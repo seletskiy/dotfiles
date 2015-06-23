@@ -21,7 +21,7 @@ setxkbmap \
         "hjkl(fast-enter)"`       # mod3+m -> enter`\
         "hjkl(fast-escape)"`      # mod3+n -> escape`\
         "terminate(ctrl_alt_bksp)`# terminate X on ctrl+alt+bs`"\
-        "capslock(escape)"`       # use capslock as esc`\
+        "capslock(swapescape)"`   # use capslock as esc`\
         "altwin(swap_alt_win)"`   # swap alt and win`\
         "hjkl(fast-numpad)"`      # 1234qwerdf -> 1234567890`\
         "level5(ralt_switch)"`    # right-alt acts as level5 switch \(fast-numpad\)`\
