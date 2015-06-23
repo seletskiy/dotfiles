@@ -5,8 +5,6 @@ ln -sfT ~/.zgen/sorin-ionescu/prezto-master ~/.zprezto
 
 source /usr/share/zsh/scripts/zgen/zgen.zsh
 
-unalias compinit
-
 if ! zgen saved; then
     zgen load seletskiy/zsh-zgen-compinit-tweak
 
