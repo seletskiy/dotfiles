@@ -252,52 +252,36 @@ function sed-substitute() {
     sed -res"$regexp" "${@}"
 }
 
-function git-commit-message() {
-    if [ $# -eq 0 ]; then
-        git commit -v
-    else
-        flags=()
-        while grep -q "^-" <<< "$1"; do
-            flags+=("$1")
-            shift
-        done
-
-        git commit "${flags[@]}" -m "$(echo "${@}")"
-    fi
-}
-
 autoload is_inside_git_repo
 autoload is_git_repo_dirty
+autoload is_rebase_in_progress
+
+alias gcl='git clone'
 
 aliases_context is_inside_git_repo
     alias d='git diff'
-    alias a='git add'
-    alias dc='git diff --cached'
+    alias dd='git diff --cached'
+    alias a='git-smart-add'
     alias s='git status -s'
-    alias l='git log --oneline --graph --decorate --all'
-    alias c='git-commit-message --amend'
-    alias p='git push'
-    alias po='git push origin'
-    alias po!='git push origin +`git symbolic-ref --short -q HEAD`'
-    alias pm='git push seletskiy'
-    alias pm!='git push seletskiy +`git symbolic-ref --short -q HEAD`'
-    alias r='git remote'
-    alias res='git remote set-url'
-    alias pl='git pull --rebase'
-    alias plo='git pull --rebase && git push'
-    alias pls='git stash -u && git pull --rebase && git stash pop'
-    alias cl='git clone'
-    alias st='git stash'
-    alias r='git rebase'
-    alias rc='git rebase --continue'
-    alias ra='git rebase --abort'
-    alias std='git stash -u && git stash drop'
-    alias co='git checkout'
-    alias co!='git checkout --ours'
-    alias co,='git checkout --theirs'
+    alias o='git log --oneline --graph --decorate --all'
+    alias c='git-smart-commit --amend'
+    alias p='git-smart-push seletskiy'
+    alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
+    alias u='git-smart-pull'
+    alias k='git checkout'
+    alias r='git-smart-remote'
+    alias e='git rebase'
     alias b='git branch'
-    alias rh='git reset HEAD'
+    alias h='git reset HEAD'
     alias i='git add -pi'
+    alias st='git stash'
+    alias std='git stash -u && git stash drop'
 
 aliases_context "is_inside_git_repo && is_git_repo_dirty"
-    alias c='git-commit-message'
+    alias c='git-smart-commit'
+
+aliases_context "is_inside_git_repo && is_rebase_in_progress"
+    alias m='git checkout --ours'
+    alias t='git checkout --theirs'
+    alias c='git rebase --continue'
+    alias b='git rebase --abort'
