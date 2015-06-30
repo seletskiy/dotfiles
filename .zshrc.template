@@ -14,6 +14,8 @@ if ! zgen saved; then
     zgen load kovetskiy/zsh-fastcd
     zgen load seletskiy/zsh-ssh-urxvt
     zgen load seletskiy/zsh-prompt-lambda17
+    zgen load seletskiy/zsh-ash-completion
+    zgen load seletskiy/zsh-context-alias
 
     zgen save
 fi

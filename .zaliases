@@ -71,7 +71,7 @@ alias gocd="fastcd $GOPATH/src/ 3"
 alias di='./dotfiles install'
 alias db='dotfiles-bootstrap'
 function dotfiles-bootstrap() {
-    if grep "^https?:" <<< "$1"; then
+    if grep -E "^https?:" <<< "$1"; then
         echo "-        $1" | tee -a ./profiles.txt | ./bootstrap -f
     else
         grep "${@}" ./profiles.txt | ./bootstrap -f
@@ -267,7 +267,7 @@ aliases_context is_inside_git_repo
     alias c='git-smart-commit --amend'
     alias p='git-smart-push seletskiy'
     alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
-    alias u='git-smart-pull'
+    alias u='git-smart-pull --rebase'
     alias k='git checkout'
     alias r='git-smart-remote'
     alias e='git rebase'
