@@ -138,8 +138,8 @@ bindsym --release Ctrl+Shift+Print exec screenshot public
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
 
-bindsym $mod+less exec volume 10%-
-bindsym $mod+greater exec volume 10%+
+bindsym $mod+less exec volume 1%-
+bindsym $mod+greater exec volume 1%+
 
 for_window [class="google-chrome"] border none
 for_window [instance="^screenkey$"] floating enable
@@ -154,6 +154,11 @@ hide_edge_borders both
 new_window 1pixel
 
 mode "resize" {
+        bindsym Ctrl+Shift+u resize shrink width 1 px
+        bindsym Ctrl+Shift+i resize grow height 1 px
+        bindsym Ctrl+Shift+o resize shrink height 1 px
+        bindsym Ctrl+Shift+p resize grow width 1 px
+
         bindsym u resize shrink width 5 px or 2 ppt
         bindsym i resize grow height 5 px or 2 ppt
         bindsym o resize shrink height 5 px or 2 ppt
@@ -168,6 +173,11 @@ mode "resize" {
         bindsym j move down
         bindsym k move up
         bindsym l move right
+
+        bindsym Ctrl+Shift+h move left 1px
+        bindsym Ctrl+Shift+j move down 1px
+        bindsym Ctrl+Shift+k move up 1px
+        bindsym Ctrl+Shift+l move right 1px
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
