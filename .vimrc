@@ -269,7 +269,7 @@ set formatoptions=qrn1tol
 
 set list
 set lcs=eol:¶,trail:·,tab:\ \  " <- trailing space here
-set fcs=vert:│
+set fcs=vert:\  " <- trailing space there
 
 let html_no_rendering=1
 
