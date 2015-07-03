@@ -25,7 +25,7 @@ package() {
 }
 endsnippet
 
-snippet pkgbuild "pkgbuild-go skeleton" "buffer.name.startswith(os.environ['GOPATH'])" be
+snippet pkgbuild "pkgbuild-go skeleton" "snip.buffer.name.startswith(os.environ['GOPATH'])" be
 pkgname="$1"
 pkgver=1.0
 pkgrel=1
@@ -75,4 +75,16 @@ endsnippet
 
 snippet a "alias" b
 alias $1='$2'
+endsnippet
+
+snippet i "Description" b
+if [ $1 ]; then
+	$2
+fi
+endsnippet
+
+snippet f "function" b
+function $1() {
+	$2
+}
 endsnippet

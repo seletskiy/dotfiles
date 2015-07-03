@@ -1,3 +1,11 @@
+snippet 2 "## header" b
+## $1
+endsnippet
+
+snippet 3 "### header" b
+### $1
+endsnippet
+
 snippet h "h1 header"
 ${1:Header}
 ${1/./=/g}
@@ -12,4 +20,8 @@ snippet c "code block"
 \`\`\`
 $0
 \`\`\`
+endsnippet
+
+snippet b "bold" w
+**$1**
 endsnippet

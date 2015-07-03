@@ -1,3 +1,7 @@
+global !p
+from px.util import *
+endglobal
+
 snippet c2 "2 column layout" w
 <div class="contentLayout2">
 	<div class="columnLayout two-right-sidebar" data-layout="two-right-sidebar">
@@ -62,4 +66,37 @@ snippet td "table td" b
 <td class="confluenceTd">
 	$1
 </td>
+endsnippet
+
+snippet P "people" w
+<b>[$1]</b>&nbsp;
+endsnippet
+
+global !p
+def is_assign_to_tag(snip):
+	return is_cursor_between(
+		snip.buffer[snip.line],
+		snip.cursor,
+		r'<(b|strong)>\[.*$', r'^.*]</(b|strong)>'
+	)
+endglobal
+
+snippet d "Denis" "is_assign_to_tag(snip)" weA
+Денис
+endsnippet
+
+snippet m "Michael" "is_assign_to_tag(snip)" weA
+Миша
+endsnippet
+
+snippet e "Egor" "is_assign_to_tag(snip)" weA
+Егор
+endsnippet
+
+snippet a "Andrey" "is_assign_to_tag(snip)" weA
+Андрей
+endsnippet
+
+snippet z "Eugene" "is_assign_to_tag(snip)" weA
+Женя
 endsnippet

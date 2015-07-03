@@ -1,30 +1,40 @@
 # Snippets for VIM Help Files
 
 global !p
-def sec_title(snip, t):
-    file_start = snip.fn.split('.')[0]
-    sec_name = t[1].strip("1234567890. ").lower().replace(' ', '-')
-    return ("*%s-%s*" % (file_start, sec_name)).rjust(78-len(t[1]))
+import px.doc
 endglobal
 
-snippet sec "Section marker" b
-==============================================================================
-${1:SECTION}`!p snip.rv = sec_title(snip, t)`
+global !p
+def insert_section_title(snip, tabstops):
+    file_start = snip.fn.split('.')[0]
+    section_name = tabstops[1].strip("1234567890. ").lower().replace(' ', '-')
+    snip.rv = "*{}-{}*".format(file_start, section_name).rjust(78 - len(tabstops[1]))
 
+def insert_delimiter_0(snip, tabstops):
+	if px.doc.get_section_level(tabstops[1]) == 0:
+		snip.rv = '=' * 79 + '\n'
+	else:
+		snip.rv = ''
+
+def insert_delimiter_1(snip, tabstops):
+	if px.doc.get_section_level(tabstops[1]) == 1:
+		snip.rv = '-' * len(tabstops[1]) + '\n'
+	else:
+		snip.rv = ''
+
+def insert_toc_item(tabstop, buffer):
+	px.doc.insert_toc_item(buffer[tabstop.start.line], buffer)	
+endglobal
+
+post_jump "if snip.tabstop == 0: insert_toc_item(snip.tabstops[1], snip.buffer)"
+snippet s "section" b
+`!p insert_delimiter_0(snip, t)`$1`!p insert_section_title(snip, t)`
+`!p insert_delimiter_1(snip, t)`
 $0
 endsnippet
 
-snippet ssec "Sub section marker" b
-${1:Subsection}`!p snip.rv = sec_title(snip, t)
-snip += "-"*len(t[1])`
-
-$0
+snippet ss "UltiSnips SNIP/SNAP" b
+------------------- SNIP -------------------
+${1:${VISUAL}}
+------------------- SNAP -------------------
 endsnippet
-
-snippet sssec "Subsub Section marker" b
-${1:SubSubsection}:`!p snip.rv = sec_title(snip, t)`
-
-$0
-endsnippet
-
-# vim:ft=snippets:

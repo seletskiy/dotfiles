@@ -1,5 +1,57 @@
 global !p
-import px.util
+from px.util import *
+import px.python
+import px.all
+endglobal
+
+global !p
+def ensure_newlines(start, end):
+	px.python.ensure_newlines(snip.buffer, start)
+	px.python.ensure_newlines_after(snip.buffer, end)
+
+def expand_method_in_right_place(snip):
+	if isinstance(snip.context, dict):
+		return
+
+	if snip.context and snip.context[0].strip().startswith('class '):
+		indent_amount = 1
+	else:
+		indent_amount = 0
+
+	if snip.visual_content:
+		line, _ = get_higher_indent(snip.buffer, snip.cursor)
+		indent, _ = get_indentation(line)
+		new_cursor = match_exact_indent(snip.buffer, snip.cursor, indent, 'def ')
+		if new_cursor:
+			snip.cursor.set(*new_cursor)
+		insert_lines_before(snip.buffer, snip.cursor, ['\n'])
+
+	snip.context = {
+		'call_position': snip.cursor,
+		'call_indent': get_indentation(snip.buffer[snip.cursor[0]]),
+		'snip.context_match': snip.context,
+		'visual': snip.visual_content
+	}
+
+	snip.cursor.set(*px.all.ensure_indent(snip.buffer, snip.cursor, indent_amount))
+
+def insert_extracted_method_call(snip):	
+	if snip.tabstop != 0:
+		return
+
+	if snip.context['visual']:
+		call_position = snip.context['call_position']
+		snip.buffer[call_position[0]] = snip.context['call_indent'][1]
+		vim.current.window.snip.cursor = snip.cursor.to_vim_cursor(*call_position)
+		snip.expand_anon('a($2, $1)')
+		return from_vim_snip.cursor(vim.current.window.snip.cursor)
+	else:
+		return snip.cursor
+
+
+def after_def(snip):
+	prev_line = snip.buffer[snip.line-1].strip()
+	return prev_line.startswith("def ") or prev_line.startswith("class ")
 endglobal
 
 snippet i "if"
@@ -11,6 +63,8 @@ snippet r "return"
 return 
 endsnippet
 
+pre_expand "expand_method_in_right_place(snip)"
+post_expand "ensure_newlines(snip.snippet_start, snip.snippet_end)"
 snippet d "def"
 def $1($2):
 	$3
@@ -33,7 +87,15 @@ snippet "(\s+)if n" "if not" br
 `!p snip.rv = match.group(1)`if not 
 endsnippet
 
-snippet "^i" "import" "True" re
+global !p
+def filter_previous_buffer(snip, pattern):
+	for line in snip.buffer[0:snip.line]:
+		if not re.match(pattern, line):
+			return False
+	return True
+endglobal
+
+snippet "^i" "import" "filter_previous_buffer(snip, '^(#|$|import |from )')" reA
 import 
 endsnippet
 
@@ -41,16 +103,24 @@ snippet "^import (\w+)" "from ... import" br
 from `!p snip.rv = match.group(1)` import 
 endsnippet
 
-snippet e "self.assertEquals" "px.util.match_higher_indent(buffer, cursor, 'def test')" be
+snippet e "self.assertEquals" "match_higher_indent(snip.buffer, snip.cursor, 'def test')" be
 self.assertEqual(
 	$1,
 	$2
 )
 endsnippet
 
-snippet d "def test" "px.util.match_higher_indent(buffer, cursor, 'class \w+\(unittest')" be
+snippet d "def test" "not after_def(snip) and match_higher_indent(snip.buffer, snip.cursor, 'class \w+\(unittest')" be
 def test$1(self):
 	$2
+endsnippet
+
+pre_expand "expand_method_in_right_place(snip)"
+post_expand "ensure_newlines(snip.snippet_start, snip.snippet_end)"
+post_jump "insert_extracted_method_call(snip)"
+snippet d "def" "not after_def(snip) and match_higher_indent(snip.buffer, snip.cursor, 'class ')" be
+def $1(self$2):
+	${3:${VISUAL}}
 endsnippet
 
 snippet "^cu" "class unit test" br
@@ -68,7 +138,29 @@ class $1:
 	$2
 endsnippet
 
-snippet c "class constructor" "px.util.match_higher_indent(buffer, cursor, '^class')" be
+snippet c "class constructor" "match_higher_indent(snip.buffer, snip.cursor, '^class')" be
 def __init__(self${1/.+/, /}$1):
 	$2
 endsnippet
+
+snippet d "docstring" "after_def(snip)" be
+"""
+$1
+"""
+endsnippet
+
+snippet D "ncat -c 'ts >&2' -kul 12345" b
+__import__('socket').socket(2, 2).sendto(
+	$1 + "\n",
+	('127.0.0.1', 12345)
+)
+endsnippet
+
+snippet ",$" "append traceback" "re.match('^\s+__import__\(\'socket\'\)', snip.buffer[snip.line-1])" re
+ + "".join(__import__('traceback').format_stack()) + "\n",
+endsnippet
+
+# @TODO
+# - snippet for adding import statement for package
+# - autoexpand class and method definitions
+# - snippet for constructor
