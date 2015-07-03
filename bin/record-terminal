@@ -1,9 +1,11 @@
 #!/bin/bash
 
+export TMUX=
+
 if [ "${@}" ]; then
     initial_command="-e ""${@}"
 else
-    initial_command=""
+    initial_command="-e tmux new -s record-terminal"
 fi
 
 current_window_id=$(xdotool getactivewindow)
