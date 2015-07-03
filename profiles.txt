@@ -60,7 +60,7 @@
 
 -        https://aur.archlinux.org/packages/fontconfig-infinality
 
--        https://aur.archlinux.org/packages/maim
+-        https://aur.archlinux.org/packages/maim-git
 -        https://aur.archlinux.org/packages/slop-git
 
 -        zsh
@@ -96,3 +96,4 @@ work   ! $ sudo systemctl start my-http-share
 laptop   https://aur.archlinux.org/packages/huawei-ussd
 -        https://aur.archlinux.org/packages/fzf
 -        https://aur.archlinux.org/packages/xcape-git
+-        https://aur4.archlinux.org/packages/mcabber-modules-autojoin
