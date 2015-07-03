@@ -1,4 +1,4 @@
-set hintchars=qdrguopnv
+set hintchars=qdrguopnb
 
 hi CompResult -append font-family: Monaco; font-size: 12px;
 hi CompDesc -append font-family: Monaco; font-size: 12px;
