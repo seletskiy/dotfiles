@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$1" = "-v" ]; then
+    verbose=1
+else
+    verbose=
+fi
+
 export XAUTHORITY=/home/s.seletskiy/.Xauthority
 export DISPLAY=${DISPLAY:-:0.0}
 
@@ -7,6 +13,14 @@ killall -q xcape
 xcape -e "Control_L=Tab"
 
 xset r rate 100 140
+
+sudo killall -q shift-shift
+keyboard=$(sudo shift-shift -list | grep -iEo 'razer|storm' | head -n1)
+if [ "$verbose" ]; then
+    sudo shift-shift -match="$keyboard" &
+else
+    sudo shift-shift -match="$keyboard" &>/dev/null &
+fi
 
 setxkbmap \
     -keycodes \
@@ -29,7 +43,7 @@ setxkbmap \
     -compat \
         "complete+hjkl" \
     -print | (
-        if [ "$1" = "-v" ]; then
+        if [ "$verbose" ]; then
             xkbcomp - :0
         else
             xkbcomp - :0 &>/dev/null
