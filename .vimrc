@@ -339,7 +339,9 @@ map dsf dt(ds)
 
 augroup review_setting
     au!
-    au FileType diff nnoremap <buffer> <CR> o#<SPACE>
+    au FileType diff nnoremap <buffer> <CR> o<C-R>=(getline('.')[0] == '#')
+        \ ? ' '
+        \ : '# '<CR>
 augroup end
 
 augroup unite_setting
