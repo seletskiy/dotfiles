@@ -9,7 +9,7 @@ notify-send "kindle: starting words sync"
 
 count=$(kindle-vocab-words "$TMP/system/vocabulary/vocab.db" \
 	| tac \
-	| runki -s --cut 10 \
+	| runki --silent --cut 10 \
 	| wc -l)
 
 notify-send "kindle: $count new words"
