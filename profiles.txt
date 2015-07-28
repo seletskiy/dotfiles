@@ -97,3 +97,5 @@ laptop   https://aur.archlinux.org/packages/huawei-ussd
 -        https://aur.archlinux.org/packages/fzf
 -        https://aur.archlinux.org/packages/xcape-git
 -        https://aur4.archlinux.org/packages/mcabber-modules-autojoin
+
+-        https://aur4.archlinux.org/packages/footswitch
