@@ -1,4 +1,5 @@
 text/html;                      i3-sensible-browser %s; needsterminal
+text/html;                      lynx --force-html --dump %s; copiousoutput
 image/gif;                      ffplay -window_title ffplay_gif_player %s
 image/*;                        feh %s
 text/calendar;                  goik; copiousoutput
