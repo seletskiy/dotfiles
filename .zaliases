@@ -32,7 +32,6 @@ alias scr='sudo systemctl restart'
 
 alias ipa='ip a'
 
-alias vim='vim --servername vim'
 alias vf='vim $(fzf)'
 
 alias d='dirs -v'
