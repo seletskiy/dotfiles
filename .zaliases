@@ -67,6 +67,8 @@ alias .....='cd ../../../..'
 alias vicd="fastcd ~/.vim/bundle/ 1"
 alias gocd="fastcd $GOPATH/src/ 3"
 
+alias rto='rtorrent $(ls -t ~/downloads/*.torrent | head -n1)'
+
 alias di='./dotfiles install'
 alias db='dotfiles-bootstrap'
 function dotfiles-bootstrap() {
