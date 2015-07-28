@@ -1,3 +1,7 @@
+command! -nargs=1 Plug source ~/.vimperator/bundle/<args>.js
+
+Plug auto_reload
+
 set hintchars=qdrguopnb
 
 hi CompResult -append font-family: Monaco; font-size: 12px;
