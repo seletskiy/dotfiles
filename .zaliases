@@ -40,9 +40,11 @@ alias kb='cd ~/sources/kb'
 
 alias p='pacman'
 alias pp='sudo pacman -S'
+alias ppy='sudo pacman -Sy'
 alias ppr='sudo pacman -R'
 alias pqo='sudo pacman -Qo'
 alias pql='sudo pacman -Ql'
+alias pqi='sudo pacman -Qi'
 alias ppu='sudo pacman -U'
 
 alias run-help='man'
@@ -57,6 +59,7 @@ alias gob='go build'
 alias gog='go get -u'
 
 alias zr='. ~/.zshrc'
+alias za='vim ~/.zaliases'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 alias ..='cd ..'
@@ -66,14 +69,25 @@ alias .....='cd ../../../..'
 
 alias vicd="fastcd ~/.vim/bundle/ 1"
 alias gocd="fastcd $GOPATH/src/ 3"
+alias srcd="fastcd ~/sources/ 1"
 
 alias rto='rtorrent $(ls -t ~/downloads/*.torrent | head -n1)'
+
+alias ck='mkdir-and-cd'
+function mkdir-and-cd() {
+    mkdir -p $1 && cd $1
+}
 
 alias di='./dotfiles install'
 alias db='dotfiles-bootstrap'
 function dotfiles-bootstrap() {
-    if grep -E "^https?:" <<< "$1"; then
-        echo "-        $1" | tee -a ./profiles.txt | ./bootstrap -f
+    local url=$1
+    if [ -z "$1" ]; then
+        url=$(xclip -o)
+    fi
+
+    if grep -E "^https?:" <<< "$url"; then
+        echo "-        $url" | tee -a ./profiles.txt | ./bootstrap -f
     else
         grep "${@}" ./profiles.txt | ./bootstrap -f
     fi
