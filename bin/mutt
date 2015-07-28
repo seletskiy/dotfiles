@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if [ "$SHELL" ]; then
+if [ "$TERM" != "dumb" ]; then
     /usr/bin/mutt
-else:
+else
     urxvt -e /usr/bin/mutt
 fi
