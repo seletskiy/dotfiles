@@ -61,6 +61,10 @@ Plug 'Shougo/unite.vim'
 
     au User _VimrcRunAfterPlugEnd call unite#filters#sorter_default#use(['sorter_selecta'])
 
+    au User _VimrcRunAfterPlugEnd call unite#custom#source(
+        \ 'file_rec/async', 'converters', 'converter_relative_word'
+    \ )
+
     function! s:unite_my_settings()
         imap <buffer> <C-R> <Plug>(unite_redraw)
         imap <silent><buffer><expr> <C-T> unite#do_action('split')
@@ -126,15 +130,12 @@ Plug 'Valloric/YouCompleteMe'
     let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
     let g:ycm_collect_identifiers_from_comments_and_strings = 1
 
-Plug 'lyokha/vim-xkbswitch'
-    let g:XkbSwitchLib = '/usr/lib/libxkbswitch.so'
-    let g:XkbSwitchEnabled = 1
-
 Plug 'kristijanhusak/vim-multiple-cursors'
 
 Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
     let g:go_snippet_engine = "skip"
+    let g:go_fmt_autosave = 0
 
 Plug 'kshenoy/vim-signature'
     let g:SignatureMarkOrder = "\m"
@@ -159,13 +160,13 @@ Plug 'seletskiy/vim-over'
     au VimEnter * nnoremap / :call g:over80#disable_highlight()
         \<CR>:OverCommandLine /<CR>
 
-    au VimEnter * vnoremap / :call g:over80#disable_highlight()
+    au VimEnter * vnoremap g/ :call g:over80#disable_highlight()
         \<CR>:'<,'>OverCommandLine /<CR>
 
     au VimEnter * nnoremap ? :call g:over80#disable_highlight()
         \<CR>:OverCommandLine ?<CR>
 
-    au VimEnter * vnoremap ? :call g:over80#disable_highlight()
+    au VimEnter * vnoremap g? :call g:over80#disable_highlight()
         \<CR>:'<,'>OverCommandLine ?<CR>
 
     au User _VimrcRunAfterPlugEnd nnoremap g/ /
@@ -211,6 +212,13 @@ Plug 't9md/vim-choosewin'
     let g:choosewin_label_align = 'left'
 
 Plug 'junegunn/fzf'
+Plug 'seletskiy/ashium'
+
+Plug 'hynek/vim-python-pep8-indent'
+
+Plug 'klen/python-mode'
+
+let g:pymode_rope_completion = 0
 
 call plug#end()
 
@@ -357,8 +365,12 @@ augroup end
 
 augroup syntax_hacks
     au!
-    au FileType diff set nolist
-    au FileType diff call g:ApplySyntaxForDiffComments()
+    au FileType diff call ApplySyntaxForDiffComments()
+augroup end
+
+augroup airline_customization
+    au FileType * let g:airline#extensions#whitespace#checks = [ 'indent', 'trailing' ]
+    au FileType diff let g:airline#extensions#whitespace#checks = []
 augroup end
 
 augroup dir_autocreate
@@ -375,6 +387,12 @@ augroup skeletons
 
     au BufNewFile *.go call feedkeys("Ip\<TAB>", "")
     au BufNewFile PKGBUILD call feedkeys("Ipkgbuild\<TAB>", "")
+augroup end
+
+augroup pkgbuild
+    au!
+
+    au BufRead,BufNewFile PKGBUILD set ft=sh.pkgbuild
 augroup end
 
 augroup ft_customization
@@ -396,6 +414,7 @@ augroup go_src
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
     au FileType go map <buffer> <Leader>b <Plug>(go-build)
     au FileType go map <buffer> <Leader>s :py px.go.split_parenthesis()<CR>
+    au FileType go call InstallGoHandlers()
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
@@ -447,12 +466,26 @@ augroup confluence
         \ endif
 augroup end
 
+augroup flowtime
+    au!
+
+    au BufRead $HOME/sources/slides-*/*.html set ft=html.flowtime
+augroup end
+
 augroup winfixheight
     au!
     au BufwinEnter set winfixheight
 augroup end
 
 com! BufWipe silent! bufdo! bw | enew!
+
+function! InstallGoHandlers()
+    augroup go_fmt
+        au!
+
+        autocmd BufWritePre *.go call go#fmt#Format(-1)
+    augroup end
+endfunction
 
 command! QuickFixOpenAll call QuickFixOpenAll()
 function! QuickFixOpenAll()
@@ -480,7 +513,9 @@ fun! g:LightRoom()
     hi ColorColumn ctermbg=15
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=254 cterm=none term=none
-    hi IncSearch cterm=none ctermfg=238 ctermbg=220
+    hi Search cterm=none ctermfg=none ctermbg=226
+    hi IncSearch cterm=none ctermfg=none ctermbg=230
+    hi Visual ctermbg=231 cterm=none ctermfg=none
 
     hi Cursor ctermbg=0 ctermfg=15
     hi PmenuSel ctermbg=136 ctermfg=15 cterm=bold
@@ -527,9 +562,9 @@ fun! s:ApplyColorscheme()
     hi Question term=none
     hi ErrorMsg term=none
 
-    hi SneakPluginTarget cterm=bold ctermbg=187 ctermfg=88
-    hi SneakStreakMask ctermbg=184 ctermfg=184 cterm=bold
-    hi SneakStreakTarget ctermbg=179 ctermfg=88 cterm=bold
+    hi SneakPluginTarget cterm=none ctermbg=190 ctermfg=88
+    hi SneakStreakMask ctermbg=190 ctermfg=190 cterm=bold
+    hi SneakStreakTarget ctermbg=190 ctermfg=88 cterm=bold
 endfun
 
 if system('background') == "light\n"
@@ -539,26 +574,34 @@ else
 endif
 
 fun! g:ApplySyntaxForDiffComments()
+    let extension = expand('%:e')
+
+    exec 'set syntax='.extension
+
     syn match DiffCommentIgnore "^###.*" containedin=ALL
-    syn match DiffComment2 "^#.*" containedin=ALL
-    syn match DiffComment2 "^---.*" containedin=ALL
-    syn match DiffComment2 "^+++.*" containedin=ALL
-    syn match DiffComment2 "^@@ .*" containedin=ALL
-    syn match DiffAdded "^+" containedin=ALL
-    syn match DiffRemoved "^-" containedin=ALL
+    syn match DiffComment "^#.*" containedin=ALL
+    syn match DiffInfo "^---.*" containedin=ALL
+    syn match DiffInfo "^+++.*" containedin=ALL
+    syn match DiffInfo "^@@ .*" containedin=ALL
+    syn match DiffAdded "^+.*" containedin=ALL
+    syn match DiffRemoved "^-.*" containedin=ALL
     syn match DiffContext "^ " containedin=ALL
 
     if &background == 'light'
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
-        hi DiffComment2 ctermfg=16 ctermbg=254
+        hi DiffComment ctermfg=16 ctermbg=254
+        hi DiffInfo ctermfg=16 ctermbg=252
     else
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
-        hi DiffComment2 ctermfg=15 ctermbg=237
+        hi DiffComment ctermfg=15 ctermbg=236
+        hi DiffInfo ctermfg=15 ctermbg=237
     endif
 
-    hi DiffAdded ctermbg=192 ctermfg=123 cterm=bold
-    hi DiffRemoved ctermbg=216 ctermfg=146 cterm=bold
-    hi DiffContext ctermbg=253 ctermfg=253
+    hi DiffAdded ctermbg=122 ctermfg=none cterm=none
+    hi DiffRemoved ctermbg=216 ctermfg=1 cterm=none
+    hi DiffContext ctermbg=254 ctermfg=254
+
+    set nolist
 endfun
 
 function! GoogleSearch()
