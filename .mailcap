@@ -1,5 +1,12 @@
-text/html;                      i3-sensible-browser %s; needsterminal
-text/html;                      lynx --force-html --dump %s; copiousoutput
+text/html; ash-mailcap \
+               -x "i3-sensible-browser %s" %s; \
+               needsterminal;
+
+text/html; ash-mailcap \
+               -x "lynx --force-html --dump %s" \
+               -t /usr/share/ash-mailcap-autoview/editor %s; \
+               copiousoutput
+
 image/gif;                      ffplay -window_title ffplay_gif_player %s
 image/*;                        feh %s
 text/calendar;                  goik; copiousoutput
