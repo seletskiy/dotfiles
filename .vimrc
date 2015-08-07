@@ -72,6 +72,14 @@ Plug 'Shougo/unite.vim'
         call unite#custom#alias('ash_review', 'split', 'ls')
     endfunction
 
+    function! g:UniteFileOrGit()
+        if fugitive#head() == ''
+            Unite -hide-source-names buffer file_rec/async
+        else
+            Unite -hide-source-names buffer git_cached git_untracked
+        endif
+    endfunction
+
     let g:unite_source_grep_max_candidates = 200
 
     let g:unite_source_grep_command = 'ag'
@@ -80,10 +88,9 @@ Plug 'Shougo/unite.vim'
     let g:unite_source_grep_recursive_opt = ''
     let g:unite_source_grep_search_word_highlight = 'IncSearch'
 
-    map <C-P> :Unite -hide-source-names git_cached git_untracked buffer<CR>
+    map <C-P> :call g:UniteFileOrGit()<CR>
     map <C-Y> :Unite -hide-source-names history/yank<CR>
     map <C-U> :Unite -hide-source-names buffer<CR>
-    map <C-E><C-U> :Unite -hide-source-names buffer file_rec/async<CR>
     map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
     map <C-E><C-H> <Leader>*:exec "Unite -hide-source-names grep:.::".substitute(@/, "\\\\<\\(.*\\)\\\\>", "\\1", "")."(?=\\\\W)"<CR>
     map <C-E><C-E> :Unite -hide-source-names directory:~/sources/<CR>
