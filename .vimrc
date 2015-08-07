@@ -190,8 +190,6 @@ Plug 'seletskiy/vim-over'
 
 Plug 'inkarkat/argtextobj.vim'
 
-Plug 'kovetskiy/ash.vim'
-
 Plug 'maksimr/vim-jsbeautify'
 
 Plug 'seletskiy/vim-pythonx'
