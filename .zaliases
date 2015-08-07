@@ -46,6 +46,9 @@ alias pqo='sudo pacman -Qo'
 alias pql='sudo pacman -Ql'
 alias pqi='sudo pacman -Qi'
 alias ppu='sudo pacman -U'
+alias pps='sudo pacman -s'
+
+alias asp='ASPROOT=~/sources/asp asp'
 
 alias run-help='man'
 
