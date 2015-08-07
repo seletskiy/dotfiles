@@ -120,6 +120,11 @@ Plug 'seletskiy/matchem'
             \ : feedkeys("\<C-R>=g:MatchemRepeatFixupFlush('\<lt>lt>c-o>')\<CR>\<C-O>", 'n')
         \ ) ? '' : ''
 
+
+    au User _VimrcRunAfterPlugEnd inoremap <Tab>
+        \ <c-r>=g:MatchemRepeatFixupFlush('<lt>c-j>')<cr>
+        \<c-r>=UltiSnips#ExpandSnippet()<cr>
+
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
     let g:UltiSnipsEnableSnipMate = 0
