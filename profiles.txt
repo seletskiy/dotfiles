@@ -99,3 +99,5 @@ laptop   https://aur.archlinux.org/packages/huawei-ussd
 -        https://aur4.archlinux.org/packages/mcabber-modules-autojoin
 
 -        https://aur4.archlinux.org/packages/footswitch
+-        https://aur4.archlinux.org/packages/armh/
+-        https://aur4.archlinux.org/packages/asp-git
