@@ -102,8 +102,8 @@ bindkey -v
 bindkey -v "^P" history-substring-search-up
 bindkey -v "^N" history-substring-search-down
 bindkey -v "^A" beginning-of-line
-bindkey -v "^[[A" history-substring-search-up
-bindkey -v "^[[B" history-substring-search-down
+bindkey -v "^[OA" history-substring-search-up
+bindkey -v "^[OB" history-substring-search-down
 bindkey -v "^[[3~" delete-char
 bindkey -v "^Q" push-line
 bindkey -v '^A' beginning-of-line

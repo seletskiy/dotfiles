@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 session="$(basename $0)"
 
 launch_cmd=(urxvt -e tmux)
@@ -17,7 +19,6 @@ else
 
     mkdir -p ~/.mcabber/${session/mcabber-/history-}
 
-    export TERM=screen-256color-so
     exec ${launch_cmd[*]} new -s $session \
         /usr/bin/mcabber \
         -f $rcfile \
