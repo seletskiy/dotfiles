@@ -43,7 +43,7 @@ func Test$1(t *testing.T) {
 endsnippet
 
 snippet i "if "
-if ${1:`!p snip.rv=px.all.get_last_var_for_snippet()`} {
+if ${1:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} {
 	${2:${VISUAL}}
 }
 endsnippet
@@ -74,7 +74,7 @@ if err != nil {
 endsnippet
 
 snippet qn "if ... == nil"
-if ${1:`!p snip.rv=px.all.get_last_var_for_snippet()`} == nil {
+if ${1:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} == nil {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -150,7 +150,7 @@ map[string]interface{}
 endsnippet
 
 snippet w "switch"
-switch ${1:`!p snip.rv=px.all.get_last_var_for_snippet()`} {
+switch ${1:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} {
 case ${2:true}:
 	$3
 }
@@ -164,7 +164,7 @@ case ${1}:
 endsnippet
 
 snippet f "for range"
-for ${1:_}, ${2:val} := range ${3:`!p snip.rv=px.all.get_last_var_for_snippet()`} {
+for ${1:_}, ${2:val} := range ${3:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -219,7 +219,7 @@ return nil
 endsnippet
 
 snippet u "append" i
-${1:`!p snip.rv=px.all.get_last_var_for_snippet()`} = append($1, $2)
+${1:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} = append($1, $2)
 endsnippet
 
 snippet ms "make slice" i

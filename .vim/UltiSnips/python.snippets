@@ -11,6 +11,7 @@ def ensure_newlines(start, end):
 
 def expand_method_in_right_place(snip):
 	if isinstance(snip.context, dict):
+		print(snip.context)
 		return
 
 	if snip.context and snip.context[0].strip().startswith('class '):
@@ -149,15 +150,8 @@ $1
 """
 endsnippet
 
-snippet D "ncat -c 'ts >&2' -kul 12345" b
-__import__('socket').socket(2, 2).sendto(
-	$1 + "\n",
-	('127.0.0.1', 12345)
-)
-endsnippet
-
-snippet ",$" "append traceback" "re.match('^\s+__import__\(\'socket\'\)', snip.buffer[snip.line-1])" re
- + "".join(__import__('traceback').format_stack()) + "\n",
+snippet re.ma "re.match" "not px.all.is_syntax_string(to_vim_cursor(snip.cursor))" wAe
+re.match(r'$1', ${2:`!p snip.rv=px.all.get_last_used_var_for_snippet()`})
 endsnippet
 
 # @TODO
