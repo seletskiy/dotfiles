@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir -p ~/.config/chrome-slack/
+
+exec google-chrome-stable --user-data-dir=~/.config/chrome-slack/ --kiosk \
+    http://ngs-team.slack.com/
