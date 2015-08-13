@@ -1,0 +1,13 @@
+#!/bin/sh
+
+dir=${1:-~/clipboard}
+
+( cd $dir && tree -f --noreport . ) \
+    | sed -r 's#./##' \
+    | dmenu -b -l 20 \
+    | sed -r 's/^[│├└─  ]+//' \
+    | ( echo -n $dir/ ; cat ) \
+    | paste \
+    | xargs -n1 cat \
+    | perl -p -e 'chomp if eof' \
+    | xclip
