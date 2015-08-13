@@ -2,7 +2,7 @@ URxvt.loginShell: true
 URxvt.transparent: false
 URxvt.scrollBar: false
 URxvt.cursorBlink: false
-URxvt.saveLines: 4096
+URxvt.saveLines: 0
 URxvt.font: xft:Monaco:style=Regular:pixelsize=12
 URxvt.boldFont: xft:Monaco:style=Bold:pixelsize=12
 URxvt.letterSpace: 0
@@ -11,16 +11,15 @@ URxvt.termName: rxvt-unicode-256color
 URxvt.iso14755: False
 URxvt.iso14755_52: False
 URxvt.internalBorder: 0
-URxvt.perl-ext-common: -scrollback-selection,url-select,keyboard-select,autocomplete-ALL-the-things,fifo,vim-insert
+URxvt.perl-ext-common: -scrollback-selection,url-select,autocomplete-ALL-the-things,fifo,vim-insert
 URxvt.safe-paste.command: vim-safe-paste
 URxvt.url-select.launcher: i3-sensible-browser
 URxvt.url-select.autocopy: true
 URxvt.keysym.Mod4-Tab: url-select:select_next
-URxvt.keysym.Mod4-Escape: keyboard-select:activate
-URxvt.keysym.Mod4-backslash: keyboard-select:search
 URxvt.keysym.Mod4-slash: autocomplete-ALL-the-things:WORD-complete
 URxvt.keysym.Mod4-question: autocomplete-ALL-the-things:skeleton-complete
 URxvt.keysym.Mod4-bar: perl:fifo:start
+URxvt.keysym.Mod4-Escape: string:\033\033[24~
 URxvt.fifo.file: /home/s.seletskiy/.tmp/urxvt.fifo
 URxvt.chdir: /home/s.seletskiy/
 URxvt.pointerBlank: true
