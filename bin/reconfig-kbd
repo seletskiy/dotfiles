@@ -38,6 +38,7 @@ setxkbmap \
         "hjkl(fast-numpad)"`      # 1234qwerdf -> 1234567890`\
         "level5(ralt_switch)"`    # right-alt acts as level5 switch \(fast-numpad\)`\
         "footswitch(f8-second-layout)"` # pedal for switching language layout `\
+        "level5-menu"`            # use menu for level5 switch as well`\
         | sed 's/ /+/g') \
     -compat \
         "complete+hjkl" \
