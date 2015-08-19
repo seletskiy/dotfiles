@@ -125,6 +125,8 @@ Plug 'seletskiy/matchem'
         \ <c-r>=g:MatchemRepeatFixupFlush('<lt>c-j>')<cr>
         \<c-r>=UltiSnips#ExpandSnippet()<cr>
 
+    au User UltiSnipsEnterFirstSnippet call g:MatchemRepeatFixupFlush('<lt>c-j>')
+
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
     let g:UltiSnipsEnableSnipMate = 0
@@ -141,6 +143,7 @@ Plug 'Valloric/YouCompleteMe'
     let g:ycm_confirm_extra_conf = 1
     let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
     let g:ycm_collect_identifiers_from_comments_and_strings = 1
+    let g:ycm_use_ultisnips_completer = 0
 
 Plug 'kristijanhusak/vim-multiple-cursors'
 
