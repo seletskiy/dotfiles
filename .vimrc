@@ -215,6 +215,7 @@ Plug 'seletskiy/vim-nunu'
 
 Plug 'kovetskiy/urxvt.vim'
     let g:urxvt_fifo = $HOME . '/.tmp/urxvt.fifo'
+    map <expr> <space>q urxvt#put("!!\<CR>")
 
 Plug 't9md/vim-choosewin'
     nmap - <Plug>(choosewin)
