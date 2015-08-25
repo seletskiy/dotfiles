@@ -1,6 +1,7 @@
 #!/bin/bash
 
 if [[ "$6" == "ngs" ]]; then
-   ip r a 172.28.0.0/16 dev ppp0
-   ip r a 172.16.0.0/16 dev ppp0
+   ip r a 172.28.0.0/16 dev $1
+   ip r a 172.16.0.0/16 dev $1
+   ip r a 172.16.176.0/18 dev $1
 fi
