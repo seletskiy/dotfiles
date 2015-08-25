@@ -114,7 +114,7 @@ bindsym $mod+Shift+d move container to workspace d
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym Mod1+Shift+Ctrl+r restart
 
 bindsym Ctrl+Insert exec sh -c 'xsel | xclip -selection clipbord'
 
