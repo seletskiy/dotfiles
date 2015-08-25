@@ -10,6 +10,7 @@ alias ll='ls -al'
 alias lt='ls -alt'
 
 alias g='git'
+alias gi='git init'
 
 alias srm='ssh-keygen -R'
 
@@ -25,10 +26,15 @@ alias -g R='| xargs -n1'
 alias -g H='| head'
 alias -g H1='| head -n1'
 alias -g Z='| fzf'
+alias -g E='&>'
 
 alias w1='watch -n1 '
 alias sc='sudo systemctl'
-alias scr='sudo systemctl restart'
+alias scr='sudo systemctl daemon-reload && sudo systemctl restart'
+alias scs='sudo systemctl status'
+alias jf='sudo journalctl -ef'
+
+alias ag='ag -f'
 
 alias ipa='ip a'
 
@@ -54,15 +60,17 @@ alias run-help='man'
 
 alias psx='ps axfu'
 
-alias a=alias
+alias al='alias | grep'
 
 alias ma='mplayer -novideo'
+alias yt='youtube-viewer -n'
 
+alias goi='go install'
 alias gob='go build'
 alias gog='go get -u'
 
 alias zr='. ~/.zshrc'
-alias za='vim ~/.zaliases'
+alias za='vim ~/.zaliases && source ~/.zshrc'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 alias ..='cd ..'
@@ -74,7 +82,7 @@ alias vicd="fastcd ~/.vim/bundle/ 1"
 alias gocd="fastcd $GOPATH/src/ 3"
 alias srcd="fastcd ~/sources/ 1"
 
-alias rto='rtorrent $(ls -t ~/downloads/*.torrent | head -n1)'
+alias rto='rtorrent $(ls --color=never -t ~/downloads/*.torrent | head -n1)'
 
 alias ck='mkdir-and-cd'
 function mkdir-and-cd() {
@@ -94,6 +102,11 @@ function dotfiles-bootstrap() {
     else
         grep "${@}" ./profiles.txt | ./bootstrap -f
     fi
+}
+
+alias godoc='godoc-less'
+function godoc-less() {
+    \godoc -ex "${@}" | less -SX
 }
 
 export KEYTIMEOUT=1
@@ -198,8 +211,16 @@ function git-clone-github() {
     cd ~/sources/$dirname
 }
 
+alias gclk='git-clone-github-kovetskiy'
+function git-clone-github-kovetskiy() {
+    local reponame="$1"
+    local dirname="${2:-${reponame#*/}}"
 
-alias grem='git-remote-add-me'
+    git clone gh:kovetskiy/$reponame ~/sources/$dirname
+    cd ~/sources/$dirname
+}
+
+alias me='git-remote-add-me'
 function git-remote-add-me() {
     if [ "$1" ]; then
         local reponame="$1"; shift
@@ -263,7 +284,7 @@ function move-to-gopath() {
     cd $directory
 }
 
-alias s="sed-substitute"
+alias repl="sed-substitute"
 function sed-substitute() {
     local regexp="$1"; shift
 
