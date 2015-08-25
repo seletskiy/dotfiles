@@ -39,6 +39,8 @@ bindsym $mod+r exec dmenu_run
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
+bindsym $mod+x exec clip
+
 # change focus
 bindsym Ctrl+Home focus left
 bindsym Ctrl+Prior focus up
