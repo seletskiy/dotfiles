@@ -25,10 +25,10 @@ Down move-down,warp
 Up move-up,warp
 Right move-right,warp
 
-ctrl+h cut-left,warp
-ctrl+j cut-down,warp
-ctrl+k cut-up,warp
-ctrl+l cut-right,warp
+u cut-left,warp
+i cut-down,warp
+o cut-up,warp
+p cut-right,warp
 
 space warp,click 1
 ctrl+space warp,click 3
