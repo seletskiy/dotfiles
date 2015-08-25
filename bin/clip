@@ -11,3 +11,5 @@ dir=${1:-~/clipboard}
     | xargs -n1 cat \
     | perl -p -e 'chomp if eof' \
     | xclip
+
+xdotool key Shift+Insert
