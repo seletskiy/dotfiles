@@ -193,6 +193,17 @@ zle -N noop noop
 function noop()  {
 }
 
+bindkey "^F" leap-back
+zle -N leap-back leap-back
+function leap-back() {
+    local dir=$(dirs -p | fzf)
+    if [ "$dir" ]; then
+        cd "$dir"
+    fi
+
+    zle reset-prompt
+}
+
 alias gclm='git-clone-me'
 function git-clone-me() {
     local reponame="$1" ; shift
