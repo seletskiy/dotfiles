@@ -237,6 +237,9 @@ function git-remote-add-me() {
         local reponame="$1"; shift
     else
         local reponame=$(git remote show origin -n | awk '/Fetch URL/{print $3}' | cut -f2 -d/)
+        if [ "$reponame" = "origin" ]; then
+            local reponame=$(basename $(pwd))
+        fi
     fi
 
     git remote add seletskiy gh:seletskiy/$reponame "${@}"
