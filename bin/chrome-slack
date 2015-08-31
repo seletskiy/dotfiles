@@ -1,6 +1,9 @@
 #!/bin/bash
 
-mkdir -p ~/.config/chrome-slack/
+session=$(ps aux | grep kiosk | grep slack | wc -l)
 
-exec google-chrome-stable --user-data-dir=~/.config/chrome-slack/ --kiosk \
+mkdir -p ~/.config/chrome-slack/
+ln -s ~/.config/chrome-slack/ ~/.config/chrome-slack-$session
+
+exec google-chrome-stable --user-data-dir=~/.config/chrome-slack-$session/ --kiosk \
     http://ngs-team.slack.com/
