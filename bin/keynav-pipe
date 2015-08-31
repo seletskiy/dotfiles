@@ -1,0 +1,11 @@
+#!/bin/sh
+
+fifo=~/.keynavpipe
+
+if [ "$1" ]; then
+    exec echo "${@}" > "$fifo"
+fi
+
+[ -p "$fifo" ] || mkfifo "$fifo"
+
+while :; do xargs < "$fifo" | tee /dev/stderr | sh; done
