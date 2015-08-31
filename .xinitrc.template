@@ -4,6 +4,7 @@ export PATH=$HOME/bin:$HOME/.go/bin/:$PATH
 export EDITOR=vim
 
 xset +fp /usr/share/fonts/local
+xset +fp ~/.fonts
 xset fp rehash
 xset s 1200
 xset dpms 1200 1200 1200
