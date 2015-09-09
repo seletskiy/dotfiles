@@ -86,6 +86,9 @@ alias srcd="fastcd ~/sources/ 1"
 
 alias rto='rtorrent $(ls --color=never -t ~/downloads/*.torrent | head -n1)'
 
+alias t='t --task-dir ~/tasks --list tasks'
+alias tf='t -f'
+
 alias -s l='ssh-helper 192.168. .l'
 alias -s p='ssh-helper 172.16. .p'
 alias -s e='ssh-helper ngs.ru. .e'
