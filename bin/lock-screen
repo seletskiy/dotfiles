@@ -4,9 +4,15 @@ old_volume=$(amixer get Master | grep -o '[0-9]\+%')
 
 volume 0%
 
-echo /dnd Меня здесь нет. | tee ~/.mcabber/mcabber-office.fifo
+if pgrep mcabber; then
+    echo /dnd Меня здесь нет. | tee ~/.mcabber/mcabber-office.fifo
+fi
+
 xkb-switch -s us
 slock
-echo /online - | tee ~/.mcabber/mcabber-office.fifo
+
+if pgrep mcabber; then
+    echo /online - | tee ~/.mcabber/mcabber-office.fifo
+fi
 
 volume $old_volume
