@@ -6,4 +6,4 @@ resolv_conf=/etc/resolv.conf
 # configure your subscribers configuration files below.
 name_servers=192.168.20.2
 name_servers_blacklist=192.168.2.*
-append_search=cname.s
+search_domains=cname.s
