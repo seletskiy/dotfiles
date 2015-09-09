@@ -1,5 +1,7 @@
 global !p
-import px.go, px.util
+from px.go import *
+from px.util import *
+from px.all import *
 endglobal
 
 snippet "^n" "func" brA
@@ -30,7 +32,7 @@ endsnippet
 
 priority 10
 snippet "^p" "package" brA
-package ${1:`!p snip.rv=px.go.guess_package_name_from_file_name(snip.fn)`}
+package ${1:`!p snip.rv=guess_package_name_from_file_name(snip.fn)`}
 
 $0
 endsnippet
@@ -43,7 +45,7 @@ func Test$1(t *testing.T) {
 endsnippet
 
 snippet i "if "
-if ${1:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} {
+if ${1:`!p snip.rv=get_last_defined_var_for_snippet()`} {
 	${2:${VISUAL}}
 }
 endsnippet
@@ -74,7 +76,7 @@ if err != nil {
 endsnippet
 
 snippet qn "if ... == nil"
-if ${1:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} == nil {
+if ${1:`!p snip.rv=get_last_defined_var_for_snippet()`} == nil {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -83,11 +85,11 @@ snippet r "return"
 return 
 endsnippet
 
-snippet r "return" "re.match('^\s+if err ', px.util.get_prev_nonempty_line(snip.buffer, snip.line))" eb
+snippet r "return" "re.match('^\s+if err ', get_prev_nonempty_line(snip.buffer, snip.line))" eb
 return err
 endsnippet
 
-snippet p "panic" "re.match('^\s+if err ', px.util.get_prev_nonempty_line(snip.buffer, snip.line))" ebA
+snippet p "panic" "re.match('^\s+if err ', get_prev_nonempty_line(snip.buffer, snip.line))" ebA
 panic(err)
 endsnippet
 
@@ -118,7 +120,7 @@ endsnippet
 
 snippet "((\w+)\s*(\w+)) js$" "json annotation" br
 `!p snip.rv=match.group(1)` \`json:"${1:`!p
-snip.rv=px.all.convert_camelcase_to_snakecase(match.group(2))`}"\`
+snip.rv=convert_camelcase_to_snakecase(match.group(2))`}"\`
 endsnippet
 
 snippet "^m" "func main" rbA
@@ -150,7 +152,7 @@ map[string]interface{}
 endsnippet
 
 snippet w "switch"
-switch ${1:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} {
+switch ${1:`!p snip.rv=get_last_defined_var_for_snippet()`} {
 case ${2:true}:
 	$3
 }
@@ -164,7 +166,7 @@ case ${1}:
 endsnippet
 
 snippet f "for range"
-for ${1:_}, ${2:val} := range ${3:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} {
+for ${1:_}, ${2:val} := range ${3:`!p snip.rv=get_last_defined_var_for_snippet()`} {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -210,7 +212,7 @@ case $1:
 	$2
 endsnippet
 
-snippet c "continue" "re.match('^\s+if ', px.util.get_prev_nonempty_line(snip.buffer, snip.line))" eb
+snippet c "continue" "re.match('^\s+if ', get_prev_nonempty_line(snip.buffer, snip.line))" eb
 continue
 endsnippet
 
@@ -219,7 +221,7 @@ return nil
 endsnippet
 
 snippet u "append" i
-${1:`!p snip.rv=px.all.get_last_defined_var_for_snippet()`} = append($1, $2)
+${1:`!p snip.rv=get_last_defined_var_for_snippet()`} = append($1, $2)
 endsnippet
 
 snippet ms "make slice" i
@@ -249,8 +251,8 @@ case ${3:Type}:
 }
 endsnippet
 
-snippet , "return ... , nil" "px.go.is_return_argument(snip.buffer, snip.line, snip.column)" ie
-, `!p if px.go.is_in_err_condition(vim.current.buffer, vim.current.window.cursor[0], vim.current.window.cursor[1]):
+snippet , "return ... , nil" "is_return_argument(snip.buffer, snip.line, snip.column)" ie
+, `!p if is_in_err_condition(vim.current.buffer, vim.current.window.cursor[0], vim.current.window.cursor[1]):
 	snip.rv = "err"
 else:
 	snip.rv = "nil"`
@@ -303,7 +305,7 @@ endsnippet
 
 snippet "^}(.)$" "define method" rwA
 `!p snip.rv = "}\n\n"
-`func (`!p snip.rv=' *'.join(px.go.extract_prev_method_binding_for_cursor())`) `!p snip.rv = match.group(1)`$1($2) $3${3/.+/ /}{
+`func (`!p snip.rv=' *'.join(extract_prev_method_binding_for_cursor())`) `!p snip.rv = match.group(1)`$1($2) $3${3/.+/ /}{
 	$4
 }
 endsnippet
@@ -335,7 +337,7 @@ snippet td "todo"
 endsnippet
 
 snippet snip.line "last slice usage" i
-${1:`!p snip.rv=px.go.get_previous_slice_usage()`}[$2]
+${1:`!p snip.rv=get_previous_slice_usage()`}[$2]
 endsnippet
 
 snippet t "Description" b
@@ -346,7 +348,7 @@ snippet co "continue"
 continue
 endsnippet
 
-snippet } "else" "px.go.is_if_bracket(snip.buffer, snip.line, snip.column)" ew
+snippet } "else" "is_if_bracket(snip.buffer, snip.line, snip.column)" ew
 } else {
 	$1
 }
@@ -368,7 +370,7 @@ go func() {
 }()
 endsnippet
 
-snippet "}(.)" "else" "px.go.is_if_bracket(snip.buffer, snip.line, snip.column-1)" rebA
+snippet "}(.)" "else" "is_if_bracket(snip.buffer, snip.line, snip.column-1)" rebA
 } else {
 	`!p snip.rv = match.group(1)`$1
 }
@@ -405,15 +407,17 @@ def get_program_name_from_docopt(text):
 		return None
 
 def add_usage(snip):
-	px.go.goto_const();
+	goto_const();
 	snip.expand_anon("""const usage = \`%s
 	
 $2
 	
 Usage:
+	\$0 -h | --help
 	$3
 
 Options:
+	-h --help  Show this help.
 	$4
 `
 	
@@ -422,13 +426,99 @@ endglobal
 
 post_jump "if snip.tabstop == 0: add_usage(snip)"
 snippet do "docopt" b
-args, err := docopt.Parse(usage, nil, true, "${1:1.0}", false)
+args, err := docopt.Parse(
+	strings.Replace(usage, "$$0", os.Args[0], -1),
+	nil, true, "${1:1.0}", false,
+)
 if err != nil {
 	panic(err)
 }
 endsnippet
 
-snippet "(\w)=" ":=" iAr
+global !p
+def is_inside_docopt_section(snip, section):
+	if not is_syntax_string(to_vim_cursor(snip.cursor)):
+		return False
+
+	match = match_higher_indent(snip.buffer, snip.cursor, '(?i)' + section)
+	if not match:
+		return False
+
+	return True
+
+def docopt_format_options(snip):
+	match = match_higher_indent(snip.buffer, snip.cursor, '(?i)options')
+	if not match:
+		return
+
+	usage_begins_at = match[1] + 1
+	usage_ends_at = usage_begins_at
+	longest_option = ''
+
+	tab_width = int(vim.eval('&ts'))
+
+	for line in snip.buffer[usage_begins_at:]:
+		if line.strip() == '`':
+			break
+		option = parse_docopt_option(line, tab_width)
+		if len(option['first_column']) > len(longest_option):
+			longest_option = option['first_column']
+		usage_ends_at += 1
+
+	for (index, line) in enumerate(snip.buffer[usage_begins_at:usage_ends_at]):
+		option = parse_docopt_option(line, tab_width)
+		print(index, option)
+		snip.buffer[usage_begins_at+index] = \
+			option['first_column'].ljust(len(longest_option)) + \
+			'  ' + \
+			option['second_column']
+
+	snip.cursor.set(snip.cursor[0], len(snip.buffer[snip.cursor[0]]))
+
+def parse_docopt_option(line, tab_width=4):
+	line = line.replace("\t", ' '*tab_width)
+	match = re.match(
+		"""(?x)
+			^(?P<first>
+				(\s+)
+				(
+					(
+						\s*?
+						(--?\w+ ([= ]?(<[\w-]+>|[A-Z_]+))? )
+					)+
+				)?
+			)
+			\s+
+			(?P<second>.+)
+		""",
+		line
+	)
+
+	result = {
+		'first_column': match.group('first'),
+		'second_column': match.group('second'),
+	}
+
+	if result['first_column'].strip() == '':
+		result['first_column'] = ''
+
+	return result
+endglobal
+
+snippet - "docopt command declaration" "is_inside_docopt_section(snip, 'usage')" beA
+\$0 -$1
+endsnippet
+
+post_jump "if snip.tabstop == 0: docopt_format_options(snip)"
+snippet - "docopt option declaration" "is_inside_docopt_section(snip, 'options')" beA
+-$1  $2
+endsnippet
+
+snippet [ "docopt option default" "is_inside_docopt_section(snip, 'options')" eA
+[default: $1]
+endsnippet
+
+snippet "(\w)=" ":=" "not is_syntax_string(to_vim_cursor(snip.cursor))" iAre
 `!p snip.rv = match.group(1) + " = "`
 endsnippet
 
@@ -436,7 +526,7 @@ snippet "=(\s)" ":=" iAr
 `!p snip.rv = "=" + match.group(1)`
 endsnippet
 
-snippet "=(\S)" ":=" iAr
+snippet "=(\S)" ":=" "not is_syntax_string(to_vim_cursor(snip.cursor))" iAr
 `!p snip.rv = "= " + match.group(1)`
 endsnippet
 
@@ -456,13 +546,13 @@ endsnippet
 
 global !p
 def gocode_complete_function(snip):
-	(snip_ret, snip_func) = px.go.get_gocode_complete(False)
-	snip_full = px.go.get_gocode_complete(True)
+	(snip_ret, snip_func) = get_gocode_complete(False)
+	snip_full = get_gocode_complete(True)
 
 	cur_line = re.sub('\w+\.\w+$', '', snip.buffer[snip.line])
 	snip.buffer[snip.line] = cur_line
 
-	prev_line = px.util.get_prev_nonempty_line(snip.buffer, snip.line)
+	prev_line = get_prev_nonempty_line(snip.buffer, snip.line)
 
 	if prev_line[-1] == ',' or prev_line[-1] == '(' or prev_line[-1] == '&' or cur_line.strip() != '':
 		snip.expand_anon(snip_func)
@@ -496,5 +586,5 @@ if snip.tabstop == 0:
 endglobal
 
 pre_expand "gocode_complete_function(snip)"
-snippet "(\w+\.\w+)" "gocode complete" "px.go.gocode_can_complete()" re
+snippet "(\w+\.\w+)" "gocode complete" "gocode_can_complete()" re
 endsnippet
