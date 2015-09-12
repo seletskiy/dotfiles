@@ -16,6 +16,7 @@ if ! zgen saved; then
     zgen load seletskiy/zsh-prompt-lambda17
     zgen load seletskiy/zsh-ash-completion
     zgen load seletskiy/zsh-context-aliases
+    zgen load seletskiy/zsh-git-smart-commands
 
     zgen save
 fi
