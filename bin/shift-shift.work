@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec shift-shift -match 'razer'
+exec /bin/shift-shift -match 'razer'
