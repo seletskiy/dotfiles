@@ -18,7 +18,9 @@ if [ "$DOTFILES_PROFILE" == "laptop" ]; then
     xset r rate 120 130
 fi
 
-sudo footswitch -1 -k f6 -2 -k f7 -3 -k f8
+if ! sudo footswitch -1 -k f6 -2 -k f7 -3 -k f8; then
+    sudo -E shift-shift &
+fi
 
 setxkbmap \
     -keycodes \
