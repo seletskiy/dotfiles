@@ -72,7 +72,6 @@ autocmd LocationChange /tmp/mutt* set enc=UTF-8
 
 set cpt=slfh
 
-set hto=170
 set hin=label
 
 nmap <C-C> :silent execute "!google-chrome-stable \"" + content.location.href + "\" &"<CR>
