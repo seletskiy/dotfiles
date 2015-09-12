@@ -1,0 +1,49 @@
+#!/bin/bash
+
+output="$1"
+shift
+
+if [ -z "$output" -o "$output" == "-h" -o "$output" == "--help" ]; then
+    echo "Program will take screenshot of specified command output"
+    echo "and surround it with nice padding with background color using"
+    echo "background color of the terminal."
+    echo
+    echo "Program will execute command and wait for ENTER, after that"
+    echo "screenshot will be made."
+    echo
+    echo "Usage:"
+    echo -e "\t$(basename $0) <output_image> <command>..."
+
+    exit 1
+fi
+
+clear
+
+eval "${@}"
+
+# hide cursor
+echo -ne '\e[?25l'
+
+read _
+
+# main -i doesn't work for some reason
+xdotool getactivewindow getwindowgeometry | grep -Eo '\w+[,x]\w+' | (
+    read _
+    read geometry
+    maim --localize -g $geometry+0+0 -i $(xdotool getactivewindow) $output
+)
+
+# show cursor
+echo -ne '\e[?25h'
+
+function histogram() {
+    convert $1 \
+        -define histogram:unique-colos=true \
+        -format %c histogram:info:-
+}
+
+histogram $output | sort -nr | head -n1 | (
+    read _ _ bg_color _
+
+    mogrify -trim -bordercolor $bg_color -border 10x10 $output
+)
