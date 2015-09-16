@@ -4,6 +4,8 @@ set -x
 
 session="$(basename $0)"
 
+export EDITOR=${EDITOR:-vim}
+
 launch_cmd=(urxvt -e tmux)
 if [ "$TERM" != "dumb" ]; then
     launch_cmd=(tmux)
