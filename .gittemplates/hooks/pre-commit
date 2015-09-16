@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ ! -f main.go ]; then
+    exit 0
+fi
+
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+    version=1
+else
+    version=$(( $(git rev-list --count HEAD) + 1 ))
+fi
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$branch" != "master" ]; then
+    exit 0
+fi
+
+if git diff --name-only | grep -q .go$; then
+    docopt-ver main.go "$version"
+fi

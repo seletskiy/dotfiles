@@ -19,3 +19,5 @@
 	default = simple
 [gpg]
 	program = gpg-passphrase
+[init]
+	templatedir = /home/s.seletskiy/.gittemplates/
