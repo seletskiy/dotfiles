@@ -289,12 +289,6 @@ if err != nil {
 }
 endsnippet
 
-snippet fweb "web handler"
-func ${1:HandleSmthing}(w http.ResponseWriter, req *http.Request) {
-	$2
-}
-endsnippet
-
 snippet rt "return true"
 return true
 endsnippet
@@ -427,7 +421,7 @@ endglobal
 post_jump "if snip.tabstop == 0: add_usage(snip)"
 snippet do "docopt" b
 args, err := docopt.Parse(
-	strings.Replace(usage, "$$0", os.Args[0], -1),
+	strings.Replace(usage, "\$0", os.Args[0], -1),
 	nil, true, "${1:1.0}", false,
 )
 if err != nil {
@@ -587,4 +581,24 @@ endglobal
 
 pre_expand "gocode_complete_function(snip)"
 snippet "(\w+\.\w+)" "gocode complete" "gocode_can_complete()" re
+endsnippet
+
+snippet "^hf" "http handle func" brA
+func $1(response http.ResponseWriter, request *http.Request) {
+	$2
+}
+endsnippet
+
+snippet args "args[blah]" wA
+args[`!p snip.rv = '"<' if not t[1].startswith('-') else '"'`$1`!p snip.rv = '>' if not t[1].startswith('-') else ''`"].(${2:string})
+endsnippet
+
+snippet "if s" "if os.Stat" rb
+if ${1:_}, err := os.Stat($2); ${3:err != nil}
+endsnippet
+
+snippet "return fmt" "return fmt Errorf" br
+return fmt.Errorf(
+	"$1", $2
+)
 endsnippet
