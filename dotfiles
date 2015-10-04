@@ -100,6 +100,8 @@ def install_file(source, destination)
         return
     end
 
+    ensure_dir(destination, rootfs)
+
     if rootfs
         puts("sudo cp: #{source} -> #{destination}")
         `sudo cp -ruT #{source} #{destination}`
