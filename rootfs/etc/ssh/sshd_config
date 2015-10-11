@@ -123,4 +123,4 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 #	AllowTcpForwarding no
 #	ForceCommand cvs server
 
-AcceptEnv BACKGROUND
+AcceptEnv BACKGROUND TMUX
