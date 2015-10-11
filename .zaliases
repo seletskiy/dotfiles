@@ -120,6 +120,11 @@ function mkdir-and-cd() {
     mkdir -p $1 && cd $1
 }
 
+alias cks='ck-source-dir'
+ffunction ck-source-dir() {
+    ck "$1" && gi
+}
+
 alias di='./dotfiles install'
 alias db='dotfiles-bootstrap'
 function dotfiles-bootstrap() {
