@@ -589,7 +589,7 @@ func $1(response http.ResponseWriter, request *http.Request) {
 }
 endsnippet
 
-snippet args "args[blah]" wA
+snippet args[ "args[blah]" wA
 args[`!p snip.rv = '"<' if not t[1].startswith('-') else '"'`$1`!p snip.rv = '>' if not t[1].startswith('-') else ''`"].(${2:string})
 endsnippet
 
