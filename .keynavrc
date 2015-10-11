@@ -42,6 +42,7 @@ Escape end
 BackSpace history-back
 
 grave grid 1x1,cursorzoom 9 9
+Tab grid 1x1,cursorzoom 9 9,warp,click 1,end
 
 y record
 t playback
