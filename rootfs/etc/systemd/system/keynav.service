@@ -1,0 +1,12 @@
+[Unit]
+Description=Run keynav
+Requires=graphical.target
+
+[Service]
+ExecStart=/usr/bin/keynav
+Environment=DISPLAY=:0
+User=s.seletskiy
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
