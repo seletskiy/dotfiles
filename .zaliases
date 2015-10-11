@@ -112,7 +112,7 @@ function ssh-helper() {
     local suffix="$3"
     shift 4
 
-    ssh -t $prefix"${host%%$remove_suffix}"$suffix "${@}"
+    ssh-urxvt -t $prefix"${host%%$remove_suffix}"$suffix "${@}"
 }
 
 alias ck='mkdir-and-cd'
