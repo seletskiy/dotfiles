@@ -20,8 +20,17 @@ if [[ "$select_window" ]]; then
         window_id=$(xwininfo | awk '/Window id/{print $4}')
     fi
     select_arg="-#$window_id"
-    echo "Press ENTER to move focus on target window and start recording."
-    read
+    echo "Press ScrollLock to move focus on target window and start recording."
+    killall -q -STOP screenkey
+
+    xev -id "$window_id" | while read line; do
+        if grep "keycode 78" <<< "$line"; then
+            break
+        fi
+    done
+
+    killall -q -CONT screenkey
+
     xdotool windowfocus $window_id
 else
     select_arg="-s"

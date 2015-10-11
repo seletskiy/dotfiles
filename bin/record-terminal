@@ -29,8 +29,29 @@ fi
 
 i3-msg -q floating enable
 
-~/sources/screenkey/screenkey --no-detach -n --no-sudo -w $urxvt_window_id &
+geometry=$(
+    xwininfo -id "$urxvt_window_id" | \
+    awk '/Width|Height|Corners/{print $2}' | \
+    paste -sdx | \
+    sed s/x+/+/
+)
 
+if [ "$BACKGROUND" == "dark" ]; then
+    bg_color=0
+    fg_color=15
+else
+    bg_color=15
+    fg_color=0
+fi
+
+bg_color=$(awk "/color$bg_color:/{print \$2}" ~/.Xresources.$BACKGROUND)
+fg_color=$(awk "/color$fg_color:/{print \$2}" ~/.Xresources.$BACKGROUND)
+
+echo $fg_color $bg_color
+
+screenkey \
+    --bg-color $bg_color --font-color $fg_color \
+    -f 'DejaVu Sans Bold' --no-detach -g $geometry &
 screenkey_pid=$!
 
 xdotool windowfocus $current_window_id
