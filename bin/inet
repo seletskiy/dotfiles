@@ -1,0 +1,15 @@
+#!/bin/bash
+
+interface=${1:-wlan0}
+
+sudo systemctl restart netctl-auto@$interface
+
+while :; do
+    ip addr show dev $interface | grep -o 'inet .*'
+    if [ $? -eq 0 ]; then
+        echo connected
+        exit 0
+    fi
+
+    sleep 1
+done
