@@ -112,7 +112,7 @@ bindsym $mod+Shift+s move container to workspace s
 bindsym $mod+Shift+d move container to workspace d
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym Mod1+Shift+Ctrl+r restart
 
