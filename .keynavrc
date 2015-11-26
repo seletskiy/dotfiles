@@ -46,3 +46,6 @@ Tab grid 1x1,cursorzoom 9 9,warp,click 1,end
 
 y record
 t playback
+
+comma grid 1x1,click 4
+period grid 1x1,click 5
