@@ -1,15 +1,21 @@
 #!/bin/sh
 
+set -o pipefail
+
 dir=${1:-~/clipboard}
 
-( cd $dir && tree -f --noreport . ) \
+( cd $dir && find -type f ) \
     | sed -r 's#./##' \
     | dmenu -b -l 20 \
-    | sed -r 's/^[│├└─  ]+//' \
     | ( echo -n $dir/ ; cat ) \
     | paste \
     | xargs -n1 cat \
     | perl -p -e 'chomp if eof' \
-    | xclip
+    | xclip -f \
+    | xclip -selection clipboard
 
-xdotool key Shift+Insert
+# if dmenu returned non-zero exit code,
+# like on escape
+if [ $? -eq 0 ]; then
+    xdotool key Shift+Insert
+fi
