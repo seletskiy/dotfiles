@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec urxvt -name mylog -e vim "+normal O" "+.!date" "+normal o" "+startinsert" ~/.log
