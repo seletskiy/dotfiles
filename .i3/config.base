@@ -90,6 +90,17 @@ bindsym $mod+a workspace a
 bindsym $mod+s workspace s
 bindsym $mod+d workspace d
 
+# move focused container to workspace
+bindcode $mod+Shift+10 move container to workspace 1
+bindcode $mod+Shift+11 move container to workspace 2
+bindcode $mod+Shift+12 move container to workspace 3
+bindcode $mod+Shift+24 move container to workspace q
+bindcode $mod+Shift+25 move container to workspace w
+bindcode $mod+Shift+26 move container to workspace e
+bindcode $mod+Shift+38 move container to workspace a
+bindcode $mod+Shift+39 move container to workspace s
+bindcode $mod+Shift+40 move container to workspace d
+
 workspace 1 output xinerama-0
 workspace 2 output xinerama-1
 workspace 3 output xinerama-2
@@ -99,17 +110,6 @@ workspace e output xinerama-2
 workspace a output xinerama-0
 workspace s output xinerama-1
 workspace d output xinerama-2
-
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+q move container to workspace q
-bindsym $mod+Shift+w move container to workspace w
-bindsym $mod+Shift+e move container to workspace e
-bindsym $mod+Shift+a move container to workspace a
-bindsym $mod+Shift+s move container to workspace s
-bindsym $mod+Shift+d move container to workspace d
 
 # reload the configuration file
 bindsym $mod+Shift+r reload
