@@ -86,7 +86,7 @@ alias vicd="fastcd ~/.vim/bundle/ 1"
 alias gocd="fastcd $GOPATH/src/ 3"
 alias srcd="fastcd ~/sources/ 1"
 
-alias rto='rtorrent $(ls --color=never -t ~/downloads/*.torrent | head -n1)'
+alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent | head -n1)"'
 
 alias t='t --task-dir ~/tasks --list tasks'
 alias tf='t -f'
