@@ -121,8 +121,8 @@ function mkdir-and-cd() {
 }
 
 alias cks='ck-source-dir'
-ffunction ck-source-dir() {
-    ck "$1" && gi
+function ck-source-dir() {
+    ck "sources/$1" && gi
 }
 
 alias di='./dotfiles install'
