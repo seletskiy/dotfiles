@@ -21,6 +21,9 @@ map s :tabopen https://slovari.yandex.ru/
 map } gt
 map { gT
 
+nmap <C-K> <NOP>
+map gf <NOP>
+
 map <C-I> gt
 map <C-U> gT
 
