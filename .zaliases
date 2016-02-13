@@ -267,6 +267,24 @@ function git-clone-github-kovetskiy() {
     cd ~/sources/$dirname
 }
 
+alias gck='git-clone-github-kovetskiy'
+function git-clone-github-kovetskiy() {
+    local reponame="$1"
+    local dirname="${2:-${reponame#*/}}"
+
+    git clone gh:kovetskiy/$reponame ~/sources/$dirname
+    cd ~/sources/$dirname
+}
+
+alias gcd='git-clone-internal-devops'
+function git-clone-internal-devops() {
+    local reponame="$1"
+    local dirname="${2:-${reponame#*/}}"
+
+    git clone g:kovetskiy/$reponame ~/sources/$dirname
+    cd ~/sources/$dirname
+}
+
 alias me='git-remote-add-me'
 function git-remote-add-me() {
     if [ "$1" ]; then
