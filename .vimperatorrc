@@ -70,7 +70,7 @@ autocmd!
 autocmd LocationChange slack.com js slack_fix_esc()
 autocmd LocationChange zabbix.in.ngs.ru setl ht+=| //span[@class='link_menu'] | //div[contains(@class,'app-list-toggle')] | //span[@class='link']
 autocmd LocationChange jira.rn setl ht+=| //ul[@id='issuedetails']//*[contains(@class,'value')] | //div[contains(@class,'ghx-detail-close')]
-autocmd LocationChange keybr.com js apply_css(".supporter, .social-shares, span.mark { display: none }\n#keyboard-wrap { position: absolute !important; left: -5000px; }\n.cursor { background: black !important; color: white; border-bottom: 0 !important; }")
+autocmd LocationChange keybr.com js apply_css(".Supporter, .social-shares, span.mark, footer { display: none }\n#Practice-keyboardWrap { position: absolute !important; left: -5000px; }\n.cursor { background: black !important; color: white; border-bottom: 0 !important; }")
 autocmd LocationChange /tmp/mutt* set enc=UTF-8
 
 set cpt=slfh
