@@ -85,4 +85,6 @@ qmark h https://news.ycombinator.com/
 qmark j http://jira.rn/
 qmark c http://confluence.rn/
 
+set! browser.tabs.closeWindowWithLastTab=false
+
 " vim: set ft=vimperator:
