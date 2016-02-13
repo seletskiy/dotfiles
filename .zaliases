@@ -342,6 +342,7 @@ aliases_context is_inside_git_repo
     alias d='git diff'
     alias dd='git diff --cached'
     alias a='git-smart-add'
+    alias a!='git-smart-commit -a --amend'
     alias s='git status -s'
     alias o='git log --oneline --graph --decorate --all'
     alias c='git-smart-commit --amend'
