@@ -66,4 +66,6 @@ wait $urxvt_pid
 kill $ffmpeg_pid
 kill $screenkey_pid
 
+tmux kill-session -t record-terminal
+
 echo "$output_video"
