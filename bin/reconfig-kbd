@@ -12,13 +12,11 @@ export DISPLAY=${DISPLAY:-:0.0}
 xset r rate 100 140
 
 if [ "$DOTFILES_PROFILE" == "laptop" ]; then
-    sudo killall -q shift-shift
-    sudo shift-shift &
-
     xset r rate 120 130
 fi
 
 if ! sudo footswitch -1 -k f6 -2 -k f7 -3 -k f8; then
+    sudo killall -q shift-shift
     sudo -E shift-shift &
 fi
 
@@ -40,6 +38,7 @@ setxkbmap \
         "hjkl(fast-numpad)"`      # 1234qwerdf -> 1234567890`\
         "level5(ralt_switch)"`    # right-alt acts as level5 switch \(fast-numpad\)`\
         "level5-menu"`            # use menu for level5 switch as well`\
+        "ctrl-shift-caps"`        # remap ctrl/shift/caps` \
         "footswitch(f8-second-layout)"` # pedal for switching language layout `\
         "footswitch(f7-multi-key)"`     # pedal for compose key`\
         | sed 's/ /+/g') \
