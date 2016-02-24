@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [[ "$1" != "" ]]; then
+    INPUT="$@"
+else
+    INPUT=$(dmenu -b -p "translate: " <<< "")
+fi
+
+LANG="en-ru"
+if ! grep -qiE '[a-z]' <<< "$INPUT"; then
+    LANG="ru-en"
+fi
+
+if [ "$(wc -w <<< "$INPUT")" == "1" ]; then
+    while read result; do
+        notify-send -t 2000 -- "$result"
+        echo $result
+        exit 0
+    done < <(runki --lang $LANG 2>/dev/null <<< "$INPUT")
+fi
+
+curl -s -G "https://translate.yandex.net/api/v1.5/tr.json/translate" \
+        -d "key=trnsl.1.1.20150807T071843Z.319e163bafb5d806.f17c493a466253265a817c9f96a74db85f6b556b" \
+        -d "lang=$LANG" \
+        -d "text=$INPUT" |
+    jq -r '.text[0]' | while read result; do
+        notify-send -t 2000 -- "$result"
+        echo $result
+    done
