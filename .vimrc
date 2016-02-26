@@ -28,7 +28,7 @@ Plug 'dahu/SearchParty'
 
     nmap <silent> <Leader><Leader> :let @/=''<CR><Plug>SearchPartyHighlightClear
 
-Plug 'edsono/vim-matchit', {'for': 'html'}
+Plug 'edsono/vim-matchit'
 
 Plug 'scrooloose/nerdcommenter'
 
@@ -37,6 +37,8 @@ Plug 'kien/rainbow_parentheses.vim'
 Plug 'wojtekmach/vim-rename'
 
 Plug 'repeat.vim'
+
+Plug 'tpope/vim-scriptease'
 
 Plug 'junegunn/seoul256.vim'
 
@@ -102,10 +104,25 @@ Plug 'Shougo/vimproc'
 
 Plug 'yuku-t/unite-git'
 
+Plug 'bling/vim-airline-themes'
 Plug 'bling/vim-airline'
     let g:airline_powerline_fonts = 1
     let g:airline_theme = 'lucius'
     let g:airline#extensions#whitespace#symbol = '☼'
+
+Plug 'vim-autosurround'
+    " oh, how I like to remap different plugin mappings
+    au User _OverwriteMatchemMappings
+        \ autocmd VimEnter,BufEnter,FileType *
+            \ inoremap <buffer> ( (<C-R>=AutoSurround(")")?'':g:MatchemMatchStart()<CR>
+
+    au User _OverwriteMatchemMappings
+        \ autocmd VimEnter,BufEnter,FileType *
+            \ inoremap <buffer> { {<C-R>=AutoSurround("}")?'':g:MatchemMatchStart()<CR>
+
+    au User _VimrcRunAfterPlugEnd doautocmd User _OverwriteMatchemMappings
+
+    doautocmd User _OverwriteMatchemMappings
 
 Plug 'seletskiy/matchem'
     " required to be setup before ultisnips inclusion
@@ -151,6 +168,7 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
     let g:go_snippet_engine = "skip"
     let g:go_fmt_autosave = 0
+    let g:go_metalinter_command = "gometalinter"
 
 Plug 'kshenoy/vim-signature'
     let g:SignatureMarkOrder = "\m"
@@ -191,7 +209,7 @@ Plug 'seletskiy/vim-over'
 
     au User OverCmdLineExecute call searchparty#mash#mash()
 
-Plug 'inkarkat/argtextobj.vim'
+Plug 'wellle/targets.vim'
 
 Plug 'maksimr/vim-jsbeautify'
 
@@ -232,13 +250,16 @@ Plug 'hynek/vim-python-pep8-indent'
 
 Plug 'klen/python-mode'
 
-let g:pymode_rope_completion = 0
+Plug 'Olical/vim-enmasse'
 
-call plug#end()
+let g:pymode_rope_completion = 0
 
 augroup end
 
+call plug#end()
+
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
+au VimEnter * au! run_after_plug_end
 
 syntax on
 
@@ -346,8 +367,9 @@ nnoremap k gk
 
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
-nmap <F2> :w<CR>
-imap <F2> <ESC><F2>
+
+nmap <Leader>w :w<CR>
+
 
 map <Leader>3 :b #<CR>
 map <Leader>c :cd %:h<CR>
