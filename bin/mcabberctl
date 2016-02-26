@@ -1,0 +1,16 @@
+#!/bin/bash
+
+MUTE_FILE=~/.mcabber/mute
+
+case "$1" in
+    mute)
+        if [ -z "$2" ]; then
+            cat $MUTE_FILE
+        else
+            echo "$2" >> $MUTE_FILE
+        fi
+        ;;
+    unmute)
+        sed "/$2/d" -i $MUTE_FILE
+        ;;
+esac
