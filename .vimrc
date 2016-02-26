@@ -520,6 +520,7 @@ function! InstallGoHandlers()
         au!
 
         autocmd BufWritePre *.go call go#fmt#Format(-1)
+        autocmd BufWritePre *.go silent! exe "/^const usage/,/^`$/s/\t/    /"
     augroup end
 endfunction
 
