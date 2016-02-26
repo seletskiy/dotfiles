@@ -1,0 +1,16 @@
+set jid = {{JID}}
+set password = {{PASSWORD}}
+set server = {{SERVER}}
+
+set logging_dir = ~/.mcabber/history-postdevops/
+set statefile = ~/.mcabber/mcabber-postdevops.state
+set fifo_name = ~/.mcabber/mcabber-postdevops.fifo
+
+alias r = roster search reviews@
+alias g = roster search misha@
+
+set autojoin = misha@conference.{{SERVER}},reviews,time,deployer,heaver,comrade,relationships,incidents
+
+otrpolicy e.kovetskiy@office.ngs.ru always
+
+source ~/.mcabber/mcabberrc.common
