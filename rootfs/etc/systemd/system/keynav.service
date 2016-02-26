@@ -4,7 +4,7 @@ Requires=graphical.target
 
 [Service]
 ExecStart=/usr/bin/keynav
-Environment=DISPLAY=:0
+Environment=DISPLAY=:0 HOME=/home/s.seletskiy/ PATH=/bin/:/home/s.seletskiy/bin
 User=s.seletskiy
 Restart=always
 
