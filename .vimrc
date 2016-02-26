@@ -456,10 +456,10 @@ augroup end
 
 augroup vimrc
     au!
-    au BufWritePost */.vimrc source % | call choosewin#color#refresh() | AirlineRefres
-    au BufWritePost */.vim/pythonx/*.py exec printf('py import %s; reload(%s)',
-                \ expand('%:t:r'),
-                \ expand('%:t:r'))
+    au BufWritePost */.vimrc source % | call choosewin#color#refresh() | AirlineRefresh
+
+    au BufWritePost /*/.vim/*/pythonx/*.py exec printf('py module="%s".rsplit("pythonx/")[-1].rstrip(".py").replace("/", "."); __import__(module); reload(sys.modules[module])',
+                \ expand('%:p'))
 augroup end
 
 augroup snippets
@@ -496,7 +496,7 @@ augroup confluence
         \ else |
             \ let b:_trim_successfull = 0 |
         \ endif
-    au BufWritePost /tmp/vimperator-confluence* if b:_trim_successfull | 
+    au BufWritePost /tmp/vimperator-confluence* if b:_trim_successfull |
         \ silent! undo |
         \ call cursor(b:_trim_cursor[0], b:_trim_cursor[1]) |
         \ endif
