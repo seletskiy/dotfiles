@@ -2,23 +2,36 @@
 
 echo "${@}" >> /tmp/mcabber.log
 
-TIMEOUT=0.10
+TIMEOUT=0.08
 BLINKS=10
 
-led_on()  { xset led named "Scroll Lock" ; }
-led_off() { xset -led named "Scroll Lock" ; }
-lock()    { exec 200<$0 ; flock 200 || exit 1 ; }
+led_on()  { echo +caps +scroll; }
+led_off() { echo -all; }
+lock()    { exec 200<$0; flock 200; }
 
 if [ "$1" == "UNREAD" ]; then
-    if [ ${2%% *} -gt 0 ]; then
+    lock
+    if [ ${2%% *} -eq 0 ]; then
+        led_off
+        rm -f /tmp/mcabber-unread-flag
+    else
+        touch /tmp/mcabber-unread-flag
+    fi
+else
+    if [ "$1" == "MSG" -a "$2" != "OUT" ]; then
+        if [ ! -e /tmp/mcabber-unread-flag ]; then
+            exit
+        fi
+
+        if grep -q -Ff ~/.mcabber/mute <<< "$3"; then
+            exit
+        fi
+
         lock
         for i in `seq 1 $BLINKS`; do
             led_on  ; sleep $TIMEOUT
             led_off ; sleep $TIMEOUT
         done
         led_on
-    else
-        lock
-        led_off
     fi
-fi
+fi | sudo ledctl -Si
