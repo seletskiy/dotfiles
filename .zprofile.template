@@ -1,4 +1,4 @@
 export DOTFILES_PROFILE={{DOTFILES_PROFILE}}
-export PATH=$HOME/bin:$HOME/.go/bin/:$PATH
+export PATH=$HOME/bin:$HOME/.go/bin/:$HOME/.deadfiles/bin:$PATH
 export GOPATH=~/.go/
 export EDITOR=vim
