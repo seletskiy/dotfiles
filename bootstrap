@@ -101,7 +101,7 @@ def install_aur(url, force)
     end
 
     if installed_version != pkgver
-        `makepkg -rsi --noconfirm --needed >&2`
+        `makepkg -rsi --noconfirm --needed --force >&2`
         if $?.to_i > 0
             puts "failed to install package"
             exit

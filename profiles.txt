@@ -26,78 +26,85 @@
 -      ! $ sudo groupadd -f operator
 -      ! $ sudo usermod -aG operator s.seletskiy
 
--        https://aur.archlinux.org/packages/libgcrypt15
--        https://aur.archlinux.org/packages/google-chrome
+-        https://aur4.archlinux.org/packages/libgcrypt15
+-        https://aur4.archlinux.org/packages/google-chrome
 
 -        firefox
 
 -        dunst
 
--        https://aur.archlinux.org/packages/gtk-theme-absolute
+-        https://aur4.archlinux.org/packages/gtk-theme-absolute
 
--        https://aur.archlinux.org/packages/ttf-ms-fonts
--        https://aur.archlinux.org/packages/ttf-vista-fonts
+-        https://aur4.archlinux.org/packages/ttf-ms-fonts
+-        https://aur4.archlinux.org/packages/ttf-vista-fonts
 
 -        ranger
 
 -        gifsicle
 
--        https://aur.archlinux.org/packages/xrectsel
--        https://aur.archlinux.org/packages/ffcast
+-        https://aur4.archlinux.org/packages/xrectsel
+-        https://aur4.archlinux.org/packages/ffcast
 
 -        feh
 
--        https://aur.archlinux.org/packages/runki
+-        https://aur4.archlinux.org/packages/runki
 
--        https://aur.archlinux.org/packages/profile-sync-daemon
+-        https://aur4.archlinux.org/packages/profile-sync-daemon
 -      ! $ mkdir -p ~/.config/google-chrome/cache
 -      ! $ ln -sfT ~/.config/google-chrome/cache ~/.cache/google-chrome
 
 -        cpupower
 -      ! $ sudo systemctl enable cpupower
 
--        https://aur.archlinux.org/packages/cv
+-        https://aur4.archlinux.org/packages/cv
 
--        https://aur.archlinux.org/packages/fontconfig-infinality
+-        https://aur4.archlinux.org/packages/fontconfig-infinality
 
--        https://aur.archlinux.org/packages/maim-git
--        https://aur.archlinux.org/packages/slop-git
+-        https://aur4.archlinux.org/packages/maim-git
+-        https://aur4.archlinux.org/packages/slop-git
 
 -        zsh
--        https://aur.archlinux.org/packages/antigen-git
+-        https://aur4.archlinux.org/packages/antigen-git
 
--        https://aur.archlinux.org/packages/mcabber-crew-hg
--        https://aur.archlinux.org/packages/mcabber-module-external-editor
+-        https://aur4.archlinux.org/packages/mcabber-crew-hg-extended
+-        https://aur4.archlinux.org/packages/mcabber-module-external-editor
 
 work   ! $ mkdir -p ~/public
 work   ! $ sudo systemctl enable my-http-share
 work   ! $ sudo systemctl start my-http-share
 
--        https://aur.archlinux.org/packages/imgur
+-        https://aur4.archlinux.org/packages/imgur
 
--        https://aur.archlinux.org/packages/eclim
+-        https://aur4.archlinux.org/packages/eclim
 
--        https://aur.archlinux.org/packages/lsyncd
+-        https://aur4.archlinux.org/packages/lsyncd
 
 -        rxvt-unicode
--        https://aur.archlinux.org/packages/urxvt-perls-git
--        https://aur.archlinux.org/packages/urxvt-vim-insert
--        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
+-        https://aur4.archlinux.org/packages/urxvt-perls-git
+-        https://aur4.archlinux.org/packages/urxvt-vim-insert
+-        https://aur4.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
 
--        https://aur.archlinux.org/packages/keynav
--        https://aur.archlinux.org/packages/shift-shift
--        https://aur.archlinux.org/packages/urxvt-fifo
+-        https://aur4.archlinux.org/packages/keynav
+-        https://aur4.archlinux.org/packages/shift-shift
+-        https://aur4.archlinux.org/packages/urxvt-fifo
 
--        https://aur.archlinux.org/packages/perl-test-mock-lwp-dispatch
--        https://aur.archlinux.org/packages/perl-lwp-useragent-cached
--        https://aur.archlinux.org/packages/youtube-viewer-git
+-        https://aur4.archlinux.org/packages/perl-test-mock-lwp-dispatch
+-        https://aur4.archlinux.org/packages/perl-lwp-useragent-cached
+-        https://aur4.archlinux.org/packages/youtube-viewer-git
 
--        https://aur.archlinux.org/packages/zgen-git
-laptop   https://aur.archlinux.org/packages/huawei-ussd
--        https://aur.archlinux.org/packages/fzf
--        https://aur.archlinux.org/packages/xcape-git
--        https://aur4.archlinux.org/packages/mcabber-modules-autojoin
+-        https://aur4.archlinux.org/packages/zgen-git
+laptop   https://aur4.archlinux.org/packages/huawei-ussd
+-        https://aur4.archlinux.org/packages/fzf
+-        https://aur4.archlinux.org/packages/xcape-git
+-        https://aur4.archlinux.org/packages/mcabber-module-autojoin
+-        https://aur4.archlinux.org/packages/mcabber-module-slack-completion
 
 -        https://aur4.archlinux.org/packages/footswitch
 -        https://aur4.archlinux.org/packages/armh/
 -        https://aur4.archlinux.org/packages/asp-git
+-        https://aur4.archlinux.org/packages/python-todo-t
+-        https://aur4.archlinux.org/packages/nouveau-fw
+-        https://aur4.archlinux.org/packages/st-git
+-        https://aur4.archlinux.org/packages/st-git
+-        https://aur4.archlinux.org/packages/megaraid-cli/
+-        https://aur4.archlinux.org/packages/screenkey-git/
