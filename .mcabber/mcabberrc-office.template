@@ -6,13 +6,4 @@ set logging_dir = ~/.mcabber/history-office/
 set statefile = ~/.mcabber/mcabber-office.state
 set fifo_name = ~/.mcabber/mcabber-office.fifo
 
-alias p = roster search e.persienko@
-alias a = roster search a.platonov@
-alias k = roster search m.prokopchuk@
-alias o = roster search s.kostyaev@
-alias d = roster search d.shashkov@
-alias pp = roster search p.prudnikov@
-alias v = roster search e.kovetskiy@
-alias i = roster search o.lisovskaya@
-
 source ~/.mcabber/mcabberrc.common
