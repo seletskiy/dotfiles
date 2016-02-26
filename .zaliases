@@ -28,7 +28,7 @@ alias -g H1='| head -n1'
 alias -g Z='| fzf'
 alias -g E='&>'
 alias -g R='-lroot'
-alias -g U='sudo -i'
+alias -g U='"sudo -i"'
 
 alias w1='watch -n1 '
 alias sc='sudo systemctl'
