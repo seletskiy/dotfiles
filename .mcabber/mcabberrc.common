@@ -58,6 +58,7 @@ bind M101 = esay
 module load editor
 module load focus
 module load autojoin
+module load slack_completion
 
 alias online = status online
 alias away = status away
