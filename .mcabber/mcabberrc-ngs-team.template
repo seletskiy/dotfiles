@@ -8,6 +8,6 @@ set fifo_name = ~/.mcabber/mcabber-slack.fifo
 
 alias d = roster search devops@
 
-set autojoin = devops@{{SERVER}},golang,it-tops,vim,office,general,backend,techops
+set autojoin = devops@conference.{{SERVER}},golang,it-tops,vim,office,general,backend,techops,programming
 
 source ~/.mcabber/mcabberrc.common
