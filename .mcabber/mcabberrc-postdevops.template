@@ -11,6 +11,9 @@ alias g = roster search misha@
 
 set autojoin = misha@conference.{{SERVER}},reviews,time,deployer,heaver,comrade,relationships,incidents
 
-otrpolicy e.kovetskiy@office.ngs.ru always
+set otr = 1
+otrpolicy e.kovetskiy@postdevops.xmpp.slack.com always
+alias sq = otr smpq .
+alias sr = otr smpr .
 
 source ~/.mcabber/mcabberrc.common

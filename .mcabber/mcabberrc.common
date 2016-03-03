@@ -1,6 +1,5 @@
 set ignore_self_presence = 1
 
-set otr = 1
 set tls = 1
 set ssl_ignore_checks = 1
 
