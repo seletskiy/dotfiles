@@ -1,7 +1,7 @@
 export SHELL=/bin/zsh
 export TERMINAL=urxvt
-export PATH=$HOME/bin:$HOME/.go/bin/:$PATH
-export EDITOR=vim
+
+source ~/.zprofile
 
 xset +fp /usr/share/fonts/local
 xset +fp ~/.fonts
