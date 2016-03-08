@@ -143,8 +143,6 @@ bindcode 232 exec sudo brightness down
 bindsym $mod+less exec volume 1%-
 bindsym $mod+greater exec volume 1%+
 
-bindsym $mod+g exec mylog
-bindsym $mod+g exec mylog
 bindsym $mod+y exec translator
 
 for_window [class="google-chrome"] border none
