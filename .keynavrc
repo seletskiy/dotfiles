@@ -1,7 +1,7 @@
 clear
 
 super+semicolon start,grid 4x4
-semicolon end
+semicolon start,grid 4x4
 
 1 cell-select 1,warp
 q cell-select 2,warp
@@ -20,32 +20,34 @@ r cell-select 14,warp
 f cell-select 15,warp
 v cell-select 16,warp
 
-Left move-left,warp
-Down move-down,warp
-Up move-up,warp
-Right move-right,warp
+h move-left,warp
+j move-down,warp
+k move-up,warp
+l move-right,warp
 
-u cut-left,warp
-i cut-down,warp
-o cut-up,warp
-p cut-right,warp
+Shift+h cut-left,warp
+Shift+j cut-down,warp
+Shift+k cut-up,warp
+Shift+l cut-right,warp
 
 space warp,click 1
-ctrl+space warp,click 3
+g warp,click 2
+b warp,click 3
 
 shift+space warp,drag 1
-shift+ctrl+space warp,drag 3
+shift+g warp,drag 2
+shift+b warp,drag 3
 
 Return end
 Escape end
 
 BackSpace history-back
 
-grave grid 1x1,cursorzoom 9 9
-Tab grid 1x1,cursorzoom 9 9,warp,click 1,end
+o grid 1x1,cursorzoom 9 9
+p grid 1x1,cursorzoom 9 9,warp,click 1,end
 
 y record
 t playback
 
-comma grid 1x1,click 4
-period grid 1x1,click 5
+n warp,click 4
+m warp,click 5
