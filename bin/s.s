@@ -1,3 +1,3 @@
 #!/bin/sh
 
-urxvt -e ssh s.s
+urxvt -e ssh -XY -t s.s -- "${@}"
