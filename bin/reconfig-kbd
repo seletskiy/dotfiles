@@ -43,7 +43,7 @@ setxkbmap \
         "footswitch(f7-multi-key)"`     # pedal for compose key`\
         | sed 's/ /+/g') \
     -compat \
-        "complete+hjkl" \
+        "allow-control-leds+complete+hjkl" \
     -print | (
         if [ "$verbose" ]; then
             xkbcomp - :0

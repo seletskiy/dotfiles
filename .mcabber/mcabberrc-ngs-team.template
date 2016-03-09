@@ -11,3 +11,5 @@ alias d = roster search devops@
 set autojoin = devops@conference.{{SERVER}},golang,it-tops,vim,office,general,backend,techops,programming
 
 source ~/.mcabber/mcabberrc.common
+
+set events_command = ~/.mcabber/eventcmd-ngs-team

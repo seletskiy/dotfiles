@@ -17,3 +17,5 @@ alias sq = otr smpq .
 alias sr = otr smpr .
 
 source ~/.mcabber/mcabberrc.common
+
+set events_command = ~/.mcabber/eventcmd-postdevops

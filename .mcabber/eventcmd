@@ -2,36 +2,50 @@
 
 echo "${@}" >> /tmp/mcabber.log
 
+SESSION=mcabber-"$(basename $0 | sed s/eventcmd-//)"
+
 TIMEOUT=0.08
 BLINKS=10
 
-led_on()  { echo +caps +scroll; }
+led_on()  { echo +all; }
 led_off() { echo -all; }
+
 lock()    { exec 200<$0; flock 200; }
+
+unmark()  { tmux set-window-option -ut $1 @window_marker; }
+mark()    { tmux set-window-option  -t $1 @window_marker $2; }
+
+update()  { tmux set-option -ut $1 set-titles-string; }
 
 if [ "$1" == "UNREAD" ]; then
     lock
+
     if [ ${2%% *} -eq 0 ]; then
-        led_off
-        rm -f /tmp/mcabber-unread-flag
-    else
-        touch /tmp/mcabber-unread-flag
+        unmark $SESSION
+
+        rm -f /tmp/unread-$SESSION
+
+        if ! stat -t -- /tmp/unread-* &> /dev/null; then
+            led_off
+        fi
     fi
 else
     if [ "$1" == "MSG" -a "$2" != "OUT" ]; then
-        if [ ! -e /tmp/mcabber-unread-flag ]; then
-            exit
-        fi
+        if ! grep -q -Ff ~/.mcabber/mute <<< "$3"; then
+            lock
 
-        if grep -q -Ff ~/.mcabber/mute <<< "$3"; then
-            exit
-        fi
+            touch /tmp/unread-$SESSION
 
-        lock
-        for i in `seq 1 $BLINKS`; do
-            led_on  ; sleep $TIMEOUT
-            led_off ; sleep $TIMEOUT
-        done
-        led_on
+            mark $SESSION "☼"
+
+            for i in `seq 1 $BLINKS`; do
+                led_on  ; sleep $TIMEOUT
+                led_off ; sleep $TIMEOUT
+            done
+
+            led_on
+        fi
     fi
 fi | sudo ledctl -Si
+
+update $SESSION

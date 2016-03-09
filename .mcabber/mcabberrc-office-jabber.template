@@ -7,3 +7,5 @@ set statefile = ~/.mcabber/mcabber-office.state
 set fifo_name = ~/.mcabber/mcabber-office.fifo
 
 source ~/.mcabber/mcabberrc.common
+
+set events_command = ~/.mcabber/eventcmd-office-jabber
