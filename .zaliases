@@ -346,6 +346,7 @@ aliases_context is_inside_git_repo
     alias s='git status -s'
     alias o='git log --oneline --graph --decorate --all'
     alias c='git-smart-commit --amend'
+    alias ca='git-smart-commit -a'
     alias c!='git-smart-commit --amend'
     alias p='git-smart-push seletskiy'
     alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
