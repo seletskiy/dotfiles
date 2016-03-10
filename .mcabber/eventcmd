@@ -7,6 +7,10 @@ SESSION=mcabber-"$(basename $0 | sed s/eventcmd-//)"
 TIMEOUT=0.08
 BLINKS=10
 
+CONNECTED_DISPLAY=$(tmux show-window-option -vt $SESSION @connected_display)
+
+echo "$DISPLAY" >> /tmp/mcabber.log
+
 led_on()  { echo +all; }
 led_off() { echo -all; }
 
@@ -15,13 +19,35 @@ lock()    { exec 200<$0; flock 200; }
 unmark()  { tmux set-window-option -ut $1 @window_marker; }
 mark()    { tmux set-window-option  -t $1 @window_marker $2; }
 
-update()  { tmux set-option -ut $1 set-titles-string; }
+update()  { tmux set-window-option -ut $1 set-titles-string; }
+
+MODE=skip
 
 if [ "$1" == "UNREAD" ]; then
+    MODE=unread
+else
+    MODE=muc
+fi
+
+if [ "$MODE" == "skip" ]; then
+    exit
+fi
+
+if [ "$CONNECTED_DISPLAY" ]; then
+    if xdpyinfo -display "$CONNECTED_DISPLAY" &>/dev/null; then
+        export DISPLAY=$CONNECTED_DISPLAY
+    else
+        tmux set-window-option -ut $SESSION @connected_display
+    fi
+fi
+
+case $MODE in
+unread)
     lock
 
     if [ ${2%% *} -eq 0 ]; then
         unmark $SESSION
+        update $SESSION
 
         rm -f /tmp/unread-$SESSION
 
@@ -29,7 +55,10 @@ if [ "$1" == "UNREAD" ]; then
             led_off
         fi
     fi
-else
+
+    ;;
+
+muc)
     if [ "$1" == "MSG" -a "$2" != "OUT" ]; then
         if ! grep -q -Ff ~/.mcabber/mute <<< "$3"; then
             lock
@@ -37,6 +66,7 @@ else
             touch /tmp/unread-$SESSION
 
             mark $SESSION "☼"
+            update $SESSION
 
             for i in `seq 1 $BLINKS`; do
                 led_on  ; sleep $TIMEOUT
@@ -46,6 +76,10 @@ else
             led_on
         fi
     fi
-fi | sudo ledctl -Si
 
-update $SESSION
+    ;;
+
+*)
+    exit
+    ;;
+esac | sudo ledctl -Si

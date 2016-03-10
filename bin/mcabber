@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 session="$(basename $0)"
 
 export EDITOR=${EDITOR:-vim}
@@ -9,10 +7,12 @@ export TMUX=
 
 launch_cmd=(urxvt -e tmux)
 if [ "$TERM" != "dumb" -a "$TERM" != "linux" ]; then
-    launch_cmd=(tmux)
+    launch_cmd=(tmux -u)
 fi
 
 if tmux has-session -t $session; then
+    tmux set-window-option -t $session @connected_display "$DISPLAY"
+
     exec ${launch_cmd[*]} attach -t $session
 else
     rcfile=~/.mcabber/${session/-/rc-}
