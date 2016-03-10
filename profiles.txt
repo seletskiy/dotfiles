@@ -84,7 +84,7 @@ work   ! $ sudo systemctl start my-http-share
 -        https://aur4.archlinux.org/packages/urxvt-vim-insert
 -        https://aur4.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
 
--        https://aur4.archlinux.org/packages/keynav
+-        https://aur4.archlinux.org/packages/keynav-improved-grid-git
 -        https://aur4.archlinux.org/packages/shift-shift
 -        https://aur4.archlinux.org/packages/urxvt-fifo
 
@@ -104,7 +104,6 @@ laptop   https://aur4.archlinux.org/packages/huawei-ussd
 -        https://aur4.archlinux.org/packages/asp-git
 -        https://aur4.archlinux.org/packages/python-todo-t
 -        https://aur4.archlinux.org/packages/nouveau-fw
--        https://aur4.archlinux.org/packages/st-git
 -        https://aur4.archlinux.org/packages/st-git
 -        https://aur4.archlinux.org/packages/megaraid-cli/
 -        https://aur4.archlinux.org/packages/screenkey-git/
