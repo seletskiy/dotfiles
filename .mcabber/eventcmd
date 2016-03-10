@@ -2,14 +2,14 @@
 
 echo "${@}" >> /tmp/mcabber.log
 
+exec 2>/dev/null
+
 SESSION=mcabber-"$(basename $0 | sed s/eventcmd-//)"
 
 TIMEOUT=0.08
 BLINKS=10
 
 CONNECTED_DISPLAY=$(tmux show-window-option -vt $SESSION @connected_display)
-
-echo "$DISPLAY" >> /tmp/mcabber.log
 
 led_on()  { echo +all; }
 led_off() { echo -all; }
@@ -25,7 +25,9 @@ MODE=skip
 
 if [ "$1" == "UNREAD" ]; then
     MODE=unread
-else
+fi
+
+if [ "$1" == "MUC" ]; then
     MODE=muc
 fi
 
@@ -45,7 +47,9 @@ case $MODE in
 unread)
     lock
 
-    if [ ${2%% *} -eq 0 ]; then
+    set $2
+
+    if [ $1 -eq 0 ]; then
         unmark $SESSION
         update $SESSION
 
@@ -54,27 +58,37 @@ unread)
         if ! stat -t -- /tmp/unread-* &> /dev/null; then
             led_off
         fi
+
+        exit
     fi
+
+    if [ $3 -gt 0 ]; then
+        if ! stat -t -- /tmp/unread-$SESSION &> /dev/null; then
+            exit
+        fi
+    fi
+
+    mark $SESSION "☼"
+    update $SESSION
+
+    for i in `seq 1 $BLINKS`; do
+        led_on  ; sleep $TIMEOUT
+        led_off ; sleep $TIMEOUT
+    done
+
+    led_on
 
     ;;
 
 muc)
     if [ "$1" == "MSG" -a "$2" != "OUT" ]; then
-        if ! grep -q -Ff ~/.mcabber/mute <<< "$3"; then
-            lock
-
-            touch /tmp/unread-$SESSION
-
-            mark $SESSION "☼"
-            update $SESSION
-
-            for i in `seq 1 $BLINKS`; do
-                led_on  ; sleep $TIMEOUT
-                led_off ; sleep $TIMEOUT
-            done
-
-            led_on
+        if grep -q -Ff ~/.mcabber/mute <<< "$3"; then
+            exit
         fi
+
+        lock
+
+        touch /tmp/unread-$SESSION
     fi
 
     ;;
