@@ -3,9 +3,14 @@ Description=Run keynav
 Requires=graphical.target
 
 [Service]
-ExecStart=/usr/bin/keynav
-Environment=DISPLAY=:0 HOME=/home/s.seletskiy/ PATH=/bin/:/home/s.seletskiy/bin
+ExecStart=/home/s.seletskiy/bin/keynav-doppelganger daemonize
+Type=forking
+Environment=DISPLAY=:0
+Environment=HOME=/home/s.seletskiy/
+Environment=PATH=/bin/:/home/s.seletskiy/bin
+Environment=KEYNAV_PIDFILE=/home/s.seletskiy/.tmp/keynav.pid
 User=s.seletskiy
+PIDFile=/home/s.seletskiy/.tmp/keynav.pid
 Restart=always
 
 [Install]

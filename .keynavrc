@@ -1,7 +1,7 @@
 clear
 
 super+semicolon start,grid 4x4
-semicolon start,grid 4x4
+semicolon sh "keynav-doppelganger 'start,grid 4x4'"
 
 1 cell-select 1,warp
 q cell-select 2,warp

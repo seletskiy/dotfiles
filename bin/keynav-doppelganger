@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ -z "$KEYNAV_PIDFILE" ]; then
+    echo KEYNAV_PIDFILE environment variable must be set
+    exit 1
+fi
+
+# Trick systemd to think that we are keynav
+echo $$ > $KEYNAV_PIDFILE
+
+# Kill parent keynav
+pkill -x keynav
+
+# Do arbitrary commands
+$(cat)
+
+# Restart keynav with given commands
+exec keynav "${@}"',sh "pgrep -x keynav > $KEYNAV_PIDFILE"'
