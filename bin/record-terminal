@@ -2,6 +2,8 @@
 
 export TMUX=
 
+terminal_name=RECORD_TERMINAL
+
 if [ "${@}" ]; then
     initial_command="-e ""${@}"
 else
@@ -10,15 +12,20 @@ fi
 
 current_window_id=$(xdotool getactivewindow)
 
-terminal_name=RECORD_TERMINAL
-
-urxvt -title $terminal_name $initial_command &
+urxvt -name $terminal_name $initial_command &
 
 urxvt_pid=$!
 
 attempts=10
 while ! urxvt_window_id=$(xdotool search --name $terminal_name 2>/dev/null); do
+    tmux set-window-option -t record-terminal set-titles-string $terminal_name
+
     attempts=$(($attempts-1))
+
+    if [ $attempts -le 0 ]; then
+        echo cannot find window with name $terminal_name
+        exit 2
+    fi
 
     sleep 0.1
 done
