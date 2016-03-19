@@ -107,3 +107,4 @@ laptop   https://aur4.archlinux.org/packages/huawei-ussd
 -        https://aur4.archlinux.org/packages/st-git
 -        https://aur4.archlinux.org/packages/megaraid-cli/
 -        https://aur4.archlinux.org/packages/screenkey-git/
+-        https://aur4.archlinux.org/packages/poe
