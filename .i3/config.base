@@ -54,10 +54,10 @@ bindsym Ctrl+Shift+Next move down
 bindsym Ctrl+Shift+End move right
 
 # split in horizontal orientation
-bindsym $mod+b split h
+bindsym $mod+g split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+t split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
@@ -129,7 +129,7 @@ bindsym $mod+Shift+grave move scratchpad
 bindsym $mod+grave exec kuake
 
 bindsym Mod1+Shift+Ctrl+t exec anki-add-word
-bindsym Mod1+Shift+Ctrl+l exec xautolock -locknow
+bindsym Execute exec xautolock -locknow
 
 bindsym --release Print exec screenshot
 bindsym --release Shift+Print exec screenshot border
