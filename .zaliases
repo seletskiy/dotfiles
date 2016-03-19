@@ -231,6 +231,15 @@ zle -N noop noop
 function noop()  {
 }
 
+alias -- +x='chmod-alias'
+function chmod-alias() {
+    if [ $# -eq 0 ]; then
+        chmod +x $(fc -ln -1 | awk '{print $1}')
+    else
+        chmod +x "${@}"
+    fi
+}
+
 bindkey "^F" leap-back
 zle -N leap-back leap-back
 function leap-back() {
