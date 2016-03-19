@@ -41,9 +41,11 @@ setxkbmap \
         "ctrl-shift-caps"`        # remap ctrl/shift/caps` \
         "footswitch(f8-second-layout)"` # pedal for switching language layout `\
         "footswitch(f7-multi-key)"`     # pedal for compose key`\
+        "esc-to-execute"`     # pedal for compose key`\
+        "fast-copy-paste"`     # pedal for compose key`\
         | sed 's/ /+/g') \
     -compat \
-        "allow-control-leds+complete+hjkl" \
+        "allow-control-leds+complete+fast-copy-paste+hjkl" \
     -print | (
         if [ "$verbose" ]; then
             xkbcomp - :0
