@@ -1,6 +1,0 @@
-#!/bin/bash
-
-[ -n "$_LOCK" ] || _LOCK=x exec flock -n $0 $0 "${@}"
-
-name=$(amixer scontrols | head -n1 | cut -f4- -d' ')
-amixer set $name $1

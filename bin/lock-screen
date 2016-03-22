@@ -1,18 +1,14 @@
 #!/bin/bash
 
-old_volume=$(amixer get Master | grep -o '[0-9]\+%')
-
-volume 0%
-
-if pgrep mcabber; then
-    echo /dnd Меня здесь нет. | tee ~/.mcabber/mcabber-office.fifo
-fi
+(
+    if pgrep mcabber; then
+        echo /dnd Меня здесь нет. | tee ~/.mcabber/mcabber-*.fifo
+    fi
+) &
 
 xkb-switch -s us
 slock
 
 if pgrep mcabber; then
-    echo /online - | tee ~/.mcabber/mcabber-office.fifo
+    echo /online - | tee ~/.mcabber/mcabber-*.fifo
 fi
-
-volume $old_volume
