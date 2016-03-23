@@ -1,5 +1,5 @@
 export DOTFILES_PROFILE={{DOTFILES_PROFILE}}
-export PATH=$HOME/bin:$HOME/.go/bin/:$HOME/.deadfiles/bin:$PATH
+export PATH=$(find -L $HOME/bin -type d -printf "%p:")$HOME/.go/bin/:$HOME/.deadfiles/bin:$PATH
 export GOPATH=~/.go/
 export EDITOR=vim
 export DMENU_PATH=~/bin/.dmenu/
