@@ -69,11 +69,7 @@ end
 
 def install_aur(url, force)
     pkgname = url.sub(/.*\/([^\/]+)\/?$/, '\1')
-    if url[/aur4/]
-        tarurl = url.sub(/\/packages\/([^\/]*)\/?$/, '/cgit/aur.git/snapshot/\1.tar.gz')
-    else
-        tarurl = url.sub(/\/((..)[^\/]*)\/?$/, '/\2/\1/\1.tar.gz')
-    end
+    tarurl = url.sub(/\/packages\/([^\/]*)\/?$/, '/cgit/aur.git/snapshot/\1.tar.gz')
 
     `pacman -Qqs #{pkgname}`
     if $?.to_i == 0 && force <= 0
