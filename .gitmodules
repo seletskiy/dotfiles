@@ -10,3 +10,6 @@
 [submodule ".deadfiles"]
 	path = .deadfiles
 	url = git@github.com:deadcrew/deadfiles
+[submodule "bin/.master-of-android"]
+	path = bin/.master-of-android
+	url = git@github.com:deadcrew/master-of-android
