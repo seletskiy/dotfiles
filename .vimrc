@@ -104,13 +104,14 @@ Plug 'Shougo/vimproc'
 
 Plug 'yuku-t/unite-git'
 
-Plug 'bling/vim-airline-themes'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+Plug 'vim-airline/vim-airline'
     let g:airline_powerline_fonts = 1
     let g:airline_theme = 'lucius'
     let g:airline#extensions#whitespace#symbol = '☼'
 
-Plug 'vim-autosurround'
+Plug 'seletskiy/vim-autosurround'
     " oh, how I like to remap different plugin mappings
     au User _OverwriteMatchemMappings
         \ autocmd VimEnter,BufEnter,FileType *
