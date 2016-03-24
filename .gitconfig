@@ -2,11 +2,16 @@
 	email = s.seletskiy@gmail.com
 	name = Stanislav Seletskiy
 	signingkey = AC87B82D
+
+[credential]
+	helper = cache --timeout=3600000
+
 [color]
 	branch = auto
 	diff = auto
 	status = auto
 	sh = auto
+
 [merge]
 	tool = vimdiff
 
@@ -15,9 +20,15 @@
 
 [core]
 	attributesfile = /home/s.seletskiy/.gitattributes
+
 [push]
 	default = simple
+
 [gpg]
 	program = gpg-passphrase
+
 [init]
 	templatedir = /home/s.seletskiy/.gittemplates/
+
+[url "git+ssh://github.com/"]
+	insteadOf = https://github.com/
