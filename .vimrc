@@ -273,9 +273,6 @@ filetype indent on
 set rtp-=~/.vim
 set rtp^=~/.vim
 
-" Wow, will it work?
-set rtp-=/usr/share/vim/vimfiles
-
 set encoding=utf-8
 set printencoding=cp1251
 set timeoutlen=200
