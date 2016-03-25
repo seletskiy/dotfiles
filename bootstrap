@@ -86,7 +86,7 @@ def install_aur(url, force)
     Dir.chdir(tempdir + '/' + pkgname)
 
     if `source ./PKGBUILD && type pkgver 2>&1`[/is a function/]
-        puts("package version is dynamic, needs to build a package")
+        puts("\x1b[1;34m!!! \x1b[39mPackage version is dynamic, needs to build a package")
         pkgver = nil
     else
         pkgver = `source ./PKGBUILD && echo $pkgver`.strip()
@@ -96,8 +96,8 @@ def install_aur(url, force)
         end
     end
 
-    if installed_version != pkgver
-        `makepkg -rsi --noconfirm --needed --force >&2`
+    if installed_version != pkgver || force > 0
+        `yes | makepkg -rsi --force >&2`
         if $?.to_i > 0
             puts "failed to install package"
             exit
