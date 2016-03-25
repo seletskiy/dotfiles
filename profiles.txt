@@ -15,6 +15,7 @@
 -      ! $ git pull --rebase
 -        $ ./dotfiles install
 
+-      ! $ sudo pacman -Sy archlinux-keyring
 -      ! $ sudo pacman -Syu --noconfirm
 
 -        ntp
@@ -26,7 +27,6 @@
 -      ! $ sudo groupadd -f operator
 -      ! $ sudo usermod -aG operator s.seletskiy
 
--        https://aur.archlinux.org/packages/libgcrypt15
 -        https://aur.archlinux.org/packages/google-chrome
 
 -        firefox
@@ -34,9 +34,6 @@
 -        dunst
 
 -        https://aur.archlinux.org/packages/gtk-theme-absolute
-
--        https://aur.archlinux.org/packages/ttf-ms-fonts
--        https://aur.archlinux.org/packages/ttf-vista-fonts
 
 -        ranger
 
@@ -47,28 +44,23 @@
 
 -        feh
 
--        https://aur.archlinux.org/packages/runki
-
--        https://aur.archlinux.org/packages/profile-sync-daemon
--      ! $ mkdir -p ~/.config/google-chrome/cache
--      ! $ ln -sfT ~/.config/google-chrome/cache ~/.cache/google-chrome
-
 -        cpupower
 -      ! $ sudo systemctl enable cpupower
 
 -        progress
 
--        https://aur.archlinux.org/packages/fontconfig-infinality
-
 -        https://aur.archlinux.org/packages/maim-git
--      ! https://aur.archlinux.org/packages/slop-git
+-        https://aur.archlinux.org/packages/slop-git
 
 -        zsh
--        https://aur.archlinux.org/packages/antigen-git
+-        https://aur.archlinux.org/packages/zgen-git
 
 -        https://aur.archlinux.org/packages/loudmouth-ossl
 -        https://aur.archlinux.org/packages/mcabber-crew-hg-extended
 -        https://aur.archlinux.org/packages/mcabber-module-external-editor
+-        https://aur.archlinux.org/packages/mcabber-module-focus
+-        https://aur.archlinux.org/packages/mcabber-module-autojoin
+-        https://aur.archlinux.org/packages/mcabber-module-slack-completion
 
 work   ! $ mkdir -p ~/public
 work   ! $ sudo systemctl enable my-http-share
@@ -76,43 +68,235 @@ work   ! $ sudo systemctl start my-http-share
 
 -        https://aur.archlinux.org/packages/imgur
 
+-        android-sdk-platform-tools
+-        android-udev
+-        https://aur.archlinux.org/packages/android-platform-16
+-        https://aur.archlinux.org/packages/android-sdk-build-tools
+-        https://aur.archlinux.org/packages/android-sdk-build-tools-19.1
+-        https://aur.archlinux.org/packages/android-support-repository
+-        https://aur.archlinux.org/packages/android-google-apis-19
+-        https://aur.archlinux.org/packages/android-platform-19
+-        https://aur.archlinux.org/packages/android-sdk
+-        https://aur.archlinux.org/packages/android-sdk-platform-tools
+-        https://aur.archlinux.org/packages/android-apktool
 -        https://aur.archlinux.org/packages/eclim
+-        https://aur.archlinux.org/packages/simple-mtpfs
+-      ! $ sudo usermod -aG adbusers s.seletskiy
+
+-        https://aur.archlinux.org/packages/asp-git
+
+-        https://aur.archlinux.org/packages/footswitch
+
+-        tmux
+-        https://aur.archlinux.org/packages/fzf
+
+-        https://aur.archlinux.org/packages/gometalinter-git
+-        https://aur.archlinux.org/packages/poe
+
+laptop   https://aur.archlinux.org/packages/huawei-ussd
+
+work     https://aur.archlinux.org/packages/nouveau-fw
+
+-        https://aur.archlinux.org/packages/python-todo-t
+
+-        https://aur.archlinux.org/packages/screenkey-git
+
+-        rxvt-unicode
+-        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
+-        https://aur.archlinux.org/packages/urxvt-fifo
+-        https://aur.archlinux.org/packages/urxvt-perls-git
+-        https://aur.archlinux.org/packages/urxvt-vim-insert
+
+-        https://aur.archlinux.org/packages/xcape-git
+
+-        https://aur.archlinux.org/packages/youtube-viewer-git
+
+-        https://aur.archlinux.org/packages/ash-mailcap
+-        https://aur.archlinux.org/packages/ash-mailcap-autoview
+
+-        https://aur.archlinux.org/packages/bdf2psf
+
+-        https://aur.archlinux.org/packages/dmenu-xft
+
+-        https://aur.archlinux.org/packages/dpkg
+
+
+-        https://aur.archlinux.org/packages/freetype2-infinality
+-        https://aur.archlinux.org/packages/fontconfig-infinality
+
+-        https://aur.archlinux.org/packages/footswitch-git
+
+-        https://aur.archlinux.org/packages/fuse-exfat
+
+-        https://aur.archlinux.org/packages/git-subtree
+-        https://aur.archlinux.org/packages/glib
+
+-        https://aur.archlinux.org/packages/hastur
+
+-        https://aur.archlinux.org/packages/jdk7
+
+-        https://aur.archlinux.org/packages/jq-git
+
+-        https://aur.archlinux.org/packages/lib32-glib
+-        https://aur.archlinux.org/packages/lib32-gtk
+-        https://aur.archlinux.org/packages/libmysqlclient
+-        https://aur.archlinux.org/packages/libtermkey-bzr
+-        https://aur.archlinux.org/packages/libvterm-bzr
+-        https://aur.archlinux.org/packages/libgcrypt15
+
+-        https://aur.archlinux.org/packages/tor-browser-ru
+
+-        https://aur.archlinux.org/packages/ttf-tahoma
+
+-        https://aur.archlinux.org/packages/xdotool-git
+
+-        https://aur.archlinux.org/packages/xkbset
+
+-        https://aur.archlinux.org/packages/keynav-improved-grid-git
 
 -        https://aur.archlinux.org/packages/lsyncd
 
--        rxvt-unicode
--        https://aur.archlinux.org/packages/urxvt-perls-git
--        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
+-        https://aur.archlinux.org/packages/runki
 
--        https://aur.archlinux.org/packages/keynav-improved-grid-git
--        https://aur.archlinux.org/packages/shift-shift
--        https://aur.archlinux.org/packages/urxvt-fifo
+-        https://aur.archlinux.org/packages/ttf-ms-fonts
+-        https://aur.archlinux.org/packages/ttf-vista-fonts
 
--        https://aur.archlinux.org/packages/perl-test-mock-lwp-dispatch
--        https://aur.archlinux.org/packages/perl-lwp-useragent-cached
--        https://aur.archlinux.org/packages/youtube-viewer-git
-
--        https://aur.archlinux.org/packages/zgen-git
-laptop   https://aur.archlinux.org/packages/huawei-ussd
--        https://aur.archlinux.org/packages/fzf
--        https://aur.archlinux.org/packages/xcape-git
--        https://aur.archlinux.org/packages/mcabber-module-autojoin
--        https://aur.archlinux.org/packages/mcabber-module-slack-completion
-
--        https://aur.archlinux.org/packages/footswitch
--        https://aur.archlinux.org/packages/asp-git
--        https://aur.archlinux.org/packages/python-todo-t
--        https://aur.archlinux.org/packages/st-git
--        https://aur.archlinux.org/packages/screenkey-git/
--        https://aur.archlinux.org/packages/gometalinter-git
-home     https://aur.archlinux.org/packages/dex2jar
-home     https://aur.archlinux.org/packages/jd-cmd
--        https://aur.archlinux.org/packages/android-apktool
--        https://aur.archlinux.org/packages/perl-unicode-string/
--        https://aur.archlinux.org/packages/perl-unicode-string
--        https://aur.archlinux.org/packages/android-sdk-build-tools
--        https://aur.archlinux.org/packages/android-platform-16
--        https://aur.archlinux.org/packages/java-testng
--        https://aur.archlinux.org/packages/android-support
--        https://aur.archlinux.org/packages/android-support-repository
--        https://aur.archlinux.org/packages/urxvt-vim-insert
+-        abs
+-        acpi
+-        alsa-utils
+-        archiso
+-        asciidoc
+-        atop
+-        autoconf
+-        autogen
+-        automake
+-        bind-tools
+-        bluez-utils
+-        bsdiff
+-        cdrtools
+-        clang
+-        cmake
+-        colordiff
+-        cowsay
+-        cvs
+-        dmidecode
+-        dsniff
+-        dstat
+-        ethtool
+-        fakechroot
+-        figlet
+-        flashplugin
+-        fontforge
+-        freemind
+-        freerdp
+-        fzf
+-        gdb
+-        gimp
+-        gnu-netcat
+-        go-makepkg
+-        grub
+-        gtk-engine-aurora
+-        gtk-engines
+-        gtk-theme-switch2
+-        hdparm
+-        hping
+-        hplip
+-        htop
+-        httpie
+-        hub
+-        i3-wm
+-        inotify-tools
+-        intel-ucode
+-        iotop
+-        ipmitool
+-        iptraf-ng
+-        iputils
+-        ipython
+-        lftp
+-        lib32-gtk2
+-        libreoffice-still
+-        licenses
+-        logrotate
+-        lshw
+-        lxc
+-        man-db
+-        man-pages
+work     mariadb
+-        markdown
+work     mongodb
+-        moreutils
+-        mosh
+-        msmtp
+-        mtpfs
+-        mtr
+-        mupdf
+-        mutt
+-        mysql-python
+-        netctl
+-        nginx
+-        ngrep
+work     ngs.devops-ca
+-        nmap
+-        optipng
+-        p7zip
+-        parted
+-        perf
+-        pkg-config
+-        pkgbuild-introspection
+-        pkgfile
+-        poe
+-        postgresql
+-        pptpclient
+-        pssh
+-        pv
+-        pwgen
+-        python2-gobject
+-        python2-pillow
+-        qemu
+-        qt5-script
+-        rdesktop
+-        rlwrap
+-        rpmextract
+-        rtorrent
+-        screen
+-        siege
+-        skype
+-        sl
+-        slock
+-        smartmontools
+-        sshfs
+-        stress
+-        sysdig
+-        sysstat
+-        tcpreplay
+-        the_silver_searcher
+-        tor
+-        traceroute
+-        tree
+-        ttf-inconsolata
+-        unrar
+-        usbutils
+-        which
+-        whois
+-        wine
+-        wmctrl
+-        x11vnc
+-        xautolock
+-        xcompmgr
+-        xf86-video-nouveau
+-        xfsprogs
+-        xorg-fonts-100dpi
+-        xorg-server-devel
+-        xorg-server-xvfb
+-        xorg-xcursorgen
+-        xorg-xev
+-        xorg-xfontsel
+-        xorg-xgamma
+-        xorg-xinit
+-        xorg-xlsfonts
+-        xorg-xrdb
+-        xorg-xvidtune
+-        xvkbd
+-        youtube-dl
+-        zfs-git
+-        zip
