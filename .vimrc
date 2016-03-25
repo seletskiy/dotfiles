@@ -253,6 +253,8 @@ Plug 'klen/python-mode'
 
 Plug 'Olical/vim-enmasse'
 
+Plug 'kovetskiy/ycm-sh'
+
 let g:pymode_rope_completion = 0
 
 augroup end
