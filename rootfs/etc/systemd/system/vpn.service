@@ -1,0 +1,12 @@
+[Unit]
+Description="vpn connection"
+
+[Service]
+ExecStart=/usr/bin/pon provider logfd 2 nodetach debug
+ExecStop=/usr/bin/poff
+Restart=always
+RestartSec=1m
+
+[Install]
+RequiredBy=multi-user.target
+After=network.target
