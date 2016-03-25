@@ -139,10 +139,16 @@ function dotfiles-bootstrap() {
         url=$(xclip -o)
     fi
 
+    local dotfiles_path=~/sources/dotfiles
+
     if grep -E "^https?:" <<< "$url"; then
-        echo "-        $url" | tee -a ./profiles.txt | ./bootstrap -f
+        echo "-        $url" \
+            | tee -a $dotfiles_path/profiles.txt \
+            | $dotfiles_path/bootstrap $DOTFILES_PROFILE
     else
-        grep "${@}" ./profiles.txt | ./bootstrap -f
+        grep "${@}" $dotfiles_path/profiles.txt \
+            | $dotfiles_path/bootstrap $DOTFILES_PROFILE
+
     fi
 }
 
