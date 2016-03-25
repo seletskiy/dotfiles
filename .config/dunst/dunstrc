@@ -121,7 +121,7 @@
     dmenu = /usr/bin/dmenu -p dunst:
 
     # browser for opening urls in context menu
-    browser = /usr/bin/google-chrome
+    browser = i3-sensible-browser
 
 [frame]
     width = 2
