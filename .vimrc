@@ -146,9 +146,13 @@ Plug 'seletskiy/matchem'
     au User UltiSnipsEnterFirstSnippet call g:MatchemRepeatFixupFlush('<lt>c-j>')
 
 Plug 'SirVer/ultisnips'
-    let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/UltiSnips']
+    let g:UltiSnipsSnippetDirectories = [
+    \ $HOME.'/.vim/UltiSnips',
+    \ $HOME.'/.vim/bundle/snippets'
+    \ ]
     let g:UltiSnipsEnableSnipMate = 0
     let g:UltiSnipsEditSplit = "horizontal"
+    let g:UltiSnipsUsePythonVersion = 2
 
     map <Leader>` :UltiSnipsEdit<CR>G
     vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
@@ -214,7 +218,9 @@ Plug 'wellle/targets.vim'
 
 Plug 'maksimr/vim-jsbeautify'
 
-Plug 'seletskiy/vim-pythonx'
+Plug 'reconquest/vim-pythonx'
+
+Plug 'reconquest/snippets'
 
 Plug 'justinmk/vim-sneak'
     let g:sneak#streak = 1
