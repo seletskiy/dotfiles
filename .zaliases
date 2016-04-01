@@ -34,9 +34,11 @@ alias -g Uu='sudo -iu'
 alias -g UU=Uu
 
 alias w1='watch -n1 '
-alias sc='sudo systemctl'
-alias scr='sudo systemctl daemon-reload && sudo systemctl restart'
-alias scs='sudo systemctl status'
+alias -- +='systemctl --user'
+alias -- +R='+r daemon-reload'
+alias -- +r='+R && + restart'
+alias -- +s='+ status'
+alias -- +t='+ stop'
 alias jf='sudo journalctl -ef'
 
 alias ag='ag -f'
