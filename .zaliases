@@ -1,4 +1,5 @@
-# vim: ft=sh
+#
+# vim: ft=zsh
 
 aliases_context_init
 
