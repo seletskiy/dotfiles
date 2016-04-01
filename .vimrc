@@ -143,6 +143,9 @@ Plug 'seletskiy/matchem'
         \ <c-r>=g:MatchemRepeatFixupFlush('<lt>c-j>')<cr>
         \<c-r>=UltiSnips#ExpandSnippet()<cr>
 
+    au User _VimrcRunAfterPlugEnd snoremap <Tab>
+        \ <c-g><esc>:call UltiSnips#SaveLastVisualSelection()<cr>gvs
+
     au User UltiSnipsEnterFirstSnippet call g:MatchemRepeatFixupFlush('<lt>c-j>')
 
 Plug 'SirVer/ultisnips'
