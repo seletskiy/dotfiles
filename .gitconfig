@@ -32,3 +32,6 @@
 
 [url "git+ssh://github.com/"]
 	insteadOf = https://github.com/
+
+[url "git+ssh://github.com/"]
+	insteadOf = https://git::@github.com/
