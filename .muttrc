@@ -15,6 +15,7 @@ set certificate_file=~/.mutt/certificates
 set header_cache=~/.mutt/header_cache
 set pager_stop=yes
 set attribution=""
+set pager_index_lines=10
 
 unset imap_passive
 
