@@ -1,0 +1,10 @@
+[Unit]
+Description=i3 wm
+Required=graphical.service
+
+[Service]
+ExecStart=/usr/bin/i3
+
+[Install]
+WantedBy=default.target
+Alias=display-manager.target

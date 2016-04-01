@@ -1,0 +1,13 @@
+[Unit]
+Description=Keynav Doppelganger
+Requires=graphical.target
+
+[Service]
+ExecStart=/home/%u/bin/keynav-doppelganger daemonize
+Type=forking
+Environment=KEYNAV_PIDFILE=%t/keynav.pid
+PIDFile=%t/keynav.pid
+Restart=always
+
+[Install]
+WantedBy=display-manager.target
