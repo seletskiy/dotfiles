@@ -13,4 +13,5 @@ set color_rostersel    = 15
 set color_rosterselmsg = bright15
 set color_rosternewmsg = bright16
 color roster o * bright29
-color roster and * 14
+color roster f * 28
+color roster and * 168
