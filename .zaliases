@@ -381,7 +381,7 @@ aliases_context is_inside_git_repo
     alias e='git rebase'
     alias b='git branch'
     alias h='git reset HEAD'
-    alias i='git add -pi'
+    alias i='git add -p'
     alias st='git stash'
     alias std='git stash -u && git stash drop'
     alias mm='git-merge-with-rebase'
