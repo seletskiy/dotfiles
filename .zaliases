@@ -174,7 +174,6 @@ bindkey -v '^A' beginning-of-line
 bindkey -v '^E' end-of-line
 bindkey -a '^?' backward-delete-char
 bindkey -a '^H' backward-delete-char
-bindkey -v '^W' backward-kill-word
 bindkey -v '^[[Z' reverse-menu-complete
 bindkey -v '^[d' delete-word
 
@@ -184,11 +183,12 @@ bindkey '^[Od' backward-word
 bindkey '^[Oc' forward-word
 bindkey -a '^[Od' backward-word
 bindkey -a '^[Oc' forward-word
-bindkey '^H' backward-kill-word
+
 
 bindkey -v '^K' add-params
 
-bindkey -a '?' run-help
+bindkey '^W' smart-backward-kill-word
+bindkey '^S' smart-forward-kill-word
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo

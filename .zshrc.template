@@ -17,6 +17,7 @@ if ! zgen saved; then
     zgen load seletskiy/zsh-ash-completion
     zgen load seletskiy/zsh-context-aliases
     zgen load seletskiy/zsh-git-smart-commands
+    zgen load seletskiy/zsh-smart-kill-word
 
     zgen save
 fi
