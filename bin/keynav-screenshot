@@ -1,0 +1,16 @@
+#!/bin/bash
+
+SUFFIX="${@}"
+
+eval $(xdotool getmouselocation --shell)
+
+X=$((($X - 50)))
+Y=$((($Y - 50)))
+
+WINDOW_NAME=$(xdotool getactivewindow getwindowname | tr ' ' '_')
+SCREENSHOT_NAME="${WINDOW_NAME}__$(date '+%F_%T')__${SUFFIX// /_}.png"
+SCREENSHOT_PATH="$HOME/.keynav-screenshots/$SCREENSHOT_NAME"
+
+mkdir -p $(dirname $SCREENSHOT_PATH)
+
+maim -g 100x100+${X}+${Y} $SCREENSHOT_PATH

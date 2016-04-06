@@ -30,13 +30,13 @@ Shift+j cut-down,warp
 Shift+k cut-up,warp
 Shift+l cut-right,warp
 
-space warp,click 1
-g warp,click 2
-b warp,click 3
+space warp,sh "keynav-screenshot click 1",click 1
+g warp,sh "keynav-screenshot click 2"click 2
+b warp,sh "keynav-screenshot click 3"click 3
 
-shift+space warp,drag 1
-shift+g warp,drag 2
-shift+b warp,drag 3
+shift+space warp,sh "keynav-screenshot drag 1",drag 1
+shift+g warp,sh "keynav-screenshot drag 2",drag 2
+shift+b warp,sh "keynav-screenshot drag 3",drag 3
 
 Return end
 Escape end
