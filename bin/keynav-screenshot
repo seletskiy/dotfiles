@@ -7,7 +7,7 @@ eval $(xdotool getmouselocation --shell)
 X=$((($X - 50)))
 Y=$((($Y - 50)))
 
-WINDOW_NAME=$(xdotool getactivewindow getwindowname | tr ' ' '_')
+WINDOW_NAME=$(xdotool getactivewindow getwindowname | tr ' /:' '___')
 SCREENSHOT_NAME="${WINDOW_NAME}__$(date '+%F_%T')__${SUFFIX// /_}.png"
 SCREENSHOT_PATH="$HOME/.keynav-screenshots/$SCREENSHOT_NAME"
 
