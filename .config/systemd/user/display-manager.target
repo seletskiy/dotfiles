@@ -1,0 +1,7 @@
+[Unit]
+Description=Window manager online (i3)
+Requires=graphical.target
+After=graphical.target
+
+[Install]
+WantedBy=default.target

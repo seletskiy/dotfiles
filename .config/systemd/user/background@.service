@@ -1,0 +1,16 @@
+[Unit]
+Description=Set Background In Apps To '%i'
+BindsTo=display-manager.target
+After=display-manager.target
+Before=background.target
+Requires=background.target
+
+[Service]
+ExecStart=/usr/bin/systemctl --user set-environment BACKGROUND=%i
+ExecStartPost=-/bin/sh -c '[ "${BACKGROUND}" != "%i" ] && \
+    exec systemctl --user stop background@${BACKGROUND}'
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=display-manager.target

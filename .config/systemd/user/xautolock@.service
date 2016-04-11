@@ -1,0 +1,10 @@
+[Unit]
+Description=X Screen Locker
+BindsTo=display-manager.target
+After=display-manager.target
+
+[Service]
+ExecStart=/usr/bin/xautolock -time %i -locker lock-screen
+
+[Install]
+RequiredBy=display-manager.target

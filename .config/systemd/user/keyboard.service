@@ -1,0 +1,12 @@
+[Unit]
+Description=Configure X keyboard
+BindsTo=display-manager.target
+After=display-manager.target
+
+[Service]
+ExecStart=/bin/env reconfig-kbd
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+RequiredBy=display-manager.target

@@ -1,0 +1,17 @@
+[Unit]
+Description=Start X on :%i
+Before=graphical.target
+
+[Service]
+Environment=DISPLAY=:%i
+ExecStartPre=/usr/bin/systemctl --user import-environment DISPLAY
+ExecStart=/usr/bin/bash -c 'sleep 3s && exec Xorg $DISPLAY \
+    -nolisten tcp \
+    -noreset \
+    -verbose 2 \
+    $${XORG_VT:-vt0$$((%i+1))}'
+WorkingDirectory=%h
+
+[Install]
+Also=x@.path
+DefaultInstance=0

@@ -34,11 +34,23 @@ alias -g Uu='sudo -iu'
 alias -g UU=Uu
 
 alias w1='watch -n1 '
+
 alias -- +='systemctl --user'
-alias -- +R='+r daemon-reload'
-alias -- +r='+R && + restart'
+alias -- +R='+ daemon-reload'
+alias -- +r='+R && systemctl-command-and-status --user restart'
+function systemctl-command-and-status() {
+    systemctl $1 $2 "$3"
+    systemctl $1 status "$3"
+}
+compdef systemctl-command-and-status=systemctl
+
 alias -- +s='+ status'
 alias -- +t='+ stop'
+alias -- +e='+ enable'
+alias -- +E='+ reenable'
+alias -- +d='+ disable'
+alias -- +uf='+ list-unit-files'
+alias -- +ld='+ list-dependencies'
 alias jf='sudo journalctl -ef'
 
 alias ag='ag -f'

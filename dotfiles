@@ -105,6 +105,9 @@ def install_file(source, destination)
     if rootfs
         puts("sudo cp: #{source} -> #{destination}")
         `sudo cp -ruT #{source} #{destination}`
+    elsif File.dirname(destination).end_with?("/.config/systemd/user")
+        puts("hardlink: #{source} -> #{destination}")
+        `ln -Tf #{File.realdirpath(source)} #{destination}`
     else
         puts("symlink: #{source} -> #{destination}")
         `ln -Tsf #{File.realdirpath(source)} #{destination}`

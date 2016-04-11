@@ -1,0 +1,6 @@
+[Unit]
+Description=Graphical Subsystem Online (X Server)
+Wants=environment.target
+After=environment.target
+Requires=x@0.service
+ConditionPathExistsGlob=/tmp/.X11-unix/X*

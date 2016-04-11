@@ -1,0 +1,9 @@
+[Unit]
+Description=Share ~/%i/ Over HTTP
+
+[Service]
+ExecStart=/usr/bin/sh -c 'sudo python -m http.server 80'
+WorkingDirectory=%h/%i/
+
+[Install]
+WantedBy=default.target

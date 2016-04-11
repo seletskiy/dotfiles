@@ -1,9 +1,0 @@
-[Unit]
-Description=Park HDD
-
-[Service]
-Type=oneshot
-ExecStart=/bin/hdparm -y /dev/sdb
-
-[Install]
-WantedBy=multi-user.target

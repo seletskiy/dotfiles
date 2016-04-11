@@ -1,0 +1,13 @@
+[Unit]
+Description=Configure X Font Path
+BindsTo=display-manager.target
+After=display-manager.target
+
+[Service]
+ExecStart=/usr/bin/xset +fp %h/.fonts
+ExecStart=/usr/bin/xset fp rehash
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+RequiredBy=display-manager.target

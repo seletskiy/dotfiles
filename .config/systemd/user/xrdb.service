@@ -1,0 +1,16 @@
+[Unit]
+Description=Configure X Resources
+BindsTo=display-manager.target
+PartOf=background.target
+Requisite=background.target
+After=display-manager.target background.target
+
+[Service]
+WorkingDirectory=%h
+ExecStart=/usr/bin/xrdb -load .Xresources
+ExecStart=/usr/bin/xrdb -merge .Xresources.${BACKGROUND}
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+RequiredBy=display-manager.target

@@ -1,0 +1,13 @@
+[Unit]
+Description=Configure X screen off timeout
+BindsTo=display-manager.target
+After=display-manager.target
+
+[Service]
+ExecStart=/usr/bin/xset s %i
+ExecStart=/usr/bin/xset dpms %i %i %i
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+RequiredBy=display-manager.target

@@ -1,19 +1,10 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-    if [ -r ~/.config/background ]; then
-        cat ~/.config/background
-    else
-        echo light
-    fi
+eval $(systemctl --user show-environment | grep -e '^BACKGROUND')
 
-    exit 0
-fi
+echo $BACKGROUND
 
-echo $1 > ~/.config/background
+exit 0
 
-xrdb -merge ~/.Xresources.$1
-cat ~/.i3/config.base ~/.i3/config.$1 > ~/.i3/config
 ln -fs ~/bin/dmenu.$1 ~/bin/dmenu
 ln -fs ~/.mcabber/mcabberrc.$1 ~/.mcabber/mcabberrc.theme
-i3-msg reload &> /dev/null

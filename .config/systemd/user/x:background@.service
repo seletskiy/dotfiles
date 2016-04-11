@@ -1,0 +1,16 @@
+[Unit]
+Description=Set X Root Background To '%i'
+BindsTo=display-manager.target background.target
+After=display-manager.target background.target
+
+[Service]
+ExecStart=/usr/bin/sh -c 'case "%i" in \
+        light) exec xsetroot -grey ;; \
+        dark)  exec xsetroot -bg black ;; \
+    esac'
+ExecStartPost=/usr/bin/xsetroot -cursor_name left_ptr
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=display-manager.target

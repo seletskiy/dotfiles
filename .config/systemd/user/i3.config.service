@@ -1,0 +1,11 @@
+[Unit]
+Description=i3 Config Manager
+PartOf=i3.service background.target
+Requisite=background.target
+After=background.target
+
+[Service]
+WorkingDirectory=%h/.i3
+ExecStart=/usr/bin/sh -c 'cat config.base config.$BACKGROUND > config'
+Type=oneshot
+RemainAfterExit=yes

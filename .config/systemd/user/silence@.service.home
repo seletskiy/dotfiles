@@ -1,0 +1,9 @@
+[Unit]
+Description=Park HDD '%i'
+
+[Service]
+Type=oneshot
+ExecStart=/bin/hdparm -y /dev/%i
+
+[Install]
+WantedBy=default.target

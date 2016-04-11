@@ -1,0 +1,11 @@
+[Unit]
+Description=X Server Socket /tmp/.X11-unix/X%i
+Before=graphical.target
+
+[Path]
+PathExists=/tmp/.X11-unix/X%i
+Unit=graphical.target
+
+[Install]
+RequiredBy=graphical.target
+DefaultInstance=0

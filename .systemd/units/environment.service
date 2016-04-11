@@ -1,9 +1,0 @@
-[Unit]
-Description=User Environment
-
-[Service]
-ExecStart=/usr/bin/sh -c '. ~/.systemd/environment.sh; systemctl --user import-environment'
-Type=oneshot
-
-[Install]
-WantedBy=default.target

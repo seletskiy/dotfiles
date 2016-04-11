@@ -1,0 +1,14 @@
+[Unit]
+Description=i3 Window Manager
+BindsTo=display-manager.target
+After=display-manager.target i3.config.service
+Requires=i3.config.service
+
+[Service]
+ExecStart=/usr/bin/i3
+ExecReload=/usr/bin/systemctl --user restart i3.config
+ExecReload=/usr/bin/i3-status reload
+
+[Install]
+RequiredBy=display-manager.target
+Also=i3.config.service
