@@ -3,8 +3,8 @@ set password = {{PASSWORD}}
 set server = {{SERVER}}
 
 set logging_dir = ~/.mcabber/history-office/
-set statefile = ~/.mcabber/mcabber-office.state
-set fifo_name = ~/.mcabber/mcabber-office.fifo
+set statefile = ~/.mcabber/mcabber-office-jabber.state
+set fifo_name = ~/.mcabber/mcabber-office-jabber.fifo
 
 source ~/.mcabber/mcabberrc.common
 

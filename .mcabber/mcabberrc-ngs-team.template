@@ -2,9 +2,9 @@ set jid = {{JID}}
 set password = {{PASSWORD}}
 set server = {{SERVER}}
 
-set logging_dir = ~/.mcabber/history-slack/
-set statefile = ~/.mcabber/mcabber-slack.state
-set fifo_name = ~/.mcabber/mcabber-slack.fifo
+set logging_dir = ~/.mcabber/history-ngs-team/
+set statefile = ~/.mcabber/mcabber-ngs-team.state
+set fifo_name = ~/.mcabber/mcabber-ngs-team.fifo
 
 alias d = roster search devops@
 
