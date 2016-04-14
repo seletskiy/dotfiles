@@ -254,7 +254,9 @@ Plug 't9md/vim-choosewin'
     let g:choosewin_label_align = 'left'
 
 Plug 'junegunn/fzf'
+
 Plug 'seletskiy/ashium'
+    nmap <C-M><C-M> :py ashium.commit()<CR>
 
 Plug 'hynek/vim-python-pep8-indent'
 
@@ -264,7 +266,7 @@ Plug 'Olical/vim-enmasse'
 
 Plug 'kovetskiy/ycm-sh'
 
-let g:pymode_rope_completion = 0
+Plug 'vim-utils/vim-man'
 
 augroup end
 
@@ -272,6 +274,7 @@ call plug#end()
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 au VimEnter * au! run_after_plug_end
+au VimEnter * EclimDisable
 
 syntax on
 
