@@ -7,9 +7,9 @@ set statefile = ~/.mcabber/mcabber-postdevops.state
 set fifo_name = ~/.mcabber/mcabber-postdevops.fifo
 
 alias r = roster search reviews@
-alias g = roster search misha@
+alias g = roster search general@
 
-set autojoin = misha@conference.{{SERVER}},reviews,time,deployer,heaver,comrade,relationships,incidents
+set autojoin = general@conference.{{SERVER}},reviews,time,deployer,heaver,comrade,relationships,incidents
 
 set otr = 1
 otrpolicy e.kovetskiy@postdevops.xmpp.slack.com always
