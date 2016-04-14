@@ -3,6 +3,7 @@ text/html; ash-mailcap \
                needsterminal;
 
 text/html; ash-mailcap \
+               -c \
                -x "lynx --force-html --dump %s" \
                -t /usr/share/ash-mailcap-autoview/editor %s; \
                copiousoutput
