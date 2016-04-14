@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -euo pipefail
+
+clear
+
+incident_rc=/tmp/pretty-print-incident.muttrc
+incident_txt=/tmp/pretty-print-incident.txt
+
+echo > $incident_rc
+
+config_path=~/.config/pretty-print-incident.rc
+
+incidents_email=""
+
+if ! source $config_path; then
+    :
+fi
+
+if [ ! "$incidents_email" ]; then
+    cat <<HELP
+Please, set incidents_email variable in the $config_path:
+
+    incidents_email=<email-to-send>
+HELP
+
+    exit 1
+fi
+
+if ! incident=$(pretty-print-incident); then
+    printf "%s\n" "$incident"
+    exit 1
+else
+    printf "%s\n\n" "$incident"
+    printf "%s\n" "Press mapping again to create incidents letter."
+fi
+
+subject=$(grep -EA2 "Проявление" <<< "$incident" | tail -n1 | sed -r 's/^\s+//')
+if [ ! "$subject" ]; then
+    echo "No subject matched."
+
+    exit 2
+fi
+
+{
+    printf "%s\n\n" $(xsel -o)
+    printf "%s" "$incident"
+} > $incident_txt
+
+cat > $incident_rc <<EOF
+set editor="vim +:r$incident_txt"
+macro index \\Ci "m${incidents_email}<enter>${subject}<enter>:source ~/.muttrc<enter>"
+EOF

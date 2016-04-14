@@ -37,3 +37,4 @@ bind index @ imap-fetch-mail
 macro index \Ca "<change-folder> =Archive<enter>"
 macro index \Co "<change-folder> =INBOX<enter>"
 macro index \Ce "DStash\|rnd\|pto\|dd tops\|techlead\|techtops\|sysadmin\|QA\|ngs tops2\|soft-configs\|Slack\|talk\|Confluence\|JIRA\|git.rn\|ngs_anons\|uk-ngs-anons\|devops<enter>"
+macro index \Ci "<shell-escape>pretty-print-incident-mutt<enter>:source /tmp/pretty-print-incident.muttrc<enter>"

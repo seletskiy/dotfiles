@@ -1,7 +1,4 @@
-#
 # vim: ft=zsh
-
-aliases_context_init
 
 unalias -m '*'
 
@@ -15,19 +12,21 @@ alias gi='git init'
 
 alias srm='ssh-keygen -R'
 
-alias -g L='| less'
-alias -g LF='| less -F'
-alias -g G='| grep -E'
-alias -g GI='| grep -Ei'
+alias -g L='E | less'
+alias -g LF='E | less -F'
+alias -g G='E | grep -E'
+alias -g GI='E | grep -Ei'
 alias -g Gi=GI
-alias -g T='| tail'
-alias -g T1='| tail -n1'
-alias -g C='| xclip'
+alias -g T='E | tail'
+alias -g T1='E | tail -n1'
+alias -g C='E | xclip'
 alias -g X='| xargs -n1'
-alias -g H='| head -n'
-alias -g H1='| head -n1'
+alias -g H='E | head -n'
+alias -g HH='H 20'
+alias -g Hh='H 20'
+alias -g H1='| H 1'
 alias -g Z='| fzf'
-alias -g E='&>'
+alias -g E='2>&1'
 alias -g R='-lroot'
 alias -g U='sudo -i'
 alias -g Uu='sudo -iu'
@@ -51,6 +50,7 @@ alias -- +E='+ reenable'
 alias -- +d='+ disable'
 alias -- +uf='+ list-unit-files'
 alias -- +ld='+ list-dependencies'
+
 alias jf='sudo journalctl -ef'
 
 alias ag='ag -f'
@@ -92,6 +92,9 @@ alias goi='go install'
 alias gob='go build'
 alias gog='go get -u'
 
+alias a='ash inbox'
+alias ar='ash'
+
 alias zr='. ~/.zshrc'
 alias za='vim ~/.zaliases && source ~/.zshrc'
 
@@ -103,9 +106,12 @@ alias .....='cd ../../../..'
 
 alias rf='rm -rf'
 
+zstyle ':completion:*:approximate:::' max-errors 3 not-numeric
+
 alias vicd="fastcd ~/.vim/bundle/ 1"
 alias gocd="fastcd $GOPATH/src/ 3"
 alias srcd="fastcd ~/sources/ 1"
+alias zgcd="fastcd ~/.zgen/ 2"
 
 alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent | head -n1)"'
 
@@ -119,22 +125,15 @@ alias tf='t -f'
 # blah.ru -> ssh blah.ru
 # node.p  -> ssh node.in.ngs.ru
 # node.x  -> (resolve via search domain setting) ssh node
-alias -s L='ssh-helper 192.168. .L ""'
-alias -s P='ssh-helper 172.16. .P ""'
-alias -s e='ssh-helper ngs.ru. .e ""'
-alias -s s='ssh-helper "" .s .s'
-alias -s ru='ssh-helper "" .ru .ru'
-alias -s p='ssh-helper "" .p .in.ngs.ru'
-alias -s x='ssh-helper "" .x ""'
-function ssh-helper() {
-    local prefix="$1"
-    local host="$4"
-    local remove_suffix="$2"
-    local suffix="$3"
-    shift 4
+alias -s L='uber-ssh:alias -P 192.168. -R .L'
+alias -s P='uber-ssh:alias -P 172.16.  -R .P'
+alias -s e='uber-ssh:alias -P ngs.ru.  -R .e'
+alias -s s='uber-ssh:alias'
+alias -s ru='uber-ssh:alias'
+alias -s p='uber-ssh:alias -A .in.ngs.ru -R .p'
+alias -s x='uber-ssh:alias -R .x'
 
-    ssh-urxvt -t $prefix"${host%%$remove_suffix}"$suffix "${@}"
-}
+alias ssh='ssh-urxvt'
 
 alias ck='mkdir-and-cd'
 function mkdir-and-cd() {
@@ -196,11 +195,19 @@ bindkey '^[Oc' forward-word
 bindkey -a '^[Od' backward-word
 bindkey -a '^[Oc' forward-word
 
-
 bindkey -v '^K' add-params
 
 bindkey '^W' smart-backward-kill-word
 bindkey '^S' smart-forward-kill-word
+
+bindkey -v '^O' toggle-quotes
+
+hijack:reset
+hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
+hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
+hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)/\1\2.x/"'
+hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -ls.seletskiy/"'
+hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
@@ -276,7 +283,7 @@ function leap-back() {
     zle reset-prompt
 }
 
-alias gcm='git-clone-me'
+alias me='git-clone-me'
 function git-clone-me() {
     local reponame="$1" ; shift
     local clone_path="${1:-$reponame}"
@@ -285,7 +292,7 @@ function git-clone-me() {
     cd ~/sources/$clone_path
 }
 
-alias gcg='git-clone-github'
+alias github='git-clone-github'
 function git-clone-github() {
     local reponame="$1"
     local dirname="${2:-${reponame#*/}}"
@@ -294,7 +301,7 @@ function git-clone-github() {
     cd ~/sources/$dirname
 }
 
-alias gck='git-clone-github-kovetskiy'
+alias kovetskiy='git-clone-github-kovetskiy'
 function git-clone-github-kovetskiy() {
     local reponame="$1"
     local dirname="${2:-${reponame#*/}}"
@@ -303,41 +310,13 @@ function git-clone-github-kovetskiy() {
     cd ~/sources/$dirname
 }
 
-alias gck='git-clone-github-kovetskiy'
-function git-clone-github-kovetskiy() {
-    local reponame="$1"
-    local dirname="${2:-${reponame#*/}}"
-
-    git clone gh:kovetskiy/$reponame ~/sources/$dirname
-    cd ~/sources/$dirname
-}
-
-alias gcd='git-clone-internal-devops'
+alias devops='git-clone-internal-devops'
 function git-clone-internal-devops() {
     local reponame="$1"
     local dirname="${2:-${reponame#*/}}"
 
     git clone g:kovetskiy/$reponame ~/sources/$dirname
     cd ~/sources/$dirname
-}
-
-alias me='git-remote-add-me'
-function git-remote-add-me() {
-    if [ "$1" ]; then
-        local reponame="$1"; shift
-    else
-        local reponame=$(git remote show origin -n | awk '/Fetch URL/{print $3}' | cut -f2 -d/)
-        if [ "$reponame" = "origin" ]; then
-            local reponame=$(basename $(pwd))
-        fi
-    fi
-
-    if [ -z "$reponame" ]; then
-        echo "no repo can be matched"
-        return 1
-    fi
-
-    git remote add seletskiy gh:seletskiy/$reponame "${@}"
 }
 
 alias mgp='move-to-gopath'
@@ -361,12 +340,57 @@ function move-to-gopath() {
     cd $directory
 }
 
-alias repl="sed-substitute"
-function sed-substitute() {
-    local regexp="$1"; shift
-
-    sed -res"$regexp" "${@}"
+alias -g -- '#'='2>&1 | less-or-grep'
+function less-or-grep() {
+    if [ $# -eq 0 ]; then
+        if [ -t 1 ]; then
+            less
+        else
+            cat
+        fi
+    else
+        grep -E "${@}"
+    fi
 }
+
+alias -g -- '#x'='| xargs -n1 -I{}'
+
+alias -g -- '#g'='| grep -E'
+
+alias -g -- '#ss'='| sed-substitute'
+function sed-substitute() {
+    local expression="$1"; shift
+
+    sed -res"$expression" "${@}"
+}
+
+alias -g -- '#sd'='| sed-delete'
+function sed-delete() {
+    local expression="$1"; shift
+
+    sed -re"${expression}{d}" "${@}"
+}
+
+alias -g -- '#c'='| cut -f'
+alias -g -- '#cs'='| cut -d" " -f'
+
+alias -g -- '#f'='| awk-print-field'
+function awk-print-field() {
+    local args=()
+    for arg in "${@}"; do
+        if grep -xqE "[0-9]+" <<< "$arg"; then
+            args+=("\$$arg")
+        elif grep -qE "^ | $" <<< "$arg"; then
+            args+=("\"${arg}\"")
+        else
+            args+=("${arg}")
+        fi
+    done
+
+    awk "{print $args}"
+}
+
+alias -g -- '#w'='| wc -l'
 
 autoload is_inside_git_repo
 autoload is_git_repo_dirty
@@ -374,7 +398,7 @@ autoload is_rebase_in_progress
 
 alias gc='git clone'
 
-aliases_context is_inside_git_repo
+context-aliases:match is_inside_git_repo
     alias d='git diff'
     alias dd='git diff --cached'
     alias a='git-smart-add'
@@ -389,6 +413,7 @@ aliases_context is_inside_git_repo
     alias u='git-smart-pull --rebase'
     alias k='git checkout'
     alias km='git checkout master'
+    alias kp='git checkout pkgbuild'
     alias r='git-smart-remote'
     alias rs='git-smart-remote show'
     alias rso='git-smart-remote show origin'
@@ -399,6 +424,16 @@ aliases_context is_inside_git_repo
     alias i='git add -p'
     alias st='git stash'
     alias std='git stash -u && git stash drop'
+    alias lk='hub browse -u -- commit/$(git rev-parse --short HEAD) 2>/dev/null'
+
+    alias aur='push-to-aur'
+
+    function push-to-aur() {
+        local package_name="${1:-$(basename $(git rev-parse --show-toplevel)-git)}"
+
+        git push ssh://aur@aur.archlinux.org/$package_name pkgbuild:master
+    }
+
     alias mm='git-merge-with-rebase'
     function git-merge-with-rebase() {
         local branch=$(git rev-parse --abbrev-ref HEAD)
@@ -414,11 +449,30 @@ aliases_context is_inside_git_repo
 
     compdef _git-merge-with-rebase git-merge-with-rebase
 
+    alias me='git-remote-add-me'
+    function git-remote-add-me() {
+        if [ "$1" ]; then
+            local reponame="$1"; shift
+        else
+            local reponame=$(git remote show origin -n | awk '/Fetch URL/{print $3}' | cut -f2 -d/)
+            if [ "$reponame" = "origin" ]; then
+                local reponame=$(basename $(pwd))
+            fi
+        fi
 
-aliases_context "is_inside_git_repo && is_git_repo_dirty"
+        if [ -z "$reponame" ]; then
+            echo "no repo can be matched"
+            return 1
+        fi
+
+        git remote add seletskiy gh:seletskiy/$reponame "${@}"
+    }
+
+
+context-aliases:match "is_inside_git_repo && is_git_repo_dirty"
     alias c='git-smart-commit'
 
-aliases_context "is_inside_git_repo && is_rebase_in_progress"
+context-aliases:match "is_inside_git_repo && is_rebase_in_progress"
     alias m='git checkout --ours'
     alias t='git checkout --theirs'
     alias c='git rebase --continue'

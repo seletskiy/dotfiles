@@ -1,0 +1,3 @@
+user={{CONFLUENCE_USERNAME}}
+pass={{CONFLUENCE_PASSWORD}}
+incidents_email={{INCIDENTS_EMAIL}}

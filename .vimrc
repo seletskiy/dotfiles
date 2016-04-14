@@ -170,6 +170,8 @@ Plug 'Valloric/YouCompleteMe'
     let g:ycm_collect_identifiers_from_comments_and_strings = 1
     let g:ycm_use_ultisnips_completer = 0
 
+    let g:pymode_lint_ignore = 'E128'
+
 Plug 'kristijanhusak/vim-multiple-cursors'
 
 Plug 'fatih/vim-go', {'for': 'go'}

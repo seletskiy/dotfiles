@@ -64,6 +64,7 @@ snippet r "return"
 return 
 endsnippet
 
+priority 10
 pre_expand "expand_method_in_right_place(snip)"
 post_expand "ensure_newlines(snip.snippet_start, snip.snippet_end)"
 snippet d "def"
@@ -134,6 +135,7 @@ if __name__ == '__main__':
 	unittest.main()
 endsnippet
 
+post_expand "ensure_newlines(snip.snippet_start, snip.snippet_end)"
 snippet c "class" b
 class $1:
 	$2

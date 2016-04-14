@@ -58,7 +58,8 @@ echo $fg_color $bg_color
 
 screenkey \
     --bg-color $bg_color --font-color $fg_color \
-    -f 'DejaVu Sans Bold' --no-detach -g $geometry &
+    -f 'DejaVu Sans Bold' --no-detach -g $geometry \
+    --ignore ISO_Level5_Shift &
 screenkey_pid=$!
 
 xdotool windowfocus $current_window_id
