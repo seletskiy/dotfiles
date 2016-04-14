@@ -63,8 +63,18 @@ HELP
     auth="Basic $(printf "%s" $user:$pass | base64)"
 
     curl -s -XGET -H"Authorization: $auth" $url \
-        | lynx -stdin -dump -hiddenlinks=ignore -force_html -list_inline -minimal \
-        | awk '/^Период/,/^\s+set_title/' \
+        | lynx -stdin -dump -hiddenlinks=ignore -force_html -minimal \
+        | awk '
+            /^\[.*\]\(.*\)/,/Skip to end of metadata/ {
+                if (/^\S/) {
+                    sub(/\[.*\]/, "");
+                    print $0 "\n"
+                }
+            }
+            /^Период/,/^\s+set_title/ {
+                print
+            }
+            ' \
         | head -n-1
 }
 

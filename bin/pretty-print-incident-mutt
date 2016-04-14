@@ -35,7 +35,7 @@ else
     printf "%s\n" "Press mapping again to create incidents letter."
 fi
 
-subject=$(grep -EA2 "Проявление" <<< "$incident" | tail -n1 | sed -r 's/^\s+//')
+subject=$(head -n1 <<< "$incident")
 if [ ! "$subject" ]; then
     echo "No subject matched."
 
