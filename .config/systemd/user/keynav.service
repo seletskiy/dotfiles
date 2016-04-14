@@ -11,4 +11,4 @@ PIDFile=%t/keynav.pid
 Restart=always
 
 [Install]
-RequiredBy=display-manager.target
+WantedBy=display-manager.target

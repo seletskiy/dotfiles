@@ -8,6 +8,7 @@ After=graphical.target
 ExecStart=/usr/bin/systemctl --user set-environment BACKGROUND=%i
 ExecStartPost=-/bin/sh -c '[ "${BACKGROUND}" != "%i" ] && \
     exec systemctl --user stop background@${BACKGROUND}'
+;ExecStartPost=-/usr/bin/systemctl --user restart xrdb
 Type=oneshot
 RemainAfterExit=yes
 
