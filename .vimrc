@@ -219,6 +219,8 @@ Plug 'seletskiy/vim-over'
 
     au User OverCmdLineExecute call searchparty#mash#mash()
 
+    let g:over#command_line#substitute#highlight_string = "DiffChange"
+
 Plug 'wellle/targets.vim'
 
 Plug 'maksimr/vim-jsbeautify'
