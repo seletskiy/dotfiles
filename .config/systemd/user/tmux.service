@@ -1,10 +1,11 @@
 [Unit]
 Description=Start Tmux Server
+Before=multiplexer.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/tmux new -ds dummy
+ExecStart=/usr/bin/tmux new -ds __systemd sh
 ExecStop=/usr/bin/tmux kill-server
 
 [Install]
-WantedBy=default.target
+WantedBy=multiplexer.target

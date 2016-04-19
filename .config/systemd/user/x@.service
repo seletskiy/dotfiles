@@ -1,6 +1,5 @@
 [Unit]
 Description=Start X on :%i
-PartOf=graphical.target
 Before=graphical.target
 Requires=x:socket@.service
 

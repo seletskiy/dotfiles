@@ -1,6 +1,6 @@
 [Unit]
 Description=Configure X Font Path
-PartOf=display-manager.target
+Requires=graphical.target
 After=display-manager.target
 
 [Service]
@@ -10,4 +10,4 @@ Type=oneshot
 RemainAfterExit=yes
 
 [Install]
-RequiredBy=display-manager.target
+WantedBy=display-manager.target

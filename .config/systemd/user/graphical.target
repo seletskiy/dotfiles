@@ -1,6 +1,5 @@
 [Unit]
 Description=Graphical Subsystem Online (X Server)
-PartOf=workplace.target
 Requires=environment.target
 After=environment.target
 

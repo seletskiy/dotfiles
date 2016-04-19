@@ -1,7 +1,7 @@
 [Unit]
 Description=Configure X Resources
-PartOf=background.target display-manager.target
-Requires=background.target
+BindsTo=background.target
+Requires=background.target graphical.target
 After=display-manager.target background.target
 
 [Service]

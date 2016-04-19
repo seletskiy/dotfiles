@@ -1,7 +1,6 @@
 [Unit]
 Description=User environment variables
 Before=environment.target
-PartOf=environment.target
 
 [Service]
 Environment=SHELL=/bin/zsh

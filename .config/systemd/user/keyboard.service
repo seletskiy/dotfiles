@@ -1,7 +1,8 @@
 [Unit]
 Description=Configure X keyboard
-BindsTo=display-manager.target
-After=display-manager.target
+Requires=graphical.target
+After=graphical.target
+Before=display-manager.target
 
 [Service]
 ExecStart=/bin/env reconfig-kbd
@@ -9,4 +10,4 @@ Type=oneshot
 RemainAfterExit=yes
 
 [Install]
-RequiredBy=display-manager.target
+WantedBy=display-manager.target

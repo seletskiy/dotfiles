@@ -1,14 +1,14 @@
 [Unit]
 Description=i3 Config Manager
-PartOf=i3.service background.target
 After=background.target
 Requires=background.target
 
 [Service]
 WorkingDirectory=%h/.i3
-ExecStart=/usr/bin/sh -c 'cat config.base config.$BACKGROUND > config'
+ExecStart=/usr/bin/sh -c 'exec cat config.base config.${BACKGROUND} > config'
+ExecStart=/usr/bin/systemctl --user --no-block reload i3.service
 Type=oneshot
 RemainAfterExit=yes
 
 [Install]
-RequiredBy=display-manager.target
+WantedBy=i3.service

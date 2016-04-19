@@ -1,10 +1,12 @@
 [Unit]
 Description=Fully Configured Workplace
 AllowIsolate=yes
+DefaultDependencies=no
 
 [Install]
-WantedBy=default.target
+WantedBy=basic.target
 Also=graphical.target
 Also=display-manager.target
 Also=environment.service
 Also=background.target
+Also=multiplexer.target

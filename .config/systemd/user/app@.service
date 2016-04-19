@@ -1,0 +1,5 @@
+[Unit]
+Description=Application '%i'
+
+[Service]
+ExecStart=/usr/bin/env %i

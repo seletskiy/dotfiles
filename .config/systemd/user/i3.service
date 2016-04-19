@@ -1,15 +1,14 @@
 [Unit]
 Description=i3 Window Manager
-PartOf=display-manager.target
 Before=display-manager.target
-After=i3.config.service background.target
-Requires=i3.config.service graphical.target background.target
+After=i3:config.service
+Wants=i3:config.service
+Requires=graphical.target
 
 [Service]
 ExecStart=/usr/bin/i3
-ExecReload=/usr/bin/systemctl --user restart i3.config
-ExecReload=/usr/bin/i3-status reload
+ExecReload=/usr/bin/i3-msg reload
 
 [Install]
 RequiredBy=display-manager.target
-Also=i3.config.service display-manager.target
+Also=i3:config.service display-manager.target

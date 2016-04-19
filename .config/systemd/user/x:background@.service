@@ -1,7 +1,6 @@
 [Unit]
 Description=Set X Root Background To '%i'
-PartOf=display-manager.target background.target
-After=display-manager.target background.target
+Before=display-manager.target
 
 [Service]
 ExecStart=/usr/bin/sh -c 'case "%i" in \

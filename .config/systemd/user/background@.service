@@ -1,14 +1,12 @@
 [Unit]
 Description=Set Background In Apps To '%i'
-PartOf=background.target
 Before=background.target
 After=graphical.target
 
 [Service]
 ExecStart=/usr/bin/systemctl --user set-environment BACKGROUND=%i
-ExecStartPost=-/bin/sh -c '[ "${BACKGROUND}" != "%i" ] && \
-    exec systemctl --user stop background@${BACKGROUND}'
-;ExecStartPost=-/usr/bin/systemctl --user restart xrdb
+ExecStart=/usr/bin/systemctl --user --no-block restart x:background@%i.service
+ExecStart=/usr/bin/systemctl --user --no-block restart background.target
 Type=oneshot
 RemainAfterExit=yes
 
