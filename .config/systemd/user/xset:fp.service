@@ -1,6 +1,6 @@
 [Unit]
 Description=Configure X Font Path
-BindsTo=display-manager.target
+PartOf=display-manager.target
 After=display-manager.target
 
 [Service]

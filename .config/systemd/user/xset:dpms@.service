@@ -1,6 +1,6 @@
 [Unit]
 Description=Configure X screen off timeout
-BindsTo=display-manager.target
+PartOf=display-manager.target
 After=display-manager.target
 
 [Service]
@@ -11,3 +11,4 @@ RemainAfterExit=yes
 
 [Install]
 RequiredBy=display-manager.target
+DefaultInstance=1600

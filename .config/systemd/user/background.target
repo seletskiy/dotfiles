@@ -1,3 +1,7 @@
 [Unit]
 Description=X Background Configured
-BindsTo=display-manager.target
+BindsTo=graphical.target
+
+[Install]
+WantedBy=workplace.target
+Also=background@.service x:background@.service

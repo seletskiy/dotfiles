@@ -1,8 +1,7 @@
 [Unit]
 Description=Configure X Resources
-BindsTo=display-manager.target
-PartOf=background.target
-Requisite=background.target
+PartOf=background.target display-manager.target
+Requires=background.target
 After=display-manager.target background.target
 
 [Service]
@@ -13,4 +12,4 @@ Type=oneshot
 RemainAfterExit=yes
 
 [Install]
-RequiredBy=display-manager.target
+WantedBy=display-manager.target

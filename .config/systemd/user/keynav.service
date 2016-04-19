@@ -1,6 +1,6 @@
 [Unit]
 Description=Keynav Doppelganger
-BindsTo=display-manager.target
+PartOf=display-manager.target
 After=display-manager.target
 
 [Service]

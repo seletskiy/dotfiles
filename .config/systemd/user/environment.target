@@ -1,5 +1,6 @@
 [Unit]
 Description=User Environment Online
+PartOf=workplace.target
 
 [Install]
-WantedBy=basic.target
+RequiredBy=workplace.target

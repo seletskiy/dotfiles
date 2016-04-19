@@ -1,0 +1,12 @@
+[Unit]
+Description=X Server Socket Ready /tmp/.X11-unix/X%i
+BindsTo=graphical.target
+Before=graphical.target
+
+[Service]
+ExecStart=/usr/bin/sh -c 'while [ ! -e /tmp/.X11-unix/X%i ]; do :; done'
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+RequiredBy=graphical.target

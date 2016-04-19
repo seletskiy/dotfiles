@@ -1,0 +1,10 @@
+[Unit]
+Description=Fully Configured Workplace
+AllowIsolate=yes
+
+[Install]
+WantedBy=default.target
+Also=graphical.target
+Also=display-manager.target
+Also=environment.service
+Also=background.target

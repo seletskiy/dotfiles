@@ -1,7 +1,12 @@
 [Unit]
-Description=Window manager online (i3)
+Description=Window Manager Online (i3)
 Requires=graphical.target
 After=graphical.target
 
 [Install]
-WantedBy=default.target
+WantedBy=workplace.target
+Also=i3.service
+Also=xautolock@.service
+Also=xrdb.service
+Also=xset:fp.service xset:dpms@.service
+Also=keyboard.service

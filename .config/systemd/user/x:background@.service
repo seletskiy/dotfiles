@@ -1,6 +1,6 @@
 [Unit]
 Description=Set X Root Background To '%i'
-BindsTo=display-manager.target background.target
+PartOf=display-manager.target background.target
 After=display-manager.target background.target
 
 [Service]
@@ -14,3 +14,4 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=display-manager.target
+DefaultInstance=light

@@ -1,11 +1,13 @@
 [Unit]
 Description=Start X on :%i
+PartOf=graphical.target
 Before=graphical.target
+Requires=x:socket@.service
 
 [Service]
 Environment=DISPLAY=:%i
 ExecStartPre=/usr/bin/systemctl --user import-environment DISPLAY
-ExecStart=/usr/bin/bash -c 'sleep 3s && exec Xorg $DISPLAY \
+ExecStart=/usr/bin/bash -c 'exec Xorg $DISPLAY \
     -nolisten tcp \
     -noreset \
     -verbose 2 \
@@ -13,5 +15,6 @@ ExecStart=/usr/bin/bash -c 'sleep 3s && exec Xorg $DISPLAY \
 WorkingDirectory=%h
 
 [Install]
-Also=x@.path
+RequiredBy=graphical.target
+Also=x:socket@.service graphical.target
 DefaultInstance=0

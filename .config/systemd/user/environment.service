@@ -1,6 +1,7 @@
 [Unit]
 Description=User environment variables
 Before=environment.target
+PartOf=environment.target
 
 [Service]
 Environment=SHELL=/bin/zsh
@@ -9,10 +10,11 @@ Environment=EDITOR=vim
 Environment=DMENU_PATH=%h/bin/.dmenu
 Environment=GOPATH=%h/.go
 Environment=PATH=%h/bin:%h/.go/bin:%h/.dmenu:%h/.deadfiles/bin:%h/bin/.master-of-android:/usr/bin
-EnvironmentFile=/home/%u/config/dotfiles.profile
+EnvironmentFile=/home/%u/.config/dotfiles.profile
 ExecStart=/usr/bin/systemctl --user import-environment
 Type=oneshot
 RemainAfterExit=yes
 
 [Install]
 RequiredBy=environment.target
+Also=environment.target
