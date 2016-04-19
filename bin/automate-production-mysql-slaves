@@ -1,0 +1,31 @@
+#!/bin/bash
+
+automate-production-mysql-query '
+        show slave status;
+        show variables where Variable_name="port";
+        status;' | \
+
+    bmo -b /SUCCESS/ /SUCCESS/ \
+        -v 'master_host' 'if (/Master_Host/) { return $2 }' \
+        -v 'master_port' 'if (/Master_Port/) { return $2 }' \
+        -v 'slave_host' 'if (/SUCCESS/) { return $4 }' \
+        -v 'slave_port' 'if (/Value/) { return $2 }' \
+        -v 'socket' 'if (/^UNIX/) { return gensub(/.*\//, "", 1) }' \
+        -f 'master_host ":" master_port " " \
+            slave_host ":" slave_port " " socket' | \
+    awk '{
+            masters[$1][NR]["host"] = $2
+            masters[$1][NR]["socket"] = $3
+        }
+
+        END {
+            for (master in masters) {
+                print master
+                for (i in masters[master]) {
+                    print " \\_ " masters[master][i]["host"] " " \
+                        "(" masters[master][i]["socket"] ")"
+                }
+
+                print ""
+            }
+        }'
