@@ -18,13 +18,28 @@ automate-production-mysql-query '
             masters[$1][NR]["socket"] = $3
         }
 
+        function print_tree(host, indent) {
+            indent = "   " indent
+            if (host in masters) {
+                for (i in masters[host]) {
+                    slave = masters[host][i]["host"]
+                    socket = masters[host][i]["socket"]
+
+                    print indent slave " " "(" socket ")"
+
+                    print_tree(slave, indent)
+                }
+            }
+        }
+
+        function print_host(host, i, indent) {
+        }
+
         END {
             for (master in masters) {
                 print master
-                for (i in masters[master]) {
-                    print " \\_ " masters[master][i]["host"] " " \
-                        "(" masters[master][i]["socket"] ")"
-                }
+
+                print_tree(master, "\\_ ")
 
                 print ""
             }
