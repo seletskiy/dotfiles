@@ -174,12 +174,10 @@ bindkey '^[[6~' backward-word
 
 bindkey -v '^K' add-params
 bindkey -v '^_' insert-dot-dot-slash
-bindkey -v '^Q' toggle-quotes
+bindkey -v '^O' toggle-quotes
 
 bindkey '^W' smart-backward-kill-word
 bindkey '^S' smart-forward-kill-word
-
-bindkey -v '^O' toggle-quotes
 
 hijack:reset
 hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
