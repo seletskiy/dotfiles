@@ -12,26 +12,6 @@ alias gi='git init'
 
 alias srm='ssh-keygen -R'
 
-alias -g L='E | less'
-alias -g LF='E | less -F'
-alias -g G='E | grep -E'
-alias -g GI='E | grep -Ei'
-alias -g Gi=GI
-alias -g T='E | tail'
-alias -g T1='E | tail -n1'
-alias -g C='E | xclip'
-alias -g X='| xargs -n1'
-alias -g H='E | head -n'
-alias -g HH='H 20'
-alias -g Hh='H 20'
-alias -g H1='| H 1'
-alias -g Z='| fzf'
-alias -g E='2>&1'
-alias -g R='-lroot'
-alias -g U='sudo -i'
-alias -g Uu='sudo -iu'
-alias -g UU=Uu
-
 alias w1='watch -n1 '
 
 alias -- +='systemctl --user'
@@ -99,10 +79,6 @@ alias zr='. ~/.zshrc'
 alias za='vim ~/.zaliases && source ~/.zshrc'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
 
 alias rf='rm -rf'
 
@@ -180,7 +156,6 @@ bindkey -v "^A" beginning-of-line
 bindkey -v "^[OA" history-substring-search-up
 bindkey -v "^[OB" history-substring-search-down
 bindkey -v "^[[3~" delete-char
-bindkey -v "^Q" push-line
 bindkey -v '^A' beginning-of-line
 bindkey -v '^E' end-of-line
 bindkey -a '^?' backward-delete-char
@@ -194,8 +169,12 @@ bindkey '^[Od' backward-word
 bindkey '^[Oc' forward-word
 bindkey -a '^[Od' backward-word
 bindkey -a '^[Oc' forward-word
+bindkey '^[[5~' forward-word
+bindkey '^[[6~' backward-word
 
 bindkey -v '^K' add-params
+bindkey -v '^_' insert-dot-dot-slash
+bindkey -v '^Q' toggle-quotes
 
 bindkey '^W' smart-backward-kill-word
 bindkey '^S' smart-forward-kill-word
