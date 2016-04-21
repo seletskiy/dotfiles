@@ -5,6 +5,7 @@ unalias -m '*'
 alias l='ls'
 alias ls='ls --color=always'
 alias ll='ls -al'
+alias li='\k'
 alias lt='ls -alt'
 
 alias g='git'
@@ -142,6 +143,14 @@ function dotfiles-bootstrap() {
     fi
 }
 
+alias aur='dotfiles-bootstrap-aur -S'
+function dotfiles-bootstrap-aur() {
+    shift
+    dotfiles-bootstrap https://aur.archlinux.org/packages/$1
+}
+
+compdef dotfiles-bootstrap-aur=yaourt
+
 alias godoc='godoc-less'
 function godoc-less() {
     \godoc -ex "${@}" | less -SX
@@ -181,7 +190,6 @@ bindkey -v '^ ' autosuggest-execute
 bindkey '^W' smart-backward-kill-word
 bindkey '^S' smart-forward-kill-word
 
-hijack:reset
 hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
 hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
 hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)/\1\2.x/"'
@@ -319,57 +327,7 @@ function move-to-gopath() {
     cd $directory
 }
 
-alias -g -- '#'='2>&1 | less-or-grep'
-function less-or-grep() {
-    if [ $# -eq 0 ]; then
-        if [ -t 1 ]; then
-            less
-        else
-            cat
-        fi
-    else
-        grep -E "${@}"
-    fi
-}
-
-alias -g -- '#x'='| xargs -n1 -I{}'
-
-alias -g -- '#g'='| grep -E'
-
-alias -g -- '#ss'='| sed-substitute'
-function sed-substitute() {
-    local expression="$1"; shift
-
-    sed -res"$expression" "${@}"
-}
-
-alias -g -- '#sd'='| sed-delete'
-function sed-delete() {
-    local expression="$1"; shift
-
-    sed -re"${expression}{d}" "${@}"
-}
-
-alias -g -- '#c'='| cut -f'
-alias -g -- '#cs'='| cut -d" " -f'
-
-alias -g -- '#f'='| awk-print-field'
-function awk-print-field() {
-    local args=()
-    for arg in "${@}"; do
-        if grep -xqE "[0-9]+" <<< "$arg"; then
-            args+=("\$$arg")
-        elif grep -qE "^ | $" <<< "$arg"; then
-            args+=("\"${arg}\"")
-        else
-            args+=("${arg}")
-        fi
-    done
-
-    awk "{print $args}"
-}
-
-alias -g -- '#w'='| wc -l'
+hash-aliases:install
 
 autoload is_inside_git_repo
 autoload is_git_repo_dirty

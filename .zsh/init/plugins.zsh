@@ -25,6 +25,7 @@ if ! zgen saved; then
     zgen load seletskiy/zsh-hash-aliases
     zgen load seletskiy/zsh-hijack
     zgen load seletskiy/zsh-uber-ssh
+    zgen load supercrabtree/k
 
     zgen load zsh-users/zsh-syntax-highlighting
 
