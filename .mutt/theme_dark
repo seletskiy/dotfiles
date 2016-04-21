@@ -1,124 +1,33 @@
-# vim: filetype=muttrc
-
-#
-#
-# make sure that you are using mutt linked against slang, not ncurses, or
-# suffer the consequences of weird color issues. use "mutt -v" to check this.
-
-# custom body highlights -----------------------------------------------
-# highlight my name and other personally relevant strings
-#color body          color136        color234        "(ethan|schoonover)"
-# custom index highlights ----------------------------------------------
-# messages which mention my name in the body
-#color index         color136        color234        "~b \"phil(_g|\!| gregory| gold)|pgregory\" !~N !~T !~F !~p !~P"
-#color index         J_cream         color230        "~b \"phil(_g|\!| gregory| gold)|pgregory\" ~N !~T !~F !~p !~P"
-#color index         color136        color37         "~b \"phil(_g|\!| gregory| gold)|pgregory\" ~T !~F !~p !~P"
-#color index         color136        J_magent        "~b \"phil(_g|\!| gregory| gold)|pgregory\" ~F !~p !~P"
-## messages which are in reference to my mails
-#color index         J_magent        color234        "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|thorin\\.hillmgt\\.com\" !~N !~T !~F !~p !~P"
-#color index         J_magent        color230        "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|thorin\\.hillmgt\\.com\" ~N !~T !~F !~p !~P"
-#color index         J_magent        color37         "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|thorin\\.hillmgt\\.com\" ~T !~F !~p !~P"
-#color index         J_magent        color160        "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|thorin\\.hillmgt\\.com\" ~F !~p !~P"
-
-# for background in 16 color terminal, valid background colors include:
-# base03, bg, black, any of the non brights
-
-# basic colors ---------------------------------------------------------
-color normal        color252        default
-color error         color52         color252
-color tilde         color235        default
-color message       color37         default
-color markers       color160        color254
-color attachment    color254        default
-color search        color61         default
-color status        color241        color235
-color indicator     color252        color89
-color tree          color179        default                                    # arrow in threads
-
-# basic monocolor screen
-mono  bold          bold
-mono  underline     underline
-mono  indicator     reverse
-mono  error         bold
-
-# index ----------------------------------------------------------------
-
-#color index         color160        default        "~D(!~p|~p)"               # deleted
-#color index         color235        default        ~F                         # flagged
-#color index         color166        default        ~=                         # duplicate messages
-#color index         color240        default        "~A!~N!~T!~p!~Q!~F!~D!~P"  # the rest
-#color index         J_base          default        "~A~N!~T!~p!~Q!~F!~D"      # the rest, new
-color index         color160        default        "~A"                        # all messages
-color index         color166        default        "~E"                        # expired messages
-color index         color33         default        "~N"                        # new messages
-color index         color33         default        "~O"                        # old messages
-color index         color61         default        "~Q"                        # messages that have been replied to
-color index         color240        default        "~R"                        # read messages
-color index         color33         default        "~U"                        # unread messages
-color index         color33         default        "~U~$"                      # unread, unreferenced messages
-color index         color241        default        "~v"                        # messages part of a collapsed thread
-color index         color241        default        "~P"                        # messages from me
-color index         color37         default        "~p!~F"                     # messages to me
-color index         color37         default        "~N~p!~F"                   # new messages to me
-color index         color37         default        "~U~p!~F"                   # unread messages to me
-color index         color240        default        "~R~p!~F"                   # messages to me
-color index         color160        default        "~F"                        # flagged messages
-color index         color160        default        "~F~p"                      # flagged messages to me
-color index         color160        default        "~N~F"                      # new flagged messages
-color index         color160        default        "~N~F~p"                    # new flagged messages to me
-color index         color160        default        "~U~F~p"                    # new flagged messages to me
-color index         color160        default        "~D"                        # deleted messages
-color index         color245        default        "~v~(!~N)"                  # collapsed thread with no unread
-color index         color136        default        "~v~(~N)"                   # collapsed thread with some unread
-color index         color64         default        "~N~v~(~N)"                 # collapsed thread with unread parent
-# statusbg used to indicated flagged when foreground color shows other status
-# for collapsed thread
-color index         color160        color235        "~v~(~F)!~N"                # collapsed thread with flagged, no unread
-color index         color136        color235        "~v~(~F~N)"                 # collapsed thread with some unread & flagged
-color index         color64         color235        "~N~v~(~F~N)"               # collapsed thread with unread parent & flagged
-color index         color64         color235        "~N~v~(~F)"                 # collapsed thread with unread parent, no unread inside, but some flagged
-color index         color37         color235        "~v~(~p)"                   # collapsed thread with unread parent, no unread inside, some to me directly
-color index         color136        color160        "~v~(~D)"                   # thread with deleted (doesn't differentiate between all or partial)
-#color index         color136        default        "~(~N)"                    # messages in threads with some unread
-#color index         color64         default        "~S"                       # superseded messages
-#color index         color160        default        "~T"                       # tagged messages
-#color index         color166        color160        "~="                       # duplicated messages
-
-# message headers ------------------------------------------------------
-
-#color header        color240        default        "^"
-color hdrdefault    color240        default
-color header        color241        default        "^(From)"
-color header        color33         default        "^(Subject)"
-
-# body -----------------------------------------------------------------
-
-color quoted        color33         default
-color quoted1       color37         default
-color quoted2       color136        default
-color quoted3       color160        default
-color quoted4       color166        default
-
-color signature     color240        default
-color bold          color235        default
-color underline     color235        default
-color normal        color252        default
-#
-color body          color245        default        "[;:][-o][)/(|]"    # emoticons
-color body          color245        default        "[;:][)(|]"         # emoticons
-color body          color245        default        "[*]?((N)?ACK|CU|LOL|SCNR|BRB|BTW|CWYL|\
-                                                     |FWIW|vbg|GD&R|HTH|HTHBE|IMHO|IMNSHO|\
-                                                     |IRL|RTFM|ROTFL|ROFL|YMMV)[*]?"
-color body          color245        default        "[ ][*][^*]*[*][ ]?" # more emoticon?
-color body          color245        default        "[ ]?[*][^*]*[*][ ]" # more emoticon?
-
-## pgp
-
-color body          color160        color234        "(BAD signature)"
-color body          color37         color234        "(Good signature)"
-color body          color234        color234        "^gpg: Good signature .*"
-color body          color241        color234        "^gpg: "
-color body          color241        color160        "^gpg: BAD signature from.*"
-mono  body          bold                            "^gpg: Good signature"
-mono  body          bold                            "^gpg: BAD signature from.*"
-
+color   normal       color253   color234
+color   indicator    color230   color238
+color   status       color101   color16
+color   tree         color208   color234
+color   signature    color102   color234
+color   message      color253   color234
+color   attachment   color117   color234
+color   error        color30    color234
+color   tilde        color130   color235
+color   search       color100   default
+color   markers      color138   default
+color   quoted       color107   color234
+color   quoted1      color66    color234
+color   quoted2      color32    color234
+color   quoted3      color30    color234
+color   quoted4      color99    color234
+color   quoted5      color36    color234
+color   quoted6      color114   color234
+color   quoted7      color109   color234
+color   quoted8      color41    color234
+color   quoted9      color138   color234
+color   index        color202   color234  ~F
+color   index        color39    color234  ~N
+color   index        color39    color234  ~O
+color   index        color229   color22   ~T
+color   index        color240   color234  ~D
+color   hdrdefault   color30    color233
+color   header       color132   color233  '^date:'
+color   header       color153   color233  '^(to|cc|bcc):'
+color   header       color120   color233  '^from:'
+color   header       color178   color233  '^subject:'
+color   header       color31    color233  '^user-agent:'
+color   header       color29    color233  '^reply-to:'
