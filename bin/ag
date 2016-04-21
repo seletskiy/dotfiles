@@ -1,3 +1,9 @@
 #!/bin/sh
 
+if [ "$BACKGROUND" = "light" ]; then
+    
 exec /usr/bin/ag --color-match '48;5;230' "${@}"
+else
+
+exec /usr/bin/ag --color-match '38;5;15;48;5;17' "${@}"
+fi
