@@ -582,7 +582,7 @@ fun! g:DarkRoom()
     hi CursorLineNr ctermfg=242 ctermbg=none
     hi LineNr ctermfg=238 ctermbg=none
     hi SignColumn ctermfg=none ctermbg=none
-    hi ColorColumn ctermbg=233
+    hi ColorColumn ctermbg=235
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=235 cterm=none term=none
     hi IncSearch cterm=bold ctermfg=234 ctermbg=220
@@ -590,6 +590,7 @@ fun! g:DarkRoom()
 
     hi Cursor ctermbg=15 ctermfg=0
     hi PmenuSel ctermbg=136 ctermfg=16 cterm=bold
+    hi Pmenu ctermfg=245 ctermbg=235 cterm=none
 endfun
 
 fun! s:ApplyColorscheme()
