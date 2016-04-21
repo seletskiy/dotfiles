@@ -300,3 +300,4 @@ work     ngs.devops-ca
 -        youtube-dl
 -        zfs-git
 -        zip
+-        https://aur.archlinux.org/packages/yandex-browser-beta/
