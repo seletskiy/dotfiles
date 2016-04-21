@@ -84,10 +84,10 @@ alias rf='rm -rf'
 
 zstyle ':completion:*:approximate:::' max-errors 3 not-numeric
 
-alias vicd="fastcd ~/.vim/bundle/ 1"
-alias gocd="fastcd $GOPATH/src/ 3"
-alias srcd="fastcd ~/sources/ 1"
-alias zgcd="fastcd ~/.zgen/ 2"
+alias vd="fastcd ~/.vim/bundle/ 1"
+alias gd="fastcd $GOPATH/src/ 3"
+alias sd="fastcd ~/sources/ 1"
+alias zd="fastcd $ZGEN_DIR 2"
 
 alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent | head -n1)"'
 
@@ -292,7 +292,7 @@ function git-clone-internal-devops() {
     local reponame="$1"
     local dirname="${2:-${reponame#*/}}"
 
-    git clone g:kovetskiy/$reponame ~/sources/$dirname
+    git clone g:devops/$reponame ~/sources/$dirname
     cd ~/sources/$dirname
 }
 
