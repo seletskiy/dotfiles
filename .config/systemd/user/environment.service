@@ -1,5 +1,7 @@
 [Unit]
 Description=User environment variables
+After=mutliplexer.target
+Wants=multiplexer.target
 Before=environment.target
 
 [Service]
