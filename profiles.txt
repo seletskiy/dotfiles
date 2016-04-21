@@ -301,3 +301,4 @@ work     ngs.devops-ca
 -        zfs-git
 -        zip
 -        https://aur.archlinux.org/packages/yandex-browser-beta/
+-        https://aur.archlinux.org/packages/libtinfo-5
