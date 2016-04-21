@@ -585,7 +585,8 @@ fun! g:DarkRoom()
     hi ColorColumn ctermbg=233
     hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
     hi NonText ctermfg=235 cterm=none term=none
-    hi IncSearch cterm=none ctermfg=238 ctermbg=220
+    hi IncSearch cterm=bold ctermfg=234 ctermbg=220
+    hi Visual ctermbg=17 cterm=none ctermfg=none
 
     hi Cursor ctermbg=15 ctermfg=0
     hi PmenuSel ctermbg=136 ctermfg=16 cterm=bold
