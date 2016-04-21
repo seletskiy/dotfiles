@@ -1,10 +1,12 @@
 #!/bin/bash
 
-eval $(systemctl --user show-environment | grep -e '^BACKGROUND')
+if [ $# -gt 0 ]; then
+    systemctl --user restart background@$1
+else
+    eval $(systemctl --user show-environment | grep -e '^BACKGROUND')
 
-echo $BACKGROUND
+    echo $BACKGROUND
+fi
 
-exit 0
 
-ln -fs ~/bin/dmenu.$1 ~/bin/dmenu
-ln -fs ~/.mcabber/mcabberrc.$1 ~/.mcabber/mcabberrc.theme
+
