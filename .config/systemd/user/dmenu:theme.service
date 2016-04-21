@@ -1,0 +1,15 @@
+[Unit]
+Description=dmenu Theme Linker
+BindsTo=background.target
+After=background.target
+Before=display-manager.service
+Requires=background.target
+
+[Service]
+WorkingDirectory=%h/bin
+ExecStart=/usr/bin/ln -fs dmenu.${BACKGROUND} dmenu
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=display-manager.service

@@ -1,0 +1,14 @@
+[Unit]
+Description=Mcabber Theme Config File
+After=background.target
+Requires=background.target
+
+[Service]
+WorkingDirectory=%h/.mcabber
+ExecStart=/usr/bin/ln -fs mcabberrc.${BACKGROUND} mcabberrc.theme
+; TODO: reload mcabber
+Type=oneshot
+RemainAfterExit=yes
+
+;[Install]
+;WantedBy=mcabber.service
