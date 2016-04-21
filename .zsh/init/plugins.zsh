@@ -1,6 +1,10 @@
 ZGEN_DIR=$ZDOTDIR/.zgen/
 
-source /usr/share/zsh/scripts/zgen/zgen.zsh
+# unless, zsh will crash with core dumped
+if ! type zgen >/dev/null 2>&1; then
+    source /usr/share/zsh/scripts/zgen/zgen.zsh
+fi
+
 
 if ! zgen saved; then
     zgen load seletskiy/zsh-zgen-compinit-tweak
@@ -22,9 +26,18 @@ if ! zgen saved; then
     zgen load seletskiy/zsh-hijack
     zgen load seletskiy/zsh-uber-ssh
 
+    zgen load zsh-users/zsh-syntax-highlighting
+
+    # must be last!
     zgen load zsh-users/zsh-autosuggestions
-    zgen load zsh-users/zsh-syntax-highlight
 
     zgen save
+
+    if [ "$ZGEN_RECURSE" ]; then
+        echo Found recursion loop at loading zgen plugins.
+        exit 1
+    else
+        ZGEN_RECURSE=1 source ~/.zshrc
+    fi
 fi
 
