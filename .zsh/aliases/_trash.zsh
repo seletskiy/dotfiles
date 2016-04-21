@@ -76,7 +76,7 @@ alias a='ash inbox'
 alias ar='ash'
 
 alias zr='. ~/.zshrc'
-alias za='vim ~/.zaliases && source ~/.zshrc'
+alias za='vim ~/.zsh/aliases/* && source ~/.zshrc'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 
@@ -175,6 +175,8 @@ bindkey '^[[6~' backward-word
 bindkey -v '^K' add-params
 bindkey -v '^_' insert-dot-dot-slash
 bindkey -v '^O' toggle-quotes
+
+bindkey -v '^ ' autosuggest-execute
 
 bindkey '^W' smart-backward-kill-word
 bindkey '^S' smart-forward-kill-word
