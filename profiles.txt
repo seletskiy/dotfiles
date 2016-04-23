@@ -43,10 +43,7 @@ laptop ! $ systemctl --user enable background@dark
 -      ! $ systemctl --user enable xrdb
 -      ! $ systemctl --user enable xset:dpms@1200
 -      ! $ systemctl --user enable xset:fp
--      ! $ systemctl --user enable display-manager
--      ! $ systemctl --user enable environment
-
--        https://aur.archlinux.org/packages/google-chrome
+-      ! $ systemctl --user enable display-manager.target
 
 -        firefox
 
