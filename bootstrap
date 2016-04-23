@@ -46,7 +46,7 @@ def main(requested_profile)
         result = true
         case action
         when /^\$/
-            run_command(action.sub(/^\$\s*/, ''), requested_force)
+            result = run_command(action.sub(/^\$\s*/, ''), requested_force)
         when /^https:\/\/aur./
             result = install_aur(action, requested_force)
         else
@@ -80,6 +80,9 @@ end
 def run_command(cmd, force)
     puts("CMD #{cmd}")
     `#{cmd} >&2`
+    if $?.to_i > 0
+        return false
+    end
 end
 
 def install_aur(url, force, flags='')
@@ -158,7 +161,7 @@ def install_pkg(pkgname, force)
 
     puts("PKG #{pkgname}")
 
-    `sudo pacman -S #{pkgname} --noconfirm >&2`
+    `yes | sudo pacman -S #{pkgname} --noconfirm >&2`
     if $?.to_i > 0
         puts "failed to install package"
         return false
