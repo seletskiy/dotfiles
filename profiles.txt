@@ -29,22 +29,21 @@
 
 -      ! $ systemctl --user --preset-mode=disable-only preset-all
 -      ! $ systemctl --user enable x@0
--      ! $ systemctl --user background@light
-laptop ! $ systemctl --user background@dark
--      ! $ systemctl --user environment
--      ! $ systemctl --user http-share@
--      ! $ systemctl --user i3
--      ! $ systemctl --user keyboard
--      ! $ systemctl --user keynav
--      ! $ systemctl --user obex
--      ! $ systemctl --user tmux
--      ! $ systemctl --user x:background@dark
--      ! $ systemctl --user xautolock@10
--      ! $ systemctl --user xrdb
--      ! $ systemctl --user xset:dpms@1200
--      ! $ systemctl --user xset:fp
--      ! $ systemctl --user display-manager
--      ! $ systemctl --user environment
+-      ! $ systemctl --user enable background@light
+laptop ! $ systemctl --user enable background@dark
+-      ! $ systemctl --user enable environment
+-      ! $ systemctl --user enable http-share@public
+-      ! $ systemctl --user enable i3
+-      ! $ systemctl --user enable keyboard
+-      ! $ systemctl --user enable keynav
+-      ! $ systemctl --user enable tmux
+-      ! $ systemctl --user enable x:background@dark
+-      ! $ systemctl --user enable xautolock@10
+-      ! $ systemctl --user enable xrdb
+-      ! $ systemctl --user enable xset:dpms@1200
+-      ! $ systemctl --user enable xset:fp
+-      ! $ systemctl --user enable display-manager
+-      ! $ systemctl --user enable environment
 
 -        https://aur.archlinux.org/packages/google-chrome
 
