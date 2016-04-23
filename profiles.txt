@@ -16,7 +16,7 @@
 -        $ ./dotfiles install
 
 -      ! $ sudo pacman -Sy archlinux-keyring
--      ! $ sudo pacman -Syu --noconfirm
+-      ! $ yes | sudo pacman -Syu --noconfirm
 
 -        ntp
 -      ! $ sudo timedatectl set-timezone Asia/Novosibirsk
