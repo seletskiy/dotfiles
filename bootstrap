@@ -82,6 +82,8 @@ def run_command(cmd, force)
     `#{cmd} >&2`
     if $?.to_i > 0
         return false
+    else
+        return true
     end
 end
 
