@@ -15,7 +15,7 @@
 -      ! $ git pull --rebase
 -        $ ./dotfiles install
 
--      ! $ sudo pacman -Sy archlinux-keyring
+-      ! archlinux-keyring
 -      ! $ yes | sudo pacman -Syu --noconfirm
 
 -        ntp
