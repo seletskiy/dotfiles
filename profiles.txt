@@ -27,6 +27,25 @@
 -      ! $ sudo groupadd -f operator
 -      ! $ sudo usermod -aG operator s.seletskiy
 
+-      ! $ systemctl --user --preset-mode=disable-only preset-all
+-      ! $ systemctl --user enable x@0
+-      ! $ systemctl --user background@light
+laptop ! $ systemctl --user background@dark
+-      ! $ systemctl --user environment
+-      ! $ systemctl --user http-share@
+-      ! $ systemctl --user i3
+-      ! $ systemctl --user keyboard
+-      ! $ systemctl --user keynav
+-      ! $ systemctl --user obex
+-      ! $ systemctl --user tmux
+-      ! $ systemctl --user x:background@dark
+-      ! $ systemctl --user xautolock@10
+-      ! $ systemctl --user xrdb
+-      ! $ systemctl --user xset:dpms@1200
+-      ! $ systemctl --user xset:fp
+-      ! $ systemctl --user display-manager
+-      ! $ systemctl --user environment
+
 -        https://aur.archlinux.org/packages/google-chrome
 
 -        firefox
@@ -53,7 +72,7 @@
 -        https://aur.archlinux.org/packages/slop-git
 
 -        zsh
--        https://aur.archlinux.org/packages/zgen-git
+-        https://aur.archlinux.org/packages/zgen
 
 -        https://aur.archlinux.org/packages/loudmouth-ossl
 -        https://aur.archlinux.org/packages/mcabber-crew-hg-extended
