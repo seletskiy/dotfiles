@@ -28,6 +28,7 @@
 -      ! $ sudo usermod -aG operator s.seletskiy
 
 -      ! $ systemctl --user --preset-mode=disable-only preset-all
+-      ! $ systemctl --user daemon-reload
 -      ! $ systemctl --user enable x@0
 -      ! $ systemctl --user enable background@light
 laptop ! $ systemctl --user enable background@dark
