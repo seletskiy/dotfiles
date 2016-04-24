@@ -1,1 +1,1 @@
-source /etc/profile.d/fzf.zsh
+eval "$(sed -r 's/\+s//' /etc/profile.d/fzf.zsh)"
