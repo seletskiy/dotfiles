@@ -320,6 +320,7 @@ set lazyredraw
 set nofoldenable
 set noequalalways
 set winminheight=0
+set shortmess+=sAIc
 
 " autocomplete list numbers
 " autoinsert comment Leader
