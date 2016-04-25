@@ -2,98 +2,28 @@
 
 echo "${@}" >> /tmp/mcabber.log
 
-exec 2>/dev/null
+timeout=0.05
+blinks=5
 
-SESSION=mcabber-"$(basename $0 | sed s/eventcmd-//)"
+led_on()  { xset led named "Scroll Lock" ; }
+led_off() { xset -led named "Scroll Lock" ; }
+lock()    { exec 200<$0 ; flock 200 || exit 1 ; }
 
-TIMEOUT=0.08
-BLINKS=10
+action="$1"
+data="$2"
 
-CONNECTED_DISPLAY=$(tmux show-window-option -vt $SESSION @connected_display)
-
-led_on()  { echo +all; }
-led_off() { echo -all; }
-
-lock()    { exec 200<$0; flock 200; }
-
-unmark()  { tmux set-window-option -ut $1 @window_marker; }
-mark()    { tmux set-window-option  -t $1 @window_marker $2; }
-
-update()  { tmux set-window-option -ut $1 set-titles-string; }
-
-MODE=skip
-
-if [ "$1" == "UNREAD" ]; then
-    MODE=unread
-fi
-
-if [ "$1" == "MUC" ]; then
-    MODE=muc
-fi
-
-if [ "$MODE" == "skip" ]; then
-    exit
-fi
-
-if [ "$CONNECTED_DISPLAY" ]; then
-    if xdpyinfo -display "$CONNECTED_DISPLAY" &>/dev/null; then
-        export DISPLAY=$CONNECTED_DISPLAY
-    else
-        tmux set-window-option -ut $SESSION @connected_display
-    fi
-fi
-
-case $MODE in
-unread)
-    lock
-
-    set $2
-
-    if [ $1 -eq 0 ]; then
-        unmark $SESSION
-        update $SESSION
-
-        rm -f /tmp/unread-$SESSION
-
-        if ! stat -t -- /tmp/unread-* &> /dev/null; then
-            led_off
-        fi
-
-        exit
-    fi
-
-    if [ $3 -gt 0 ]; then
-        if ! stat -t -- /tmp/unread-$SESSION &> /dev/null; then
-            exit
-        fi
-    fi
-
-    mark $SESSION "☼"
-    update $SESSION
-
-    for i in `seq 1 $BLINKS`; do
-        led_on  ; sleep $TIMEOUT
-        led_off ; sleep $TIMEOUT
-    done
-
-    led_on
-
-    ;;
-
-muc)
-    if [ "$1" == "MSG" -a "$2" != "OUT" ]; then
-        if grep -q -Ff ~/.mcabber/mute <<< "$3"; then
-            exit
-        fi
-
+if [ "$action" == "UNREAD" ]; then
+    count="$(cut -d' ' -f4 <<< "$data")"
+    if [ ${count%% *} -gt 0 ]; then
         lock
-
-        touch /tmp/unread-$SESSION
+        for i in `seq 1 $blinks`; do
+            led_on  ; sleep $timeout
+            led_off ; sleep $timeout
+        done
+        led_on
+        notify-send -u critical -t 10000 "mcabber" "new message"
+    else
+        lock
+        led_off
     fi
-
-    ;;
-
-*)
-    exit
-    ;;
-esac | sudo ledctl -Si
+fi

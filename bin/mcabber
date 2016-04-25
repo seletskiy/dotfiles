@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 session="$(basename $0)"
 
 export EDITOR=${EDITOR:-vim}
@@ -15,15 +17,6 @@ if tmux has-session -t $session; then
 
     exec ${launch_cmd[*]} attach -t $session
 else
-    rcfile=~/.mcabber/${session/-/rc-}
-    fifofile=~/.mcabber/$session.fifo
-
-    rm -f $fifofile
-
-    mkdir -p ~/.mcabber/${session/mcabber-/history-}
-
     exec ${launch_cmd[*]} new -s $session \
-        /usr/bin/mcabber \
-        -f $rcfile \
-        "${@}"
+        mcabber-account ${session#mcabber-*} "${@}"
 fi

@@ -38,7 +38,7 @@ def main(action, profile)
             placeholder_base = $1
             placeholder_expanded = file_name.sub($2, profile)
         when /^#{placeholder_expanded}$/
-            if placeholder_base[/.template$/]
+            if placeholder_base[/[^\/]+.template$/]
                 source_type = :template
                 target_name = target_dir + placeholder_base.sub(
                     /\.template$/, ''
@@ -49,7 +49,7 @@ def main(action, profile)
             end
         when /^#{placeholder_base}\./
             # skip unneeded files
-        when /\.template$/
+        when /[^\/]+\.template$/
             source_type = :template
             target_name = target_dir + file_name.sub(/\.template$/, '')
         else
