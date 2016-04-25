@@ -69,6 +69,7 @@ Plug 'Shougo/unite.vim'
 
     function! s:unite_my_settings()
         imap <buffer> <C-R> <Plug>(unite_redraw)
+        imap <silent><buffer><expr> <CR> unite#do_action('splitswitch')
         imap <silent><buffer><expr> <C-T> unite#do_action('split')
         imap <silent><buffer><expr> <C-G> unite#do_action('right')
         call unite#custom#alias('ash_review', 'split', 'ls')
