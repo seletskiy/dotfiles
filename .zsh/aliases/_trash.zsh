@@ -361,7 +361,20 @@ context-aliases:match is_inside_git_repo
     alias i='git add -p'
     alias st='git stash'
     alias std='git stash -u && git stash drop'
-    alias lk='hub browse -u -- commit/$(git rev-parse --short HEAD) 2>/dev/null'
+    alias lk='github-browse'
+
+    function github-browse() {
+        local file="$1"
+        local line="${2:+#L$2}"
+
+        local type=commit
+        if [ "$file" ]; then
+            type=blob
+        fi
+
+        hub browse -u -- $type/$(git rev-parse --short HEAD)/$file$line \
+            2>/dev/null
+    }
 
     alias aur='push-to-aur'
 
