@@ -456,6 +456,7 @@ augroup end
 
 augroup ft_customization
     au!
+    au FileType sh set iskeyword+=-,:
     au BufEnter php setl noexpandtab
     au FileType sql set ft=mysql
     au FileType tex :e ++enc=cp1251
