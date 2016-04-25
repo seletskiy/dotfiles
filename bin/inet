@@ -7,15 +7,10 @@ sudo systemctl restart netctl-auto@$interface
 echo ok
 
 echo -n "waiting for address..."
-while :; do
-    inet_output=$(ip addr show dev $interface | grep -o 'inet .*')
-    if [ $? -eq 0 ]; then
-        echo " ok"
-        echo $inet_output
-        exit 0
-    fi
-
+until inet_output=$(ip addr show dev $interface | grep -o 'inet .*'); do
     echo -n .
-
-    sleep 1
+    sleep 0.5
 done
+
+echo " ok"
+echo $inet_output
