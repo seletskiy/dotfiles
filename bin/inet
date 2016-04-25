@@ -2,14 +2,20 @@
 
 interface=${1:-wlan0}
 
+echo -n "restarting netctl-auto... "
 sudo systemctl restart netctl-auto@$interface
+echo ok
 
+echo -n "waiting for address..."
 while :; do
-    ip addr show dev $interface | grep -o 'inet .*'
+    inet_output=$(ip addr show dev $interface | grep -o 'inet .*')
     if [ $? -eq 0 ]; then
-        echo connected
+        echo " ok"
+        echo $inet_output
         exit 0
     fi
+
+    echo -n .
 
     sleep 1
 done
