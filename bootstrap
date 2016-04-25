@@ -97,7 +97,7 @@ def install_aur(url, force, flags='')
 
     `pacman -Qqs #{pkgname}`
     if $?.to_i == 0 && force <= 0
-        return
+        return true
     end
 
     installed_version = `pacman -Qi #{pkgname} 2>&1 | awk '/Version/{print $3}'`
