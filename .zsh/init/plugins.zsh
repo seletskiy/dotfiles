@@ -15,7 +15,6 @@ if ! zgen saved; then
     zgen load kovetskiy/zsh-fastcd
     zgen load kovetskiy/zsh-quotes
     zgen load kovetskiy/zsh-smart-ssh
-    zgen load kovetskiy/zsh-insert-dot-dot-slash
     zgen load seletskiy/zsh-ssh-urxvt
     zgen load seletskiy/zsh-prompt-lambda17
     zgen load seletskiy/zsh-ash-completion
@@ -26,6 +25,8 @@ if ! zgen saved; then
     zgen load seletskiy/zsh-hijack
     zgen load seletskiy/zsh-uber-ssh
     zgen load supercrabtree/k
+
+    zgen load knu/zsh-manydots-magic
 
     zgen load zsh-users/zsh-syntax-highlighting
 
