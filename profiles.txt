@@ -62,6 +62,7 @@ laptop ! $ systemctl --user enable background@dark
 -        https://aur.archlinux.org/packages/mcabber-module-focus
 -        https://aur.archlinux.org/packages/mcabber-module-autojoin
 -        https://aur.archlinux.org/packages/mcabber-module-slack-completion
+-        $ ln -sf /dev/null ~/.mcabber/history/postdevops/e.kovetskiy@postdevops.xmpp.slack.com
 
 work   ! $ mkdir -p ~/public
 work   ! $ sudo systemctl enable my-http-share
