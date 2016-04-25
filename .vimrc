@@ -456,6 +456,9 @@ augroup ft_customization
     au BufEnter /data/projects/*.conf syn on
     au FileType erlang setl comments=:%%%,:%%,:%
     au FileType php setl comments+=mb:*
+    au FileType snippets setl ft+=.python
+    au FileType snippets let g:pymode_rope_project_root=expand('%:h')
+
 augroup end
 
 augroup go_src
