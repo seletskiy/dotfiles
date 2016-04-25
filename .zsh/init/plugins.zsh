@@ -39,6 +39,7 @@ if ! zgen saved; then
         echo Found recursion loop at loading zgen plugins.
         exit 1
     else
+        zgen init
         ZGEN_RECURSE=1 source ~/.zshrc
     fi
 fi
