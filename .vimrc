@@ -272,6 +272,9 @@ Plug 'kovetskiy/ycm-sh'
 
 Plug 'vim-utils/vim-man'
 
+Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
+    vnoremap <C-T> :Tabularize /
+
 augroup end
 
 call plug#end()
@@ -393,6 +396,8 @@ map <Leader>c :cd %:h<CR>
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
+
+nnoremap X S<ESC>
 
 nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
 
