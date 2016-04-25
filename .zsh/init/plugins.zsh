@@ -28,10 +28,10 @@ if ! zgen saved; then
 
     zgen load knu/zsh-manydots-magic
 
-    zgen load zsh-users/zsh-syntax-highlighting
+    zgen load seletskiy/zsh-syntax-highlighting
 
     # must be last!
-    zgen load zsh-users/zsh-autosuggestions
+    zgen load seletskiy/zsh-autosuggestions
 
     zgen save
 
