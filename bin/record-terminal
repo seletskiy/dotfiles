@@ -10,8 +10,6 @@ else
     initial_command="-e tmux new -s record-terminal"
 fi
 
-current_window_id=$(xdotool getactivewindow)
-
 urxvt -name $terminal_name $initial_command &
 
 urxvt_pid=$!
@@ -29,6 +27,8 @@ while ! urxvt_window_id=$(xdotool search --name $terminal_name 2>/dev/null); do
 
     sleep 0.1
 done
+
+current_window_id=$(xdotool getactivewindow)
 
 if [ $? -gt 0 ]; then
     exit 1
@@ -76,4 +76,4 @@ kill $screenkey_pid
 
 tmux kill-session -t record-terminal
 
-echo "$output_video"
+cp "$output_video" ~/
