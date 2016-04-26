@@ -20,6 +20,8 @@ URxvt.url-select.autocopy: true
 URxvt.keysym.Mod4-apostrophe: url-select:select_next
 URxvt.keysym.Mod4-Tab: autocomplete-ALL-the-things:WORD-complete
 URxvt.keysym.Mod4-ISO_Left_Tab: autocomplete-ALL-the-things:skeleton-complete
+URxvt.keysym.Mod4-backslash: autocomplete-ALL-the-things:suffix-complete
+URxvt.keysym.Mod4-space: autocomplete-ALL-the-things:surround-complete
 URxvt.keysym.Mod4-bar: perl:fifo:start
 URxvt.keysym.Mod4-n: string:\033\033[24~
 URxvt.keysym.Mod4-slash: string:\033\033[24~?
