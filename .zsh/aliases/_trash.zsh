@@ -111,6 +111,26 @@ alias -s p='uber-ssh:alias -A .in.ngs.ru -R .p'
 alias -s x='uber-ssh:alias -R .x'
 
 alias ssh='ssh-urxvt'
+alias s='ssh'
+
+function search-domain() {
+    local domain=$1
+    local resolver_host=$2
+    local resolver_port=${3:-53}
+
+    dig @$resolver_host -p$resolver_port axfr s \
+        | grep -P "$domain" \
+        | awk '{print $1}'
+}
+
+DNS_RESOLVER_HOST=dn.s
+DNS_RESOLVER_PORT=53000
+function search-domain-default() {
+    search-domain "$1" $DNS_RESOLVER_HOST $DNS_RESOLVER_PORT
+}
+
+
+alias dfs='ssh-multi -A $(search-domain-default "^db..farm") -'
 
 alias ck='mkdir-and-cd'
 function mkdir-and-cd() {
