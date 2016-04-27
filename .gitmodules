@@ -1,8 +1,8 @@
 [submodule ".fonts"]
 	path = .fonts
 	url = github.com:seletskiy/monaco-font
-[submodule "rootfs/usr/share/X11/xkb"]
-	path = rootfs/usr/share/X11/xkb
+[submodule "<root>/usr/share/X11/xkb"]
+	path = <root>/usr/share/X11/xkb
 	url = github.com:reconquest/rex
 [submodule ".vimperator/bundle"]
 	path = .vimperator/bundle
