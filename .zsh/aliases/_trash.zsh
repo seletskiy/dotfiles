@@ -124,8 +124,8 @@ function search-domain() {
     local resolver_port=${3:-53}
 
     dig @$resolver_host -p$resolver_port axfr s \
-        | grep -P "$domain" \
-        | awk '$4 == "A" {print $1}' \
+        | awk '{print $1}' \
+        | grep -P "$domain"
 }
 
 DNS_RESOLVER_HOST=dn.s
