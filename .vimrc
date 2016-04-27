@@ -484,7 +484,7 @@ augroup vimrc
     au!
     au BufWritePost */.vimrc source % | call choosewin#color#refresh() | AirlineRefresh
 
-    au BufWritePost /*/.vim/*/pythonx/*.py exec printf('py module="%s".rsplit("pythonx/")[-1].rstrip(".py").replace("/", "."); __import__(module); reload(sys.modules[module])',
+    au BufWritePost /*/.vim/*/pythonx/*.py exec printf('py module="%s".rsplit("pythonx/")[-1][:-3].replace("/", "."); __import__(module); reload(sys.modules[module])',
                 \ expand('%:p'))
 augroup end
 
