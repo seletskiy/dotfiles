@@ -151,8 +151,8 @@ Plug 'seletskiy/matchem'
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetDirectories = [
-    \ $HOME.'/.vim/UltiSnips',
-    \ $HOME.'/.vim/bundle/snippets'
+    \ $HOME.'/.vim/bundle/snippets',
+    \ $HOME.'/.vim/UltiSnips'
     \ ]
     let g:UltiSnipsEnableSnipMate = 0
     let g:UltiSnipsEditSplit = "horizontal"
