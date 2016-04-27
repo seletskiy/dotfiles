@@ -44,19 +44,22 @@ alias ipa='ip a'
 
 alias vf='vim $(fzf)'
 
-alias d='dirs -v'
 alias dt='cd ~/sources/dotfiles && git status -s'
+alias de='cd ~/sources/dotfiles/.deadfiles && git status -s'
 alias kb='cd ~/sources/kb'
 
-alias p='pacman'
-alias pp='sudo pacman -S'
-alias ppy='sudo pacman -Sy'
-alias ppr='sudo pacman -R'
-alias pqo='sudo pacman -Qo'
-alias pql='sudo pacman -Ql'
-alias pqi='sudo pacman -Qi'
-alias ppu='sudo pacman -U'
-alias pps='sudo pacman -Ss'
+alias p='sudo pacman'
+alias pp='p -S'
+alias pp!='yes | p --force --noconfirm -S'
+alias ppy='p -Sy'
+alias ppr='p -R'
+alias pqo='p -Qo'
+alias pql='p -Ql'
+alias pqi='p -Qi'
+alias ppu='p -U'
+alias pps='p -Ss'
+
+alias zgu='zgen update && zr'
 
 alias asp='ASPROOT=~/sources/asp asp'
 
