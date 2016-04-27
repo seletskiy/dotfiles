@@ -5,7 +5,6 @@ if ! type zgen >/dev/null 2>&1; then
     source /usr/share/zsh/scripts/zgen/zgen.zsh
 fi
 
-
 if ! zgen saved; then
     zgen load seletskiy/zsh-zgen-compinit-tweak
 
@@ -26,6 +25,8 @@ if ! zgen saved; then
     zgen load seletskiy/zsh-uber-ssh
     zgen load supercrabtree/k
 
+    zgen load hlissner/zsh-autopair autopair.zsh
+
     zgen load knu/zsh-manydots-magic
 
     zgen load seletskiy/zsh-syntax-highlighting
@@ -43,4 +44,3 @@ if ! zgen saved; then
         ZGEN_RECURSE=1 source ~/.zshrc
     fi
 fi
-
