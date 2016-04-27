@@ -125,7 +125,7 @@ function search-domain() {
 
     dig @$resolver_host -p$resolver_port axfr s \
         | grep -P "$domain" \
-        | awk '{print $1}'
+        | awk '$4 == "A" {print $1}' \
 }
 
 DNS_RESOLVER_HOST=dn.s
@@ -135,7 +135,16 @@ function search-domain-default() {
 }
 
 
-alias dfs='ssh-multi -A $(search-domain-default "^db..farm") -'
+alias dbfs='ssh-multi -A $(search-domain-default "^db..farm") -'
+alias yrds='ssh-multi -A $(search-domain-default "^ya.*yard.s") -'
+
+alias phps='ssh-multi -A $(search-domain-default "^phpnode") -'
+alias dbns='ssh-multi -A $(search-domain-default "^dbnode") -'
+alias sphs='ssh-multi -A $(search-domain-default "search.common") -'
+alias n1es='ssh-multi -A $(search-domain-default "elasticsearch.n1") -'
+alias gees='ssh-multi -A $(search-domain-default "elasticsearch.geo") -'
+alias aues='ssh-multi -A $(search-domain-default "elasticsearch.auto") -'
+alias raes='ssh-multi -A $(search-domain-default "^rabota-es") -'
 
 alias ck='mkdir-and-cd'
 function mkdir-and-cd() {
