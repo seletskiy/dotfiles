@@ -30,21 +30,21 @@ EndSection
 
 Section "Device"
 	Identifier  "gpu-zero:0"
-	Driver      "nouveau"
+	Driver      "nvidia"
 	BusID       "PCI:5:0:0"
 	Screen      0
 EndSection
 
 Section "Device"
 	Identifier  "gpu-first:0"
-	Driver      "nouveau"
+	Driver      "nvidia"
 	BusID       "PCI:1:0:0"
 	Screen      0
 EndSection
 
 Section "Device"
 	Identifier  "gpu-first:1"
-	Driver      "nouveau"
+	Driver      "nvidia"
 	BusID       "PCI:1:0:0"
 	Screen      1
 EndSection
