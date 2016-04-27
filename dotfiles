@@ -24,7 +24,7 @@ def main(action, profile)
     placeholder_base = 'xxx'
     `git ls-files`.split("\n").each() do |file_name|
         target_dir = File.expand_path('~') + '/'
-        if file_name.start_with?('rootfs/')
+        if file_name.start_with?('<root>/')
             target_dir = '/'
         end
 
@@ -77,7 +77,7 @@ def ensure_dir(file_name, sudo)
 end
 
 def remove_rootfs_prefix(source)
-    if source.start_with?('/rootfs')
+    if source.start_with?('/<root>')
         return source[7..-1], true
     else
         return source, false
