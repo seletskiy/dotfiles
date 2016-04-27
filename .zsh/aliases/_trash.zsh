@@ -95,6 +95,8 @@ alias zd="fastcd $ZGEN_DIR 2"
 
 alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent | head -n1)"'
 
+alias cu='curl -LO'
+
 alias t='t --task-dir ~/tasks --list tasks'
 alias tf='t -f'
 
