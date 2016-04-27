@@ -295,7 +295,7 @@ set rtp^=~/.vim
 
 set encoding=utf-8
 set printencoding=cp1251
-set timeoutlen=200
+set timeoutlen=120
 set wildmenu
 set undofile
 set undodir=$HOME/.vim/tmp/
@@ -390,6 +390,7 @@ inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 
 nmap <Leader>w :w<CR>
+imap <Leader>w <C-\><C-O>:w<CR>
 
 
 map <Leader>3 :b #<CR>
@@ -397,8 +398,6 @@ map <Leader>c :cd %:h<CR>
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
-
-nnoremap X S<ESC>
 
 nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
 
