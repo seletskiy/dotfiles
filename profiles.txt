@@ -97,7 +97,7 @@ work   ! $ sudo systemctl start my-http-share
 
 laptop   https://aur.archlinux.org/packages/huawei-ussd
 
-work     https://aur.archlinux.org/packages/nouveau-fw
+work     nvidia-340xx
 
 -        https://aur.archlinux.org/packages/python-todo-t
 
@@ -285,7 +285,7 @@ work     ngs.devops-ca
 -        x11vnc
 -        xautolock
 -        xcompmgr
--        xf86-video-nouveau
+home     xf86-video-nouveau
 -        xfsprogs
 -        xorg-fonts-100dpi
 -        xorg-server-devel
