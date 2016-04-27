@@ -3,7 +3,9 @@ ZDOTDIR=~/.zsh
 source $ZDOTDIR/settings/prezto.zsh
 source $ZDOTDIR/init/prezto.zsh
 
+source $ZDOTDIR/init/autopair-pre.zsh
 source $ZDOTDIR/init/plugins.zsh
+source $ZDOTDIR/init/autopair.zsh
 source $ZDOTDIR/init/prompt.zsh
 source $ZDOTDIR/init/opts.zsh
 source $ZDOTDIR/init/fzf.zsh

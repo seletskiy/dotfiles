@@ -194,7 +194,7 @@ alias man='man-search'
 
 function man-search() {
     if [ $# -gt 1 ]; then
-        command man -P "less -R '+/       '$2" -- "$1"
+        command man -P "less -R '+/^       '$2" -- "$1"
     else
         command man "${@}"
     fi
