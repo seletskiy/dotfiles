@@ -240,6 +240,10 @@ hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)/\1\2.
 hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -ls.seletskiy/"'
 hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'
 
+# \\\1 -> \1 in sed
+# \\\\\\\\\\\\2 -> \\\2 in sed
+hijack:transform '^c!? ' $'sed -r s\$\'/(..)([&\"([!\\\'\\\^])/\\\\1\\\\\\\\\\\\2/g\''
+
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
 function prepend_sudo() {
