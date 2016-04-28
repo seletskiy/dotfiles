@@ -408,7 +408,6 @@ imap <C-Y> u<TAB>
 
 map <Leader>~ :tabnew ~/.vimrc<CR>
 
-" there also ZZ mapping for snippets
 map ZZ :w\|bw<CR>
 
 noremap <Leader>v V`]
@@ -423,7 +422,7 @@ nnoremap <C-^> <C-W>20+
 
 vnoremap $ g_
 
-nnoremap <TAB> %
+nmap <TAB> /
 
 noremap > >>
 noremap < <<
@@ -442,6 +441,8 @@ map <C-D> $%
 vmap ( S)i
 vmap ) S)%a
 
+imap <C-S> <C-\><C-O>:normal va"S)<CR>
+
 inoremap jj <ESC>
 nnoremap j gj
 nnoremap k gk
@@ -450,6 +451,7 @@ inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 
 nmap <Leader>w :w<CR>
+nmap <Leader>q :q<CR>
 imap <Leader>w <C-\><C-O>:w<CR>
 
 
@@ -460,6 +462,9 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 
 nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
+
+nnoremap <Leader><Leader>u :PlugUpdate<CR>
+nnoremap <Leader><Leader>i :PlugInstall<CR>
 
 map dsf dt(ds)
 
