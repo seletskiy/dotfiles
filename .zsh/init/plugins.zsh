@@ -3,6 +3,8 @@ ZGEN_DIR=$ZDOTDIR/.zgen/
 # unless, zsh will crash with core dumped
 if ! type zgen >/dev/null 2>&1; then
     source /usr/share/zsh/scripts/zgen/zgen.zsh
+else
+    zgen init
 fi
 
 if ! zgen saved; then
@@ -20,8 +22,8 @@ if ! zgen saved; then
     zgen load seletskiy/zsh-context-aliases
     zgen load seletskiy/zsh-git-smart-commands
     zgen load seletskiy/zsh-smart-kill-word
-    zgen load seletskiy/zsh-hash-aliases
     zgen load seletskiy/zsh-hijack
+    zgen load seletskiy/zsh-hash-aliases
     zgen load seletskiy/zsh-uber-ssh
     zgen load supercrabtree/k
 
