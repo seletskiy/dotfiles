@@ -441,6 +441,8 @@ map <C-D> $%
 vmap ( S)i
 vmap ) S)%a
 
+vmap " S"i
+
 imap <C-S> <C-\><C-O>:normal va"S)<CR>
 
 inoremap jj <ESC>
