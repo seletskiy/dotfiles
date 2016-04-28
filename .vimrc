@@ -646,6 +646,10 @@ fun! g:LightRoom()
 
     hi Cursor ctermbg=0 ctermfg=15
     hi PmenuSel ctermbg=136 ctermfg=15 cterm=bold
+
+    hi SneakPluginTarget cterm=none ctermbg=190 ctermfg=88
+    hi SneakStreakMask ctermbg=190 ctermfg=190 cterm=bold
+    hi SneakStreakTarget ctermbg=190 ctermfg=88 cterm=bold
 endfun
 
 fun! g:DarkRoom()
@@ -665,6 +669,10 @@ fun! g:DarkRoom()
     hi Cursor ctermbg=15 ctermfg=0
     hi PmenuSel ctermbg=136 ctermfg=16 cterm=bold
     hi Pmenu ctermfg=245 ctermbg=235 cterm=none
+
+    hi SneakPluginTarget cterm=none ctermbg=17 ctermfg=15
+    hi SneakStreakMask ctermbg=17 ctermfg=17 cterm=bold
+    hi SneakStreakTarget ctermbg=17 ctermfg=15 cterm=bold
 endfun
 
 fun! s:ApplyColorscheme()
