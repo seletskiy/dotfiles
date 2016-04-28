@@ -202,25 +202,85 @@ Plug 'seletskiy/vim-over'
     let g:over#command_line#search#very_magic = 1
 
     au VimEnter * nnoremap / :call g:over80#disable_highlight()
-        \<CR>:OverCommandLine /<CR>
+        \<CR>:OverExec /<CR>
 
     au VimEnter * vnoremap g/ :call g:over80#disable_highlight()
-        \<CR>:'<,'>OverCommandLine /<CR>
+        \<CR>:'<,'>OverExec /<CR>
 
     au VimEnter * nnoremap ? :call g:over80#disable_highlight()
-        \<CR>:OverCommandLine ?<CR>
+        \<CR>:OverExec ?<CR>
 
     au VimEnter * vnoremap g? :call g:over80#disable_highlight()
-        \<CR>:'<,'>OverCommandLine ?<CR>
+        \<CR>:'<,'>OverExec ?<CR>
 
     au User _VimrcRunAfterPlugEnd nnoremap g/ /
     au User _VimrcRunAfterPlugEnd nnoremap g? ?
 
-    map L <Leader>*:OverCommandLine %s//<CR>
+    nmap LL VH
 
-    au User OverCmdLineExecute call searchparty#mash#mash()
+    nmap L <Leader>*:OverCommandLine %s//<CR>
+
+    nnoremap H :OverExec %s/<CR>
+    vnoremap H :OverExec s/<CR>
+    vnoremap L :OverExec s/<CR>
+
+    augroup vim_over
+        au User OverCmdLineExecute call searchparty#mash#mash()
+        au BufAdd,BufEnter * nnoremap / :OverExec /<CR>
+        au BufAdd,BufEnter * vnoremap / :'<,'>OverExec /<CR>
+
+        au User OverCmdLineExecute call OverExecAutocmd()
+    augroup END
+
+    let g:over_exec_autocmd_skip = 0
+    function! OverExecAutocmd()
+        if g:over_exec_autocmd_skip
+            let g:over_exec_autocmd_skip = 0
+            return
+        endif
+
+        call searchparty#mash#mash()
+    endfunction!
+
+    function! OverExec(line1, line2, args)
+        let g:over#command_line#search#enable_move_cursor = 1
+        call over#command_line(
+        \   g:over_command_line_prompt,
+        \   a:line1 != a:line2 ? printf("'<,'>%s", a:args) : a:args
+        \)
+    endfunction!
+    command! -range -nargs=* OverExec call OverExec(<line1>, <line2>, <q-args>)
+    nmap <Plug>(OverExec) :OverExec<CR>
+
+    function! s:over_exec_do(args)
+        let g:over_exec_autocmd_skip = 1
+        let g:over#command_line#search#enable_move_cursor = 0
+        call feedkeys("\<CR>" . a:args . "\<Plug>(OverExec)\<Up>")
+    endfunction!
+
+    function! OverNext()
+        call s:over_exec_do("n")
+        return ""
+    endfunction!
 
     let g:over#command_line#substitute#highlight_string = "DiffChange"
+
+    let g:over_command_line_key_mappings = {
+        \ "\<C-F>": ".",
+        \ "\<C-E>": '\w+',
+        \ "\<C-O>": ".*",
+        \ "\<C-L>": "\\zs",
+        \
+        \ "\<C-K>": "\<Left>\\\<Right>",
+        \ "\<C-D>": "\<Left>\<BackSpace>\<Right>",
+        \
+        \ "\<C-N>" : {
+        \ 	"key" : "OverNext()",
+        \   "expr": 1,
+        \ 	"noremap" : 1,
+        \ 	"lock" : 1,
+        \ },
+    \ }
 
 Plug 'wellle/targets.vim'
 
