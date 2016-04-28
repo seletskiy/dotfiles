@@ -140,8 +140,8 @@ bindsym --release Ctrl+Shift+Print exec screenshot public
 bindcode 233 exec sudo brightness up
 bindcode 232 exec sudo brightness down
 
-bindsym $mod+less exec volume down
-bindsym $mod+greater exec volume up
+bindsym $mod+F3 exec volume down
+bindsym $mod+F2 exec volume up
 
 bindsym $mod+y exec translator
 
