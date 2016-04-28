@@ -398,6 +398,8 @@ context-aliases:match is_inside_git_repo
     alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
     alias u='git-smart-pull --rebase'
     alias k='git checkout'
+    alias kme='k -3'
+    alias kyo='k -2'
     alias km='git checkout master'
     alias kp='git checkout pkgbuild'
     alias r='git-smart-remote'
