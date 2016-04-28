@@ -3,8 +3,6 @@ ZGEN_DIR=$ZDOTDIR/.zgen/
 # unless, zsh will crash with core dumped
 if ! type zgen >/dev/null 2>&1; then
     source /usr/share/zsh/scripts/zgen/zgen.zsh
-else
-    zgen init
 fi
 
 if ! zgen saved; then
