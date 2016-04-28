@@ -14,5 +14,6 @@ source $ZDOTDIR/settings/autosuggest.zsh
 source $ZDOTDIR/settings/prompt.zsh
 source $ZDOTDIR/settings/background.zsh
 source $ZDOTDIR/settings/manydots-magic.zsh
+source $ZDOTDIR/settings/disable-ctrl-s.zsh
 
 source $ZDOTDIR/aliases/_trash.zsh
