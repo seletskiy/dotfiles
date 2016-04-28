@@ -548,14 +548,11 @@ augroup end
 augroup vimrc
     au!
     au BufWritePost */.vimrc source % | call choosewin#color#refresh() | AirlineRefresh
+    au BufWritePost */.Xresources call system('systemctl --user restart xrdb')
+    au BufWritePost */.i3.config.* call system('systemctl --user restart i3:config')
 
     au BufWritePost /*/.vim/*/pythonx/*.py exec printf('py module="%s".rsplit("pythonx/")[-1][:-3].replace("/", "."); __import__(module); reload(sys.modules[module])',
                 \ expand('%:p'))
-augroup end
-
-augroup snippets
-    au!
-    au FileType snippets map <buffer> ZZ :w\|b#<CR>
 augroup end
 
 augroup quickfix
