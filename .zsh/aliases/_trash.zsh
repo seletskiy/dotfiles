@@ -204,8 +204,6 @@ function man-search() {
 export KEYTIMEOUT=1
 bindkey -v
 
-bindkey -v "^P" history-substring-search-up
-bindkey -v "^N" history-substring-search-down
 bindkey -v "^A" beginning-of-line
 bindkey -v "^[OA" history-substring-search-up
 bindkey -v "^[OB" history-substring-search-down
@@ -234,6 +232,17 @@ bindkey -v '^ ' autosuggest-execute
 
 bindkey '^W' smart-backward-kill-word
 bindkey '^S' smart-forward-kill-word
+
+bindkey '^P' fuzzy-search-and-edit
+
+zle -N fuzzy-search-and-edit
+function fuzzy-search-and-edit() {
+    local match=$(ag -l | xargs -n1 cat | fzf)
+    echo \$EDITOR -o "$(printf "%s " $(ag -Fl "$match"))"
+
+    # /dev/tty required to redirect terminal from zle
+    $EDITOR -o $(ag -Fl "$match") < /dev/tty
+}
 
 hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
 hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
@@ -398,8 +407,8 @@ context-aliases:match is_inside_git_repo
     alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
     alias u='git-smart-pull --rebase'
     alias k='git checkout'
-    alias kme='k -3'
-    alias kyo='k -2'
+    alias kme='git checkout -3'
+    alias kyo='git checkout -2'
     alias km='git checkout master'
     alias kp='git checkout pkgbuild'
     alias r='git-smart-remote'
@@ -412,6 +421,8 @@ context-aliases:match is_inside_git_repo
     alias i='git add -p'
     alias st='git stash'
     alias std='git stash -u && git stash drop'
+    alias fork='hub fork'
+    alias pr='hub pull-request'
     alias lk='github-browse'
 
     function github-browse() {
@@ -468,7 +479,6 @@ context-aliases:match is_inside_git_repo
 
         git remote add seletskiy gh:seletskiy/$reponame "${@}"
     }
-
 
 context-aliases:match "is_inside_git_repo && is_git_repo_dirty"
     alias c='git-smart-commit'
