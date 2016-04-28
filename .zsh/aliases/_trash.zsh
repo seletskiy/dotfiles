@@ -194,9 +194,10 @@ alias man='man-search'
 
 function man-search() {
     if [ $# -gt 1 ]; then
-        command man -P "less -R '+/^       '$2" -- "$1"
+        command vim -u ~/.vimrc-economy \
+            +"set noignorecase" +"Man $1" +only +"/^       $2"
     else
-        command man "${@}"
+        command vim -u ~/.vimrc-economy +"Man $1" +only
     fi
 }
 
