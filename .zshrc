@@ -11,6 +11,7 @@ source $ZDOTDIR/init/opts.zsh
 source $ZDOTDIR/init/fzf.zsh
 
 source $ZDOTDIR/settings/autosuggest.zsh
+source $ZDOTDIR/settings/smart-kill-word.zsh
 source $ZDOTDIR/settings/prompt.zsh
 source $ZDOTDIR/settings/background.zsh
 source $ZDOTDIR/settings/manydots-magic.zsh
