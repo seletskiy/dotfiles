@@ -154,12 +154,35 @@ Plug 'SirVer/ultisnips'
     \ $HOME.'/.vim/bundle/snippets',
     \ $HOME.'/.vim/UltiSnips'
     \ ]
+
     let g:UltiSnipsEnableSnipMate = 0
     let g:UltiSnipsEditSplit = "horizontal"
     let g:UltiSnipsUsePythonVersion = 2
 
-    map <Leader>` :UltiSnipsEdit<CR>G
-    vmap <Leader>` y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
+    func! _snippets_get_filetype()
+        let l:dot = strridx(&filetype, ".")
+        if l:dot != -1
+            return strpart(&filetype, 0, dot)
+        endif
+
+        return &filetype
+    endfunc!
+
+    func! _snippets_open_dotfiles()
+        split
+        execute "edit" g:snippets_dotfiles .
+                    \ _snippets_get_filetype() . ".snippets"
+    endfunc!
+
+    func! _snippets_open_reconquest()
+        split
+        execute "edit" g:snippets_reconquest .
+                    \ _snippets_get_filetype() .  ".snippets"
+    endfunc!
+
+    nnoremap <C-S><C-D> :call _snippets_open_dotfiles()<CR>
+    nnoremap <C-S><C-S> :call _snippets_open_reconquest()<CR>
+    vnoremap <C-S> y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
 
 Plug 'epmatsw/ag.vim'
 
@@ -406,7 +429,7 @@ imap <C-T> <C-R>=strpart(search("[)}\"'`\\]>]", "c"), -1, 0)<CR><Right>
 
 imap <C-Y> u<TAB>
 
-map <Leader>~ :tabnew ~/.vimrc<CR>
+map <Leader>` :tabnew ~/.vimrc<CR>
 
 map ZZ :w\|bw<CR>
 
