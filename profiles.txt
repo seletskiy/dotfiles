@@ -305,3 +305,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/yandex-browser-beta/
 -        https://aur.archlinux.org/packages/libtinfo-5
 -        https://aur.archlinux.org/packages/imgurbash
+-        https://aur.archlinux.org/packages/tor-browser-en
