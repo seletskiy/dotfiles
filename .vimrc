@@ -356,6 +356,8 @@ Plug 'kovetskiy/ycm-sh'
 
 Plug 'vim-utils/vim-man'
 
+Plug 'kovetskiy/vim-bash'
+
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
     vnoremap <C-T> :Tabularize /
 
