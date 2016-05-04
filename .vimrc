@@ -470,6 +470,7 @@ vmap ( S)i
 vmap ) S)%a
 
 vmap " S"i
+vnoremap g" "
 
 imap <C-S> <C-\><C-O>:normal va"S)<CR>
 
@@ -482,7 +483,7 @@ nnoremap <F1> <ESC>
 
 nmap <Leader>w :w<CR>
 nmap <Leader>q :q<CR>
-imap <Leader>w <C-\><C-O>:w<CR>
+imap <Leader>W <C-\><C-O>:w<CR>
 
 
 map <Leader>3 :b #<CR>
