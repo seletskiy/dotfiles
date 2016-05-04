@@ -439,14 +439,6 @@ context-aliases:match is_inside_git_repo
             2>/dev/null
     }
 
-    alias aur='push-to-aur'
-
-    function push-to-aur() {
-        local package_name="${1:-$(basename $(git rev-parse --show-toplevel)-git)}"
-
-        git push ssh://aur@aur.archlinux.org/$package_name pkgbuild:master
-    }
-
     alias mm='git-merge-with-rebase'
     function git-merge-with-rebase() {
         local branch=$(git rev-parse --abbrev-ref HEAD)
@@ -479,6 +471,23 @@ context-aliases:match is_inside_git_repo
         fi
 
         git remote add seletskiy gh:seletskiy/$reponame "${@}"
+    }
+
+
+context-aliases:match "is_inside_git_repo && \
+        [ \"\$(git symbolic-ref --short HEAD 2>/dev/null)\" = pkgbuild ]"
+
+    alias g='go-makepkg-enhanced'
+    alias m='makepkg -f'
+
+    alias aur='push-to-aur'
+
+    function push-to-aur() {
+        local package_name="${1:-$(basename $(git rev-parse --show-toplevel))}"
+        local package_name=${package_name%*-pkgbuild}
+        local package_name=${package_name}-git
+
+        git push ssh://aur@aur.archlinux.org/$package_name pkgbuild:master
     }
 
 context-aliases:match "is_inside_git_repo && is_git_repo_dirty"

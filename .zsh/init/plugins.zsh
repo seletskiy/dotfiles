@@ -31,6 +31,8 @@ if ! zgen saved; then
 
     zgen load seletskiy/zsh-syntax-highlighting
 
+    zgen load deadcrew/deadfiles
+
     # must be last!
     zgen load seletskiy/zsh-autosuggestions
 
