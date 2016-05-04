@@ -39,7 +39,7 @@ bindsym $mod+r exec dmenu_run
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
-bindsym $mod+x exec clip
+bindsym $mod+x exec carcosa-ui
 
 # change focus
 bindsym Ctrl+Home focus left
