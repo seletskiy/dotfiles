@@ -168,6 +168,9 @@ Plug 'SirVer/ultisnips'
         return &filetype
     endfunc!
 
+    let g:snippets_dotfiles = $HOME . "/.vim/UltiSnips/"
+    let g:snippets_reconquest = $HOME . "/.vim/bundle/snippets/"
+
     func! _snippets_open_dotfiles()
         split
         execute "edit" g:snippets_dotfiles .
