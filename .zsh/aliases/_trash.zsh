@@ -47,6 +47,7 @@ alias vf='vim $(fzf)'
 alias dt='cd ~/sources/dotfiles && git status -s'
 alias de='cd ~/sources/dotfiles/.deadfiles && git status -s'
 alias kb='cd ~/sources/kb'
+alias se='cd ~/.secrets && carcosa -Lc'
 
 alias p='sudo pacman'
 alias pp='sudo pacman -S'
