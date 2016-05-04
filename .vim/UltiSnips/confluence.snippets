@@ -1,5 +1,6 @@
 global !p
-from px.util import *
+import px
+import px.whitespaces
 endglobal
 
 snippet c2 "2 column layout" w
@@ -74,7 +75,7 @@ endsnippet
 
 global !p
 def is_assign_to_tag(snip):
-	return is_cursor_between(
+	return px.cursor.is_between(
 		snip.buffer[snip.line],
 		snip.cursor,
 		r'<(b|strong)>\s?\[.*$', r'^.*]</(b|strong)>'
@@ -86,29 +87,94 @@ snippet d "Denis" "is_assign_to_tag(snip)" weA
 endsnippet
 
 snippet m "Michael" "is_assign_to_tag(snip)" weA
-Миша, 
+Миша,
 endsnippet
 
 snippet e "Egor" "is_assign_to_tag(snip)" weA
-Егор, 
+Егор,
 endsnippet
 
 snippet a "Andrey" "is_assign_to_tag(snip)" weA
-Андрей, 
+Андрей,
 endsnippet
 
 snippet z "Eugene" "is_assign_to_tag(snip)" weA
-Женя, 
+Женя,
 endsnippet
 
 snippet s "Sergey" "is_assign_to_tag(snip)" weA
-Сергей, 
+Сергей,
 endsnippet
 
 snippet t "Me" "is_assign_to_tag(snip)" weA
-Стас, 
+Стас,
 endsnippet
 
 snippet L "plan li" b
 <li><u>$1</u><b> [$2]</b> $3</li>
+endsnippet
+
+global !p
+def is_schedule_table(snip):
+    if px.whitespaces.match_higher_indent(
+        snip.buffer, snip.cursor, 'confluenceTable',
+    ):
+        prev_td = px.whitespaces.match_exact_indent_as_in_line(
+            snip.buffer, snip.cursor, snip.buffer[snip.cursor[0]], 'data-mce-style',
+            direction=-1
+        )
+        day = 1
+        if prev_td:
+            matches = re.search(r'>(\d+)<', snip.buffer[prev_td[0]])
+            if matches:
+                day = int(matches.group(1)) + 1
+
+        return {
+            'table': True,
+            'day': day
+        }
+
+
+endglobal
+
+context "is_schedule_table(snip)"
+snippet d "Denis" weAb
+<td class="confluenceTd" style="background: rgb(255,231,231);"
+data-mce-style="background: #ffe7e7;">${1:`!p snip.rv = context['day']`}</td>
+endsnippet
+
+context "is_schedule_table(snip)"
+snippet m "Michael" weAb
+<td class="confluenceTd" style="background: rgb(255,255,221);"
+data-mce-style="background: #ffffdd;">${1:`!p snip.rv = context['day']`}</td>
+endsnippet
+
+context "is_schedule_table(snip)"
+snippet e "Egor" weAb
+<td class="confluenceTd" style="background: rgb(221,250,222);"
+data-mce-style="background: #ddfade;">${1:`!p snip.rv = context['day']`}</td>
+endsnippet
+
+context "is_schedule_table(snip)"
+snippet a "Andrey" weAb
+<td class="confluenceTd" style="background: rgb(216,191,216);"
+data-mce-style="background: #d8bfd8;">${1:`!p snip.rv = context['day']`}</td>
+endsnippet
+
+context "is_schedule_table(snip)"
+snippet z "Eugene" weAb
+<td class="confluenceTd" style="background: rgb(0,255,127);"
+data-mce-style="background: #00ff7f;">${1:`!p snip.rv = context['day']`}</td>
+endsnippet
+
+context "is_schedule_table(snip)"
+snippet l "Alex" weAb
+<td class="confluenceTd" style="background: rgb(255,215,0);"
+data-mce-style="background: #ffd700;">${1:`!p snip.rv = context['day']`}</td>
+endsnippet
+
+context "is_schedule_table(snip)"
+snippet t "Me" weAb
+<td class="confluenceTd" style="background: rgb(224,240,255);"
+data-mce-style="background: #e0f0ff;">${1:`!p snip.rv = context['day']`}</td>
 endsnippet
