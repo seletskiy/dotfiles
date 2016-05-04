@@ -13,3 +13,6 @@
 [submodule "bin/.master-of-android"]
 	path = bin/.master-of-android
 	url = git@github.com:deadcrew/master-of-android
+[submodule ".secrets"]
+	path = .secrets
+	url = github.com:seletskiy/secrets
