@@ -1,1 +1,1 @@
-eval "$(sed -r 's/\+s//' /etc/profile.d/fzf.zsh)"
+eval "$(sed -r 's/\+s//' /usr/share/fzf/fzf.zsh)"
