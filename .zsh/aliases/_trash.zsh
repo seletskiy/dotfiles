@@ -57,7 +57,7 @@ alias ppr='sudo pacman -R'
 alias pqo='pacman -Qo'
 alias pql='pacman -Ql'
 alias pqi='pacman -Qi'
-alias ppu='pacman -U'
+alias ppu='sudo pacman -U'
 alias pps='pacman -Ss'
 
 alias zgu='zgen update && zr'
