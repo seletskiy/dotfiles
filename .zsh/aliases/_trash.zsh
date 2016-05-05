@@ -77,6 +77,23 @@ alias goi='go install'
 alias gob='go build'
 alias gog='go get -u'
 
+alias wt='test-runner-watcher 3 -A'
+alias wt10='test-runner-watcher 10 -A'
+alias wT='test-runner-watcher 10 -O'
+function test-runner-watcher() {
+    local timeout="$1"
+    local run_tests_args="$2"
+
+    shift 2
+
+    if [ $# -gt 1 ]; then
+        watcher "${@}"
+    else
+        watcher -e close_write -w$timeout ".$1$" -- \
+            ./run_tests.sh $run_tests_args
+    fi
+}
+
 alias a='ash-inbox-or-review'
 
 function ash-inbox-or-review() {
@@ -432,6 +449,7 @@ context-aliases:match is_inside_git_repo
     alias fork='hub fork'
     alias pr='hub pull-request'
     alias lk='github-browse'
+    alias g='cd-pkgbuild'
 
     function github-browse() {
         local file="$1"
