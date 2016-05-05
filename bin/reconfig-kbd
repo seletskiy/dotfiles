@@ -31,17 +31,17 @@ setxkbmap \
         "hjkl(caret)"`            # mod3+u-]: home/end/insert/delete/pgup/pkdown`\
         "hjkl(rctrl-rshift)"`     # remap right ctrl to right shift`\
         "hjkl(fast-enter)"`       # mod3+m -> enter`\
-        "terminate(ctrl_alt_bksp)`# terminate X on ctrl+alt+bs`"\
         "capslock(swapescape)"`   # use capslock as esc`\
-        "altwin(swap_alt_win)"`   # swap alt and win`\
+        "altwin(swap_lalt_lwin)"`   # swap alt and win`\
         "hjkl(fast-numpad)"`      # 1234qwerdf -> 1234567890`\
-        "level5(ralt_switch)"`    # right-alt acts as level5 switch \(fast-numpad\)`\
+        "rshift-ralt"`            # swap rshift and ralt`\
         "level5-menu"`            # use menu for level5 switch as well`\
         "ctrl-shift-caps"`        # remap ctrl/shift/caps` \
-        "footswitch(f8-second-layout)"` # pedal for switching language layout `\
+        "terminate(ctrl_alt_bksp)"`# terminate X on ctrl+alt+bs`\
+        "footswitch(f8-second-layout)"` # pedal for switching language layout`\
         "footswitch(f7-multi-key)"`     # pedal for compose key`\
-        "esc-to-execute"`     # pedal for compose key`\
-        "fast-copy-paste"`     # pedal for compose key`\
+        "esc-to-execute"`     # esc to lock screen`\
+        "fast-copy-paste"`    # alt+c -> ctrl+c, alt+v -> shift+ins`\
         | sed 's/ /+/g') \
     -compat \
         "allow-control-leds+complete+fast-copy-paste+hjkl" \
