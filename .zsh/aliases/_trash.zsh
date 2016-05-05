@@ -77,8 +77,15 @@ alias goi='go install'
 alias gob='go build'
 alias gog='go get -u'
 
-alias a='ash inbox'
-alias ar='ash'
+alias a='ash-inbox-or-review'
+
+function ash-inbox-or-review() {
+    if [ $# -gt 0 ]; then
+        ash "${@}"
+    else
+        ash inbox
+    fi
+}
 
 alias zr='. ~/.zshrc'
 alias za='vim ~/.zsh/aliases/* && source ~/.zshrc'
