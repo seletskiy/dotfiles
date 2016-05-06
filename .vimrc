@@ -187,6 +187,12 @@ Plug 'SirVer/ultisnips'
     nnoremap <C-S><C-S> :call _snippets_open_reconquest()<CR>
     vnoremap <C-S> y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
 
+    augroup ultisnips_pyflakes
+        au!
+        au BufEnter,BufWinEnter *.snippets let g:pymode_lint = 0
+        au BufEnter,BufWinEnter *.py let g:pymode_lint = 1
+    augroup END
+
 Plug 'epmatsw/ag.vim'
 
 Plug 'Valloric/YouCompleteMe'
