@@ -8,6 +8,8 @@ alias ll='ls -al'
 alias li='\k'
 alias lt='ls -alt'
 
+alias z='zfs list'
+
 alias gi='git init'
 
 alias srm='ssh-keygen -R'
