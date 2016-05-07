@@ -60,8 +60,8 @@ def main(requested_profile)
 end
 
 def ensure_deps(name, force)
-    if !install_pkg(name, force)
-        return install_aur(name, force)
+    if !install_pkg(name, false)
+        return install_aur(name, false)
     else
         return true
     end
@@ -78,7 +78,7 @@ def parse_line(line)
 end
 
 def run_command(cmd, force)
-    puts("CMD #{cmd}")
+    puts("\x1b[1;34mCMD\x1b[0m #{cmd}")
     `#{cmd} >&2`
     if $?.to_i > 0
         return false
@@ -88,6 +88,8 @@ def run_command(cmd, force)
 end
 
 def install_aur(url, force, flags='')
+    Dir.chdir('/')
+
     if !url[/^https?:/]
         url = AUR_URL + url
     end
@@ -95,18 +97,21 @@ def install_aur(url, force, flags='')
     pkgname = url.sub(/.*\/([^\/]+)\/?$/, '\1')
     tarurl = url.sub(/\/packages\/([^\/]*)\/?$/, '/cgit/aur.git/snapshot/\1.tar.gz')
 
+    print("\x1b[1;32mAUR\x1b[0m #{pkgname} #{flags}")
+
     `pacman -Qqs #{pkgname}`
     if $?.to_i == 0 && force <= 0
+        puts
         return true
     end
 
     installed_version = `pacman -Qi #{pkgname} 2>&1 | awk '/Version/{print $3}'`
     installed_version.strip!()
 
-    puts("AUR #{pkgname} #{flags}")
+    print("\r\x1b[1;31mAUR\x1b[0m #{pkgname} #{flags}\n")
 
     tempdir = `mktemp -d`.strip()
-    `cd #{tempdir} && curl #{tarurl} | tar xz >&2`
+    `cd #{tempdir} && curl -L #{tarurl} | tar xz >&2`
     Dir.chdir(tempdir + '/' + pkgname)
 
     for dep in `source ./PKGBUILD && xargs -n1 <<< $depends`.split("\n")
@@ -115,10 +120,12 @@ def install_aur(url, force, flags='')
             return false
         end
     end
+    Dir.chdir(tempdir + '/' + pkgname)
 
     if `source ./PKGBUILD && type pkgver 2>&1`[/is a function/]
-        puts("\x1b[1;34m!!! \x1b[39mPackage version is dynamic, needs to build a package")
-        pkgver = nil
+        puts("\x1b[1;36m!!! \x1b[39mPackage version is dynamic")
+        `makepkg --skippgpcheck -do >&2`
+        pkgver = `source ./PKGBUILD && pkgver`.strip()
     else
         pkgver = `source ./PKGBUILD && echo $pkgver`.strip()
         pkgrel = `source ./PKGBUILD && echo $pkgrel`.strip()
@@ -153,15 +160,20 @@ def install_aur(url, force, flags='')
 end
 
 def install_pkg(pkgname, force)
+    Dir.chdir('/')
+
+    print("\x1b[1;32mPKG\x1b[0m #{pkgname}")
+
     `pacman -Qs '^#{pkgname}$'`
     if $?.to_i == 0
         `pacman -Qu #{pkgname}`
         if $?.to_i > 0
+            puts
             return true
         end
     end
 
-    puts("PKG #{pkgname}")
+    print("\r\x1b[1;31mPKG\x1b[0m #{pkgname}\n")
 
     `yes | sudo pacman -S #{pkgname} --noconfirm >&2`
     if $?.to_i > 0
