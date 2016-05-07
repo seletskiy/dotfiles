@@ -8,7 +8,6 @@ alias ll='ls -al'
 alias li='\k'
 alias lt='ls -alt'
 
-alias g='git'
 alias gi='git init'
 
 alias srm='ssh-keygen -R'
@@ -29,8 +28,8 @@ alias -- +t='+ stop'
 alias -- +e='+ enable'
 alias -- +E='+ reenable'
 alias -- +d='+ disable'
-alias -- +uf='+ list-unit-files'
-alias -- +ld='+ list-dependencies'
+alias -- +l='+ list-unit-files'
+alias -- +p='+ list-dependencies'
 
 alias jf='sudo journalctl -ef'
 
@@ -43,13 +42,18 @@ function find-alias() {
 alias ipa='ip a'
 
 alias vf='vim $(fzf)'
+alias vw='vim $(which)'
+function vim-which() {
+    vim "$(which "$1")"
+}
+
+compdef vim-which=which
 
 alias dt='cd ~/sources/dotfiles && git status -s'
 alias de='cd ~/sources/dotfiles/.deadfiles && git status -s'
 alias kb='cd ~/sources/kb'
 alias se='cd ~/.secrets && carcosa -Lc'
 
-alias p='sudo pacman'
 alias pp='sudo pacman -S'
 alias pp!='yes | sudo pacman --force --noconfirm -S'
 alias ppy='sudo pacman -Sy'
@@ -64,11 +68,10 @@ alias zgu='zgen update && zr'
 
 alias asp='ASPROOT=~/sources/asp asp'
 
-alias run-help='man'
-
 alias psx='ps axfu'
+alias psg='psx | grep -P'
 
-alias al='alias | grep'
+alias al='alias | grep -P'
 
 alias ma='mplayer -novideo'
 alias yt='youtube-viewer -n'
@@ -113,10 +116,10 @@ alias rf='rm -rf'
 
 zstyle ':completion:*:approximate:::' max-errors 3 not-numeric
 
-alias vd="fastcd ~/.vim/bundle/ 1"
-alias gd="fastcd $GOPATH/src/ 3"
-alias sd="fastcd ~/sources/ 1"
-alias zd="fastcd $ZGEN_DIR 2"
+alias v.="fastcd ~/.vim/bundle/ 1"
+alias g.="fastcd $GOPATH/src/ 3"
+alias s.="fastcd ~/sources/ 1"
+alias z.="fastcd $ZGEN_DIR 2"
 
 alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent | head -n1)"'
 
@@ -181,7 +184,10 @@ function ck-source-dir() {
     ck "sources/$1" && gi
 }
 
-alias di='./dotfiles install'
+DOTFILES_PATH=~/sources/dotfiles
+
+alias di!="cd $DOTFILES_PATH && git-smart-pull && ./bootstrap"
+alias di="cd $DOTFILES_PATH && dotfiles install"
 alias db='dotfiles-bootstrap'
 function dotfiles-bootstrap() {
     local url=$1
@@ -189,15 +195,13 @@ function dotfiles-bootstrap() {
         url=$(xclip -o)
     fi
 
-    local dotfiles_path=~/sources/dotfiles
-
-    if grep -E "^https?:" <<< "$url"; then
+    if grep -P "^https?:" <<< "$url"; then
         echo "-        $url" \
-            | tee -a $dotfiles_path/profiles.txt \
-            | $dotfiles_path/bootstrap $DOTFILES_PROFILE
+            | tee -a $DOTFILES_PATH/profiles.txt \
+            | $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE
     else
-        grep "${@}" $dotfiles_path/profiles.txt \
-            | $dotfiles_path/bootstrap $DOTFILES_PROFILE
+        grep "${@}" $DOTFILES_PATH/profiles.txt \
+            | $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE
 
     fi
 }
@@ -274,6 +278,7 @@ hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
 hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)/\1\2.x/"'
 hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -ls.seletskiy/"'
 hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'
+hijack:transform 'sed -re "s/^(\w{1,3}) ! /\1! /"'
 
 # \\\1 -> \1 in sed
 # \\\\\\\\\\\\2 -> \\\2 in sed
@@ -362,7 +367,7 @@ function git-clone-me() {
     cd ~/sources/$clone_path
 }
 
-alias github='git-clone-github'
+alias gh='git-clone-github'
 function git-clone-github() {
     local reponame="$1"
     local dirname="${2:-${reponame#*/}}"
@@ -371,7 +376,7 @@ function git-clone-github() {
     cd ~/sources/$dirname
 }
 
-alias kovetskiy='git-clone-github-kovetskiy'
+alias kov='git-clone-github-kovetskiy'
 function git-clone-github-kovetskiy() {
     local reponame="$1"
     local dirname="${2:-${reponame#*/}}"
@@ -431,9 +436,8 @@ context-aliases:match is_inside_git_repo
     alias p='git-smart-push seletskiy'
     alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
     alias u='git-smart-pull --rebase'
+    alias up='u && p'
     alias k='git checkout'
-    alias kme='git checkout -3'
-    alias kyo='git checkout -2'
     alias km='git checkout master'
     alias kp='git checkout pkgbuild'
     alias r='git-smart-remote'
@@ -446,7 +450,7 @@ context-aliases:match is_inside_git_repo
     alias i='git add -p'
     alias st='git stash'
     alias std='git stash -u && git stash drop'
-    alias fork='hub fork'
+    alias fk='hub fork'
     alias pr='hub pull-request'
     alias lk='github-browse'
     alias g='cd-pkgbuild'
@@ -523,3 +527,8 @@ context-aliases:match "is_inside_git_repo && is_rebase_in_progress"
     alias t='git checkout --theirs'
     alias c='git rebase --continue'
     alias b='git rebase --abort'
+
+context-aliases:match "is_inside_git_repo && \
+        [ \"\$(git log 2>/dev/null | wc -l)\" -eq 0 ]"
+
+    alias c='git add . && git commit -m "initial commit"'
