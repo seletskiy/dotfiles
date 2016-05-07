@@ -479,9 +479,9 @@ nnoremap k gk
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 
-nmap <Leader>: :w<CR>
+nmap <Leader>; :w<CR>
 nmap <Leader>q :q<CR>
-imap <Leader>: <C-\><C-O>:w<CR>
+imap <Leader>; <C-\><C-O>:w<CR>
 
 
 map <Leader>3 :b #<CR>
