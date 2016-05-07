@@ -448,6 +448,8 @@ context-aliases:match is_inside_git_repo
     alias b='git branch'
     alias h='git reset HEAD'
     alias i='git add -p'
+    alias R='git rm'
+    alias R!='git rm -f'
     alias st='git stash'
     alias std='git stash -u && git stash drop'
     alias fk='hub fork'
