@@ -12,11 +12,12 @@
 ###        e) if line begins with !, action will take place only if <profile> is
 ###           explicitly specified on bootstrap script invokation;
 
--      ! $ git pull --rebase
 -        $ ./dotfiles install
 
+-        $ sudo pacman-key --keyserver repo.s --recv-keys 7AE38D7E
+-        $ sudo pacman-key --lsign-key 7AE38D7E
 -      ! archlinux-keyring
--      ! $ yes | sudo pacman -Syu --noconfirm
+-        $ sudo pacman -Sy
 
 -        ntp
 -      ! $ sudo timedatectl set-timezone Asia/Novosibirsk
@@ -116,7 +117,7 @@ work     nvidia-340xx
 -        https://aur.archlinux.org/packages/ash-mailcap
 -        https://aur.archlinux.org/packages/ash-mailcap-autoview
 
--        https://aur.archlinux.org/packages/bdf2psf
+#-        https://aur.archlinux.org/packages/bdf2psf
 
 -        https://aur.archlinux.org/packages/dmenu-xft
 
@@ -128,9 +129,6 @@ work     nvidia-340xx
 
 -        https://aur.archlinux.org/packages/footswitch-git
 
--        https://aur.archlinux.org/packages/fuse-exfat
-
--        https://aur.archlinux.org/packages/git-subtree
 -        https://aur.archlinux.org/packages/glib
 
 -        https://aur.archlinux.org/packages/hastur
@@ -141,7 +139,6 @@ work     nvidia-340xx
 
 -        https://aur.archlinux.org/packages/lib32-glib
 -        https://aur.archlinux.org/packages/lib32-gtk
--        https://aur.archlinux.org/packages/libmysqlclient
 -        https://aur.archlinux.org/packages/libtermkey-bzr
 -        https://aur.archlinux.org/packages/libvterm-bzr
 -        https://aur.archlinux.org/packages/libgcrypt15
@@ -195,7 +192,6 @@ work     nvidia-340xx
 -        gdb
 -        gimp
 -        gnu-netcat
--        go-makepkg
 -        grub
 -        gtk-engine-aurora
 -        gtk-engines
