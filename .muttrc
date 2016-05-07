@@ -16,6 +16,7 @@ set header_cache=~/.mutt/header_cache
 set pager_stop=yes
 set attribution=""
 set pager_index_lines=10
+set allow_ansi
 
 unset imap_passive
 
