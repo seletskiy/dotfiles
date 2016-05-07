@@ -352,7 +352,7 @@ zle -N leap-back leap-back
 function leap-back() {
     local dir=$(dirs -p | fzf)
     if [ "$dir" ]; then
-        eval cd $dir
+        eval cd "$(printf '%q' "$dir")"
     fi
 
     zle reset-prompt
