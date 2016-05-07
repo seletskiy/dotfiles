@@ -490,10 +490,8 @@ context-aliases:match is_inside_git_repo
         if [ "$1" ]; then
             local reponame="$1"; shift
         else
-            local reponame=$(git remote show origin -n | awk '/Fetch URL/{print $3}' | cut -f2 -d/)
-            if [ "$reponame" = "origin" ]; then
-                local reponame=$(basename $(pwd))
-            fi
+            local reponame=$(git remote show origin -n | awk '/Fetch URL/{print $3}')
+            reponame=${reponame##*/}
         fi
 
         if [ -z "$reponame" ]; then
