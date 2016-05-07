@@ -300,7 +300,7 @@ home     xf86-video-nouveau
 -        xorg-xvidtune
 -        xvkbd
 -        youtube-dl
--        zfs-git
+-        zfs-linux-git
 -        zip
 -        https://aur.archlinux.org/packages/yandex-browser-beta/
 -        https://aur.archlinux.org/packages/libtinfo-5
