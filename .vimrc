@@ -342,14 +342,6 @@ Plug 'kovetskiy/urxvt.vim'
     let g:urxvt_fifo = $HOME . '/.tmp/urxvt.fifo'
     map <expr> <space>q urxvt#put("!!\<CR>")
 
-Plug 't9md/vim-choosewin'
-    nmap - <Plug>(choosewin)
-    let g:choosewin_blink_on_land = 0
-    let g:choosewin_color_other = {'cterm': [254, 1]}
-    let g:choosewin_label = '123QWERTASDF'
-    let g:choosewin_tablabel = ''
-    let g:choosewin_label_align = 'left'
-
 Plug 'junegunn/fzf'
 
 Plug 'seletskiy/ashium'
@@ -584,7 +576,7 @@ augroup end
 
 augroup vimrc
     au!
-    au BufWritePost */.vimrc source % | call choosewin#color#refresh() | AirlineRefresh
+    au BufWritePost */.vimrc source % | AirlineRefresh
     au BufWritePost */.Xresources call system('systemctl --user restart xrdb')
     au BufWritePost */.i3.config.* call system('systemctl --user restart i3:config')
 
