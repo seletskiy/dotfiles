@@ -303,3 +303,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/imgurbash
 -        https://aur.archlinux.org/packages/tor-browser-en
 -        https://aur.archlinux.org/packages/poe
+-        https://aur.archlinux.org/packages/pdns-utils
