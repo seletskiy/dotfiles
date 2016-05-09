@@ -189,7 +189,7 @@ function ck-source-dir() {
 DOTFILES_PATH=~/sources/dotfiles
 
 alias di!="cd $DOTFILES_PATH && git-smart-pull && ./bootstrap"
-alias di="cd $DOTFILES_PATH && dotfiles install"
+alias di="cd $DOTFILES_PATH && ./dotfiles install"
 alias db='dotfiles-bootstrap'
 function dotfiles-bootstrap() {
     local url=$1
