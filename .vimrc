@@ -755,15 +755,17 @@ fun! g:ApplySyntaxForDiffComments()
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
         hi DiffComment ctermfg=16 ctermbg=254
         hi DiffInfo ctermfg=16 ctermbg=252
+        hi DiffAdded ctermbg=122 ctermfg=none cterm=none
+        hi DiffRemoved ctermbg=216 ctermfg=1 cterm=none
+        hi DiffContext ctermbg=254 ctermfg=254
     else
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
-        hi DiffComment ctermfg=15 ctermbg=236
-        hi DiffInfo ctermfg=15 ctermbg=237
+        hi DiffComment ctermfg=15 ctermbg=52
+        hi DiffInfo ctermfg=255 ctermbg=237
+        hi DiffAdded ctermbg=22 ctermfg=2 cterm=none
+        hi DiffRemoved ctermbg=52 ctermfg=1 cterm=none
+        hi DiffContext ctermbg=238 ctermfg=236
     endif
-
-    hi DiffAdded ctermbg=122 ctermfg=none cterm=none
-    hi DiffRemoved ctermbg=216 ctermfg=1 cterm=none
-    hi DiffContext ctermbg=254 ctermfg=254
 
     set nolist
 endfun
