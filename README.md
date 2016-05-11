@@ -59,3 +59,7 @@ Example: if there are files:
 
 then  filename, that evaluated from `xorg.conf.$profile` would be linked/copied
 into `xorg.conf`.
+
+Also, `DOTFILES_PROFILE` environment will be available in all applications
+after installation, and there are no longer need to specify it on `bootstrap`
+or `dotfiles` invocation.
