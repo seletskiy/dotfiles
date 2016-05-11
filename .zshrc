@@ -1,5 +1,7 @@
 ZDOTDIR=~/.zsh
 
+source $ZDOTDIR/init/environment.zsh
+
 source $ZDOTDIR/settings/prezto.zsh
 source $ZDOTDIR/init/prezto.zsh
 
