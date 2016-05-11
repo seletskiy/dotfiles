@@ -2,6 +2,8 @@
 
 unalias -m '*'
 
+alias v='vim'
+
 alias l='ls'
 alias ls='ls --color=always'
 alias ll='ls -al'
@@ -183,7 +185,7 @@ function mkdir-and-cd() {
 
 alias cks='ck-source-dir'
 function ck-source-dir() {
-    ck "sources/$1" && gi
+    ck ~/sources/"$1" && gi
 }
 
 DOTFILES_PATH=~/sources/dotfiles
@@ -415,6 +417,25 @@ function move-to-gopath() {
     ln -sf $target_path $directory
 
     cd $directory
+}
+
+alias cr='create-new-project github'
+function create-new-project() {
+    local where=$1
+    local project=$2
+
+    local namespace=""
+    if [ "${project##*/}" != "$project" ]; then
+        local namespace=${project%%/*}/
+        local project=${project##*/}
+    fi
+
+    case "$where" in
+        github)
+            cks $project
+            hub create $namespace$project
+            ;;
+    esac
 }
 
 hash-aliases:install
