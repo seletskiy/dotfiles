@@ -18,6 +18,15 @@ alias srm='ssh-keygen -R'
 
 alias w1='watch -n1 '
 
+alias am='adb-push-music'
+function adb-push-music() {
+    local dir=$1
+
+    adb push $dir /storage/sdcard1/Music/
+    adb shell am broadcast -a android.intent.action.MEDIA_MOUNTED \
+        -d file:///storage/sdcard1/
+}
+
 alias -- +='systemctl --user'
 alias -- +R='+ daemon-reload'
 alias -- +r='+R && systemctl-command-and-status --user restart'
