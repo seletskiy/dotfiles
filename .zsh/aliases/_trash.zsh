@@ -288,7 +288,7 @@ function fuzzy-search-and-edit() {
 
 hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
 hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
-hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)/\1\2.x/"'
+hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)(\s|$)/\1\2.x\4/"'
 hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -ls.seletskiy/"'
 hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'
 hijack:transform 'sed -re "s/^(\w{1,3}) ! /\1! /"'
@@ -371,43 +371,23 @@ function leap-back() {
     zle reset-prompt
 }
 
-alias me='git-clone-me'
-function git-clone-me() {
-    local reponame="$1" ; shift
-    local clone_path="${1:-$reponame}"
+function git-clone-to-sources() {
+    local who=$1
+    local reponame="$2" ; shift
+    local clone_path="${2:-$reponame}"
 
-    git clone gh:seletskiy/$reponame ~/sources/$clone_path
+    git clone $who/$reponame ~/sources/$clone_path
     cd ~/sources/$clone_path
 }
 
-alias gh='git-clone-github'
-function git-clone-github() {
-    local reponame="$1"
-    local dirname="${2:-${reponame#*/}}"
-
-    git clone gh:$reponame ~/sources/$dirname
-    cd ~/sources/$dirname
-}
-
-alias kov='git-clone-github-kovetskiy'
-function git-clone-github-kovetskiy() {
-    local reponame="$1"
-    local dirname="${2:-${reponame#*/}}"
-
-    git clone gh:kovetskiy/$reponame ~/sources/$dirname
-    cd ~/sources/$dirname
-}
-
-alias devops='git-clone-internal-devops'
-function git-clone-internal-devops() {
-    local reponame="$1"
-    local dirname="${2:-${reponame#*/}}"
-
-    git clone g:devops/$reponame ~/sources/$dirname
-    cd ~/sources/$dirname
-}
+alias m='git-clone-to-sources gh:seletskiy'
+alias k='git-clone-to-sources gh:kovetskiy'
+alias r='git-clone-to-sources gh:reconquest'
+alias d='git-clone-to-sources g:devops'
+alias n='git-clone-to-sources g:ngs'
 
 alias mgp='move-to-gopath'
+
 function move-to-gopath() {
     local directory=${1:-.}
     local site=${2:-github.com}
