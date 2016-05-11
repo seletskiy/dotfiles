@@ -304,3 +304,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/tor-browser-en
 -        https://aur.archlinux.org/packages/poe
 -        https://aur.archlinux.org/packages/pdns-utils
+-        https://aur.archlinux.org/packages/carcosa-git
