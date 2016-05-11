@@ -18,6 +18,8 @@ set attribution=""
 set pager_index_lines=10
 set allow_ansi
 
+set display_filter=mutt-display-filter
+
 unset imap_passive
 
 mailboxes =INBOX

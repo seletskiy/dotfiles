@@ -4,7 +4,7 @@ text/html; ash-mailcap \
 
 text/html; ash-mailcap \
                -c \
-               -x "lynx --force-html --dump %s" \
+               -x "mailcap-html %{charset} %s" \
                -t /usr/share/ash-mailcap-autoview/editor %s; \
                copiousoutput
 
