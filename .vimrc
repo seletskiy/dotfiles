@@ -14,6 +14,8 @@ call plug#begin('~/.vim/bundle')
 
 let mapleader="\<space>"
 
+let g:vim_indent_cont = shiftwidth()
+
 Plug 'nevar/revim', {'for': 'erlang'}
 
 Plug 'tpope/vim-fugitive'
@@ -31,6 +33,7 @@ Plug 'dahu/SearchParty'
 Plug 'edsono/vim-matchit'
 
 Plug 'scrooloose/nerdcommenter'
+    nmap <Leader>l <Leader>cl
 
 Plug 'kien/rainbow_parentheses.vim'
 
