@@ -148,13 +148,13 @@ alias tf='t -f'
 # blah.ru -> ssh blah.ru
 # node.p  -> ssh node.in.ngs.ru
 # node.x  -> (resolve via search domain setting) ssh node
-alias -s  L='uber-ssh:alias -P 192.168.   -R .L'
-alias -s  P='uber-ssh:alias -P 172.16.    -R .P'
-alias -s  e='uber-ssh:alias -P ngs.ru.    -R .e'
-alias -s  p='uber-ssh:alias -A .in.ngs.ru -R .p'
-alias -s  x='uber-ssh:alias -R .x'
-alias -s  s='uber-ssh:alias'
-alias -s ru='uber-ssh:alias'
+alias -s  L='uber-ssh:alias -s smart-ssh -P 192.168.   -R .L'
+alias -s  P='uber-ssh:alias -s smart-ssh -P 172.16.    -R .P'
+alias -s  e='uber-ssh:alias -s smart-ssh -P ngs.ru.    -R .e'
+alias -s  p='uber-ssh:alias -s smart-ssh -A .in.ngs.ru -R .p'
+alias -s  x='uber-ssh:alias -s smart-ssh -R .x'
+alias -s  s='uber-ssh:alias -s smart-ssh'
+alias -s ru='uber-ssh:alias -s smart-ssh'
 
 alias ssh='ssh-urxvt'
 alias s='ssh'
