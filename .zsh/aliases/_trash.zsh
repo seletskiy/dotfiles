@@ -212,9 +212,12 @@ function dotfiles-bootstrap() {
     fi
 
     if grep -P "^https?:" <<< "$url"; then
-        echo "-        $url" \
-            | tee -a $DOTFILES_PATH/profiles.txt \
-            | $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE
+        local line="-        $url"
+        $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE <<< "$line"
+        if [ $? -eq 0 ]; then
+            echo "$line" >> $DOTFILES_PATH/profiles.txt
+            return 1
+        fi
     else
         grep "${@}" $DOTFILES_PATH/profiles.txt \
             | $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE
