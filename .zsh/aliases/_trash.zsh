@@ -461,10 +461,16 @@ function create-new-project() {
         local project=${project##*/}
     fi
 
+    cks $project
     case "$where" in
-        github)
-            cks $project
+        g)
             hub create $namespace$project
+            ;;
+        r)
+            hub create reconquest/$namespace$project
+            ;;
+        m)
+            hub create seletskiy/$namespace$project
             ;;
     esac
 }
