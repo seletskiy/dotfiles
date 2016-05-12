@@ -244,22 +244,25 @@ function man-search() {
 
     if [ $# -gt 1 ]; then
         case "$2" in
+            # common search mode
             /*)
                 command vim -u ~/.vimrc-economy \
                     +"set noignorecase" +"Man $1" +only +"/${2:1}"
                 return
                 ;;
+            # search for flags description
             -*)
                 command vim -u ~/.vimrc-economy \
                     +"set noignorecase" +"Man $1" +only +"/^\\s\\+\\zs${2}"
                 return
                 ;;
+            # search for subcommand definition
             .*)
                 command vim -u ~/.vimrc-economy \
                     +"set noignorecase" \
                     +"Man $1" \
                     +only \
-                    +"/\\n\\n^       \\zs${2:1}\\ze "
+                    +"/\\n\\n^       \\zs${2:1}\\ze\( \|$\)"
                 return
                 ;;
             *)
