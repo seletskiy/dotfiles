@@ -42,6 +42,9 @@ laptop ! $ systemctl --user enable background@dark
 -        gifsicle
 
 -        https://aur.archlinux.org/packages/xrectsel
+
+-        perl
+-        $ sudo ln -sf /usr/bin/core_perl/pod2man /usr/bin/
 -        https://aur.archlinux.org/packages/ffcast
 
 -        feh
@@ -55,7 +58,9 @@ laptop ! $ systemctl --user enable background@dark
 -        https://aur.archlinux.org/packages/slop-git
 
 -        zsh
--        https://aur.archlinux.org/packages/zgen
+
+# NOT ON AUR!
+#-        https://aur.archlinux.org/packages/zgen-git
 
 -        https://aur.archlinux.org/packages/loudmouth-ossl
 -        https://aur.archlinux.org/packages/mcabber-crew-hg-extended
@@ -73,22 +78,21 @@ work   ! $ sudo systemctl start my-http-share
 
 -        android-sdk-platform-tools
 -        android-udev
--        https://aur.archlinux.org/packages/android-platform-16
--        https://aur.archlinux.org/packages/android-sdk-build-tools
--        https://aur.archlinux.org/packages/android-sdk-build-tools-19.1
--        https://aur.archlinux.org/packages/android-support-repository
--        https://aur.archlinux.org/packages/android-google-apis-19
--        https://aur.archlinux.org/packages/android-platform-19
--        https://aur.archlinux.org/packages/android-sdk
--        https://aur.archlinux.org/packages/android-sdk-platform-tools
--        https://aur.archlinux.org/packages/android-apktool
--        https://aur.archlinux.org/packages/eclim
--        https://aur.archlinux.org/packages/simple-mtpfs
+android  https://aur.archlinux.org/packages/android-platform-16
+android  https://aur.archlinux.org/packages/android-sdk-build-tools
+android  https://aur.archlinux.org/packages/android-support-repository
+android  https://aur.archlinux.org/packages/android-google-apis-19
+android  https://aur.archlinux.org/packages/android-platform-19
+android  https://aur.archlinux.org/packages/android-sdk
+android  https://aur.archlinux.org/packages/android-sdk-platform-tools
+android  https://aur.archlinux.org/packages/android-apktool
+android  https://aur.archlinux.org/packages/eclim
+android  https://aur.archlinux.org/packages/simple-mtpfs
 -      ! $ sudo usermod -aG adbusers s.seletskiy
 
 -        https://aur.archlinux.org/packages/asp-git
 
--        https://aur.archlinux.org/packages/footswitch
+-        https://aur.archlinux.org/packages/footswitch-git
 
 -        tmux
 -        https://aur.archlinux.org/packages/fzf
