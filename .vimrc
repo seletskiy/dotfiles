@@ -572,7 +572,7 @@ augroup go_src
     au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
     au FileType go map <buffer> <Leader>b <Plug>(go-build)
-    au FileType go map <buffer> <Leader>s :py px.go.split_parenthesis()<CR>
+    au FileType go map <buffer> <Leader>s :py px.langs.go.split_parenthesis()<CR>
     au FileType go call InstallGoHandlers()
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
