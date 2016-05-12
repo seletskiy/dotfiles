@@ -335,9 +335,9 @@ hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -ls.seletskiy/"'
 hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'
 hijack:transform 'sed -re "s/^(\w{1,3}) ! /\1! /"'
 
-# \\\1 -> \1 in sed
-# \\\\\\\\\\\\2 -> \\\2 in sed
-hijack:transform '^c!? ' $'sed -r s\$\'/(..)([&\"([!\\\'\\\^])/\\\\1\\\\\\\\\\\\2/g\''
+# \\\\\\\\\\\\1 -> \\\1 in sed
+hijack:transform '^c!? ' $'sed -r s\$\'/([{}&\"([!?)\\\'\\\^])/\\\\\\\\\\\\1/g\''
+hijack:transform 'sed -re "s/^c\\\! /c! /"'
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
