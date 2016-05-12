@@ -116,7 +116,7 @@ def install_aur(url, force, flags='')
 
     for dep in `source ./PKGBUILD && xargs -n1 <<< $depends`.split("\n")
         puts("\x1b[1;34m\x1b[39mDEP\x1b[0m " + dep)
-        if !ensure_deps(dep, force)
+        if !ensure_deps(dep.split(/[=><]/)[0], force)
             return false
         end
     end
@@ -136,7 +136,7 @@ def install_aur(url, force, flags='')
 
     result = true
     keep_pkgbuild = false
-    if installed_version != pkgver || force > 0
+    if installed_version != pkgver
         `yes | makepkg -rsi --force #{flags} >&2`
         if $?.to_i > 0
             result = false
