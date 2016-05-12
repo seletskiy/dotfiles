@@ -200,7 +200,9 @@ function ck-source-dir() {
 
 DOTFILES_PATH=~/sources/dotfiles
 
-alias di!="cd $DOTFILES_PATH && git-smart-pull && ./bootstrap"
+alias di!="cd $DOTFILES_PATH && git-smart-pull && \
+    ./bootstrap"
+alias du!="di! $DOTFILES_PROFILE"
 alias di="cd $DOTFILES_PATH && ./dotfiles install"
 alias db='dotfiles-bootstrap'
 function dotfiles-bootstrap() {
@@ -236,12 +238,38 @@ function godoc-less() {
 alias man='man-search'
 
 function man-search() {
-    if [ $# -gt 1 ]; then
-        command vim -u ~/.vimrc-economy \
-            +"set noignorecase" +"Man $1" +only +"/^       $2"
-    else
-        command vim -u ~/.vimrc-economy +"Man $1" +only
+    if ! command man -w "$1" 2>/dev/null >/dev/null; then
+        return
     fi
+
+    if [ $# -gt 1 ]; then
+        case "$2" in
+            /*)
+                command vim -u ~/.vimrc-economy \
+                    +"set noignorecase" +"Man $1" +only +"/${2:1}"
+                return
+                ;;
+            -*)
+                command vim -u ~/.vimrc-economy \
+                    +"set noignorecase" +"Man $1" +only +"/^\\s\\+\\zs${2}"
+                return
+                ;;
+            .*)
+                command vim -u ~/.vimrc-economy \
+                    +"set noignorecase" \
+                    +"Man $1" \
+                    +only \
+                    +"/\\n\\n^       \\zs${2:1}\\ze "
+                return
+                ;;
+            *)
+                command vim -u ~/.vimrc-economy +"Man ${(j:-:)@}" +only
+                return
+                ;;
+        esac
+    fi
+
+    command vim -u ~/.vimrc-economy +"Man $1" +only
 }
 
 export KEYTIMEOUT=1
