@@ -311,13 +311,23 @@ bindkey '^P' fuzzy-search-and-edit
 
 zle -N fuzzy-search-and-edit
 function fuzzy-search-and-edit() {
-    local match=$(ag -l | xargs -n1 cat | fzf)
-    echo \$EDITOR -o "$(printf "%s " $(ag -Fl "$match"))"
+    local match=$(command ag -al 2>/dev/null \
+        | xargs -n1 cat -n 2>/dev/null \
+        | fzf -1)
 
-    # /dev/tty required to redirect terminal from zle
-    $EDITOR -o $(ag -Fl "$match") < /dev/tty
+    local files=(
+        $(ag -Fl -- "$(cut -f 2- <<< "$match")" | sort | uniq 2>/dev/null)
+    )
+
+    if [ ${#files[@]} -gt 0 ]; then
+        # /dev/tty required to redirect terminal from zle
+        $EDITOR -o "${files[@]}" +$(awk '{print $1}' <<< "$match") < /dev/tty
+    fi
+
+    zle -I
 }
 
+hijack:reset
 hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
 hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
 hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)(\s|$)/\1\2.x\4/"'
