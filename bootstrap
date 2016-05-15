@@ -112,9 +112,10 @@ def install_aur(url, force, flags='')
 
     tempdir = `mktemp -d`.strip()
     `cd #{tempdir} && curl -L #{tarurl} | tar xz >&2`
-    if $?.to_i == 0
-        return False
+    if $?.to_i != 0
+        return false
     end
+
     Dir.chdir(tempdir + '/' + pkgname)
 
     for dep in `source ./PKGBUILD && xargs -n1 <<< $depends`.split("\n")
