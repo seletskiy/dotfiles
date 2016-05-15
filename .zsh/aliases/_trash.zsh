@@ -181,6 +181,7 @@ alias dbfs='ssh-multi -A $(search-domain-default "^db..farm") -'
 alias yrds='ssh-multi -A $(search-domain-default "^ya.*yard.s") -'
 
 alias phps='ssh-multi -A $(search-domain-default "^phpnode") -'
+alias fros='ssh-multi -A $(search-domain-default "^frontend") -'
 alias dbns='ssh-multi -A $(search-domain-default "^dbnode") -'
 alias sphs='ssh-multi -A $(search-domain-default "search.common") -'
 alias n1es='ssh-multi -A $(search-domain-default "elasticsearch.n1") -'
@@ -595,3 +596,6 @@ context-aliases:match "is_inside_git_repo && \
         [ \"\$(git log 2>/dev/null | wc -l)\" -eq 0 ]"
 
     alias c='git add . && git commit -m "initial commit"'
+
+context-aliases:match '[ "$(pwd)" = ~/.secrets ]'
+    alias u='carcosa -Sn'
