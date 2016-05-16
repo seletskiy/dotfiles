@@ -188,17 +188,18 @@ function search-domain-default() {
 }
 
 
-alias dbfs='ssh-multi -A $(search-domain-default "^db..farm") -'
-alias yrds='ssh-multi -A $(search-domain-default "^ya.*yard.s") -'
+alias dbfs='ssh-multi -A -- $(search-domain-default "^db..farm") -'
+alias yrds='ssh-multi -A -- $(search-domain-default "^ya.*yard.s") -'
 
-alias phps='ssh-multi -A $(search-domain-default "^phpnode") -'
-alias fros='ssh-multi -A $(search-domain-default "^frontend") -'
-alias dbns='ssh-multi -A $(search-domain-default "^dbnode") -'
-alias sphs='ssh-multi -A $(search-domain-default "search.common") -'
-alias n1es='ssh-multi -A $(search-domain-default "elasticsearch.n1") -'
-alias gees='ssh-multi -A $(search-domain-default "elasticsearch.geo") -'
-alias aues='ssh-multi -A $(search-domain-default "elasticsearch.auto") -'
-alias raes='ssh-multi -A $(search-domain-default "^rabota-es") -'
+alias frts='ssh-multi -A -- $(search-domain-default "^fo.*fortres.s") -'
+alias phps='ssh-multi -A -- $(search-domain-default "^phpnode") -'
+alias fros='ssh-multi -A -- $(search-domain-default "^frontend") -'
+alias dbns='ssh-multi -A -- $(search-domain-default "^dbnode") -'
+alias sphs='ssh-multi -A -- $(search-domain-default "search.common") -'
+alias n1es='ssh-multi -A -- $(search-domain-default "elasticsearch.n1") -'
+alias gees='ssh-multi -A -- $(search-domain-default "elasticsearch.geo") -'
+alias aues='ssh-multi -A -- $(search-domain-default "elasticsearch.auto") -'
+alias raes='ssh-multi -A -- $(search-domain-default "^rabota-es") -'
 
 alias ck='mkdir-and-cd'
 function mkdir-and-cd() {
