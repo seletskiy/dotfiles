@@ -439,10 +439,22 @@ imap <C-Y> u<TAB>
 
 map <Leader>` :tabnew ~/.vimrc<CR>
 
-map ZZ :w\|bw<CR>
-
 noremap <Leader>v V`]
 noremap <Leader>p "1p
+
+nmap <Leader>; :w<CR>
+nmap <Leader>q :q<CR>
+nmap <Leader>Q :qa!<CR>
+imap <Leader>; <C-\><C-O>:w<CR>
+
+
+map <Leader>3 :b #<CR>
+map <Leader>c :cd %:h<CR>
+
+nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
+
+nnoremap <Leader><Leader>u :PlugUpdate<CR>
+nnoremap <Leader><Leader>i :PlugInstall<CR>
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
@@ -484,21 +496,8 @@ nnoremap k gk
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 
-nmap <Leader>; :w<CR>
-nmap <Leader>q :q<CR>
-imap <Leader>; <C-\><C-O>:w<CR>
-
-
-map <Leader>3 :b #<CR>
-map <Leader>c :cd %:h<CR>
-
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
-
-nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
-
-nnoremap <Leader><Leader>u :PlugUpdate<CR>
-nnoremap <Leader><Leader>i :PlugInstall<CR>
 
 map dsf dt(ds)
 
