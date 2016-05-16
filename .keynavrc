@@ -41,7 +41,7 @@ shift+b warp,sh "keynav-screenshot drag 3",drag 3
 Return end
 Escape end
 
-BackSpace history-back
+Tab grid 4x4,cursorzoom 320 200
 
 o grid 1x1,cursorzoom 9 9
 p grid 1x1,cursorzoom 9 9,warp,click 1,end
