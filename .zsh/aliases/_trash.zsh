@@ -254,8 +254,13 @@ function godoc-less() {
 alias man='man-search'
 
 function man-search() {
-    if ! command man -w "$1" 2>/dev/null >/dev/null; then
+    if grep -qoP '^\d+$' <<< "$1"; then
+        MANSECT=$1 man-search $2 ${@:3}
         return
+    fi
+
+    if ! command man -w "$1" 2>/dev/null >/dev/null; then
+        return 1
     fi
 
     if [ $# -gt 1 ]; then
@@ -282,14 +287,17 @@ function man-search() {
                 return
                 ;;
             *)
-                command vim -u ~/.vimrc-economy +"Man ${(j:-:)@}" +only
+                man-search "$1-$2" ${@:3}
+
                 return
                 ;;
         esac
     fi
 
-    command vim -u ~/.vimrc-economy +"Man $1" +only
+    command vim -u ~/.vimrc-economy +"Man $MANSECT ${@}" +only
 }
+
+compdef man-search=man
 
 export KEYTIMEOUT=1
 bindkey -v
