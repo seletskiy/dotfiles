@@ -588,8 +588,7 @@ context-aliases:match is_inside_git_repo
     }
 
 
-context-aliases:match "is_inside_git_repo && \
-        [ \"\$(git symbolic-ref --short HEAD 2>/dev/null)\" = pkgbuild ]"
+context-aliases:match "test -e PKGBUILD"
 
     alias g='go-makepkg-enhanced'
     alias m='makepkg -f'
