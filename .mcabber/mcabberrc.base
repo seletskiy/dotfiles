@@ -59,6 +59,10 @@ module load editor
 module load focus
 module load autojoin
 module load slack_completion
+module load highlight
+
+highlight @q
+highlight @Q
 
 alias online = status online
 alias away = status away
