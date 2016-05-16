@@ -365,8 +365,10 @@ Plug 'kovetskiy/vim-bash'
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
     vnoremap <C-T> :Tabularize /
 
-augroup end
+Plug 'kovetskiy/vim-ski'
+    let g:skeletons_dir=$HOME . '/.deadfiles/.vim/skeletons/'
 
+augroup end
 call plug#end()
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
@@ -542,6 +544,7 @@ augroup skeletons
 
     au BufNewFile *.go call feedkeys("Ip\<TAB>", "")
     au BufNewFile PKGBUILD call feedkeys("Ipkgbuild\<TAB>", "")
+    au BufNewFile incident.md Skeleton
 augroup end
 
 augroup pkgbuild
@@ -562,7 +565,7 @@ augroup ft_customization
     au FileType php setl comments+=mb:*
     au FileType snippets setl ft+=.python
     au FileType snippets let g:pymode_rope_project_root=expand('%:h')
-
+    au BufRead,BufNewFile incident.md set et ft=markdown.incident
 augroup end
 
 augroup go_src
