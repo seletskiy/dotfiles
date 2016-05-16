@@ -386,7 +386,7 @@ set rtp^=~/.vim
 
 set encoding=utf-8
 set printencoding=cp1251
-set timeoutlen=120
+set timeoutlen=180
 set wildmenu
 set undofile
 set undodir=$HOME/.vim/tmp/
