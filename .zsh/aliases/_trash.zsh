@@ -12,11 +12,22 @@ alias lt='ls -alt'
 
 alias z='zfs list'
 
-alias gi='git init'
+alias g='git init'
 
-alias srm='ssh-keygen -R'
+alias R='ssh-keygen -R'
 
-alias w1='watch -n1 '
+alias 1='watch -n1 '
+
+alias i='imgurbash'
+
+alias np=':carcosa-new-password'
+:carcosa-new-password() {
+    cd ~/.secrets && \
+        pwgen 10 1\
+            | tee /dev/stderr \
+            | xclip -f \
+            | carcosa -Ac "passwords/$1"
+}
 
 alias am='adb-push-music'
 function adb-push-music() {
