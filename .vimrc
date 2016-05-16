@@ -125,6 +125,9 @@ Plug 'seletskiy/vim-autosurround'
         \ autocmd VimEnter,BufEnter,FileType *
             \ inoremap <buffer> { {<C-R>=AutoSurround("}")?'':g:MatchemMatchStart()<CR>
 
+    au User _OverwriteMatchemMappings
+        \ autocmd VimEnter,BufEnter,FileType * call AutoSurroundInitMappings()
+
     au User _VimrcRunAfterPlugEnd doautocmd User _OverwriteMatchemMappings
 
     doautocmd User _OverwriteMatchemMappings
