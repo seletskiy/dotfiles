@@ -1,0 +1,13 @@
+[Unit]
+Description=Synchronize Primary selection with Clipboard (for browsers)
+Requires=graphical.target
+After=graphical.target
+Before=display-manager.target
+
+[Service]
+ExecStart=/usr/bin/sh -c 'while sleep 0.5; do \
+        xclip -selection primary -o | xclip -selection clipboard -i; \
+    done'
+
+[Install]
+WantedBy=display-manager.target

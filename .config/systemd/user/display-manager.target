@@ -11,3 +11,4 @@ Also=xrdb.service
 Also=xset:fp.service xset:dpms@.service
 Also=keyboard.service
 Also=keynav.service
+Also=xclipboard-synchronizer.service
