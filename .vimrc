@@ -46,6 +46,20 @@ Plug 'tpope/vim-scriptease'
 Plug 'junegunn/seoul256.vim'
 
 Plug 'surround.vim'
+    vmap ( S)i
+    vmap ) S)%a
+
+    vmap " S"i
+    vnoremap g" "
+
+    imap <C-S> <C-\><C-O>:normal va"S)<CR>
+
+    map <Leader>f dt(ds)
+    augroup surround_bash
+        au!
+        au FileType bash map <silent> <C-O> :normal viWS"<CR>
+        au FileType bash map <silent> <C-]> :normal viWS)i$<CR>
+    augroup END
 
 Plug 'git@github.com:seletskiy/nginx-vim-syntax'
 
@@ -372,6 +386,9 @@ Plug 'kovetskiy/vim-ski'
     let g:skeletons_dir=$HOME . '/.deadfiles/.vim/skeletons/'
 
 augroup end
+
+Plug 'FooSoft/vim-argwrap'
+
 call plug#end()
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
@@ -458,6 +475,7 @@ nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
 
 nnoremap <Leader><Leader>u :PlugUpdate<CR>
 nnoremap <Leader><Leader>i :PlugInstall<CR>
+nnoremap <silent> <Leader>s :ArgWrap<CR>
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
@@ -484,14 +502,6 @@ vmap <silent> < <gv
 
 map <C-D> $%
 
-vmap ( S)i
-vmap ) S)%a
-
-vmap " S"i
-vnoremap g" "
-
-imap <C-S> <C-\><C-O>:normal va"S)<CR>
-
 inoremap jj <ESC>
 nnoremap j gj
 nnoremap k gk
@@ -501,8 +511,6 @@ nnoremap <F1> <ESC>
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
-
-map dsf dt(ds)
 
 augroup review_setting
     au!
@@ -568,6 +576,7 @@ augroup ft_customization
     au FileType snippets setl ft+=.python
     au FileType snippets let g:pymode_rope_project_root=expand('%:h')
     au BufRead,BufNewFile incident.md set et ft=markdown.incident
+    au FileType * let g:argwrap_tail_comma = 0
 augroup end
 
 augroup go_src
@@ -577,8 +586,8 @@ augroup go_src
     au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
     au FileType go map <buffer> <Leader>b <Plug>(go-build)
-    au FileType go map <buffer> <Leader>s :py px.langs.go.split_parenthesis()<CR>
     au FileType go call InstallGoHandlers()
+    au FileType go let g:argwrap_tail_comma = 1
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
@@ -678,6 +687,8 @@ fun! g:LightRoom()
     hi Search cterm=none ctermfg=none ctermbg=226
     hi IncSearch cterm=none ctermfg=none ctermbg=230
     hi Visual ctermbg=231 cterm=none ctermfg=none
+
+    hi Function ctermfg=14 cterm=bold
 
     hi Cursor ctermbg=0 ctermfg=15
     hi PmenuSel ctermbg=136 ctermfg=15 cterm=bold
