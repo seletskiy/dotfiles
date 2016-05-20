@@ -455,6 +455,18 @@ alias r='git-clone-to-sources gh:reconquest'
 alias d='git-clone-to-sources g:devops'
 alias n='git-clone-to-sources g:ngs'
 
+alias recon='git-clone-reconquest'
+function git-clone-reconquest() {
+}
+
+function git-clone-to-sources-and-cd() {
+    local reponame="$1"
+    local dirname="${2:-${reponame#*/}}"
+
+    git clone gh:reconquest/$reponame ~/sources/$dirname
+    cd ~/sources/$dirname
+}
+
 alias mgp='move-to-gopath'
 
 function move-to-gopath() {
@@ -538,6 +550,9 @@ context-aliases:match is_inside_git_repo
     alias g='k pkgbuild'
     alias rs='git-smart-remote show'
     alias ru='git-smart-remote set-url'
+    alias kb='git checkout -b'
+    alias kB='git checkout -B'
+    alias kb!='kB'
     alias rso='git-smart-remote show origin'
     alias st='git stash'
     alias fk='hub fork'
@@ -561,7 +576,7 @@ context-aliases:match is_inside_git_repo
     function git-merge-with-rebase() {
         local branch=$(git rev-parse --abbrev-ref HEAD)
         if git rebase "${@}"; then
-            git checkout $branch
+            git checkout $1
             git merge --no-ff "$branch" "${@}"
         fi
     }
@@ -575,18 +590,13 @@ context-aliases:match is_inside_git_repo
     alias me='git-remote-add-me'
     function git-remote-add-me() {
         if [ "$1" ]; then
-            local reponame="$1"; shift
+            local repo="gh:seletskiy/$1"; shift
         else
-            local reponame=$(git remote show origin -n | awk '/Fetch URL/{print $3}')
-            reponame=${reponame##*/}
+            local repo=$(git remote show origin -n | awk '/Fetch URL/{print $3}')
+            repo=$(sed -res'#(.*)/([^/]+)/([^/]+)$#\1/seletskiy/\3#' <<< $repo)
         fi
 
-        if [ -z "$reponame" ]; then
-            echo "no repo can be matched"
-            return 1
-        fi
-
-        git remote add seletskiy gh:seletskiy/$reponame "${@}"
+        git remote add seletskiy "$repo" "${@}"
     }
 
 

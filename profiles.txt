@@ -310,3 +310,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/pdns-utils
 -        https://aur.archlinux.org/packages/carcosa-git
 -        https://aur.archlinux.org/packages/bash-get-git
+-        https://aur.archlinux.org/packages/marvex
