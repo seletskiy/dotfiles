@@ -7,3 +7,4 @@ prefs.js
 .zsh/.zgen
 .zsh/.zhistory
 .config/pdns
+*_tags.go

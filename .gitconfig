@@ -20,6 +20,7 @@
 
 [core]
 	attributesfile = /home/s.seletskiy/.gitattributes
+	excludesfile = /home/s.seletskiy/.gitignore
 
 [push]
 	default = simple
