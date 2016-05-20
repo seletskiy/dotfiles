@@ -210,7 +210,7 @@ function mkdir-and-cd() {
 
 alias cks='ck-source-dir'
 function ck-source-dir() {
-    ck ~/sources/"$1" && gi
+    ck ~/sources/"$1" && git init
 }
 
 DOTFILES_PATH=~/sources/dotfiles
@@ -489,7 +489,7 @@ function move-to-gopath() {
     cd $directory
 }
 
-alias cr='create-new-project github'
+alias cr='create-new-project'
 function create-new-project() {
     local where=$1
     local project=$2

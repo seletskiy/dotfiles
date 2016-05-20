@@ -57,8 +57,8 @@ Plug 'surround.vim'
     map <Leader>f dt(ds)
     augroup surround_bash
         au!
-        au FileType bash map <silent> <C-O> :normal viWS"<CR>
-        au FileType bash map <silent> <C-]> :normal viWS)i$<CR>
+        au FileType sh map <silent> <C-O> :normal viWS"<CR>
+        au FileType sh map <silent> <C-]> :normal viWS)i$<CR>
     augroup END
 
 Plug 'git@github.com:seletskiy/nginx-vim-syntax'
@@ -126,6 +126,8 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'vim-airline/vim-airline'
     let g:airline_powerline_fonts = 1
+    let g:airline_inactive_collapse = 1
+    let g:airline_skip_empty_sections = 1
     let g:airline_theme = 'lucius'
     let g:airline#extensions#whitespace#symbol = '☼'
 
@@ -221,6 +223,7 @@ Plug 'Valloric/YouCompleteMe'
     let g:ycm_confirm_extra_conf = 1
     let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
     let g:ycm_collect_identifiers_from_comments_and_strings = 1
+    let g:ycm_collect_identifiers_from_tags_files = 1
     let g:ycm_use_ultisnips_completer = 0
 
     let g:pymode_lint_ignore = 'E128'
@@ -389,6 +392,8 @@ augroup end
 
 Plug 'FooSoft/vim-argwrap'
 
+Plug 'kovetskiy/synta'
+
 call plug#end()
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
@@ -403,6 +408,8 @@ filetype indent on
 " Hack to ensure, that ~/.vim is looked first
 set rtp-=~/.vim
 set rtp^=~/.vim
+
+set tags=./.tags;/
 
 set encoding=utf-8
 set printencoding=cp1251
@@ -475,6 +482,9 @@ nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
 
 nnoremap <Leader><Leader>u :PlugUpdate<CR>
 nnoremap <Leader><Leader>i :PlugInstall<CR>
+nnoremap <silent> <Leader>s :ArgWrap<CR>
+
+nnoremap <silent> <Leader>l :call search('[\(\{\[]', 'cs')<CR>l:ArgWrap<CR>
 nnoremap <silent> <Leader>s :ArgWrap<CR>
 
 nnoremap <C-H> <C-W>h
