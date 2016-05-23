@@ -7,9 +7,7 @@ zstyle ':prezto:load' pmodule \
     'terminal' \
     'editor' \
     'history' \
-    'directory' \
     'completion' \
-    'history-substring-search' \
-    'git'
+    'history-substring-search'
 
 zstyle ':prezto:module:editor' key-bindings 'vi'
