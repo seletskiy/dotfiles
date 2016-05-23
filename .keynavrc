@@ -35,6 +35,7 @@ g warp,sh "keynav-screenshot click 2",click 2
 b warp,sh "keynav-screenshot click 3",click 3
 
 shift+space warp,sh "keynav-screenshot drag 1",drag 1
+i warp,move-up,warp,click 1,move-down,move-down,warp,click 1,move-up,move-left,warp,click 1,move-right,move-right,warp,click 1,move-left,warp,click 1
 shift+g warp,sh "keynav-screenshot drag 2",drag 2
 shift+b warp,sh "keynav-screenshot drag 3",drag 3
 
