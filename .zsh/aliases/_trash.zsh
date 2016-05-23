@@ -539,9 +539,10 @@ context-aliases:match is_inside_git_repo
     alias i='git add -p'
     alias v='git mv'
     alias R='git rm'
-    alias U='u && p'
+
+    alias r='u && p'
     alias G='cd-pkgbuild'
-    alias P='git stash -u && git stash drop'
+    alias S='git stash -u && git stash drop'
     alias R!='git rm -f'
     alias a!='git-smart-commit -a --amend'
     alias c!='git-smart-commit --amend'

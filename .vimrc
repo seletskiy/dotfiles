@@ -235,6 +235,8 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_snippet_engine = "skip"
     let g:go_fmt_autosave = 0
     let g:go_metalinter_command = "gometalinter"
+    let g:go_highlight_functions = 1
+    let g:go_highlight_methods = 1
 
 Plug 'kshenoy/vim-signature'
     let g:SignatureMarkOrder = "\m"
@@ -618,7 +620,7 @@ augroup end
 
 augroup rainbow
     au!
-    au VimEnter * RainbowParenthesesActivate
+    au BufEnter * RainbowParenthesesActivate
     au Syntax * RainbowParenthesesLoadRound
     au Syntax * RainbowParenthesesLoadBraces
 augroup end
@@ -729,6 +731,8 @@ fun! g:DarkRoom()
     hi SneakPluginTarget cterm=none ctermbg=17 ctermfg=15
     hi SneakStreakMask ctermbg=17 ctermfg=17 cterm=bold
     hi SneakStreakTarget ctermbg=17 ctermfg=15 cterm=bold
+    hi level10c ctermfg=208
+    hi level14c ctermfg=208
 endfun
 
 fun! s:ApplyColorscheme()

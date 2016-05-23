@@ -28,8 +28,9 @@ main() {
         read screen_num screen_x screen_y screen_width screen_height <<<$(xscreeninfo)
         eval `xdotool getwindowgeometry --shell $terminal_id`
         i3-msg -q '[instance="'$NAME'"] scratchpad show'
-        xdotool windowmove --sync $terminal_id  $screen_x $screen_y
-        xdotool windowsize --sync $terminal_id $screen_width $(($screen_height*75/100))
+        terminal_height=$(($screen_height*35/100))
+        xdotool windowmove --sync $terminal_id  $screen_x $((screen_height - terminal_height))
+        xdotool windowsize --sync $terminal_id $screen_width $terminal_height
     fi
 }
 
