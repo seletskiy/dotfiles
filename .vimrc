@@ -396,6 +396,8 @@ Plug 'FooSoft/vim-argwrap'
 
 Plug 'kovetskiy/synta'
 
+Plug 'kovetskiy/vim-hacks'
+
 call plug#end()
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
