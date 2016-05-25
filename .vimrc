@@ -803,10 +803,10 @@ fun! g:ApplySyntaxForDiffComments()
         hi DiffContext ctermbg=254 ctermfg=254
     else
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
-        hi DiffComment ctermfg=15 ctermbg=52
+        hi DiffComment ctermbg=235 ctermfg=248
         hi DiffInfo ctermfg=255 ctermbg=237
-        hi DiffAdded ctermbg=22 ctermfg=2 cterm=none
-        hi DiffRemoved ctermbg=52 ctermfg=1 cterm=none
+        hi DiffAdded ctermfg=2 cterm=none
+        hi DiffRemoved ctermfg=1 cterm=none
         hi DiffContext ctermbg=238 ctermfg=236
     endif
 
