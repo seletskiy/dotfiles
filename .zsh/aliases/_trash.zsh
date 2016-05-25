@@ -118,7 +118,7 @@ function test-runner-watcher() {
         watcher "${@}"
     else
         watcher -e close_write -w$timeout ".$1$" -- \
-            ./run_tests.sh $run_tests_args
+            ./run_tests* $run_tests_args
     fi
 }
 
