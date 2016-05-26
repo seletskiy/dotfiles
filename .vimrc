@@ -245,6 +245,36 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
 
+    func! GoBuildFast()
+        echo "go build"
+
+        py << CODE
+import subprocess
+
+build = subprocess.Popen(
+    ["go", "build"],
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+    close_fds=True
+)
+
+_, stderr = build.communicate()
+lines = stderr.split('\n')
+if len(lines) > 1:
+    lines = lines[1:]
+    vim.vars['go_errors'] = lines
+CODE
+
+        let g:errors = go#tool#ParseErrors(g:go_errors)
+
+        call setqflist(g:errors)
+
+        call synta#quickfix#reset()
+        if len(g:errors) > 0
+            call synta#quickfix#go(0)
+        endif
+    endfunc!
+
 Plug 'kshenoy/vim-signature'
     let g:SignatureMarkOrder = "\m"
 
@@ -607,7 +637,7 @@ augroup go_src
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
     au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
-    au FileType go map <buffer> <Leader>b <Plug>(go-build)
+    au FileType go map <buffer> <expr> <Leader>b GoBuildFast()
     au FileType go call InstallGoHandlers()
     au FileType go let g:argwrap_tail_comma = 1
     au BufRead,BufNewFile *.slide setfiletype present
