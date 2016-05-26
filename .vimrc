@@ -292,6 +292,8 @@ Plug 'seletskiy/vim-over'
     nnoremap H :OverCommandLine %s/<CR>
     vnoremap H :OverCommandLine s/<CR>
 
+    nmap L VH
+
     let g:over#command_line#search#enable_move_cursor = 1
     let g:over#command_line#search#very_magic = 1
 
