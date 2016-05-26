@@ -246,7 +246,9 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_highlight_methods = 1
 
     func! GoBuildFast()
-        echo "go build"
+        echo "[GO] Building..."
+
+        let g:go_errors = []
 
         py << CODE
 import subprocess
@@ -264,6 +266,7 @@ if len(lines) > 1:
     lines = lines[1:]
     vim.vars['go_errors'] = lines
 CODE
+        echo "[GO] Building done."
 
         let g:errors = go#tool#ParseErrors(g:go_errors)
 
