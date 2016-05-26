@@ -312,3 +312,5 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/bash-get-git
 -        https://aur.archlinux.org/packages/marvex
 -        ctags
+-        w3m
+-        bitbucket-cli
