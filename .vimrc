@@ -246,9 +246,11 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_highlight_methods = 1
 
     func! GoBuildFast()
-        echo "[GO] Building..."
+        echo "[GO] BUILDING..."
 
         let g:go_errors = []
+
+        normal w
 
         py << CODE
 import subprocess
@@ -266,7 +268,8 @@ if len(lines) > 1:
     lines = lines[1:]
     vim.vars['go_errors'] = lines
 CODE
-        echo "[GO] Building done."
+        redraw
+        echo "[GO] PASS"
 
         let g:errors = go#tool#ParseErrors(g:go_errors)
 
@@ -294,8 +297,6 @@ Plug 'seletskiy/vim-over80'
 Plug 'seletskiy/vim-over'
     nnoremap H :OverCommandLine %s/<CR>
     vnoremap H :OverCommandLine s/<CR>
-
-    nmap L VH
 
     let g:over#command_line#search#enable_move_cursor = 1
     let g:over#command_line#search#very_magic = 1
@@ -437,6 +438,7 @@ augroup end
 Plug 'FooSoft/vim-argwrap'
 
 Plug 'kovetskiy/synta'
+
 
 Plug 'kovetskiy/vim-hacks'
 
@@ -642,9 +644,12 @@ augroup go_src
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
     au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
-    au FileType go map <buffer> <expr> <Leader>b GoBuildFast()
+    au FileType go map <buffer> <Leader>b :call GoBuildFast()<CR>
     au FileType go call InstallGoHandlers()
     au FileType go let g:argwrap_tail_comma = 1
+    au FileType go nnoremap <buffer> <C-T> :call synta#quickfix#next()<CR>
+    au FileType go nnoremap <buffer> <C-E><C-R> :call synta#quickfix#prev()<CR>
+    au FileType go nnoremap <buffer> <C-E><C-T> :call synta#quickfix#error()<CR>
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
