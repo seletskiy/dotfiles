@@ -86,9 +86,11 @@ Plug 'Shougo/unite.vim'
 
     function! s:unite_my_settings()
         imap <buffer> <C-R> <Plug>(unite_redraw)
-        imap <silent><buffer><expr> <CR> unite#do_action('open')
-        imap <silent><buffer><expr> <C-T> unite#do_action('splitswitch')
-        imap <silent><buffer><expr> <C-G> unite#do_action('right')
+        inoremap <silent><buffer> <CR>  <C-R>=unite#do_action('open')<CR>
+            \<esc>:10wincmd +<CR>
+        inoremap <silent><buffer> <C-T> <C-R>=unite#do_action('splitswitch')<CR>
+            \<esc>:10wincmd +<CR>
+        inoremap <silent><buffer> <C-J> <C-R>=unite#do_action('vsplitswitch')
         call unite#custom#alias('ash_review', 'split', 'ls')
     endfunction
 
@@ -103,7 +105,7 @@ Plug 'Shougo/unite.vim'
     let g:unite_source_grep_max_candidates = 200
 
     let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden --depth=-1'
+    let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden --depth=-1 --ignore=vendor'
     let g:unite_source_grep_recursive_opt = ''
     let g:unite_source_grep_recursive_opt = ''
     let g:unite_source_grep_search_word_highlight = 'IncSearch'
@@ -126,6 +128,8 @@ Plug 'Shougo/unite.vim'
             \:call UniteFileOrGit()<CR>
 
 Plug 'Shougo/vimproc'
+
+Plug 'Shougo/neoyank.vim'
 
 Plug 'yuku-t/unite-git'
 
@@ -244,42 +248,6 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_metalinter_command = "gometalinter"
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
-
-    func! GoBuildFast()
-        echo "[GO] BUILDING..."
-
-        let g:go_errors = []
-
-        normal w
-
-        py << CODE
-import subprocess
-
-build = subprocess.Popen(
-    ["go", "build"],
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE,
-    close_fds=True
-)
-
-_, stderr = build.communicate()
-lines = stderr.split('\n')
-if len(lines) > 1:
-    lines = lines[1:]
-    vim.vars['go_errors'] = lines
-CODE
-        redraw
-        echo "[GO] PASS"
-
-        let g:errors = go#tool#ParseErrors(g:go_errors)
-
-        call setqflist(g:errors)
-
-        call synta#quickfix#reset()
-        if len(g:errors) > 0
-            call synta#quickfix#go(0)
-        endif
-    endfunc!
 
 Plug 'kshenoy/vim-signature'
     let g:SignatureMarkOrder = "\m"
@@ -644,7 +612,7 @@ augroup go_src
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
     au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
-    au FileType go map <buffer> <Leader>b :call GoBuildFast()<CR>
+    au FileType go map <buffer> <Leader>b :call synta#go#build(1)<CR>
     au FileType go call InstallGoHandlers()
     au FileType go let g:argwrap_tail_comma = 1
     au FileType go nnoremap <buffer> <C-T> :call synta#quickfix#next()<CR>
