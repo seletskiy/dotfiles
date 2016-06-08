@@ -677,6 +677,23 @@ augroup winfixheight
     au BufwinEnter set winfixheight
 augroup end
 
+
+func! _tags_sh()
+    if &ft != "sh"
+        return
+    endif
+
+    let tagfiles = tagfiles()
+    if len(tagfiles) > 0
+        let tagfile = tagfiles[0]
+        silent execute "!tags-sh " . tagfile . " >/dev/null 2>&1 &"
+    endif
+endfunc!
+
+augroup sh_src
+    au FileType sh call _tags_sh()
+augroup end
+
 com! BufWipe silent! bufdo! bw | enew!
 
 function! InstallGoHandlers()
