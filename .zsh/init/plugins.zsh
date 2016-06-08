@@ -11,7 +11,6 @@ if ! zgen saved; then
     zgen load sorin-ionescu/prezto
 
     zgen load kovetskiy/zsh-add-params
-    zgen load kovetskiy/zsh-fastcd
     zgen load kovetskiy/zsh-quotes
     zgen load kovetskiy/zsh-smart-ssh
     zgen load seletskiy/zsh-ssh-urxvt
