@@ -26,7 +26,7 @@ font pango:Monaco 12
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec marvex -c
+bindsym $mod+Return exec marvex -cs
 bindsym $mod+Shift+Return exec i3-sensible-terminal
 
 # kill focused window
