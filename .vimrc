@@ -701,7 +701,9 @@ function! InstallGoHandlers()
         au!
 
         autocmd BufWritePre *.go call go#fmt#Format(-1)
-        autocmd BufWritePre *.go silent! exe "/^const usage/,/^`$/s/\t/    /"
+        autocmd BufWritePre *.go if searchpos('^const usage', 'nw') != [0, 0] |
+                \ silent! exe "/^const usage/,/^`$/s/\t/    /" |
+            \ endif
     augroup end
 endfunction
 
