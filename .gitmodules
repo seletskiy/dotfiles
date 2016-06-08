@@ -9,7 +9,7 @@
 [submodule ".vimperator/bundle"]
 	path = .vimperator/bundle
 	url = https://github.com/vimpr/vimperator-plugins
-[submodule ".deadfiles"]
+[submodule "deadcrew/deadfiles"]
 	path = .deadfiles
 	url = git@github.com:deadcrew/deadfiles
 	branch = master
