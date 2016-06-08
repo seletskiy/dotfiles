@@ -20,6 +20,9 @@ alias 1='watch -n1 '
 
 alias i='imgurbash'
 
+alias bl='batrak -L'
+alias bd='batrak -M 21 -n'
+
 alias np=':carcosa-new-password'
 :carcosa-new-password() {
     cd ~/.secrets && \
