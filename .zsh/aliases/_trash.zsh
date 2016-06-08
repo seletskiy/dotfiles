@@ -448,10 +448,12 @@ function chmod-alias() {
 bindkey "^F" leap-back
 zle -N leap-back leap-back
 function leap-back() {
-    local dir=$(dirs -p | fzf)
+    local dir=$(dirs -p | fzf-tmux)
     if [ "$dir" ]; then
         eval cd "$dir"
     fi
+
+    prompt_lambda17_precmd
 
     zle reset-prompt
 }
