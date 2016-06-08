@@ -1,54 +1,56 @@
-silent! let g:plugs['Gundo'].commit = 'f443470'
-silent! let g:plugs['PHP-correct-Indenting'].commit = 'd5b4566'
-silent! let g:plugs['SearchParty'].commit = '9d8e52e'
-silent! let g:plugs['YouCompleteMe'].commit = 'fa58393'
-silent! let g:plugs['ag.vim'].commit = '6ac76d9'
-silent! let g:plugs['ashium'].commit = 'ddcd8a6'
-silent! let g:plugs['fzf'].commit = '2f364c6'
-silent! let g:plugs['matchem'].commit = '79a9ec5'
-silent! let g:plugs['nerdcommenter'].commit = '90315ec'
-silent! let g:plugs['nginx-vim-syntax'].commit = 'd05a84a'
-silent! let g:plugs['python-mode'].commit = '4bda303'
-silent! let g:plugs['rainbow_parentheses.vim'].commit = 'eb8baa5'
-silent! let g:plugs['repeat.vim'].commit = '80d2320'
-silent! let g:plugs['revim'].commit = '97eb5a9'
-silent! let g:plugs['seoul256.vim'].commit = 'ca2499b'
-silent! let g:plugs['snippets'].commit = '7e69aec'
-silent! let g:plugs['surround.vim'].commit = '324a873'
-silent! let g:plugs['synta'].commit = 'e283afc'
-silent! let g:plugs['tabular'].commit = '00e1e7f'
-silent! let g:plugs['targets.vim'].commit = 'f6f2d66'
-silent! let g:plugs['ultisnips'].commit = '1c6b4f7'
-silent! let g:plugs['unite-git'].commit = 'fdf7457'
-silent! let g:plugs['unite.vim'].commit = '5fd81fe'
-silent! let g:plugs['urxvt.vim'].commit = 'b986053'
-silent! let g:plugs['vim-airline'].commit = '4d39cb6'
-silent! let g:plugs['vim-airline-themes'].commit = '97a042a'
-silent! let g:plugs['vim-argwrap'].commit = 'cfe10c4'
-silent! let g:plugs['vim-autosurround'].commit = '62b6ea2'
-silent! let g:plugs['vim-bash'].commit = '992d8e5'
-silent! let g:plugs['vim-enmasse'].commit = 'bc8e2bc'
-silent! let g:plugs['vim-fugitive'].commit = '3439f99'
-silent! let g:plugs['vim-go'].commit = 'e9f44d9'
-silent! let g:plugs['vim-hacks'].commit = 'f423472'
-silent! let g:plugs['vim-indent-object'].commit = '1d3e4aa'
-silent! let g:plugs['vim-jsbeautify'].commit = '067233c'
-silent! let g:plugs['vim-man'].commit = '3d26cb1'
-silent! let g:plugs['vim-matchit'].commit = 'ceaf496'
-silent! let g:plugs['vim-misc'].commit = '3e6b8fb'
-silent! let g:plugs['vim-multiple-cursors'].commit = 'a95edcd'
-silent! let g:plugs['vim-nunu'].commit = 'd586ebb'
-silent! let g:plugs['vim-over'].commit = '146b065'
-silent! let g:plugs['vim-over80'].commit = 'b12535a'
-silent! let g:plugs['vim-plugvim-utils'].commit = 'c59a498'
-silent! let g:plugs['vim-python-pep8-indent'].commit = 'f4f95ee'
-silent! let g:plugs['vim-pythonx'].commit = '9343847'
-silent! let g:plugs['vim-rename'].commit = 'dcb8a4a'
-silent! let g:plugs['vim-ruby'].commit = '666adb5'
-silent! let g:plugs['vim-scriptease'].commit = '3fa4aab'
-silent! let g:plugs['vim-signature'].commit = '2a29156'
-silent! let g:plugs['vim-ski'].commit = '8f2add7'
-silent! let g:plugs['vim-sneak'].commit = 'f22ee25'
-silent! let g:plugs['vim-toml'].commit = 'f6f79f3'
-silent! let g:plugs['vimproc'].commit = '0ff17bc'
-silent! let g:plugs['ycm-sh'].commit = 'd1f85f3'
+ag.vim 6ac76d9
+ashium ddcd8a6
+fzf cf9c957
+Gundo f443470
+matchem 79a9ec5
+neoyank.vim ee635f1
+nerdcommenter 06c3184
+nginx-vim-syntax d05a84a
+PHP-correct-Indenting d5b4566
+python-mode 4bda303
+rainbow_parentheses.vim eb8baa5
+repeat.vim 80d2320
+revim 97eb5a9
+SearchParty 9d8e52e
+seoul256.vim ca2499b
+snippets 7d917e7
+surround.vim 324a873
+synta 147f584
+tabular 00e1e7f
+targets.vim 5c2ae9d
+ultisnips 1c6b4f7
+unite-git fdf7457
+unite.vim 77819d5
+urxvt.vim b986053
+vim-airline 7b9b68f
+vim-airline-themes 7964787
+vim-argwrap 068637f
+vim-autosurround f2c7517
+vim-bash 992d8e5
+vim-choosewin d9fe961
+vim-enmasse bc8e2bc
+vim-fugitive 3439f99
+vim-go 6a0c880
+vim-hacks f423472
+vim-indent-object 1d3e4aa
+vim-jsbeautify 4503d15
+vim-man 3d26cb1
+vim-matchit ceaf496
+vim-misc 3e6b8fb
+vim-multiple-cursors a95edcd
+vim-nunu d586ebb
+vim-over 146b065
+vim-over80 b12535a
+vim-plugvim-utils c59a498
+vimproc 36dbb9f
+vim-python-pep8-indent f4f95ee
+vim-pythonx 4f97095
+vim-rename dcb8a4a
+vim-ruby 2412e02
+vim-scriptease 3fa4aab
+vim-signature f89c3d4
+vim-ski 8f2add7
+vim-sneak f22ee25
+vim-toml f6f79f3
+ycm-sh d1f85f3
+YouCompleteMe 7f21fb6
