@@ -7,6 +7,7 @@ zstyle ':prezto:load' pmodule \
     'terminal' \
     'editor' \
     'history' \
+    'directory' \
     'completion' \
     'history-substring-search'
 
