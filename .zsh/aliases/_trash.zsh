@@ -144,11 +144,6 @@ alias rf='rm -rf'
 
 zstyle ':completion:*:approximate:::' max-errors 3 not-numeric
 
-alias v.="fastcd ~/.vim/bundle/ 1"
-alias g.="fastcd $GOPATH/src/ 3"
-alias s.="fastcd ~/sources/ 1"
-alias z.="fastcd $ZGEN_DIR 2"
-
 alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent | head -n1)"'
 
 alias cu='curl -LO'
@@ -328,7 +323,6 @@ bindkey '^[[5~' forward-word
 bindkey '^[[6~' backward-word
 
 bindkey -v '^K' add-params
-bindkey -v '^_' insert-dot-dot-slash
 bindkey -v '^O' toggle-quotes
 
 bindkey -v '^ ' autosuggest-execute
@@ -354,6 +348,25 @@ function fuzzy-search-and-edit() {
     fi
 
     zle -I
+}
+
+bindkey -v '^_' cd-to-source-dir
+zle -N cd-to-source-dir
+cd-to-source-dir() {
+    local dir=$({
+        find -L ~/sources -maxdepth 1 -xtype d
+        find ~/.go/src -maxdepth 3 -type d
+        find ~/.zsh/.zgen -maxdepth 2 -type d
+        find ~/.vim/bundle -maxdepth 1 -type d
+    } | fzf-tmux)
+
+    eval cd "$dir"
+
+    unset dir
+
+    prompt_lambda17_precmd
+
+    zle reset-prompt
 }
 
 hijack:reset
