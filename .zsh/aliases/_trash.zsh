@@ -557,6 +557,8 @@ context-aliases:match is_inside_git_repo
     alias i='git add -p'
     alias v='git mv'
     alias R='git rm'
+    alias y='git show'
+    alias ys='y --stat'
 
     alias r='u && p'
     alias G='cd-pkgbuild'
