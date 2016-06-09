@@ -1,0 +1,3 @@
+base_url = "{{STASH_URL}}"
+username = "{{STASH_USERNAME}}"
+password = "{{STASH_PASSWORD}}"
