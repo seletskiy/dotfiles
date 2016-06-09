@@ -26,6 +26,7 @@ alias bd='batrak -M 21 -n'
 alias np=':carcosa-new-password'
 :carcosa-new-password() {
     cd ~/.secrets && \
+        carcosa -Sn && \
         pwgen 10 1\
             | tee /dev/stderr \
             | xclip -f \
