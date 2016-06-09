@@ -22,6 +22,7 @@ alias i='imgurbash'
 
 alias bl='batrak -L'
 alias bd='batrak -M 21 -n'
+alias bp='batrak -Lf 16058'
 
 alias np=':carcosa-new-password'
 :carcosa-new-password() {
