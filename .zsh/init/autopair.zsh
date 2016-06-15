@@ -1,5 +1,1 @@
-if [ ! "$_autopair_initialized" ]; then
-    autopair-init
-fi
-
-_autopair_initialized=1
+AUTOPAIR_INHIBIT_INIT=1

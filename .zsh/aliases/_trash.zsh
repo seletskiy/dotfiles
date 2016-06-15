@@ -70,7 +70,7 @@ function find-alias() {
 alias ipa='ip a'
 
 alias vf='vim $(fzf)'
-alias vw='vim $(which)'
+alias vw='vim-which'
 function vim-which() {
     vim "$(which "$1")"
 }
@@ -245,7 +245,7 @@ function dotfiles-bootstrap-aur() {
     dotfiles-bootstrap https://aur.archlinux.org/packages/$1
 }
 
-compdef dotfiles-bootstrap-aur=yaourt
+#compdef dotfiles-bootstrap-aur=yaourt
 
 alias godoc='godoc-less'
 function godoc-less() {
@@ -367,21 +367,10 @@ cd-to-source-dir() {
 
     prompt_lambda17_precmd
 
+    context-aliases:on-precmd
+
     zle reset-prompt
 }
-
-hijack:reset
-hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
-hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
-hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)(\s|$)/\1\2.x\4/"'
-hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -ls.seletskiy/"'
-hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'
-hijack:transform 'sed -re "s/^(\w{1,3}) ! /\1! /"'
-
-hijack:transform 'sed -re "s/(\w+)( .*)!$/\1!\2/"'
-
-hijack:transform '^[ct]!? ' 'sed -r s"/([<>{}&\\\"([!?)''^])/\\\\\1/g"'
-hijack:transform 'sed -re "s/^c\\\! /c! /"'
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
@@ -456,6 +445,8 @@ function leap-back() {
 
     prompt_lambda17_precmd
 
+    context-aliases:on-precmd
+
     zle reset-prompt
 }
 
@@ -468,11 +459,11 @@ function git-clone-to-sources() {
     cd ~/sources/$clone_path
 }
 
-alias m='git-clone-to-sources gh:seletskiy'
-alias k='git-clone-to-sources gh:kovetskiy'
-alias r='git-clone-to-sources gh:reconquest'
-alias d='git-clone-to-sources g:devops'
-alias n='git-clone-to-sources g:ngs'
+alias m='git-clone-to-sources github.com:seletskiy'
+alias k='git-clone-to-sources github.com:kovetskiy'
+alias r='git-clone-to-sources github.com:reconquest'
+alias d='git-clone-to-sources git.rn:devops'
+alias n='git-clone-to-sources git.rn:ngs'
 
 alias recon='git-clone-reconquest'
 function git-clone-reconquest() {
@@ -533,123 +524,8 @@ function create-new-project() {
     esac
 }
 
-hash-aliases:install
-
 autoload is_inside_git_repo
 autoload is_git_repo_dirty
 autoload is_rebase_in_progress
 
 alias gc='git clone'
-
-context-aliases:match is_inside_git_repo
-    alias d='git diff'
-    alias w='git diff --cached'
-    alias a='git-smart-add'
-    alias s='git status -s'
-    alias o='git log --oneline --graph --decorate --all'
-    alias c='git-smart-commit --amend'
-    alias p='git-smart-push seletskiy'
-    alias k='git checkout'
-    alias j='k master'
-    alias r='git-smart-remote'
-    alias e='git rebase'
-    alias b='git branch'
-    alias h='git reset HEAD'
-    alias i='git add -p'
-    alias v='git mv'
-    alias R='git rm'
-    alias y='git show'
-    alias ys='y --stat'
-
-    alias r='u && p'
-    alias G='cd-pkgbuild'
-    alias S='git stash -u && git stash drop'
-    alias R!='git rm -f'
-    alias a!='git-smart-commit -a --amend'
-    alias c!='git-smart-commit --amend'
-    alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
-    alias u='git-smart-pull --rebase'
-    alias g='k pkgbuild'
-    alias rs='git-smart-remote show'
-    alias ru='git-smart-remote set-url'
-    alias kb='git checkout -b'
-    alias kB='git checkout -B'
-    alias kb!='kB'
-    alias rso='git-smart-remote show origin'
-    alias st='git stash'
-    alias fk='hub fork'
-    alias pr='hub pull-request'
-    alias lk='github-browse'
-
-    function github-browse() {
-        local file="$1"
-        local line="${2:+#L$2}"
-
-        local type=commit
-        if [ "$file" ]; then
-            type=blob
-        fi
-
-        hub browse -u -- $type/$(git rev-parse --short HEAD)/$file$line \
-            2>/dev/null
-    }
-
-    alias mm='git-merge-with-rebase'
-    function git-merge-with-rebase() {
-        local branch=$(git rev-parse --abbrev-ref HEAD)
-        if git rebase "${@}"; then
-            git checkout $1
-            git merge --no-ff "$branch" "${@}"
-        fi
-    }
-
-    function _git-merge-with-rebase() {
-        service="git-merge" _git "${@}"
-    }
-
-    compdef _git-merge-with-rebase git-merge-with-rebase
-
-    alias me='git-remote-add-me'
-    function git-remote-add-me() {
-        if [ "$1" ]; then
-            local repo="gh:seletskiy/$1"; shift
-        else
-            local repo=$(git remote show origin -n | awk '/Fetch URL/{print $3}')
-            repo=$(sed -res'#(.*)/([^/]+)/([^/]+)$#\1/seletskiy/\3#' <<< $repo)
-        fi
-
-        git remote add seletskiy "$repo" "${@}"
-    }
-
-
-context-aliases:match "test -e PKGBUILD"
-
-    alias g='go-makepkg-enhanced'
-    alias m='makepkg -f'
-
-    alias aur='push-to-aur'
-
-    function push-to-aur() {
-        local package_name="${1:-$(basename $(git rev-parse --show-toplevel))}"
-        local package_name=${package_name%*-pkgbuild}
-        local package_name=${package_name}-git
-
-        git push ssh://aur@aur.archlinux.org/$package_name pkgbuild:master
-    }
-
-context-aliases:match "is_inside_git_repo && is_git_repo_dirty"
-    alias c='git-smart-commit'
-
-context-aliases:match "is_inside_git_repo && is_rebase_in_progress"
-    alias m='git checkout --ours'
-    alias t='git checkout --theirs'
-    alias c='git rebase --continue'
-    alias b='git rebase --abort'
-
-context-aliases:match "is_inside_git_repo && \
-        [ \"\$(git log 2>/dev/null | wc -l)\" -eq 0 ]"
-
-    alias c='git add . && git commit -m "initial commit"'
-
-context-aliases:match '[ "$(pwd)" = ~/.secrets ]'
-    alias u='carcosa -Sn'
