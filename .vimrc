@@ -127,6 +127,8 @@ Plug 'Shougo/unite.vim'
             \:lcd ~/.vim/bundle/snippets<CR>
             \:call UniteFileOrGit()<CR>
 
+    map <Tab> :Unite line:buffers<CR>
+
 Plug 'Shougo/vimproc'
 
 Plug 'Shougo/neoyank.vim'
@@ -511,8 +513,6 @@ nnoremap <C-_> <C-W>_
 nnoremap <C-^> <C-W>20+
 
 vnoremap $ g_
-
-nmap <TAB> /
 
 noremap > >>
 noremap < <<
