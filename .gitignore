@@ -7,4 +7,5 @@ prefs.js
 .zsh/.zgen
 .zsh/.zhistory
 .config/pdns
+.config/bithookctl.conf
 .tags_*
