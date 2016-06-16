@@ -18,8 +18,6 @@ zle() {
 }
 
 :load:plugins() {
-    zgen load mafredri/zsh-async
-
     zgen load kovetskiy/zsh-add-params
     zgen load kovetskiy/zsh-quotes
     zgen load kovetskiy/zsh-smart-ssh
@@ -61,6 +59,8 @@ zle() {
 if ! zgen saved; then
     zgen load seletskiy/zsh-zgen-compinit-tweak
     zgen load sorin-ionescu/prezto
+    zgen load mafredri/zsh-async
+    zgen load seletskiy/zsh-fuzzy-search-and-edit
     zgen load seletskiy/zsh-prompt-lambda17
 
     zgen save

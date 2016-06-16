@@ -101,7 +101,7 @@ alias asp='ASPROOT=~/sources/asp asp'
 alias psx='ps axfu'
 alias psg='psx | grep -P'
 
-alias al='alias | grep -P'
+alias al='alias | grep -P --'
 
 alias ma='mplayer -novideo'
 alias yt='youtube-viewer -n'
@@ -138,7 +138,7 @@ function ash-inbox-or-review() {
 }
 
 alias zr='. ~/.zshrc'
-alias za='vim ~/.zsh/aliases/* && source ~/.zshrc'
+alias za='vim -o ~/.zsh/aliases/**/*.zsh && source ~/.zshrc'
 
 for index ({1..9}) alias "$index=cd +${index}"; unset index
 
@@ -334,24 +334,6 @@ bindkey '^S' smart-forward-kill-word
 
 bindkey '^P' fuzzy-search-and-edit
 
-zle -N fuzzy-search-and-edit
-function fuzzy-search-and-edit() {
-    local match=$(command ag -al 2>/dev/null \
-        | xargs -n1 cat -n 2>/dev/null \
-        | fzf -1)
-
-    local files=(
-        $(ag -Fl -- "$(cut -f 2- <<< "$match")" | sort | uniq 2>/dev/null)
-    )
-
-    if [ ${#files[@]} -gt 0 ]; then
-        # /dev/tty required to redirect terminal from zle
-        $EDITOR -o "${files[@]}" +$(awk '{print $1}' <<< "$match") < /dev/tty
-    fi
-
-    zle -I
-}
-
 bindkey -v '^_' cd-to-source-dir
 zle -N cd-to-source-dir
 cd-to-source-dir() {
@@ -513,6 +495,9 @@ function create-new-project() {
 
     cks $project
     case "$where" in
+        d)
+            stacket repositories create devops $project
+            ;;
         g)
             hub create $namespace$project
             ;;

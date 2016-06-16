@@ -8,5 +8,5 @@ hijack:transform 'sed -re "s/^(\w{1,3}) ! /\1! /"'
 
 hijack:transform 'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-hijack:transform '^[ct]!? ' 'sed -r s"/([<>{}&\\\"([!?)''^])/\\\\\1/g"'
+hijack:transform '^[ct]!? ' 'sed -r s"/([<>{}&\\\"([!?)''#^])/\\\\\1/g"'
 hijack:transform 'sed -re "s/^c\\\! /c! /"'

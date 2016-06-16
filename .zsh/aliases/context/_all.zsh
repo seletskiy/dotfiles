@@ -79,6 +79,8 @@ context-aliases:match is_inside_git_repo
         git remote add seletskiy "$repo" "${@}"
     }
 
+context-aliases:match "is_inside_git_repo && git remote show -n origin | grep -q git.rn"
+    alias pr='stacket-pull-request-create && reviewers-add'
 
 context-aliases:match "test -e PKGBUILD"
 
