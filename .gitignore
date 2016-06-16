@@ -4,6 +4,7 @@
 .mutt/aliases
 prefs.js
 .zsh/.zprezto
+.zsh/init/prompt.zsh
 .zsh/.zgen
 .zsh/.zhistory
 .config/pdns

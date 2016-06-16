@@ -127,7 +127,7 @@ Plug 'Shougo/unite.vim'
             \:lcd ~/.vim/bundle/snippets<CR>
             \:call UniteFileOrGit()<CR>
 
-    map <Tab> :Unite line:buffers<CR>
+    nmap <Tab> :Unite line:buffers<CR>
 
 Plug 'Shougo/vimproc'
 
@@ -603,7 +603,7 @@ augroup ft_customization
     au FileType snippets setl ft+=.python
     au FileType snippets let g:pymode_rope_project_root=expand('%:h')
     au BufRead,BufNewFile incident.md set et ft=markdown.incident
-    au FileType * let g:argwrap_tail_comma = 0
+    au BufEnter * let g:argwrap_tail_comma = 0
 augroup end
 
 augroup go_src
@@ -614,10 +614,12 @@ augroup go_src
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
     au FileType go map <buffer> <Leader>b :call synta#go#build(1)<CR>
     au FileType go call InstallGoHandlers()
-    au FileType go let g:argwrap_tail_comma = 1
+    au BufEnter *.go let g:argwrap_tail_comma = 1
     au FileType go nnoremap <buffer> <C-T> :call synta#quickfix#next()<CR>
     au FileType go nnoremap <buffer> <C-E><C-R> :call synta#quickfix#prev()<CR>
     au FileType go nnoremap <buffer> <C-E><C-T> :call synta#quickfix#error()<CR>
+    au FileType go nnoremap <buffer> <C-D><C-D> :normal! A,<CR>
+    au FileType go inoremap <buffer> <C-D><C-D> <C-\><C-O>:normal! A,<CR>
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
@@ -701,8 +703,8 @@ function! InstallGoHandlers()
         au!
 
         autocmd BufWritePre *.go call go#fmt#Format(-1)
-        autocmd BufWritePre *.go if searchpos('^const usage', 'nw') != [0, 0] |
-                \ silent! exe "/^const usage/,/^`$/s/\t/    /" |
+        autocmd BufWritePre *.go if searchpos('^\v(const)?\s+usage\s+\=\s+`', 'nw') != [0, 0] |
+                \ silent! exe '/^\v(const)?\s+usage\s+\=\s+`/+1,/^`$/s/\t/    /' |
             \ endif
     augroup end
 endfunction
