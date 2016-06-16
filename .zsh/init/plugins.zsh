@@ -54,6 +54,8 @@ zle() {
 
     source $ZDOTDIR/aliases/hijack.zsh
     source $ZDOTDIR/aliases/context/_all.zsh
+
+    compinit
 }
 
 if ! zgen saved; then
