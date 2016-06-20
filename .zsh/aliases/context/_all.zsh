@@ -1,3 +1,5 @@
+context-aliases:init
+
 context-aliases:match is_inside_git_repo
     alias d='git diff'
     alias w='git diff --cached'
@@ -100,16 +102,23 @@ context-aliases:match "test -e PKGBUILD"
 context-aliases:match "is_inside_git_repo && is_git_repo_dirty"
     alias c='git-smart-commit'
 
+context-aliases:match "is_inside_git_repo && \
+        [ \"\$(git log 2>/dev/null | wc -l)\" -eq 0 ]"
+
+    alias c='git add . && git commit -m "initial commit"'
+
 context-aliases:match "is_inside_git_repo && is_rebase_in_progress"
     alias m='git checkout --ours'
     alias t='git checkout --theirs'
     alias c='git rebase --continue'
     alias b='git rebase --abort'
 
-context-aliases:match "is_inside_git_repo && \
-        [ \"\$(git log 2>/dev/null | wc -l)\" -eq 0 ]"
-
-    alias c='git add . && git commit -m "initial commit"'
-
 context-aliases:match '[ "$(pwd)" = ~/.secrets ]'
     alias u='carcosa -Sn'
+
+context-aliases:match 'is_inside_git_repo && [ -f .git/MERGE_MSG ]'
+    alias m=':vim-merge'
+
+    :vim-merge() {
+        vim -o $(git status -s | grep "^UU " | awk '{print $2}')
+    }

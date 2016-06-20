@@ -127,20 +127,24 @@ function test-runner-watcher() {
     fi
 }
 
-alias a='ash-inbox-or-review'
-
-function ash-inbox-or-review() {
+alias a=':ash:inbox-or-review'
+function :ash:inbox-or-review() {
     if [ $# -gt 0 ]; then
         ash "${@}"
     else
-        ash inbox
+        ash inbox reviewer
     fi
+}
+
+alias an=':ash:review-next'
+function :ash:review-next() {
+    local review=$(ash inbox reviewer | head -n1 | awk '{ print $1 }')
+
+    ash "$review"
 }
 
 alias zr='. ~/.zshrc'
 alias za='vim -o ~/.zsh/aliases/**/*.zsh && source ~/.zshrc'
-
-for index ({1..9}) alias "$index=cd +${index}"; unset index
 
 alias rf='rm -rf'
 
@@ -167,6 +171,7 @@ alias -s  p='uber-ssh:alias -s smart-ssh -A .in.ngs.ru -R .p'
 alias -s  x='uber-ssh:alias -s smart-ssh -R .x'
 alias -s  s='uber-ssh:alias -s smart-ssh'
 alias -s ru='uber-ssh:alias -s smart-ssh'
+alias -s rn='uber-ssh:alias -s smart-ssh'
 
 alias ssh='ssh-urxvt'
 alias s='ssh'
