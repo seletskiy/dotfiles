@@ -1,1 +1,0 @@
-/bin/fzf --color=fg:240,bg:234,bg+:236,fg+:220,hl:248,hl+:220,info:1,spinner:1,prompt:15,pointer:220 "${@}"
