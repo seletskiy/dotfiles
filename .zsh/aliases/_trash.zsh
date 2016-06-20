@@ -334,26 +334,7 @@ bindkey '^S' smart-forward-kill-word
 
 bindkey '^P' fuzzy-search-and-edit
 
-bindkey -v '^_' cd-to-source-dir
-zle -N cd-to-source-dir
-cd-to-source-dir() {
-    local dir=$({
-        find -L ~/sources -maxdepth 1 -xtype d
-        find ~/.go/src -maxdepth 3 -type d
-        find ~/.zsh/.zgen -maxdepth 2 -type d
-        find ~/.vim/bundle -maxdepth 1 -type d
-    } | fzf-tmux)
-
-    eval cd "$dir"
-
-    unset dir
-
-    prompt_lambda17_precmd
-
-    context-aliases:on-precmd
-
-    zle reset-prompt
-}
+bindkey -v '^_' favorite-directories:cd
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo

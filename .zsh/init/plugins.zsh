@@ -30,6 +30,7 @@ zle() {
     zgen load seletskiy/zsh-hash-aliases
 
     zgen load seletskiy/zsh-uber-ssh
+    zgen load seletskiy/zsh-favorite-directories
 
     zgen load hlissner/zsh-autopair autopair.zsh
 
@@ -43,6 +44,9 @@ zle() {
 
     fpath=(${ZGEN_COMPLETIONS[@]} $fpath)
 
+    source $ZDOTDIR/aliases/hijack.zsh
+    source $ZDOTDIR/aliases/context/_all.zsh
+
     source $ZDOTDIR/post-init/autopair.zsh
     source $ZDOTDIR/post-init/opts.zsh
     source $ZDOTDIR/post-init/fzf.zsh
@@ -51,9 +55,8 @@ zle() {
     source $ZDOTDIR/post-init/manydots-magic.zsh
     source $ZDOTDIR/post-init/smart-ssh.zsh
     source $ZDOTDIR/post-init/hash-aliases.zsh
-
-    source $ZDOTDIR/aliases/hijack.zsh
-    source $ZDOTDIR/aliases/context/_all.zsh
+    source $ZDOTDIR/post-init/context-aliases.zsh
+    source $ZDOTDIR/post-init/favorite-directories.zsh
 
     compinit
 }

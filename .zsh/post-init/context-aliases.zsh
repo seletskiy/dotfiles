@@ -1,0 +1,2 @@
+context-aliases:on-precmd
+
