@@ -164,17 +164,36 @@ alias tf='t -f'
 # blah.ru -> ssh blah.ru
 # node.p  -> ssh node.in.ngs.ru
 # node.x  -> (resolve via search domain setting) ssh node
-alias -s  L='uber-ssh:alias -s smart-ssh -P 192.168.   -R .L'
-alias -s  P='uber-ssh:alias -s smart-ssh -P 172.16.    -R .P'
-alias -s  e='uber-ssh:alias -s smart-ssh -P ngs.ru.    -R .e'
-alias -s  p='uber-ssh:alias -s smart-ssh -A .in.ngs.ru -R .p'
-alias -s  x='uber-ssh:alias -s smart-ssh -R .x'
-alias -s  s='uber-ssh:alias -s smart-ssh'
-alias -s ru='uber-ssh:alias -s smart-ssh'
-alias -s rn='uber-ssh:alias -s smart-ssh'
+alias -s  L='uber-ssh:alias -s smart-ssh-tmux -P 192.168.   -R .L'
+alias -s  P='uber-ssh:alias -s smart-ssh-tmux -P 172.16.    -R .P'
+alias -s  e='uber-ssh:alias -s smart-ssh-tmux -P ngs.ru.    -R .e'
+alias -s  p='uber-ssh:alias -s smart-ssh-tmux -A .in.ngs.ru -R .p'
+alias -s  x='uber-ssh:alias -s smart-ssh-tmux -R .x'
+alias -s  s='uber-ssh:alias -s smart-ssh-tmux'
+alias -s ru='uber-ssh:alias -s smart-ssh-tmux'
+alias -s rn='uber-ssh:alias -s smart-ssh-tmux'
 
 alias ssh='ssh-urxvt'
 alias s='ssh'
+
+smart-ssh-tmux() {
+    local format
+    if [ "$TMUX" ]; then
+        tmux set status on
+        if [ "$(background)" = "dark" ]; then
+            format="#[underscore bold bg=colour17 fg=colour226]"
+        else
+            format="#[underscore bold bg=colour229 fg=colour196]"
+        fi
+        tmux set status-right "$format φ $SSH_ADDRESS "
+    fi
+
+    smart-ssh "${@}"
+
+    if [ "$TMUX" ]; then
+        tmux set status off
+    fi
+}
 
 function search-domain() {
     local domain=$1
