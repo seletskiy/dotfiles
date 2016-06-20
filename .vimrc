@@ -412,6 +412,9 @@ Plug 'kovetskiy/synta'
 
 Plug 'kovetskiy/vim-hacks'
 
+Plug 'deadcrew/deadfiles'
+    au InsertCharPre * call _completions_complete()
+
 call plug#end()
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
