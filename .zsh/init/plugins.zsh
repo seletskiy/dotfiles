@@ -10,8 +10,6 @@ zle() {
         unset -f zle
 
         :load:plugins
-
-        clear
     fi
 
     builtin zle "${@}"
