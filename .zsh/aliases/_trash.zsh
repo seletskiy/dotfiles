@@ -18,7 +18,7 @@ alias R='ssh-keygen -R'
 
 alias 1='watch -n1 '
 
-alias i='imgurbash'
+alias i='imgur.sh'
 
 alias bl='batrak -L'
 alias bd='batrak -M 21 -n'
@@ -179,13 +179,13 @@ alias s='ssh'
 smart-ssh-tmux() {
     local format
     if [ "$TMUX" ]; then
-        tmux set status on
         if [ "$(background)" = "dark" ]; then
             format="#[underscore bold bg=colour17 fg=colour226]"
         else
             format="#[underscore bold bg=colour229 fg=colour196]"
         fi
-        tmux set status-right "$format φ $SSH_ADDRESS "
+        tmux set status-right "$format φ $SSH_ADDRESS #[default bg=default] "
+        tmux set status on
     fi
 
     smart-ssh "${@}"
@@ -205,10 +205,8 @@ function search-domain() {
         | grep -P "$domain"
 }
 
-DNS_RESOLVER_HOST=dn.s
-DNS_RESOLVER_PORT=53000
-function search-domain-default() {
-    search-domain "$1" $DNS_RESOLVER_HOST $DNS_RESOLVER_PORT
+function axfr() {
+    search-domain "$1" dn.s 53000
 }
 
 
@@ -312,6 +310,21 @@ function man-search() {
                     +"/\\n\\n^       \\zs${2:1}\\ze\( \|$\)"
                 return
                 ;;
+            @)
+                command man "$1" \
+                    | grep -xP '(\S+( |$))+' \
+                    | grep -vPi 'name|description|synopsis|author'
+                return
+                ;;
+            # search for section
+            @*)
+                command vim -u ~/.vimrc-economy \
+                    +"set noignorecase" \
+                    +"Man $1" \
+                    +only \
+                    +"/^\(\\S\+.*\|\)\\zs${2:1:u}\\w*\\ze"
+                return
+                ;;
             *)
                 man-search "$1-$2" ${@:3}
 
@@ -359,6 +372,10 @@ bindkey '^S' smart-forward-kill-word
 bindkey '^P' fuzzy-search-and-edit
 
 bindkey -v '^_' favorite-directories:cd
+
+favorite-directories:on-cd() {
+    context-aliases:on-precmd
+}
 
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
