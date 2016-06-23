@@ -11,3 +11,4 @@ source $ZDOTDIR/init/background.zsh
 source $ZDOTDIR/init/disable-ctrl-s.zsh
 
 source $ZDOTDIR/aliases/_trash.zsh
+source $ZDOTDIR/aliases/work.zsh
