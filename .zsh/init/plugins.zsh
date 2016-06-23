@@ -52,9 +52,9 @@ zle() {
     source $ZDOTDIR/post-init/smart-kill-word.zsh
     source $ZDOTDIR/post-init/manydots-magic.zsh
     source $ZDOTDIR/post-init/smart-ssh.zsh
-    source $ZDOTDIR/post-init/hash-aliases.zsh
     source $ZDOTDIR/post-init/context-aliases.zsh
     source $ZDOTDIR/post-init/favorite-directories.zsh
+    source $ZDOTDIR/post-init/hash-aliases.zsh
 
     compinit
 }
