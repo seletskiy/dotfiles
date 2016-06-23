@@ -1,3 +1,0 @@
-alias d = roster search devops@
-
-set autojoin = devops@conference.ngs-team.xmpp.slack.com,golang,it-tops,vim,office,general,backend,techops,programming

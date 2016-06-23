@@ -1,3 +1,5 @@
 alias d = roster search devops@
 
-set autojoin = devops@conference.{{SERVER}},golang,it-tops,vim,office,general,backend,techops,programming
+set autojoin = devops@conference.{{SERVER}},golang,it-tops,vim,office,general,backend,techops,programming,techlead
+
+alias rs = source ~/.mcabber/mcabberrc.ngs-team
