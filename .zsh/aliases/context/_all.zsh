@@ -20,6 +20,7 @@ context-aliases:match is_inside_git_repo
     alias y='git show'
     alias ys='y --stat'
     alias q='git submodule update --init --recursive'
+    alias n='git checkout -b'
 
     alias r='u && p'
     alias G='cd-pkgbuild'
@@ -82,7 +83,7 @@ context-aliases:match is_inside_git_repo
     }
 
 context-aliases:match "is_inside_git_repo && git remote show -n origin | grep -q git.rn"
-    alias pr='stacket-pull-request-create && reviewers-add'
+    alias pr='stacket-pull-request-create && reviewers-add > /dev/null'
 
 context-aliases:match "test -e PKGBUILD"
 
