@@ -44,6 +44,7 @@ zle() {
 
     source $ZDOTDIR/aliases/hijack.zsh
     source $ZDOTDIR/aliases/context/_all.zsh
+    source $ZDOTDIR/aliases/context/work.zsh
 
     source $ZDOTDIR/post-init/autopair.zsh
     source $ZDOTDIR/post-init/opts.zsh

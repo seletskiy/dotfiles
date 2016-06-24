@@ -6,6 +6,9 @@ alias @h=':heaver:find-host-by-container-name "$HEAVERD_DEVELOPMENT"'
 alias %=':heaver:list-or-attach "$HEAVERD_PRODUCTION"'
 alias %h=':heaver:find-host-by-container-name "$HEAVERD_PRODUCTION"'
 
+alias ns='nodectl -S'
+alias nsp='nodectl -Spp'
+
 :heaver:list-or-attach() {
     if [ $# -lt 2 ]; then
         :heaver:list-containers "$1"
@@ -35,4 +38,19 @@ alias %h=':heaver:find-host-by-container-name "$HEAVERD_PRODUCTION"'
     local container="$2"
 
     ssh "$server" -t sudo -i heaver -A "$container"
+}
+
+:repo:upload:repos() {
+    scp "$1" "repo.s:/tmp/$1"
+    ssh "repo.s" sudo -i \
+        repos -AC -e "${3:-current}" "${2:-arch-ngs}" "/tmp/$1"
+}
+
+:repo:upload:old() {
+    scp "$1" "repo.in.ngs.ru:/tmp/$1"
+    ssh "repo.in.ngs.ru" -t sudo -i sh -s <<COMMANDS
+        cd /data/repositories/ngs-packages/ && \
+            mv -v /tmp/$1 ${2:-lucid}/ && \
+            ./rescan_${2:-lucid}.sh
+COMMANDS
 }

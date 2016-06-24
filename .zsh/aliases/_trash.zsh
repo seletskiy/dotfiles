@@ -132,7 +132,7 @@ function :ash:inbox-or-review() {
     if [ $# -gt 0 ]; then
         ash "${@}"
     else
-        ash inbox reviewer
+        ash inbox
     fi
 }
 
@@ -140,7 +140,24 @@ alias an=':ash:review-next'
 function :ash:review-next() {
     local review=$(ash inbox reviewer | head -n1 | awk '{ print $1 }')
 
+    ash "$review" "${@}"
+}
+
+alias ap='an approve'
+
+alias aa=':ash:open-my-review'
+function :ash:open-my-review() {
+    local review=$(ash inbox author | head -n1 | awk '{ print $1 }')
+
     ash "$review"
+}
+
+
+alias am=':ash:open-my-review'
+function :ash:open-my-review() {
+    local review=$(ash inbox author | head -n1 | awk '{ print $1 }')
+
+    ash "$review" merge
 }
 
 alias zr='. ~/.zshrc'

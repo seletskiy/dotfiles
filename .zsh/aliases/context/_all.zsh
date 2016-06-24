@@ -100,6 +100,19 @@ context-aliases:match "test -e PKGBUILD"
         git push ssh://aur@aur.archlinux.org/$package_name pkgbuild:master
     }
 
+    alias mb=':makepkg:branch'
+    function :makepkg:branch() {
+        local branch="$1"
+
+        sed -r \
+            '/source/,/md5sums/ {
+                s/(.git)(#.+)?($|"|\))/\1#branch='$branch'\3/
+            }' \
+            -i PKGBUILD
+
+        makepkg -f
+    }
+
 context-aliases:match "is_inside_git_repo && is_git_repo_dirty"
     alias c='git-smart-commit'
 
