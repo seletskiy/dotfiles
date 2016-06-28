@@ -316,3 +316,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/stacket
 -        https://aur.archlinux.org/packages/gocovmerge
 -        https://aur.archlinux.org/packages/diff-so-fancy
+-        https://aur.archlinux.org/packages/diff-so-fancy

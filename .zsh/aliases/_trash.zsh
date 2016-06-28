@@ -106,9 +106,9 @@ alias al='alias | grep -P --'
 alias ma='mplayer -novideo'
 alias yt='youtube-viewer -n'
 
-alias goi='go install'
-alias gob='go build'
-alias gog='go get -u'
+alias gi='go install'
+alias gb='go build'
+alias gg='go get -u'
 
 alias wt='test-runner-watcher 3 -A'
 alias wt10='test-runner-watcher 10 -A'
@@ -532,19 +532,39 @@ function create-new-project() {
         local project=${project##*/}
     fi
 
-    cks $project
+    local server="github.com"
+    local org="seletskiy"
+    case "$where" in
+        d)
+            org="devops"
+            server="git.rn"
+            ;;
+        r)
+            org="reconquest"
+            server="github.com"
+            ;;
+    esac
+
+    case "$namespace" in
+        go/)
+            mkdir -p $GOPATH/src/$server/$org/$project
+            cd $GOPATH/src/$server/$org/$project
+            git init
+            ;;
+        *)
+            cks $project
+            ;;
+    esac
+
     case "$where" in
         d)
             stacket repositories create devops $project
             ;;
-        g)
-            hub create $namespace$project
-            ;;
         r)
-            hub create reconquest/$namespace$project
+            hub create reconquest/$project
             ;;
         m)
-            hub create seletskiy/$namespace$project
+            hub create seletskiy/$project
             ;;
     esac
 }
