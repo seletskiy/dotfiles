@@ -54,3 +54,49 @@ alias nsp='nodectl -Spp'
             ./rescan_${2:-lucid}.sh
 COMMANDS
 }
+
+pdns:cname:new() {
+    local name="$1"
+    local address="$2"
+    local domain=""
+
+    IFS="." read -r domain suffix <<< "$name"
+
+    local zone="${${suffix##*.}:-s}"
+    local domain_id="$(pdns domains list -f id -n "$zone")"
+
+    pdns records add -t CNAME -d "$domain_id" \
+        -n "${address:-$domain.cname.$zone}" \
+        -c "$name"
+    pdns soa update -n "$zone"
+}
+
+pdns:a:new() {
+    local name="$1"
+    local address="$2"
+    local domain=""
+
+    IFS="." read -r domain suffix <<< "$name"
+
+    local zone="${${suffix##*.}:-s}"
+    local domain_id="$(pdns domains list -f id -n "$zone")"
+
+    pdns records add -t A -d "$domain_id" -n "$name" -c "$address"
+}
+
+pdns:srv:new() {
+    local name="$1"
+    local hostname="$2"
+    local port="${3:-80}"
+    local domain=""
+
+    IFS="." read -r domain suffix <<< "$name"
+
+    local zone="${${suffix##*.}:-s}"
+    local domain_id="$(pdns domains list -f id -n "$zone")"
+
+    pdns records add -t SRV -d "$domain_id" -l 60 \
+        -n "$domain.${suffix:-_tcp.s}" -c "0 $port $hostname"
+    pdns soa update -n s
+}
+

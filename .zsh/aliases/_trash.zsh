@@ -26,6 +26,21 @@ alias bp='batrak -Lf 16058'
 
 alias fin='get-stock ABBV MSFT TSLA TWTR'
 
+alias x=':sed-replace:interactive'
+:sed-replace:interactive() {
+    sed-replace "${@}" '!'
+
+    printf "Do you want to replace? [y/N]"
+
+    read -r agree
+
+    if grep -qP "[nN]|^$" <<< "$agree"; then
+        return
+    fi
+
+    sed-replace "${@}"
+}
+
 alias np=':carcosa-new-password'
 :carcosa-new-password() {
     cd ~/.secrets && \
@@ -155,8 +170,8 @@ function :ash:open-my-review() {
 }
 
 
-alias am=':ash:open-my-review'
-function :ash:open-my-review() {
+alias am=':ash:merge-my-review'
+function :ash:merge-my-review() {
     local review=$(ash inbox author | head -n1 | awk '{ print $1 }')
 
     ash "$review" merge
