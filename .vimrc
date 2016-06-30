@@ -810,7 +810,10 @@ fun! g:ApplySyntaxForDiffComments()
 
     exec 'set syntax='.extension
 
-    syn match DiffCommentIgnore "^###.*" containedin=ALL
+    syn match DiffCommentIgnore "^###.*" containedin=DiffComment
+    syn match DiffCommentAdded "\(^###.*\)\@<=A" containedin=DiffCommentIgnore
+    syn match DiffCommentChanged "\(^###.*\)\@<=M" containedin=DiffCommentIgnore
+    syn match DiffCommentRemoved "\(^###.*\)\@<=R" containedin=DiffCommentIgnore
     syn match DiffComment "^#.*" containedin=ALL
     syn match DiffInfo "^---.*" containedin=ALL
     syn match DiffInfo "^+++.*" containedin=ALL
@@ -818,6 +821,10 @@ fun! g:ApplySyntaxForDiffComments()
     syn match DiffAdded "^+.*" containedin=ALL
     syn match DiffRemoved "^-.*" containedin=ALL
     syn match DiffContext "^ " containedin=ALL
+
+    hi link DiffCommentAdded DiffAdded
+    hi link DiffCommentChanged DiffChanged
+    hi link DiffCommentRemoved DiffRemoved
 
     if &background == 'light'
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
