@@ -14,7 +14,7 @@ alias z='zfs list'
 
 alias g='git init'
 
-alias R='ssh-keygen -R'
+alias skr='ssh-keygen -R'
 
 alias 1='watch -n1 '
 
@@ -30,7 +30,9 @@ alias x=':sed-replace:interactive'
 :sed-replace:interactive() {
     sed-replace "${@}" '!'
 
-    printf "Do you want to replace? [y/N]"
+    printf "\n"
+    printf "%.0s=" {1..10} "\n"
+    printf "Do you want to replace? [y/N] "
 
     read -r agree
 
