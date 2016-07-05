@@ -811,9 +811,9 @@ fun! g:ApplySyntaxForDiffComments()
     exec 'set syntax='.extension
 
     syn match DiffCommentIgnore "^###.*" containedin=DiffComment
-    syn match DiffCommentAdded "\(^###.*\)\@<=A" containedin=DiffCommentIgnore
-    syn match DiffCommentChanged "\(^###.*\)\@<=M" containedin=DiffCommentIgnore
-    syn match DiffCommentRemoved "\(^###.*\)\@<=R" containedin=DiffCommentIgnore
+    syn match DiffCommentAdded "\(^###.*\)\@<=A\s" containedin=DiffCommentIgnore
+    syn match DiffCommentChanged "\(^###.*\)\@<=M\s" containedin=DiffCommentIgnore
+    syn match DiffCommentRemoved "\(^###.*\)\@<=R\s" containedin=DiffCommentIgnore
     syn match DiffComment "^#.*" containedin=ALL
     syn match DiffInfo "^---.*" containedin=ALL
     syn match DiffInfo "^+++.*" containedin=ALL
