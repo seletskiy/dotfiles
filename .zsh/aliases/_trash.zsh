@@ -152,7 +152,7 @@ function :ash:inbox-or-review() {
     if [ $# -gt 0 ]; then
         ash "${@}"
     else
-        ash inbox
+        ash inbox reviewer
     fi
 }
 
