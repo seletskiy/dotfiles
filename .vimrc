@@ -406,7 +406,6 @@ Plug 'kovetskiy/synta'
 Plug 'kovetskiy/vim-hacks'
 
 Plug 'deadcrew/deadfiles'
-    au InsertCharPre * call _completions_complete()
 
 call plug#end()
 
@@ -809,22 +808,6 @@ fun! g:ApplySyntaxForDiffComments()
     let extension = expand('%:e')
 
     exec 'set syntax='.extension
-
-    syn match DiffCommentIgnore "^###.*" containedin=DiffComment
-    syn match DiffCommentAdded "\(^###.*\)\@<=A\s" containedin=DiffCommentIgnore
-    syn match DiffCommentChanged "\(^###.*\)\@<=M\s" containedin=DiffCommentIgnore
-    syn match DiffCommentRemoved "\(^###.*\)\@<=R\s" containedin=DiffCommentIgnore
-    syn match DiffComment "^#.*" containedin=ALL
-    syn match DiffInfo "^---.*" containedin=ALL
-    syn match DiffInfo "^+++.*" containedin=ALL
-    syn match DiffInfo "^@@ .*" containedin=ALL
-    syn match DiffAdded "^+.*" containedin=ALL
-    syn match DiffRemoved "^-.*" containedin=ALL
-    syn match DiffContext "^ " containedin=ALL
-
-    hi link DiffCommentAdded DiffAdded
-    hi link DiffCommentChanged DiffChanged
-    hi link DiffCommentRemoved DiffRemoved
 
     if &background == 'light'
         hi DiffCommentIgnore ctermfg=249 ctermbg=none
