@@ -28,7 +28,7 @@ alias fin='get-stock ABBV MSFT TSLA TWTR'
 
 alias lgs=':git:show-sources-status'
 :git:show-sources-status() {
-    lsgs -Rbrd $GOPATH ~/sources/ $ZGEN_DIR ~/.vim/bundle/
+    lsgs -Rbrd $GOPATH/src ~/sources/ $ZGEN_DIR ~/.vim/bundle/
 }
 
 alias x=':sed-replace:interactive'
