@@ -1,0 +1,3 @@
+#!/bin/bash
+
+googler -j "$(dmenu -b -p "google: " <&-)"
