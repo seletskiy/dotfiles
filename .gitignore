@@ -9,4 +9,6 @@ prefs.js
 .zsh/.zhistory
 .config/pdns
 .config/bithookctl.conf
+.config/zabbixctl.conf
 .tags_*
+doc/tags
