@@ -26,6 +26,11 @@ alias bp='batrak -Lf 16058'
 
 alias fin='get-stock ABBV MSFT TSLA TWTR'
 
+alias lgs=':git:show-sources-status'
+:git:show-sources-status() {
+    lsgs -Rbrd $GOPATH ~/sources/ $ZGEN_DIR ~/.vim/bundle/
+}
+
 alias x=':sed-replace:interactive'
 :sed-replace:interactive() {
     sed-replace "${@}" '!'
