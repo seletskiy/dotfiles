@@ -40,6 +40,7 @@ bindsym $mod+r exec dmenu_run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 bindsym $mod+x exec carcosa-ui
+bindsym $mod+b exec google
 
 # change focus
 bindsym Ctrl+Home focus left
