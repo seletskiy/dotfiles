@@ -81,7 +81,8 @@ alias -- +p='+ list-dependencies'
 
 alias jf='sudo journalctl -ef'
 
-alias ag='ag -f --hidden'
+alias ag='ag -f --hidden --silent'
+alias /='ag'
 alias f='find-alias'
 function find-alias() {
     find -iname "*$1*"
