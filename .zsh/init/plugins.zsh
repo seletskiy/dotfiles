@@ -37,6 +37,8 @@ zle() {
     zgen load deadcrew/deadfiles
     zgen load seletskiy/zsh-syntax-highlighting
 
+    zgen load brnv/zsh-too-long
+
     # must be last!
     zgen load seletskiy/zsh-autosuggestions
 

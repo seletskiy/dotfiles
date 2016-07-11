@@ -506,6 +506,7 @@ alias m='git-clone-to-sources github.com:seletskiy'
 alias k='git-clone-to-sources github.com:kovetskiy'
 alias r='git-clone-to-sources github.com:reconquest'
 alias d='git-clone-to-sources git.rn:devops'
+alias s='git-clone-to-sources git.rn:specs'
 alias n='git-clone-to-sources git.rn:ngs'
 
 alias recon='git-clone-reconquest'
