@@ -543,6 +543,17 @@ function move-to-gopath() {
     cd $directory
 }
 
+alias crd='cr d'
+alias crr='cr r'
+alias crm='cr m'
+
+alias crdg='create-new-project:go d'
+alias crrg='create-new-project:go d'
+alias crmg='create-new-project:go d'
+create-new-project:go() {
+    create-new-project "$1" "go/$2"
+}
+
 alias cr='create-new-project'
 function create-new-project() {
     local where=$1
