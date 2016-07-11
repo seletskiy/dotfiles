@@ -410,10 +410,6 @@ bindkey '^P' fuzzy-search-and-edit
 
 bindkey -v '^_' favorite-directories:cd
 
-favorite-directories:on-cd() {
-    context-aliases:on-precmd
-}
-
 zle -N prepend-sudo prepend_sudo
 bindkey "^T" prepend-sudo
 function prepend_sudo() {
@@ -480,7 +476,7 @@ function chmod-alias() {
 bindkey "^F" leap-back
 zle -N leap-back leap-back
 function leap-back() {
-    local dir=$(dirs -p | fzf-tmux)
+    local dir=$(dirs -p | tail -n+2 | fzf-tmux)
     if [ "$dir" ]; then
         eval cd "$dir"
     fi

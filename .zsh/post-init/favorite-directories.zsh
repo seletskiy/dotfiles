@@ -6,6 +6,8 @@ favorite-directories:get() {
 }
 
 favorite-directories:on-cd() {
+    context-aliases:on-precmd
+
     prompt_lambda17_precmd
 
     zle reset-prompt
