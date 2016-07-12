@@ -1,0 +1,5 @@
+login = "{{CONFLUENCE_USERNAME}}"
+password = "{{CONFLUENCE_PASSWORD}}"
+
+[url]
+host = "{{CONFLUENCE_HOSTNAME}}"
