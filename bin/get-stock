@@ -24,7 +24,7 @@ headers='Symbol Close Open Ask Bid Change Pivot'
     } | awk "{
         print \$0, ( \
             ENVIRON[\$1] \
-                ? (\$4 / ENVIRON[\$1] * 100) \"%\" \
+                ? (\$4 / ENVIRON[\$1] * 100) \"% (\" ENVIRON[\$1] \")\" \
                 : \"---\" \
         )
     } "
