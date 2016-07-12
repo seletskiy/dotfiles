@@ -26,6 +26,8 @@ alias bp='batrak -Lf 16058'
 
 alias fin='get-stock ABBV MSFT TSLA TWTR'
 
+alias duty='cake --id 41882909 -L'
+
 alias lgs=':git:show-sources-status'
 :git:show-sources-status() {
     lsgs -Rbrd $GOPATH/src ~/sources/ $ZGEN_DIR ~/.vim/bundle/
