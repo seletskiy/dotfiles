@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.config/stocks.config 2>/dev/null
+
 api_url="http://query.yahooapis.com/v1/public/yql"
 api_store="store://datatables.org/alltableswithkeys"
 
@@ -9,13 +11,21 @@ stock_ql="$(printf '"%s",' "${stock[@]}" | head -c-1)"
 query="select+*+from+yahoo.finance.quotes+where+symbol+in+($stock_ql)"
 
 format='\(.symbol) \(.PreviousClose) \(.Open) \(.Ask) \(.Bid) \(.PercentChange)'
-headers='Symbol Close Open Ask Bid Change'
+headers='Symbol Close Open Ask Bid Change Pivot'
 
 {
     echo $headers
 
-    curl -sL "$api_url?q=$query&env=$api_store&format=json" \
-        | jq -r '.query.results.quote
-            | if (type | . == "object") then . else .[] end
-            | "'"$format"'"'
+    {
+        curl -sL "$api_url?q=$query&env=$api_store&format=json" \
+            | jq -r '.query.results.quote
+                | if (type | . == "object") then . else .[] end
+                | "'"$format"'"'
+    } | awk "{
+        print \$0, ( \
+            ENVIRON[\$1] \
+                ? (\$4 / ENVIRON[\$1] * 100) \"%\" \
+                : \"---\" \
+        )
+    } "
 } | column -xt
