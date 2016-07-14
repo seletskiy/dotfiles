@@ -45,6 +45,8 @@ var pasteLink = function() {
 settings.tabsThreshold = 0 // omnibar instead of table
 settings.smoothScroll = false
 
+settings.blacklist = ['gmail.com']
+
 mapkey(';', 'tabswitcher',     Normal.chooseTab)
 mapkey('=', 'source settings', sourceSettings)
 mapkey('p', 'paste link',      pasteLink)

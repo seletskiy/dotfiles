@@ -1,0 +1,3 @@
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+
+ZSH_HIGHLIGHT_PATTERNS=('//*' 'fg=245')
