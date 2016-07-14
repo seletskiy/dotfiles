@@ -58,6 +58,7 @@ zle() {
     source $ZDOTDIR/post-init/context-aliases.zsh
     source $ZDOTDIR/post-init/favorite-directories.zsh
     source $ZDOTDIR/post-init/hash-aliases.zsh
+    source $ZDOTDIR/post-init/highlight.zsh
 
     compinit
 }

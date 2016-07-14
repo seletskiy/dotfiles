@@ -597,6 +597,9 @@ function create-new-project() {
         d)
             stacket repositories create devops $project
             ;;
+        g)
+            hub create $namespace$project
+            ;;
         r)
             hub create reconquest/$project
             ;;
