@@ -192,6 +192,20 @@ function :ash:merge-my-review() {
 alias zr='. ~/.zshrc'
 alias za='vim -o ~/.zsh/aliases/**/*.zsh && source ~/.zshrc'
 
+alias zsw=':zabbix:switch-on-call'
+:zabbix:switch-on-call() {
+    local next="${1:-$USER}"
+    local current=$(zabbixctl -G NGS_ADM_WC_MAIN_SEND | awk '{print $3}')
+
+    for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND}; do
+        zabbixctl -f -G "$group" -a "$next"
+        zabbixctl -f -G "$group" -r "$current"
+    done
+
+    zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -a "$current"
+    zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -r "$next"
+}
+
 alias rf='rm -rf'
 
 zstyle ':completion:*:approximate:::' max-errors 3 not-numeric
