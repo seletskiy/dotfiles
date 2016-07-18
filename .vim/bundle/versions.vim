@@ -29,7 +29,7 @@ vim-autosurround f2c7517
 vim-bash 992d8e5
 vim-enmasse bc8e2bc
 vim-fugitive 3439f99
-vim-go e9f44d9
+vim-go 523d5a4
 vim-hacks f423472
 vim-indent-object 1d3e4aa
 vim-jsbeautify 067233c
