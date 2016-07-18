@@ -1,8 +1,0 @@
-if [ "$BACKGROUND" = "light" ]; then
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=250"
-else
-
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
-fi
-
-ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd

@@ -1,14 +1,1124 @@
-zmodload zsh/zprof
+# globals
+{
+    ZDOTDIR=~/.zsh
 
-ZDOTDIR=~/.zsh
+    ZGEN_DIR=$ZDOTDIR/.zgen/
 
-source $ZDOTDIR/init/prezto.zsh
-source $ZDOTDIR/init/environment.zsh
-source $ZDOTDIR/init/autopair.zsh
-source $ZDOTDIR/init/plugins.zsh
-source $ZDOTDIR/init/prompt.zsh
-source $ZDOTDIR/init/background.zsh
-source $ZDOTDIR/init/disable-ctrl-s.zsh
+    DOTFILES_PATH=~/sources/dotfiles
 
-source $ZDOTDIR/aliases/_trash.zsh
-source $ZDOTDIR/aliases/work.zsh
+    KEYTIMEOUT=1
+
+    AUTOPAIR_INHIBIT_INIT=1
+
+    HEAVERD_PRODUCTION='foci.cname.s:8081'
+    HEAVERD_DEVELOPMENT='container.s:8081'
+}
+
+# environment
+{
+    eval $(systemctl --user show-environment | sed "s/^/export /")
+}
+
+# prezto
+{
+    # wow, such integration! https://github.com/tarjoilija/zgen/pull/27
+    ln -sfT $ZDOTDIR/.zgen/sorin-ionescu/prezto-master $ZDOTDIR/.zprezto
+
+    zstyle ':prezto:*:*' case-sensitive 'yes'
+
+    zstyle ':prezto:*:*' color 'yes'
+
+    zstyle ':prezto:load' pmodule \
+        'environment' \
+        'terminal' \
+        'editor' \
+        'history' \
+        'directory' \
+        'completion' \
+        'history-substring-search'
+
+    zstyle ':prezto:module:editor' key-bindings 'vi'
+}
+
+# plugins
+{
+    {
+        # unless, zsh will crash with core dumped
+        if ! type zgen >/dev/null 2>&1; then
+            source /usr/share/zsh/scripts/zgen/zgen.zsh
+        fi
+
+        zle() {
+            if [ "$1" = "-R" ]; then
+                unset -f zle
+
+                :plugins:load
+                :plugins:post-init
+
+                :hijack:load
+                :aliases:load
+            fi
+
+            builtin zle "${@}"
+        }
+    }
+
+    :plugins:post-init() {
+        {
+            fpath=(${ZGEN_COMPLETIONS[@]} $fpath)
+        }
+
+        {
+            if [ ! "$_autopair_initialized" ]; then
+                _autopair_initialized=1
+                autopair-init
+            fi
+        }
+
+        {
+            unsetopt correct
+            unsetopt correct_all
+            unsetopt global_rcs
+
+            setopt menu_complete
+        }
+
+        {
+            eval "$(sed -r 's/\+s//' /usr/share/fzf/key-bindings.zsh)"
+        }
+
+        {
+            if [ "$BACKGROUND" = "light" ]; then
+                ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=250"
+            else
+
+                ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
+            fi
+
+            ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
+        }
+
+        {
+            zstyle ':zle:smart-kill-word' precise always
+            zstyle ':zle:smart-kill-word' keep-slash on
+        }
+
+        {
+            if [ ${+functions[manydots-magic]} -eq 0 ]; then
+                autoload -Uz manydots-magic
+                manydots-magic
+            fi
+        }
+
+        {
+            zstyle ':smart-ssh' ssh 'ssh-urxvt'
+        }
+
+        {
+            context-aliases:on-precmd
+        }
+
+        {
+            favorite-directories:get() {
+                echo src 1 ~/sources
+                echo zsh 2 ~/.zsh/.zgen
+                echo vim 2 ~/.vim
+                echo go 3 ~/.go/src
+            }
+
+            favorite-directories:on-cd() {
+                context-aliases:on-precmd
+
+                prompt_lambda17_precmd
+
+                zle reset-prompt
+            }
+        }
+
+        {
+            hash-aliases:install
+        }
+
+        {
+            ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+            ZSH_HIGHLIGHT_PATTERNS=('//*' 'fg=245')
+        }
+
+        compinit
+    }
+
+    if ! zgen saved; then
+        zgen load seletskiy/zsh-zgen-compinit-tweak
+        zgen load sorin-ionescu/prezto
+        zgen load mafredri/zsh-async
+        zgen load seletskiy/zsh-fuzzy-search-and-edit
+        zgen load seletskiy/zsh-prompt-lambda17
+
+        zgen save
+
+        zgen init
+    fi
+
+    :plugins:load() {
+        zgen load kovetskiy/zsh-add-params
+        zgen load kovetskiy/zsh-quotes
+        zgen load kovetskiy/zsh-smart-ssh
+        zgen load seletskiy/zsh-ssh-urxvt
+        zgen load seletskiy/zsh-ash-completion
+        zgen load seletskiy/zsh-context-aliases
+        zgen load seletskiy/zsh-git-smart-commands
+        zgen load seletskiy/zsh-smart-kill-word
+        zgen load seletskiy/zsh-hijack
+        zgen load seletskiy/zsh-hash-aliases
+
+        zgen load seletskiy/zsh-uber-ssh
+        zgen load seletskiy/zsh-favorite-directories
+
+        zgen load hlissner/zsh-autopair autopair.zsh
+
+        zgen load knu/zsh-manydots-magic
+
+        zgen load deadcrew/deadfiles
+        zgen load seletskiy/zsh-syntax-highlighting
+
+        zgen load brnv/zsh-too-long
+
+        # must be last!
+        zgen load seletskiy/zsh-autosuggestions
+    }
+}
+
+# prompt
+{
+    source /usr/share/zsh/functions/Prompts/promptinit
+
+    promptinit
+
+    case "$DOTFILES_PROFILE" in
+        work)
+            prompt lambda17 196 default ☫
+            ;;
+        *)
+            prompt lambda17 220 0 ☫
+            ;;
+    esac
+}
+
+# term
+{
+    if [ "$BACKGROUND" ]; then
+        eval `dircolors ~/.dircolors.$BACKGROUND`
+        if [ "$TMUX" ]; then
+            export TERM=screen-256color
+        fi
+    fi
+}
+
+# ctrl-q
+{
+    stty -ixon
+}
+
+# functions
+{
+    :git:show-sources-status() {
+        lsgs -Rbrd $GOPATH/src ~/sources/ $ZGEN_DIR ~/.vim/bundle/
+    }
+
+    :sed-replace:interactive() {
+        sed-replace "${@}" '!'
+
+        printf "\n"
+        printf "%.0s=" {1..10} "\n"
+        printf "Do you want to replace? [y/N] "
+
+        read -r agree
+
+        if grep -qP "[nN]|^$" <<< "$agree"; then
+            return
+        fi
+
+        sed-replace "${@}"
+    }
+
+    :carcosa-new-password() {
+        cd ~/.secrets && \
+            carcosa -Sn && \
+            pwgen 10 1\
+                | tee /dev/stderr \
+                | xclip -f \
+                | carcosa -Ac "passwords/$1"
+    }
+
+    adb-push-music() {
+        local dir=$1
+
+        adb push $dir /storage/sdcard1/Music/
+        adb shell am broadcast -a android.intent.action.MEDIA_MOUNTED \
+            -d file:///storage/sdcard1/
+    }
+
+    systemctl-command-and-status() {
+        systemctl $1 $2 "$3"
+        systemctl $1 status "$3"
+    }
+
+    find-alias() {
+        find -iname "*$1*"
+    }
+
+    vim-which() {
+        vim "$(which "$1")"
+    }
+
+    test-runner-watcher() {
+        local timeout="$1"
+        local run_tests_args="$2"
+
+        shift 2
+
+        if [ $# -gt 1 ]; then
+            watcher "${@}"
+        else
+            watcher -e close_write -w$timeout ".$1$" -- \
+                ./run_tests* $run_tests_args
+        fi
+    }
+
+    :ash:inbox-or-review() {
+        if [ $# -gt 0 ]; then
+            ash "${@}"
+        else
+            ash inbox reviewer
+        fi
+    }
+
+    :ash:review-next() {
+        local review=$(ash inbox reviewer | head -n1 | awk '{ print $1 }')
+
+        ash "$review" "${@}"
+    }
+
+    :ash:open-my-review() {
+        local review=$(ash inbox author | head -n1 | awk '{ print $1 }')
+
+        ash "$review"
+    }
+
+    :ash:merge-my-review() {
+        local review=$(ash inbox author | head -n1 | awk '{ print $1 }')
+
+        ash "$review" merge
+    }
+
+    :zabbix:switch-on-call() {
+        local next="${1:-$USER}"
+        local current=$(zabbixctl -G NGS_ADM_WC_MAIN_SEND | awk '{print $3}')
+
+        for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND}; do
+            zabbixctl -f -G "$group" -a "$next"
+            zabbixctl -f -G "$group" -r "$current"
+        done
+
+        zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -a "$current"
+        zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -r "$next"
+    }
+
+    smart-ssh-tmux() {
+        local format
+        if [ "$TMUX" ]; then
+            if [ "$(background)" = "dark" ]; then
+                format="#[underscore bold bg=colour17 fg=colour226]"
+            else
+                format="#[underscore bold bg=colour229 fg=colour196]"
+            fi
+            tmux set status-right \
+                "$format φ $SSH_ADDRESS #[default bg=default] "
+            tmux set status on
+        fi
+
+        smart-ssh "${@}"
+
+        if [ "$TMUX" ]; then
+            tmux set status off
+        fi
+    }
+
+    search-domain() {
+        local domain=$1
+        local resolver_host=$2
+        local resolver_port=${3:-53}
+
+        dig @$resolver_host -p$resolver_port axfr s \
+            | awk '{print $1}' \
+            | grep -P "$domain"
+    }
+
+    axfr() {
+        search-domain "$1" dn.s 53000
+    }
+
+    mkdir-and-cd() {
+        mkdir -p $1 && cd $1
+    }
+
+    ck-source-dir() {
+        ck ~/sources/"$1" && git init
+    }
+
+    dotfiles-bootstrap() {
+        local url=$1
+        if [ -z "$1" ]; then
+            url=$(xclip -o)
+        fi
+
+        if grep -P "^https?:" <<< "$url"; then
+            local line="-        $url"
+            $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE <<< "$line"
+            if [ $? -eq 0 ]; then
+                echo "$line" >> $DOTFILES_PATH/profiles.txt
+                return 1
+            fi
+        else
+            grep "${@}" $DOTFILES_PATH/profiles.txt \
+                | $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE
+
+        fi
+    }
+
+    dotfiles-bootstrap-aur() {
+        shift
+        dotfiles-bootstrap https://aur.archlinux.org/packages/$1
+    }
+
+    godoc-less() {
+        \godoc -ex "${@}" | less -SX
+    }
+
+    man-search() {
+        if grep -qoP '^\d+$' <<< "$1"; then
+            MANSECT=$1 man-search $2 ${@:3}
+            return
+        fi
+
+        if ! command man -w "$1" 2>/dev/null >/dev/null; then
+            return 1
+        fi
+
+        if [ $# -gt 1 ]; then
+            case "$2" in
+                # common search mode
+                /*)
+                    command vim -u ~/.vimrc-economy \
+                        +"set noignorecase" +"Man $1" +only +"/${2:1}"
+                    return
+                    ;;
+                # search for flags description
+                -*)
+                    command vim -u ~/.vimrc-economy \
+                        +"set noignorecase" +"Man $1" +only +"/^\\s\\+\\zs${2}"
+                    return
+                    ;;
+                # search for subcommand definition
+                .*)
+                    command vim -u ~/.vimrc-economy \
+                        +"set noignorecase" \
+                        +"Man $1" \
+                        +only \
+                        +"/\\n\\n^       \\zs${2:1}\\ze\( \|$\)"
+                    return
+                    ;;
+                @)
+                    command man "$1" \
+                        | grep -xP '(\S+( |$))+' \
+                        | grep -vPi 'name|description|synopsis|author'
+                    return
+                    ;;
+                # search for section
+                @*)
+                    command vim -u ~/.vimrc-economy \
+                        +"set noignorecase" \
+                        +"Man $1" \
+                        +only \
+                        +"/^\(\\S\+.*\|\)\\zs${2:1:u}\\w*\\ze"
+                    return
+                    ;;
+                *)
+                    man-search "$1-$2" ${@:3}
+
+                    return
+                    ;;
+            esac
+        fi
+
+        command vim -u ~/.vimrc-economy +"Man $MANSECT ${@}" +only
+    }
+
+    prepend_sudo() {
+        if grep -q '^sudo ' <<< "$BUFFER"; then
+            CURSOR=$(($CURSOR-5))
+            BUFFER=${BUFFER:5}
+            return
+        fi
+
+        if [ "$BUFFER" ]; then
+            BUFFER="sudo "$BUFFER
+        else
+            BUFFER="sudo "$(fc -ln -1)
+        fi
+        CURSOR=$(($CURSOR+5))
+    }
+
+    smart-insert-last-word-wrapper() {
+        _altdot_reset=1
+        smart-insert-last-word
+    }
+
+    smart-insert-prev-word() {
+        if (( _altdot_reset )); then
+            _altdot_histno=$HISTNO
+            (( _altdot_line=-_ilw_count ))
+            _altdot_reset=0
+            _altdot_word=-2
+        elif (( _altdot_histno != HISTNO || _ilw_cursor != $CURSOR )); then
+            _altdot_histno=$HISTNO
+            _altdot_word=-1
+            _altdot_line=-1
+        else
+            _altdot_word=$((_altdot_word-1))
+        fi
+
+        smart-insert-last-word $_altdot_line $_altdot_word 1
+
+        if [[ $? -gt 0 ]]; then
+            _altdot_word=-1
+            _altdot_line=$((_altdot_line-1))
+            smart-insert-last-word $_altdot_line $_altdot_word 1
+        fi
+    }
+
+    noop() {
+        # nothing
+    }
+
+    chmod-alias() {
+        if [ $# -eq 0 ]; then
+            chmod +x $(fc -ln -1 | awk '{print $1}')
+        else
+            chmod +x "${@}"
+        fi
+    }
+
+    leap-back() {
+        local dir=$(dirs -p | tail -n+2 | fzf-tmux)
+        if [ "$dir" ]; then
+            eval cd "$dir"
+        fi
+
+        prompt_lambda17_precmd
+
+        context-aliases:on-precmd
+
+        zle reset-prompt
+    }
+
+    git-clone-to-sources() {
+        local who=$1
+        local reponame="$2" ; shift
+        local clone_path="${2:-$reponame}"
+
+        git clone $who/$reponame ~/sources/$clone_path
+        cd ~/sources/$clone_path
+    }
+
+    git-clone-to-sources-and-cd() {
+        local reponame="$1"
+        local dirname="${2:-${reponame#*/}}"
+
+        git clone gh:reconquest/$reponame ~/sources/$dirname
+        cd ~/sources/$dirname
+    }
+
+    move-to-gopath() {
+        local directory=${1:-.}
+        local site=${2:-github.com}
+        local remote=${3:-origin}
+
+        directory=$(readlink -f .)
+        cd $directory
+
+        local repo_path=$(
+            git remote show $remote -n \
+                | awk '/Fetch URL/{print $3}' \
+                | cut -f2 -d:
+        )
+
+        local target_path=$GOPATH/src/$site/$repo_path
+
+        mkdir -p $(dirname $target_path)
+
+        mv $directory $target_path
+
+        ln -sf $target_path $directory
+
+        cd $directory
+    }
+
+    create-new-project() {
+        local where=$1
+        local project=$2
+
+        local namespace=""
+        if [ "${project##*/}" != "$project" ]; then
+            local namespace=${project%%/*}/
+            local project=${project##*/}
+        fi
+
+        local server="github.com"
+        local org="seletskiy"
+        case "$where" in
+            d)
+                org="devops"
+                server="git.rn"
+                ;;
+            r)
+                org="reconquest"
+                server="github.com"
+                ;;
+        esac
+
+        case "$namespace" in
+            go/)
+                mkdir -p $GOPATH/src/$server/$org/$project
+                cd $GOPATH/src/$server/$org/$project
+                git init
+                ;;
+            *)
+                cks $project
+                ;;
+        esac
+
+        case "$where" in
+            d)
+                stacket repositories create devops $project
+                ;;
+            g)
+                hub create $namespace$project
+                ;;
+            r)
+                hub create reconquest/$project
+                ;;
+            m)
+                hub create seletskiy/$project
+                ;;
+        esac
+    }
+
+    github-browse() {
+        local file="$1"
+        local line="${2:+#L$2}"
+
+        local type=commit
+        if [ "$file" ]; then
+            type=blob
+        fi
+
+        hub browse -u -- $type/$(git rev-parse --short HEAD)/$file$line \
+            2>/dev/null
+    }
+
+    git-merge-with-rebase() {
+        local branch=$(git rev-parse --abbrev-ref HEAD)
+        if git rebase "${@}"; then
+            git checkout $1
+            git merge --no-ff "$branch" "${@}"
+        fi
+    }
+
+    _git-merge-with-rebase() {
+        service="git-merge" _git "${@}"
+    }
+
+    git-remote-add-me() {
+        if [ "$1" ]; then
+            local repo="gh:seletskiy/$1"; shift
+        else
+            local repo=$(
+                git remote show origin -n \
+                    | awk '/Fetch URL/{print $3}'
+            )
+            repo=$(sed -res'#(.*)/([^/]+)/([^/]+)$#\1/seletskiy/\3#' <<< $repo)
+        fi
+
+        git remote add seletskiy "$repo" "${@}"
+    }
+
+    push-to-aur() {
+        local package_name="${1:-$(basename $(git rev-parse --show-toplevel))}"
+        local package_name=${package_name%*-pkgbuild}
+        local package_name=${package_name}-git
+
+        git push ssh://aur@aur.archlinux.org/$package_name pkgbuild:master
+    }
+
+    :makepkg:branch() {
+        local branch="$1"
+
+        sed -r \
+            '/source/,/md5sums/ {
+                s/(.git)(#.+)?($|"|\))/\1#branch='$branch'\3/
+            }' \
+            -i PKGBUILD
+
+        makepkg -f
+    }
+
+    :heaver:list-or-attach() {
+        if [ $# -lt 2 ]; then
+            :heaver:list-containers "$1"
+        else
+            :heaver:attach \
+                "$(:heaver:find-host-by-container-name "$1" "$2")" \
+                "$(:heaver:find-container-by-name "$1" "$2")"
+        fi
+    }
+
+    :heaver:list-containers() {
+        local source="$1"
+        curl -s --fail $source/v2/h \
+            | jq -r '.data[].Containers[] | "\(.host) \(.name)"'
+    }
+
+    :heaver:find-host-by-container-name() {
+        :heaver:list-containers "$1" | awk "\$2 ~ /$2/" | awk '{ print $1 }'
+    }
+
+    :heaver:find-container-by-name() {
+        :heaver:list-containers "$1" | awk "\$2 ~ /$2/" | awk '{ print $2 }'
+    }
+
+    :heaver:attach() {
+        local server="$1"
+        local container="$2"
+
+        ssh "$server" -t sudo -i heaver -A "$container"
+    }
+
+    :repo:upload:repos() {
+        scp "$1" "repo.s:/tmp/$1"
+        ssh "repo.s" sudo -i \
+            repos -AC -e "${3:-current}" "${2:-arch-ngs}" "/tmp/$1"
+    }
+
+    :repo:upload:old() {
+        scp "$1" "repo.in.ngs.ru:/tmp/$1"
+        ssh "repo.in.ngs.ru" -t sudo -i sh -s <<COMMANDS
+            cd /data/repositories/ngs-packages/ && \
+                mv -v /tmp/$1 ${2:-lucid}/ && \
+                ./rescan_${2:-lucid}.sh
+COMMANDS
+    }
+
+    pdns:cname:new() {
+        local name="$1"
+        local address="$2"
+        local domain=""
+
+        IFS="." read -r domain suffix <<< "$name"
+
+        local zone="${${suffix##*.}:-s}"
+        local domain_id="$(pdns domains list -f id -n "$zone")"
+
+        pdns records add -t CNAME -d "$domain_id" \
+            -n "${address:-$domain.cname.$zone}" \
+            -c "$name"
+        pdns soa update -n "$zone"
+    }
+
+    pdns:a:new() {
+        local name="$1"
+        local address="$2"
+        local domain=""
+
+        IFS="." read -r domain suffix <<< "$name"
+
+        local zone="${${suffix##*.}:-s}"
+        local domain_id="$(pdns domains list -f id -n "$zone")"
+
+        pdns records add -t A -d "$domain_id" -n "$name" -c "$address"
+    }
+
+    pdns:srv:new() {
+        local name="$1"
+        local hostname="$2"
+        local port="${3:-80}"
+        local domain=""
+
+        IFS="." read -r domain suffix <<< "$name"
+
+        local zone="${${suffix##*.}:-s}"
+        local domain_id="$(pdns domains list -f id -n "$zone")"
+
+        pdns records add -t SRV -d "$domain_id" -l 60 \
+            -n "$domain.${suffix:-_tcp.s}" -c "0 $port $hostname"
+        pdns soa update -n s
+    }
+
+    create-new-project:go() {
+        create-new-project "$1" "go/$2"
+    }
+
+    :vim-merge() {
+        vim -o $(git status -s | grep "^UU " | awk '{print $2}')
+    }
+}
+
+# autoloads
+{
+    autoload smart-insert-last-word
+    autoload is_inside_git_repo
+    autoload is_git_repo_dirty
+    autoload is_rebase_in_progress
+}
+
+# widgets
+{
+    zle -N prepend-sudo prepend_sudo
+    zle -N smart-insert-last-word-wrapper
+    zle -N smart-insert-prev-word
+    zle -N noop noop
+    zle -N leap-back leap-back
+}
+
+# compdefs
+{
+    compdef systemctl-command-and-status=systemctl
+    compdef _git-merge-with-rebase git-merge-with-rebase
+    compdef man-search=man
+    compdef vim-which=which
+}
+
+# bindkeys
+{
+    bindkey -v
+
+    bindkey -v "^A" beginning-of-line
+    bindkey -v "^[OA" history-substring-search-up
+    bindkey -v "^[OB" history-substring-search-down
+    bindkey -v "^[[3~" delete-char
+    bindkey -v '^A' beginning-of-line
+    bindkey -v '^E' end-of-line
+    bindkey -v '^[[Z' reverse-menu-complete
+    bindkey -v '^[d' delete-word
+    bindkey -v '^K' add-params
+    bindkey -v '^O' toggle-quotes
+    bindkey -v '^ ' autosuggest-execute
+    bindkey -v '^_' favorite-directories:cd
+    bindkey -a '^[' vi-insert
+    bindkey -a '^[d' delete-word
+    bindkey -a '^[Od' backward-word
+    bindkey -a '^[Oc' forward-word
+    bindkey -a '^?' backward-delete-char
+    bindkey -a '^H' backward-delete-char
+    bindkey '^W' smart-backward-kill-word
+    bindkey '^S' smart-forward-kill-word
+    bindkey '^P' fuzzy-search-and-edit
+    bindkey '^[Od' backward-word
+    bindkey '^[Oc' forward-word
+    bindkey '^[[5~' forward-word
+    bindkey '^[[6~' backward-word
+    bindkey "^T" prepend-sudo
+    bindkey "^F" leap-back
+    bindkey "\e." smart-insert-last-word-wrapper
+    bindkey "\e," smart-insert-prev-word
+    bindkey "^[[11^" noop
+}
+
+# hijacks
+:hijack:load() {
+    hijack:reset
+    hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
+    hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
+    hijack:transform 'sed -re "s/^d([0-9]+)/dbnode\1.x/"'
+    hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)(\s|$)/\1\2.x\4/"'
+    hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -ls.seletskiy/"'
+    hijack:transform 'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'
+    hijack:transform 'sed -re "s/^(\w{1,3}) ! /\1! /"'
+
+    hijack:transform 'sed -re "s/(\w+)( .*)!$/\1!\2/"'
+
+    hijack:transform '^[ct]!? ' 'sed -r s"/([<>{}&\\\"([!?)''#^])/\\\\\1/g"'
+    hijack:transform 'sed -re "s/^c\\\! /c! /"'
+}
+
+# aliases
+:aliases:load() {
+    unalias -m '*'
+
+    alias v='vim'
+
+    alias l='ls'
+    alias ls='ls --color=always'
+    alias ll='ls -al'
+    alias li='\k'
+    alias lt='ls -alt'
+
+    alias rf='rm -rf'
+
+    alias cu='curl -LO'
+
+    alias g='git init'
+    alias z='zfs list'
+
+    alias skr='ssh-keygen -R'
+
+    alias i='imgur.sh'
+
+    alias bl='batrak -L'
+    alias bd='batrak -M 21 -n'
+    alias bp='batrak -Lf 16058'
+
+    alias fin='get-stock ABBV MSFT TSLA TWTR'
+
+    alias duty='cake --id 41882909 -L'
+
+    alias //='true'
+
+    alias lgs=':git:show-sources-status'
+
+    alias x=':sed-replace:interactive'
+
+    alias np=':carcosa-new-password'
+
+    alias am='adb-push-music'
+
+    alias -- +='systemctl --user'
+    alias -- +R='+ daemon-reload'
+    alias -- +r='+R && systemctl-command-and-status --user restart'
+    alias -- +s='+ status'
+    alias -- +t='+ stop'
+    alias -- +e='+ enable'
+    alias -- +E='+ reenable'
+    alias -- +d='+ disable'
+    alias -- +l='+ list-unit-files'
+    alias -- +p='+ list-dependencies'
+
+    alias -- +x='chmod-alias'
+
+    alias jf='sudo journalctl -ef'
+    alias ag='ag -f --hidden --silent'
+    alias /='ag'
+    alias f='find-alias'
+
+    alias ipa='ip a'
+
+    alias vf='vim $(fzf)'
+    alias vw='vim-which'
+
+    alias dt='cd ~/sources/dotfiles && git status -s'
+    alias de='cd ~/sources/dotfiles/.deadfiles && git status -s'
+    alias kb='cd ~/sources/kb'
+    alias se='cd ~/.secrets && carcosa -Lc'
+
+    alias pp='sudo pacman -S'
+    alias pp!='yes | sudo pacman --force --noconfirm -S'
+    alias ppy='sudo pacman -Sy'
+    alias ppr='sudo pacman -R'
+    alias pqo='pacman -Qo'
+    alias pql='pacman -Ql'
+    alias pqi='pacman -Qi'
+    alias ppu='sudo pacman -U'
+    alias pps='pacman -Ss'
+    alias po='pkgfile'
+
+    alias zgu='zgen update && zr'
+
+    alias asp='ASPROOT=~/sources/asp asp'
+
+    alias psx='ps axfu'
+    alias psg='psx | grep -P'
+
+    alias al='alias | grep -P --'
+
+    alias ma='mplayer -novideo'
+    alias yt='youtube-viewer -n'
+
+    alias gi='go install'
+    alias gb='go build'
+    alias gg='go get -u'
+
+    alias 1='watch -n1'
+    alias wt='test-runner-watcher 3 -A'
+    alias wt10='test-runner-watcher 10 -A'
+    alias wT='test-runner-watcher 10 -O'
+
+    alias a=':ash:inbox-or-review'
+    alias an=':ash:review-next'
+    alias ap='an approve'
+    alias aa=':ash:open-my-review'
+    alias am=':ash:merge-my-review'
+
+    alias zr='. ~/.zshrc'
+    alias za='vim -o ~/.zsh/aliases/**/*.zsh && source ~/.zshrc'
+
+    alias zsw=':zabbix:switch-on-call'
+    alias zk='zabbixctl -Tkpxxxx'
+
+    alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent \
+        | head -n1)"'
+
+    alias t='t --task-dir ~/tasks --list tasks'
+    alias tf='t -f'
+
+    # 20.12.L -> ssh 192.168.20.12
+    # 20.12.P -> ssh 172.16.20.12
+    # t1.e    -> ssh ngs.ru.t1
+    # s.s     -> ssh s.s
+    # blah.ru -> ssh blah.ru
+    # node.p  -> ssh node.in.ngs.ru
+    # node.x  -> (resolve via search domain setting) ssh node
+    alias -s  L='uber-ssh:alias -s smart-ssh-tmux -P 192.168.   -R .L'
+    alias -s  P='uber-ssh:alias -s smart-ssh-tmux -P 172.16.    -R .P'
+    alias -s  e='uber-ssh:alias -s smart-ssh-tmux -P ngs.ru.    -R .e'
+    alias -s  p='uber-ssh:alias -s smart-ssh-tmux -A .in.ngs.ru -R .p'
+    alias -s  x='uber-ssh:alias -s smart-ssh-tmux -R .x'
+    alias -s  s='uber-ssh:alias -s smart-ssh-tmux'
+    alias -s ru='uber-ssh:alias -s smart-ssh-tmux'
+    alias -s rn='uber-ssh:alias -s smart-ssh-tmux'
+
+    alias ssh='smart-ssh-tmux'
+
+    alias ck='mkdir-and-cd'
+
+    alias cks='ck-source-dir'
+
+    alias di!="cd $DOTFILES_PATH && git-smart-pull && ./bootstrap"
+    alias du!="di! $DOTFILES_PROFILE"
+    alias di="cd $DOTFILES_PATH && ./dotfiles install"
+    alias db='dotfiles-bootstrap'
+
+    alias aur='dotfiles-bootstrap-aur -S'
+
+    alias godoc='godoc-less'
+
+    alias man='man-search'
+
+    alias m='git-clone-to-sources github.com:seletskiy'
+    alias k='git-clone-to-sources github.com:kovetskiy'
+    alias r='git-clone-to-sources github.com:reconquest'
+    alias d='git-clone-to-sources git.rn:devops'
+    alias s='git-clone-to-sources git.rn:specs'
+    alias n='git-clone-to-sources git.rn:ngs'
+
+    alias mgp='move-to-gopath'
+
+    alias crd='cr d'
+    alias crr='cr r'
+    alias crm='cr m'
+
+    alias crdg='create-new-project:go d'
+    alias crrg='create-new-project:go r'
+    alias crmg='create-new-project:go m'
+
+    alias cr='create-new-project'
+
+    alias gc='git clone'
+
+    alias @=':heaver:list-or-attach "$HEAVERD_DEVELOPMENT"'
+    alias @h=':heaver:find-host-by-container-name "$HEAVERD_DEVELOPMENT"'
+    alias %=':heaver:list-or-attach "$HEAVERD_PRODUCTION"'
+    alias %h=':heaver:find-host-by-container-name "$HEAVERD_PRODUCTION"'
+
+    alias ns='nodectl -S'
+    alias nsp='nodectl -Spp'
+
+    context-aliases:init
+
+    context-aliases:match is_inside_git_repo
+        alias d='git diff'
+        alias w='git diff --cached'
+        alias a='git-smart-add'
+        alias s='git status -s'
+        alias o='git log --oneline --graph --decorate --all'
+        alias c='git-smart-commit --amend'
+        alias p='git-smart-push seletskiy'
+        alias k='git checkout'
+        alias j='k master'
+        alias r='git-smart-remote'
+        alias e='git rebase'
+        alias b='git branch'
+        alias h='git reset HEAD'
+        alias i='git add -p'
+        alias v='git mv'
+        alias R='git rm'
+        alias y='git show'
+        alias ys='y --stat'
+        alias q='git submodule update --init --recursive'
+        alias n='git checkout -b'
+        alias r='u && p'
+        alias G='cd-pkgbuild'
+        alias S='git stash -u && git stash drop'
+        alias R!='git rm -f'
+        alias a!='git-smart-commit -a --amend'
+        alias c!='git-smart-commit --amend'
+        alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
+        alias u='git-smart-pull --rebase'
+        alias g='k pkgbuild'
+        alias rs='git-smart-remote show'
+        alias ru='git-smart-remote set-url'
+        alias kb='git checkout -b'
+        alias kB='git checkout -B'
+        alias kb!='kB'
+        alias rso='git-smart-remote show origin'
+        alias st='git stash'
+        alias fk='hub fork'
+        alias pr='hub pull-request'
+        alias lk='github-browse'
+
+
+        alias mm='git-merge-with-rebase'
+
+
+        alias me='git-remote-add-me'
+
+    context-aliases:match "is_inside_git_repo && git remote show -n origin \
+            | grep -q git.rn"
+        alias pr='stacket-pull-request-create && reviewers-add > /dev/null'
+
+    context-aliases:match "test -e PKGBUILD"
+
+        alias g='go-makepkg-enhanced'
+        alias m='makepkg -f'
+
+        alias aur='push-to-aur'
+
+
+        alias mb=':makepkg:branch'
+
+    context-aliases:match "is_inside_git_repo && is_git_repo_dirty"
+        alias c='git-smart-commit'
+
+    context-aliases:match "is_inside_git_repo && \
+            [ \"\$(git log 2>/dev/null | wc -l)\" -eq 0 ]"
+
+        alias c='git add . && git commit -m "initial commit"'
+
+    context-aliases:match "is_inside_git_repo && is_rebase_in_progress"
+        alias m='git checkout --ours'
+        alias t='git checkout --theirs'
+        alias c='git rebase --continue'
+        alias b='git rebase --abort'
+
+    context-aliases:match '[ "$(pwd)" = ~/.secrets ]'
+        alias u='carcosa -Sn'
+
+    context-aliases:match 'is_inside_git_repo && [ -f .git/MERGE_MSG ]'
+        alias m=':vim-merge'
+
+    context-aliases:match "find  -maxdepth 1 -name '*.tar.xz' | grep -q ."
+        alias pu=":repo:upload:repos \$(ls -1t --color=never *.tar.xz \
+            | head -n1)"
+
+    context-aliases:match "find -maxdepth 1  -name '*.deb' | grep -q ."
+        alias pu=":repo:upload:old \$(ls -1t --color=never *.deb | head -n1)"
+}
