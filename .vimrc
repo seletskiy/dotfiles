@@ -402,7 +402,6 @@ Plug 'FooSoft/vim-argwrap'
 
 Plug 'kovetskiy/synta'
 
-
 Plug 'kovetskiy/vim-hacks'
 
 Plug 'deadcrew/deadfiles'
