@@ -1,4 +1,4 @@
-var path = 'file:///home/seletskiy/.config/surfingkeys.js'
+var path = 'file:///home/s.seletskiy/.config/surfingkeys.js'
 
 // Do not forget to enable 'Allow access to the URLs' for access to file://
 // Yandex: browser://extensions
@@ -54,6 +54,7 @@ mapkey('=', 'source settings', sourceSettings)
 mapkey('p', 'paste link',      pasteLink)
 
 map('F', 'af')
+map('o', 'go')
 
 favorites('g', {
     g: 'gmail.com',
