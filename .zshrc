@@ -294,21 +294,31 @@
     }
 
     :ash:review-next() {
-        local review=$(ash inbox reviewer | head -n1 | awk '{ print $1 }')
+        local offset="${1:-1}"
+        local review=$(ash inbox reviewer | sed -n "${offset}p" | awk '{ print $1 }')
 
-        ash "$review" "${@}"
+        ash "$review"
     }
 
     :ash:open-my-review() {
-        local review=$(ash inbox author | head -n1 | awk '{ print $1 }')
+        local offset="${1:-1}"
+        local review=$(ash inbox author | sed -n "${offset}p" | awk '{ print $1 }')
 
         ash "$review"
     }
 
     :ash:merge-my-review() {
-        local review=$(ash inbox author | head -n1 | awk '{ print $1 }')
+        local offset="${1:-1}"
+        local review=$(ash inbox author | sed -n "${offset}p" | awk '{ print $1 }')
 
         ash "$review" merge
+    }
+
+    :ash:approve() {
+        local offset="${1:-1}"
+        local review=$(ash inbox reviewer | sed -n "${offset}p" | awk '{ print $1 }')
+
+        ash "$review" approve
     }
 
     :zabbix:switch-on-call() {
@@ -653,6 +663,14 @@
         git remote add seletskiy "$repo" "${@}"
     }
 
+    :git:rebase-interactive() {
+        if grep -Pqx '\d+' <<< "$1"; then
+            git rebase -i HEAD~$1 ${@:2}
+        else
+            git rebase "${@}"
+        fi
+    }
+
     push-to-aur() {
         local package_name="${1:-$(basename $(git rev-parse --show-toplevel))}"
         local package_name=${package_name%*-pkgbuild}
@@ -954,7 +972,7 @@ COMMANDS
 
     alias a=':ash:inbox-or-review'
     alias an=':ash:review-next'
-    alias ap='an approve'
+    alias ap=':ash:approve'
     alias aa=':ash:open-my-review'
     alias am=':ash:merge-my-review'
 
@@ -1045,7 +1063,7 @@ COMMANDS
         alias k='git checkout'
         alias j='k master'
         alias r='git-smart-remote'
-        alias e='git rebase'
+        alias e=':git:rebase-interactive'
         alias b='git branch'
         alias h='git reset HEAD'
         alias i='git add -p'
