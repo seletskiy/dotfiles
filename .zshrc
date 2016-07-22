@@ -798,6 +798,12 @@ COMMANDS
         git commit -m "initial commit"
         git push origin master
     }
+
+    duty:production:update-slack-channel-topic() {
+        :heaver:list-or-attach "$HEAVERD_DEVELOPMENT" slack-devops \
+            <<< "systemctl restart caked-production &&
+                while ! update-duty auto production; do sleep 0.1; done"
+    }
 }
 
 # autoloads
