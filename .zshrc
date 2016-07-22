@@ -781,6 +781,23 @@ COMMANDS
     :vim-merge() {
         vim -o $(git status -s | grep "^UU " | awk '{print $2}')
     }
+
+    amf:new() {
+        cd ~/sources/
+
+        stacket repositories create specs "$1"
+        git clone "git+ssh://git.rn/specs/$1"
+
+        cd "$1"
+
+        bithookctl -p pre -A sould primary
+
+        touch amfspec
+
+        git add .
+        git commit -m "initial commit"
+        git push origin master
+    }
 }
 
 # autoloads
