@@ -2,7 +2,16 @@
 
 (
     if pgrep mcabber; then
-        echo /dnd Меня здесь нет. | tee ~/.mcabber/mcabber-*.fifo
+        echo /dnd Меня здесь нет. | tee ~/.mcabber/fifo/*
+
+        if pgrep -f mcabber-postdevops; then
+            find ~/.mcabber/history -lname /dev/null \
+                | grep -oP '[\w.]+@' \
+                | while read name; do
+                    echo /roster search $name
+                    echo /clear
+                done | tee ~/.mcabber/fifo/postdevops
+        fi
     fi
 ) &
 
@@ -10,5 +19,5 @@ xkb-switch -s us
 slock
 
 if pgrep mcabber; then
-    echo /online - | tee ~/.mcabber/mcabber-*.fifo
+    echo /online - | tee ~/.mcabber/fifo/*
 fi
