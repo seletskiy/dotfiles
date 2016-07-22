@@ -115,10 +115,6 @@
         }
 
         {
-            context-aliases:on-precmd
-        }
-
-        {
             favorite-directories:get() {
                 echo src 1 ~/sources
                 echo zsh 2 ~/.zsh/.zgen
@@ -133,10 +129,6 @@
 
                 zle reset-prompt
             }
-        }
-
-        {
-            hash-aliases:install
         }
 
         {
@@ -1050,6 +1042,8 @@ COMMANDS
     alias ns='nodectl -S'
     alias nsp='nodectl -Spp'
 
+    hash-aliases:install
+
     context-aliases:init
 
     context-aliases:match is_inside_git_repo
@@ -1117,8 +1111,7 @@ COMMANDS
         alias c='git-smart-commit'
 
     context-aliases:match "is_inside_git_repo && \
-            [ \"\$(git log 2>/dev/null | wc -l)\" -eq 0 ]"
-
+            ! { git log 2>/dev/null | grep -qm1 . }"
         alias c='git add . && git commit -m "initial commit"'
 
     context-aliases:match "is_inside_git_repo && is_rebase_in_progress"
@@ -1139,4 +1132,6 @@ COMMANDS
 
     context-aliases:match "find -maxdepth 1  -name '*.deb' | grep -q ."
         alias pu=":repo:upload:old \$(ls -1t --color=never *.deb | head -n1)"
+
+    context-aliases:on-precmd
 }
