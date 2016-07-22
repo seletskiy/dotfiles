@@ -13,11 +13,11 @@
                 done | tee ~/.mcabber/fifo/postdevops
         fi
     fi
-) &
+) >/dev/null &
 
 xkb-switch -s us
 slock
 
 if pgrep mcabber; then
     echo /online - | tee ~/.mcabber/fifo/*
-fi
+fi >/dev/null
