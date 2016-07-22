@@ -171,9 +171,9 @@
         zgen load knu/zsh-manydots-magic
 
         zgen load deadcrew/deadfiles
-        zgen load seletskiy/zsh-syntax-highlighting
-
         zgen load brnv/zsh-too-long
+
+        zgen load seletskiy/zsh-syntax-highlighting
 
         # must be last!
         zgen load seletskiy/zsh-autosuggestions
