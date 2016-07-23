@@ -84,7 +84,8 @@
         }
 
         {
-            eval "$(sed -r 's/\+s//' /usr/share/fzf/key-bindings.zsh)"
+            eval "$(sed -r -e 's/\+s//' -e '/bindkey/d' \
+                /usr/share/fzf/key-bindings.zsh)"
         }
 
         {
@@ -315,15 +316,29 @@
 
     :zabbix:switch-on-call() {
         local next="${1:-$USER}"
-        local current=$(zabbixctl -G NGS_ADM_WC_MAIN_SEND | awk '{print $3}')
+        local current=$(
+            zabbixctl -G NGS_ADM_WC_MAIN_SEND 2>/dev/null \
+                | awk '{print $3}'
+        )
+
+        printf "Switching pager duty: %s -> %s\n" "$current" "$next"
 
         for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND}; do
-            zabbixctl -f -G "$group" -a "$next"
-            zabbixctl -f -G "$group" -r "$current"
+            zabbixctl -f -G "$group" -a "$next" 2>/dev/null
+            zabbixctl -f -G "$group" -r "$current" 2>/dev/null
         done
 
-        zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -a "$current"
-        zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -r "$next"
+        zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -a "$current" 2>/dev/null
+        zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -r "$next" 2>/dev/null
+
+        printf "---\n"
+        for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND,NGS_ADM_WC_BACKUP_SEND}; do
+            zabbixctl -f -G "$group" 2>/dev/null
+        done
+    }
+
+    :zabbix:open-graph() {
+        zabbixctl -L "${@}" | xargs xdg-open 2>/dev/null
     }
 
     smart-ssh-tmux() {
@@ -880,7 +895,7 @@ COMMANDS
 
     hijack:transform 'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-    hijack:transform '^[ct]!? ' 'sed -r s"/([<>{}&\\\"([!?)''#^])/\\\\\1/g"'
+    hijack:transform '^[ct]!? ' 'sed -r s"/([\\$<>{}&\\\"([!?)''#^])/\\\\\1/g"'
     hijack:transform 'sed -re "s/^c\\\! /c! /"'
 }
 
@@ -992,10 +1007,17 @@ COMMANDS
     alias am=':ash:merge-my-review'
 
     alias zr='. ~/.zshrc'
-    alias za='vim -o ~/.zsh/aliases/**/*.zsh && source ~/.zshrc'
+    alias za='vim -o ~/.zshrc -c "/^# aliases" -c "normal zt" && source ~/.zshrc'
 
     alias zsw=':zabbix:switch-on-call'
-    alias zk='zabbixctl -Tkpxxxx'
+    alias zp='zabbixctl -Tpxxxxd'
+    alias zz='zabbixctl -Tpxxxxxd'
+    alias zzk='zz -k'
+    alias zk!='zzk'
+    alias zl='zabbixctl -L'
+    alias zls=':zabbix:open-graph --stacked'
+    alias zln=':zabbix:open-graph --normal'
+    alias zl!='zls'
 
     alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent \
         | head -n1)"'
