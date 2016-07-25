@@ -122,8 +122,8 @@ bindsym $mod+Shift+equal mark quick_2
 bindsym $mod+equal [con_mark="quick_2"] focus
 
 bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
-bindsym $mod+Shift+grave move scratchpad
-bindsym $mod+grave exec kuake
+bindsym $mod+Shift+grave exec kuake --focus --bottom
+bindsym $mod+grave exec kuake --terminal --bottom
 
 bindsym Mod1+Shift+Ctrl+t exec anki-add-word
 bindsym Execute exec xautolock -locknow
