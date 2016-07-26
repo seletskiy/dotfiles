@@ -323,13 +323,15 @@
 
         printf "Switching pager duty: %s -> %s\n" "$current" "$next"
 
-        for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND}; do
-            zabbixctl -f -G "$group" -a "$next" 2>/dev/null
-            zabbixctl -f -G "$group" -r "$current" 2>/dev/null
-        done
+        {
+            for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND}; do
+                zabbixctl -f -G "$group" -a "$next"
+                zabbixctl -f -G "$group" -r "$current"
+            done
 
-        zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -a "$current" 2>/dev/null
-        zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -r "$next" 2>/dev/null
+            zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -a "$current"
+            zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -r "$next"
+        } >/dev/null 2>/dev/null
 
         printf "---\n"
         for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND,NGS_ADM_WC_BACKUP_SEND}; do
@@ -702,9 +704,20 @@
         if [ $# -lt 2 ]; then
             :heaver:list-containers "$1"
         else
+            local containers=($(:heaver:find-container-by-name "$1" "$2"))
+
+            if [ "${#containers[@]}" -eq 0 ]; then
+                return 1
+            fi
+
+            if [ "${#containers[@]}" -gt 1 ]; then
+                printf "%s\n" "${containers[@]}"
+                return
+            fi
+
             :heaver:attach \
                 "$(:heaver:find-host-by-container-name "$1" "$2")" \
-                "$(:heaver:find-container-by-name "$1" "$2")"
+                "${containers[@]}"
         fi
     }
 
@@ -819,6 +832,10 @@ COMMANDS
             <<< "systemctl restart caked-production &&
                 while ! update-duty auto production; do sleep 0.1; done"
     }
+
+    orgalorg:shell:with-password() {
+        orgalorg -p -o <(eval "${@}") -i /dev/stdin -C bash -s
+    }
 }
 
 # autoloads
@@ -880,6 +897,7 @@ COMMANDS
     bindkey "\e." smart-insert-last-word-wrapper
     bindkey "\e," smart-insert-prev-word
     bindkey "^[[11^" noop
+    bindkey '^R' fzf-history-widget
 }
 
 # hijacks
@@ -1086,6 +1104,10 @@ COMMANDS
 
     alias ns='nodectl -S'
     alias nsp='nodectl -Spp'
+
+    alias xp='orgalorg -spxl'
+    alias xps='orgalorg:shell:with-password'
+    alias xpc='xp -C'
 
     hash-aliases:install
 
