@@ -836,6 +836,17 @@ COMMANDS
     orgalorg:shell:with-password() {
         orgalorg -p -o <(eval "${@}") -i /dev/stdin -C bash -s
     }
+
+    bitbucket:pull-request() {
+        stacket-pull-request-create && reviewers-add > /dev/null | {
+            tee /proc/self/fd/3 \
+                | grep devops | {
+                    echo '/roster search reviews@'
+                    echo -n '/say @here: '
+                    cat
+                } > ~/.mcabber/fifo/postdevops
+        } 3>&1
+    }
 }
 
 # autoloads
