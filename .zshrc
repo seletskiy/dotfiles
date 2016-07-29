@@ -949,7 +949,7 @@ COMMANDS
 
     alias skr='ssh-keygen -R'
 
-    alias i='imgur.sh'
+    alias i='image-upload'
 
     alias bl='batrak -L'
     alias bd='batrak -M 21 -n'
@@ -1173,7 +1173,7 @@ COMMANDS
 
     context-aliases:match "is_inside_git_repo && git remote show -n origin \
             | grep -q git.rn"
-        alias pr='stacket-pull-request-create && reviewers-add > /dev/null'
+        alias pr='bitbucket:pull-request'
 
     context-aliases:match "test -e PKGBUILD"
 
