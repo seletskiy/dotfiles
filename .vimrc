@@ -592,6 +592,7 @@ augroup ft_customization
     au FileType tex :e ++enc=cp1251
     au BufEnter /data/projects/*.conf set ft=nginx
     au BufEnter /data/projects/*.conf syn on
+    au BufEnter *.test.sh set ft=test.sh
     au FileType erlang setl comments=:%%%,:%%,:%
     au FileType php setl comments+=mb:*
     au FileType snippets setl ft+=.python
