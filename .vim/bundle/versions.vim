@@ -13,7 +13,7 @@ repeat.vim 80d2320
 revim 97eb5a9
 SearchParty 9d8e52e
 seoul256.vim ca2499b
-snippets 2bcef66
+snippets e31153b
 surround.vim 324a873
 synta 40d76be
 tabular 00e1e7f
@@ -25,7 +25,7 @@ urxvt.vim b986053
 vim-airline 4d39cb6
 vim-airline-themes 97a042a
 vim-argwrap cfe10c4
-vim-autosurround f2c7517
+vim-autosurround 0668800
 vim-bash 992d8e5
 vim-enmasse bc8e2bc
 vim-fugitive 3439f99
@@ -43,7 +43,7 @@ vim-over80 b12535a
 vim-plugvim-utils c59a498
 vimproc 0ff17bc
 vim-python-pep8-indent f4f95ee
-vim-pythonx cf3d3af
+vim-pythonx 8884830
 vim-rename dcb8a4a
 vim-ruby b3adbe3
 vim-scriptease 3fa4aab
