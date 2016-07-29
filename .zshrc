@@ -189,7 +189,7 @@
 
     case "$DOTFILES_PROFILE" in
         work)
-            prompt lambda17 196 default ☫
+            prompt lambda17 196 221 ☫
             ;;
         *)
             prompt lambda17 220 0 ☫
