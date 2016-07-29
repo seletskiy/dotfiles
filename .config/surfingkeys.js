@@ -46,7 +46,8 @@ settings.tabsThreshold = 0 // omnibar instead of table
 settings.smoothScroll = false
 
 settings.blacklist = {
-    'https://mail.google.com': 1
+    'https://mail.google.com': 1,
+    'http://vk.com': 1
 }
 
 mapkey(';', 'tabswitcher',     Normal.chooseTab)
