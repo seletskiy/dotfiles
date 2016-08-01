@@ -328,7 +328,7 @@
             return 1
         fi
 
-        ash "$review"
+        ash "$review" "${@}"
     }
 
     :zabbix:switch-on-call() {
