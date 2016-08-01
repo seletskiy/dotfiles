@@ -558,16 +558,25 @@
         zle reset-prompt
     }
 
-    git-clone-to-sources() {
+    :sources:clone() {
         local who=$1
         local reponame="$2" ; shift
         local clone_path="${2:-$reponame}"
 
+        if [ -z "$1" ]; then
+            return
+        fi
+
         git clone $who/$reponame ~/sources/$clone_path
         cd ~/sources/$clone_path
+
+        if find -name '*.go' | grep -qm 1 . || grep -q 'go-' <<< "$reponame"
+        then
+            :sources:move-to-gopath
+        fi
     }
 
-    git-clone-to-sources-and-cd() {
+    :sources:clone-and-cd() {
         local reponame="$1"
         local dirname="${2:-${reponame#*/}}"
 
@@ -575,7 +584,7 @@
         cd ~/sources/$dirname
     }
 
-    move-to-gopath() {
+    :sources:move-to-gopath() {
         local directory=${1:-.}
         local site=${2:-github.com}
         local remote=${3:-origin}
@@ -595,9 +604,7 @@
 
         mv $directory $target_path
 
-        ln -sf $target_path $directory
-
-        cd $directory
+        cd $target_path
     }
 
     create-new-project() {
@@ -1105,14 +1112,14 @@ COMMANDS
 
     alias man='man-search'
 
-    alias m='git-clone-to-sources github.com:seletskiy'
-    alias k='git-clone-to-sources github.com:kovetskiy'
-    alias r='git-clone-to-sources github.com:reconquest'
-    alias d='git-clone-to-sources git.rn:devops'
-    alias s='git-clone-to-sources git.rn:specs'
-    alias n='git-clone-to-sources git.rn:ngs'
+    alias m=':sources:clone github.com:seletskiy'
+    alias k=':sources:clone github.com:kovetskiy'
+    alias r=':sources:clone github.com:reconquest'
+    alias d=':sources:clone git.rn:devops'
+    alias s=':sources:clone git.rn:specs'
+    alias n=':sources:clone git.rn:ngs'
 
-    alias mgp='move-to-gopath'
+    alias mgp=':sources:move-to-gopath'
 
     alias crd='cr d'
     alias crr='cr r'

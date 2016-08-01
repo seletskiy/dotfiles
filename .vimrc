@@ -94,6 +94,18 @@ Plug 'Shougo/unite.vim'
         call unite#custom#alias('ash_review', 'split', 'ls')
     endfunction
 
+    function! g:UniteWithBufferDirFileOrGit()
+        lcd %:h
+
+        if fugitive#head() == ''
+            Unite -hide-source-names buffer file_rec/async
+        else
+            Unite -hide-source-names buffer git_cached git_untracked
+        endif
+
+        lcd!
+    endfunction
+
     function! g:UniteFileOrGit()
         if fugitive#head() == ''
             Unite -hide-source-names buffer file_rec/async
@@ -114,12 +126,13 @@ Plug 'Shougo/unite.vim'
     map <C-Y> :Unite -hide-source-names history/yank<CR>
     map <C-U> :Unite -hide-source-names buffer<CR>
     map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
-    map <C-E><C-P> :exec ":Unite -hide-source-names grep:.::(?=\\\\w)"<CR>
+    map <C-E><C-L> :exec ":Unite -hide-source-names grep:.::(?=\\\\w)"<CR>
     map <C-E><C-F> <Leader>*:exec "Unite -hide-source-names grep:.::".
             \substitute(@/, "\\\\<\\(.*\\)\\\\>", "\\1", "")."(?=\\\\W)"<CR>
     map <C-E><C-A> :Unite ash_inbox<CR>
     map <C-E><C-R> :UniteResume<CR>
 
+    map <C-E><C-P> :call g:UniteWithBufferDirFileOrGit()<CR>
     nmap <Tab> :Unite line:buffers<CR>
 
 Plug 'Shougo/vimproc'
