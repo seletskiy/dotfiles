@@ -13,7 +13,7 @@ repeat.vim 80d2320
 revim 97eb5a9
 SearchParty 9d8e52e
 seoul256.vim ca2499b
-snippets e31153b
+snippets 3bd6da6
 surround.vim 324a873
 synta 40d76be
 tabular 00e1e7f
@@ -25,7 +25,7 @@ urxvt.vim b986053
 vim-airline 4d39cb6
 vim-airline-themes 97a042a
 vim-argwrap cfe10c4
-vim-autosurround 0668800
+vim-autosurround 6860ea9
 vim-bash 992d8e5
 vim-enmasse bc8e2bc
 vim-fugitive 3439f99
