@@ -314,6 +314,23 @@
         ash "$review" approve
     }
 
+    :ash:fzf() {
+        local review="$(
+            ash inbox \
+                | awk '$6 = ":"' \
+                | awk -F: '{ print $1 }' \
+                | column -xt \
+                | fzf \
+                | awk '{ print $1 }'
+            )"
+
+        if [ -z "$review" ]; then
+            return 1
+        fi
+
+        ash "$review"
+    }
+
     :zabbix:switch-on-call() {
         local next="${1:-$USER}"
         local current=$(
@@ -1034,6 +1051,7 @@ COMMANDS
     alias ap=':ash:approve'
     alias aa=':ash:open-my-review'
     alias am=':ash:merge-my-review'
+    alias az=':ash:fzf'
 
     alias zr='. ~/.zshrc'
     alias za='vim -o ~/.zshrc -c "/^# aliases" -c "normal zt" && source ~/.zshrc'
