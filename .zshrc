@@ -264,18 +264,73 @@
         vim "$(which "$1")"
     }
 
-    test-runner-watcher() {
-        local timeout="$1"
-        local run_tests_args="$2"
+    :watcher:run-tests() {
+        local timeout=""
+        local extensions=()
+        local options=()
 
-        shift 2
+        while [ "${1:---}" != "--" ]; do
+            if grep -qPx '\d+' <<< "$1"; then
+                timeout="$1"
+                shift
+                continue
+            fi
 
-        if [ $# -gt 1 ]; then
-            watcher "${@}"
-        else
-            watcher -e close_write -w$timeout ".$1$" -- \
-                ./run_tests* $run_tests_args
+            if grep -qPx '\w+' <<< "$1"; then
+                extensions+=("$1")
+                shift
+                continue
+            fi
+
+            if grep -qP '^-' <<< "$1"; then
+                options+=("$1")
+                shift
+                break
+            fi
+
+            break
+        done
+
+        if [ "${1:-}" = "--" ]; then
+            shift
         fi
+
+        local command=""
+
+        if find -maxdepth 1 -name '*.go' | grep -q "."; then
+            command=("go" "test")
+        fi
+
+        if find . ./tests -maxdepth 1 -name 'run_tests*' | grep -q "."; then
+            command=(./*/run_tests*)
+        fi &>/dev/null
+
+        if [ -e Makefile ]; then
+            command=("make" "test")
+        fi
+
+        if [ -z "${options[*]}" -a "${*:-}" ]; then
+            command=("${@}")
+        fi
+
+        if [ "${options[*]}" -a "${*:-}" ]; then
+            options+=("${@}")
+        fi
+
+        if [ -z "${extensions[*]}" ]; then
+            extensions=("go" "sh" "py")
+        fi
+
+        command+=("${options[@]}")
+
+        regexp="\.(${(j:|:)extensions[@]})$"
+
+        printf "## watching %s files -> %s%s\n" \
+            "${(j:, :)extensions[*]}" "${command[*]}" \
+            "${timeout:+ (with ${timeout}s timeout)}"
+
+        watcher -e close_write ${timeout:+-w$timeout} "$regexp" \
+            -- "${command[@]}"
     }
 
     :ash:inbox-or-review() {
@@ -1098,9 +1153,8 @@ COMMANDS
     alias gg='go get -u'
 
     alias 1='watch -n1'
-    alias wt='test-runner-watcher 3 -A'
-    alias wt10='test-runner-watcher 10 -A'
-    alias wT='test-runner-watcher 10 -O'
+    alias wt=':watcher:run-tests'
+    alias wto=':watcher:run-tests -O'
 
     alias a=':ash:inbox-or-review'
     alias an=':ash:review-next'
