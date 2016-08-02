@@ -719,7 +719,7 @@
         esac
     }
 
-    github-browse() {
+    github:browse() {
         local file="$1"
         local line="${2:+#L$2}"
 
@@ -730,6 +730,29 @@
 
         hub browse -u -- $type/$(git rev-parse --short HEAD)/$file$line \
             2>/dev/null
+    }
+
+    bitbucket:browse() {
+        local file="$1"
+        local line="${2:+#$2}"
+
+        local type=commits
+        if [ "$file" ]; then
+            type=browse
+        fi
+
+        IFS='/' read host project repo <<< $(
+            git remote show -n origin \
+                | grep -P 'Push +URL' \
+                | grep -Po ':/(/[^/]+){3}' \
+                | grep -Po '[^@/]+(/[^/]+){2}$'
+        )
+
+        printf "http://%s/projects/%s/repos/%s/%s/%s%s\n" \
+            "$host" "$project" "$repo" \
+            "$type" \
+            "$(git rev-parse --short HEAD)" \
+            "$line"
     }
 
     git-merge-with-rebase() {
@@ -1263,6 +1286,7 @@ COMMANDS
         alias k='git checkout'
         alias j='k master'
         alias j!='j && rst!'
+        alias ju='j && u'
         alias r='git-smart-remote'
         alias e=':git:rebase-interactive'
         alias b='git branch'
@@ -1292,19 +1316,18 @@ COMMANDS
         alias st='git stash'
         alias fk='hub fork'
         alias pr='hub pull-request'
-        alias lk='github-browse'
         alias cln='git clean -ffdxn'
         alias cln!='git clean -ffdxn'
         alias rst!='git reset --hard'
 
+        alias lk='github:browse'
         alias mm='git-merge-with-rebase'
-
-
         alias me='git-remote-add-me'
 
     context-aliases:match "is_inside_git_repo && git remote show -n origin \
             | grep -q git.rn"
         alias pr='bitbucket:pull-request'
+        alias lk='bitbucket:browse'
 
     context-aliases:match "test -e PKGBUILD"
 
