@@ -13,7 +13,7 @@ repeat.vim 80d2320
 revim 97eb5a9
 SearchParty 9d8e52e
 seoul256.vim ca2499b
-snippets 3bd6da6
+snippets 1ca9bfb
 surround.vim 324a873
 synta 40d76be
 tabular 00e1e7f
