@@ -570,9 +570,16 @@
         git clone $who/$reponame ~/sources/$clone_path
         cd ~/sources/$clone_path
 
+        local site=$(
+            git remote show origin -n \
+                | awk '/Fetch URL/ { print $3 }' \
+                | grep -Po '[^/:]+[^/:]' \
+                | head -n1
+        )
+
         if find -name '*.go' | grep -qm 1 . || grep -q 'go-' <<< "$reponame"
         then
-            :sources:move-to-gopath
+            :sources:move-to-gopath "." "$site"
         fi
     }
 
@@ -769,7 +776,7 @@
     :repo:upload:repos() {
         scp "$1" "repo.s:/tmp/$1"
         ssh "repo.s" sudo -i \
-            repos -AC -e "${3:-current}" "${2:-arch-ngs}" "/tmp/$1"
+            repos -AC -e "${3:-stable}" "${2:-arch-ngs}" "/tmp/$1"
     }
 
     :repo:upload:old() {
