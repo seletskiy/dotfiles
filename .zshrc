@@ -864,8 +864,50 @@ COMMANDS
                 while ! update-duty auto production; do sleep 0.1; done"
     }
 
+    nodectl:filter() {
+        local include=()
+        local exclude=()
+        local filter=()
+        local args=()
+
+        while [ -n "${*:-}" ]; do
+            case "$1" in
+                -*)
+                    args+=("$1")
+                    ;;
+                ^*)
+                    exclude+=("$1")
+                    ;;
+
+                *:*)
+                    filter+=("$1")
+                    ;;
+
+                *)
+                    include+=("$1")
+                    ;;
+            esac
+
+            shift
+        done
+
+        nodectl -S ${args[@]} ${filter[@]} | {
+            if [[ "${include[@]:-}" ]]; then
+                grep -f <(printf "%s\n" "${include[@]}")
+            else
+                cat
+            fi
+        } | {
+            if [[ "${exclude[@]:-}" ]]; then
+                grep -vf <(printf "%s\n" "${exclude[@]}")
+            else
+                cat
+            fi
+        }
+    }
+
     orgalorg:shell:with-password() {
-        orgalorg -p -o <(eval "${@}") -i /dev/stdin -C bash -s
+        orgalorg -p -o <(nodectl:filter -pp "${@}") -i /dev/stdin -C bash -s
     }
 
     bitbucket:pull-request() {
@@ -1145,8 +1187,8 @@ COMMANDS
     alias %=':heaver:list-or-attach "$HEAVERD_PRODUCTION"'
     alias %h=':heaver:find-host-by-container-name "$HEAVERD_PRODUCTION"'
 
-    alias ns='nodectl -S'
-    alias nsp='nodectl -Spp'
+    alias ns='nodectl:filter'
+    alias nsp='nodectl:filter -pp'
 
     alias xp='orgalorg -spxl'
     alias xps='orgalorg:shell:with-password'
