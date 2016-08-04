@@ -1208,6 +1208,7 @@ COMMANDS
         alias p='git-smart-push seletskiy'
         alias k='git checkout'
         alias j='k master'
+        alias j!='j && rst!'
         alias r='git-smart-remote'
         alias e=':git:rebase-interactive'
         alias b='git branch'
@@ -1238,7 +1239,9 @@ COMMANDS
         alias fk='hub fork'
         alias pr='hub pull-request'
         alias lk='github-browse'
-
+        alias cln='git clean -ffdxn'
+        alias cln!='git clean -ffdxn'
+        alias rst!='git reset --hard'
 
         alias mm='git-merge-with-rebase'
 
