@@ -319,3 +319,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/diff-so-fancy
 -        https://aur.archlinux.org/packages/googler
 -        https://aur.archlinux.org/packages/ronn
+-        https://aur.archlinux.org/packages/go-fast
