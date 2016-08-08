@@ -588,6 +588,7 @@ augroup skeletons
     au BufNewFile *.go call feedkeys("Ip\<TAB>", "")
     au BufNewFile PKGBUILD call feedkeys("Ipkgbuild\<TAB>", "")
     au BufNewFile incident.md Skeleton
+    au BufNewFile sh Skeleton
     au BufNewFile run_tests.sh,run_tests set ft=sh.test-runner | Skeleton
 augroup end
 
