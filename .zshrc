@@ -989,7 +989,7 @@ COMMANDS
     }
 
     bitbucket:pull-request() {
-        stacket-pull-request-create && reviewers-add > /dev/null | {
+        stacket-pull-request-create "${@}" && reviewers-add > /dev/null | {
             tee /proc/self/fd/3 \
                 | grep devops | {
                     echo '/roster search reviews@'
