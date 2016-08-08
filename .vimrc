@@ -578,16 +578,6 @@ augroup dir_autocreate
     au BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
 augroup end
 
-"augroup skeletons
-"    au!
-"    " refactor with use of snippets
-"    au BufNewFile *.php exec "normal I<?php\<ESC>2o"
-"    au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
-"    au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
-
-"    au BufNewFile PKGBUILD call feedkeys("Ipkgbuild\<TAB>", "")
-"augroup end
-
 augroup pkgbuild
     au!
 
