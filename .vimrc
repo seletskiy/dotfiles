@@ -395,8 +395,6 @@ Plug 'hynek/vim-python-pep8-indent'
 
 Plug 'klen/python-mode'
 
-Plug 'Olical/vim-enmasse'
-
 Plug 'kovetskiy/ycm-sh'
 
 Plug 'vim-utils/vim-man'
@@ -405,6 +403,8 @@ Plug 'kovetskiy/vim-bash'
 
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
     vnoremap <C-T> :Tabularize /
+
+Plug 'deadcrew/deadfiles'
 
 Plug 'kovetskiy/vim-ski'
     let g:skeletons_dir=$HOME . '/.deadfiles/.vim/skeletons/'
@@ -417,7 +417,7 @@ Plug 'kovetskiy/synta'
 
 Plug 'kovetskiy/vim-hacks'
 
-Plug 'deadcrew/deadfiles'
+Plug 'tpope/vim-abolish'
 
 call plug#end()
 
@@ -578,19 +578,15 @@ augroup dir_autocreate
     au BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
 augroup end
 
-augroup skeletons
-    au!
-    " refactor with use of snippets
-    au BufNewFile *.php exec "normal I<?php\<ESC>2o"
-    au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
-    au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
+"augroup skeletons
+"    au!
+"    " refactor with use of snippets
+"    au BufNewFile *.php exec "normal I<?php\<ESC>2o"
+"    au BufNewFile *.py exec "normal I# coding=utf8\<CR>\<ESC>xxo"
+"    au BufNewFile rebar.config,*.app.src exec "normal I%% vim: et ts=4 sw=4 ft=erlang\<CR>\<ESC>xx"
 
-    au BufNewFile *.go call feedkeys("Ip\<TAB>", "")
-    au BufNewFile PKGBUILD call feedkeys("Ipkgbuild\<TAB>", "")
-    au BufNewFile incident.md Skeleton
-    au BufNewFile sh Skeleton
-    au BufNewFile run_tests.sh,run_tests set ft=sh.test-runner | Skeleton
-augroup end
+"    au BufNewFile PKGBUILD call feedkeys("Ipkgbuild\<TAB>", "")
+"augroup end
 
 augroup pkgbuild
     au!
