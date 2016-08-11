@@ -1255,8 +1255,8 @@ COMMANDS
     alias yt='youtube-viewer -n'
 
     alias gi='go install'
-    alias gb='go build'
-    alias gg='go get -u'
+    alias gb='go-fast-build'
+    alias gg='go get'
 
     alias 1='watch -n1'
     alias wt=':watcher:run-tests'
