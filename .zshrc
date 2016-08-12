@@ -16,7 +16,11 @@
 
 # environment
 {
+    display=$DISPLAY
+
     eval $(systemctl --user show-environment | sed "s/^/export /")
+
+    export DISPLAY=${display:-$DISPLAY}
 }
 
 # prezto
