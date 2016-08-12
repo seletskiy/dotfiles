@@ -607,7 +607,7 @@ augroup go_src
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
     au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
-    au FileType go map <buffer> <Leader>b :call synta#go#build(1)<CR>
+    au FileType go map <buffer> <Leader>b :call go#fmt#Format(-1)<CR>:call synta#go#build(1)<CR>
     au FileType go call InstallGoHandlers()
     au BufEnter *.go let g:argwrap_tail_comma = 1
     au FileType go nnoremap <buffer> <C-T> :call synta#quickfix#next()<CR>
@@ -697,7 +697,6 @@ function! InstallGoHandlers()
     augroup go_fmt
         au!
 
-        autocmd BufWritePre *.go silent! call go#fmt#Format(-1)
         autocmd BufWritePre *.go if searchpos('^\v(const)?\s+usage\s+\=\s+`', 'nw') != [0, 0] |
                 \ silent! exe '/^\v(const)?\s+usage\s+\=\s+`/+1,/^`$/s/\t/    /' |
             \ endif
