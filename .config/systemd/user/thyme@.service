@@ -1,0 +1,13 @@
+[Unit]
+Description=Thyme Time Tracker
+Requires=graphical.target
+After=graphical.target
+Before=display-manager.target
+
+[Service]
+ExecStart=/usr/bin/sh -c 'while sleep %i; do \
+        thyme track -o %h/.thyme.json; \
+    done'
+
+[Install]
+WantedBy=display-manager.target
