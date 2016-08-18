@@ -1,6 +1,6 @@
 ag.vim 6ac76d9
 ashium bb64784
-deadfiles a622ff2
+deadfiles 7254a58
 fzf bd43770
 Gundo f443470
 matchem 79a9ec5
@@ -14,7 +14,7 @@ repeat.vim 80d2320
 revim 97eb5a9
 SearchParty 9d8e52e
 seoul256.vim ca2499b
-snippets 1ca9bfb
+snippets 4c2b220
 surround.vim 324a873
 synta 147f584
 tabular 00e1e7f
@@ -23,6 +23,7 @@ ultisnips 1c6b4f7
 unite-git fdf7457
 unite.vim e1e5847
 urxvt.vim b986053
+vim-abolish 125908e
 vim-airline 7b9b68f
 vim-airline-themes 7964787
 vim-argwrap 068637f
@@ -31,6 +32,7 @@ vim-bash 992d8e5
 vim-choosewin d9fe961
 vim-enmasse bc8e2bc
 vim-fugitive 3439f99
+vim-gitgutter 26c6b54
 vim-go 523d5a4
 vim-go-impl 3a68a75
 vim-hacks f423472
@@ -46,7 +48,7 @@ vim-over80 b12535a
 vim-plugvim-utils c59a498
 vimproc c2f6b82
 vim-python-pep8-indent f4f95ee
-vim-pythonx 4f97095
+vim-pythonx f6abb89
 vim-rename dcb8a4a
 vim-ruby 97bc933
 vim-scriptease 3fa4aab
@@ -55,4 +57,4 @@ vim-ski 24d8cd0
 vim-sneak 5cd2642
 vim-toml f6f79f3
 ycm-sh d1f85f3
-YouCompleteMe 0de1c0c
+YouCompleteMe 576bef6
