@@ -151,6 +151,8 @@ Plug 'vim-airline/vim-airline'
     let g:airline#extensions#whitespace#symbol = '☼'
 
 Plug 'seletskiy/vim-autosurround'
+    au! User _OverwriteMatchemMappings
+
     " oh, how I like to remap different plugin mappings
     au User _OverwriteMatchemMappings
         \ autocmd VimEnter,BufEnter,FileType *
@@ -244,6 +246,7 @@ Plug 'Valloric/YouCompleteMe'
     let g:ycm_collect_identifiers_from_comments_and_strings = 1
     let g:ycm_collect_identifiers_from_tags_files = 1
     let g:ycm_use_ultisnips_completer = 0
+    let g:ycm_complete_in_comments = 1
 
     let g:pymode_lint_ignore = 'E128'
 
@@ -419,6 +422,8 @@ Plug 'kovetskiy/vim-hacks'
 
 Plug 'tpope/vim-abolish'
 
+Plug 'airblade/vim-gitgutter'
+
 call plug#end()
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
@@ -436,6 +441,7 @@ set rtp^=~/.vim
 
 set tags=./.tags;/
 
+set title
 set encoding=utf-8
 set printencoding=cp1251
 set timeoutlen=180
@@ -688,7 +694,13 @@ func! _tags_sh()
 endfunc!
 
 augroup sh_src
+    au!
     au FileType sh call _tags_sh()
+augroup end
+
+augroup titlestring
+    au!
+    au BufEnter * set titlestring=vim\ [%{expand(\"%:~:.:h\")}\ >\ %t%(\ %M%)]
 augroup end
 
 com! BufWipe silent! bufdo! bw | enew!

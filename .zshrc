@@ -226,8 +226,8 @@
         sed-replace "${@}" '!'
 
         printf "\n"
-        printf "%.0s=" {1..10} "\n"
-        printf "Do you want to replace? [y/N] "
+        printf "%.0s=" {1..10}
+        printf "\nDo you want to replace? [y/N] "
 
         read -r agree
 
@@ -430,12 +430,14 @@
             tmux set status-right \
                 "$format φ $SSH_ADDRESS #[default bg=default] "
             tmux set status on
+            tmux rename-window "ssh [$SSH_ADDRESS]"
         fi
 
         smart-ssh "${@}"
 
         if [ "$TMUX" ]; then
             tmux set status off
+            tmux rename-window ""
         fi
     }
 
@@ -946,6 +948,11 @@ COMMANDS
                 while ! update-duty auto production; do sleep 0.1; done"
     }
 
+    duty:dev:set-slack-channel-topic() {
+        :heaver:list-or-attach "$HEAVERD_DEVELOPMENT" slack-devops \
+            <<< "update-duty $1 dev"
+    }
+
     nodectl:filter() {
         local include=()
         local exclude=()
@@ -1070,6 +1077,7 @@ COMMANDS
 :hijack:load() {
     hijack:reset
     hijack:transform 'sed -re "s/^p([0-9]+)/phpnode\1.x/"'
+    hijack:transform 'sed -re "s/^t([0-9]+)/task\1.x/"'
     hijack:transform 'sed -re "s/^f([0-9]+)/frontend\1.x/"'
     hijack:transform 'sed -re "s/^d([0-9]+)/dbnode\1.x/"'
     hijack:transform 'sed -re "s/^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)(\s|$)/\1\2.x\4/"'
@@ -1196,8 +1204,7 @@ COMMANDS
     alias zsw=':zabbix:switch-on-call'
     alias zp='zabbixctl -Tpxxxxd'
     alias zz='zabbixctl -Tpxxxxxd'
-    alias zzk='zz -k'
-    alias zk!='zzk'
+    alias zk='zz -k'
     alias zl='zabbixctl -L'
     alias zls=':zabbix:open-graph --stacked'
     alias zln=':zabbix:open-graph --normal'
@@ -1275,6 +1282,9 @@ COMMANDS
     alias xps='orgalorg:shell:with-password'
     alias xpc='xp -C'
 
+    alias thr='thyme show -i ~/.thyme.json -w stats > /tmp/thyme.html &&
+        xdg-open /tmp/thyme.html && rm /tmp/thyme.html'
+
     hash-aliases:install
 
     context-aliases:init
@@ -1331,18 +1341,19 @@ COMMANDS
         alias mm='git-merge-with-rebase'
         alias me='git-remote-add-me'
 
+        alias ppr='p && pr'
+
     context-aliases:match "is_inside_git_repo && git remote show -n origin \
             | grep -q git.rn"
         alias pr='bitbucket:pull-request'
         alias lk='bitbucket:browse'
 
     context-aliases:match "test -e PKGBUILD"
-
         alias g='go-makepkg-enhanced'
         alias m='makepkg -f'
+        alias mu='m && ppu'
 
         alias aur='push-to-aur'
-
 
         alias mb=':makepkg:branch'
 
