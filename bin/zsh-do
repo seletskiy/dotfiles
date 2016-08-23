@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [[ "$1" = "sudo" && "${2:0:1}" != "-" ]]; then
+    exec=("exec" "sudo" "-E")
+    shift
+else
+    exec=("exec")
+fi
+
+"${exec[@]}" zsh -is <<< "${*}"
