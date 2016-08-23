@@ -1,3 +1,12 @@
+# detect zsh -is
+{
+    INTERACTIVE=$([ -t 0 ] && echo 1)
+
+    :is-interactive() {
+        [ "$INTERACTIVE" ]
+    }
+}
+
 # globals
 {
     ZDOTDIR=~/.zsh
@@ -18,7 +27,12 @@
 {
     display=$DISPLAY
 
-    eval $(systemctl --user show-environment | sed "s/^/export /")
+    eval $(
+        eval ${SUDO_USER:+sudo -iu $SUDO_USER} \
+            DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS \
+            systemctl --user show-environment \
+                | sed "s/^/export /"
+    )
 
     export DISPLAY=${display:-$DISPLAY}
 }
@@ -47,6 +61,16 @@
 # plugins
 {
     {
+        if ! :is-interactive; then
+            compinit() {
+                :
+            }
+
+            compdef() {
+                :
+            }
+        fi
+
         # unless, zsh will crash with core dumped
         if ! type zgen >/dev/null 2>&1; then
             source /usr/share/zsh/scripts/zgen/zgen.zsh
@@ -73,46 +97,11 @@
         }
 
         {
-            if [ ! "$_autopair_initialized" ]; then
-                _autopair_initialized=1
-                autopair-init
-            fi
-        }
-
-        {
             unsetopt correct
             unsetopt correct_all
             unsetopt global_rcs
 
             setopt menu_complete
-        }
-
-        {
-            eval "$(sed -r -e 's/\+s//' -e '/bindkey/d' \
-                /usr/share/fzf/key-bindings.zsh)"
-        }
-
-        {
-            if [ "$BACKGROUND" = "light" ]; then
-                ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=250"
-            else
-
-                ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
-            fi
-
-            ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
-        }
-
-        {
-            zstyle ':zle:smart-kill-word' precise always
-            zstyle ':zle:smart-kill-word' keep-slash on
-        }
-
-        {
-            if [ ${+functions[manydots-magic]} -eq 0 ]; then
-                autoload -Uz manydots-magic
-                manydots-magic
-            fi
         }
 
         {
@@ -136,12 +125,49 @@
             }
         }
 
-        {
-            ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-            ZSH_HIGHLIGHT_PATTERNS=('//*' 'fg=245')
-        }
+        if :is-interactive; then
+            {
+                if [ ! "$_autopair_initialized" ]; then
+                    _autopair_initialized=1
+                    autopair-init
+                fi
+            }
+
+            {
+                eval "$(sed -r -e 's/\+s//' -e '/bindkey/d' \
+                    /usr/share/fzf/key-bindings.zsh)"
+            }
+
+            {
+                if [ "$BACKGROUND" = "light" ]; then
+                    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=250"
+                else
+
+                    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
+                fi
+
+                ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
+            }
+
+            {
+                zstyle ':zle:smart-kill-word' precise always
+                zstyle ':zle:smart-kill-word' keep-slash on
+            }
+
+            {
+                if [ ${+functions[manydots-magic]} -eq 0 ]; then
+                    autoload -Uz manydots-magic
+                    manydots-magic
+                fi
+            }
+        fi
 
         compinit
+    }
+
+    {
+        ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+        ZSH_HIGHLIGHT_PATTERNS=('//*' 'fg=245')
     }
 
     if ! zgen saved; then
@@ -157,64 +183,66 @@
     fi
 
     :plugins:load() {
-        zgen load kovetskiy/zsh-add-params
-        zgen load kovetskiy/zsh-quotes
         zgen load kovetskiy/zsh-smart-ssh
         zgen load seletskiy/zsh-ssh-urxvt
-        zgen load seletskiy/zsh-ash-completion
         zgen load seletskiy/zsh-context-aliases
         zgen load seletskiy/zsh-git-smart-commands
-        zgen load seletskiy/zsh-smart-kill-word
         zgen load seletskiy/zsh-hijack
         zgen load seletskiy/zsh-hash-aliases
-
         zgen load seletskiy/zsh-uber-ssh
-        zgen load seletskiy/zsh-favorite-directories
-
-        zgen load hlissner/zsh-autopair autopair.zsh
-
-        zgen load knu/zsh-manydots-magic
-
         zgen load deadcrew/deadfiles
-        zgen load brnv/zsh-too-long
 
-        zgen load seletskiy/zsh-syntax-highlighting
+        if :is-interactive; then
+            zgen load seletskiy/zsh-ash-completion
+            zgen load seletskiy/zsh-smart-kill-word
+            zgen load kovetskiy/zsh-add-params
+            zgen load kovetskiy/zsh-quotes
+            zgen load seletskiy/zsh-favorite-directories
+            zgen load hlissner/zsh-autopair autopair.zsh
+            zgen load knu/zsh-manydots-magic
+            zgen load brnv/zsh-too-long
+            zgen load seletskiy/zsh-syntax-highlighting
 
-        # must be last!
-        zgen load seletskiy/zsh-autosuggestions
+            # must be last!
+            zgen load seletskiy/zsh-autosuggestions
+        fi
     }
 }
 
-# prompt
-{
-    source /usr/share/zsh/functions/Prompts/promptinit
+if :is-interactive; then
+    # prompt
+    {
+        source /usr/share/zsh/functions/Prompts/promptinit
 
-    promptinit
+        promptinit
 
-    case "$DOTFILES_PROFILE" in
-        work)
-            prompt lambda17 196 221 ☫
-            ;;
-        *)
-            prompt lambda17 220 0 ☫
-            ;;
-    esac
-}
+        case "$DOTFILES_PROFILE" in
+            work)
+                prompt lambda17 196 221 ☫
+                ;;
+            *)
+                prompt lambda17 220 0 ☫
+                ;;
+        esac
+    }
 
-# term
-{
-    if [ "$BACKGROUND" ]; then
-        eval `dircolors ~/.dircolors.$BACKGROUND`
-        if [ "$TMUX" ]; then
-            export TERM=screen-256color
+    # term
+    {
+        if [ "$BACKGROUND" ]; then
+            eval `dircolors ~/.dircolors.$BACKGROUND`
+            if [ "$TMUX" ]; then
+                export TERM=screen-256color
+            fi
         fi
-    fi
-}
+    }
 
-# ctrl-q
-{
-    stty -ixon
-}
+    # ctrl-q
+    {
+        stty -ixon
+    }
+else
+    PS1=""
+fi
 
 # functions
 {
@@ -1385,3 +1413,7 @@ COMMANDS
 
     context-aliases:on-precmd
 }
+
+if ! :is-interactive; then
+    zle -R
+fi
