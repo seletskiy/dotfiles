@@ -362,7 +362,7 @@ fi
             "${timeout:+ (with ${timeout}s timeout)}"
 
         watcher -e close_write ${timeout:+-w$timeout} "$regexp" \
-            -- "${command[@]}"
+            -- zsh-do "${command[@]}"
     }
 
     :ash:inbox-or-review() {
