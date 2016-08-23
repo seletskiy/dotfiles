@@ -1037,6 +1037,45 @@ COMMANDS
                 } > ~/.mcabber/fifo/postdevops
         } 3>&1
     }
+
+    :go:compile-and-run() {
+        local pwd="$(pwd)"
+        local name="$(basename "$pwd")"
+        local binary="$pwd/$name"
+
+        if grep -q "$GOPATH" <<< "$pwd"; then
+            if ! go-fast-build; then
+                return 1
+            fi
+        fi
+
+        if stat "$binary" &>/dev/null; then
+            "$binary" "$@"
+        else
+            echo "nothing to launch" >&2
+            return 1
+        fi
+    }
+
+    :run-vim() {
+        echo -n '// running vim...'
+        vim < /dev/tty
+        zle -I
+    }
+
+    :ssh:find-and-connect-vpn-machine() {
+        local ip=$(
+            orgalorg -twc 500 -o192.168.34.{2..10} -C echo 2>/dev/null \
+                | awk '{print $1}'
+        )
+
+        if [[ -z "$ip" ]]; then
+            echo "can't find connected vpn machine" >&2
+            return 1
+        fi
+
+        uber-ssh:alias -s smart-ssh-tmux "$ip"
+    }
 }
 
 # autoloads
@@ -1054,6 +1093,7 @@ COMMANDS
     zle -N smart-insert-prev-word
     zle -N noop noop
     zle -N leap-back leap-back
+    zle -N :run-vim :run-vim
 }
 
 # compdefs
@@ -1099,6 +1139,7 @@ COMMANDS
     bindkey "\e," smart-insert-prev-word
     bindkey "^[[11^" noop
     bindkey '^R' fzf-history-widget
+    bindkey '^Y' :run-vim
 }
 
 # hijacks
@@ -1154,11 +1195,13 @@ COMMANDS
 
     alias lgs=':git:show-sources-status'
 
-    alias x=':sed-replace:interactive'
+    alias s/=':sed-replace:interactive'
+
+    alias x=':go:compile-and-run'
 
     alias np=':carcosa-new-password'
 
-    alias am='adb-push-music'
+    alias apm='adb-push-music'
 
     alias -- +='systemctl --user'
     alias -- +R='+ daemon-reload'
@@ -1244,6 +1287,8 @@ COMMANDS
     alias t='t --task-dir ~/tasks --list tasks'
     alias tf='t -f'
 
+    alias ssh='uber-ssh:alias -s smart-ssh-tmux'
+
     # 20.12.L -> ssh 192.168.20.12
     # 20.12.P -> ssh 172.16.20.12
     # t1.e    -> ssh ngs.ru.t1
@@ -1259,8 +1304,6 @@ COMMANDS
     alias -s  s='uber-ssh:alias -s smart-ssh-tmux'
     alias -s ru='uber-ssh:alias -s smart-ssh-tmux'
     alias -s rn='uber-ssh:alias -s smart-ssh-tmux'
-
-    alias ssh='smart-ssh-tmux'
 
     alias ck='mkdir-and-cd'
 
@@ -1312,6 +1355,8 @@ COMMANDS
 
     alias thr='thyme show -i ~/.thyme.json -w stats > /tmp/thyme.html &&
         xdg-open /tmp/thyme.html && rm /tmp/thyme.html'
+
+    alias home=':ssh:find-and-connect-vpn-machine'
 
     hash-aliases:install
 
