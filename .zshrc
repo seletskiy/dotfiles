@@ -1231,6 +1231,7 @@ COMMANDS
     alias ppr='sudo pacman -R'
     alias pqo='pacman -Qo'
     alias pql='pacman -Ql'
+    alias pqs='pacman -Qs'
     alias pqi='pacman -Qi'
     alias ppu='sudo pacman -U'
     alias pps='pacman -Ss'
