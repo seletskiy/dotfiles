@@ -17,3 +17,8 @@
 *background:  #1c1c1c
 *foreground:  #d8d8d8
 *cursorColor: #ffffff
+
+rofi.color-normal: #eeeeee, #444444, #eeeeee, #af8700, #ffffff
+rofi.color-active: #eeeeee, #444444, #eeeeee, #af8700, #ffffff
+rofi.color-urgent: #eeeeee, #444444, #eeeeee, #af8700, #ffffff
+rofi.color-window: #eeeeee, #444444
