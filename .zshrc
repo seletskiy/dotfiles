@@ -1057,12 +1057,6 @@ COMMANDS
         fi
     }
 
-    :run-vim() {
-        echo -n '// running vim...'
-        vim < /dev/tty
-        zle -I
-    }
-
     :ssh:find-and-connect-vpn-machine() {
         local ip=$(
             orgalorg -twc 500 -o192.168.34.{2..10} -C echo 2>/dev/null \
@@ -1093,7 +1087,6 @@ COMMANDS
     zle -N smart-insert-prev-word
     zle -N noop noop
     zle -N leap-back leap-back
-    zle -N :run-vim :run-vim
 }
 
 # compdefs
@@ -1139,7 +1132,8 @@ COMMANDS
     bindkey "\e," smart-insert-prev-word
     bindkey "^[[11^" noop
     bindkey '^R' fzf-history-widget
-    bindkey '^Y' :run-vim
+
+    bindkey -s '^Y' 'vim\n'
 }
 
 # hijacks
