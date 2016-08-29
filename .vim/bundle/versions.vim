@@ -14,7 +14,7 @@ repeat.vim 80d2320
 revim 97eb5a9
 SearchParty f0d68ee
 seoul256.vim ca2499b
-snippets 31fb5f4
+snippets af3ee37
 surround.vim 324a873
 synta fcfa11b
 tabular 00e1e7f
@@ -45,12 +45,12 @@ vim-over80 b12535a
 vim-plugvim-utils c59a498
 vimproc 25cb83f
 vim-python-pep8-indent 1022821
-vim-pythonx f6abb89
+vim-pythonx c4326e4
 vim-rename dcb8a4a
 vim-ruby 7764bf0
 vim-scriptease b9720e6
 vim-signature 537651a
-vim-ski 24d8cd0
+vim-ski f52bbd4
 vim-sneak 28a505a
 vim-toml f6f79f3
 ycm-sh d1f85f3
