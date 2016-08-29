@@ -133,7 +133,6 @@ Plug 'Shougo/unite.vim'
     map <C-E><C-R> :UniteResume<CR>
 
     map <C-E><C-P> :call g:UniteWithBufferDirFileOrGit()<CR>
-    nmap <Tab> :Unite line:buffers<CR>
 
 Plug 'Shougo/vimproc'
 
@@ -515,7 +514,9 @@ nnoremap <Leader><Leader>u :PlugUpdate<CR>
 nnoremap <Leader><Leader>i :PlugInstall<CR>
 nnoremap <silent> <Leader>s :ArgWrap<CR>
 
-nnoremap <silent> <Leader>l :call search('[\(\{\[]', 'cs')<CR>l:ArgWrap<CR>
+
+map <silent> <Leader>l <Plug>NERDCommenterToggle
+nnoremap <silent> @l :call search('[\(\{\[]', 'cs')<CR>l:ArgWrap<CR>
 nnoremap <silent> <Leader>s :ArgWrap<CR>
 
 nnoremap <C-H> <C-W>h
@@ -550,6 +551,9 @@ nnoremap <F1> <ESC>
 
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
+
+" feedkeys required to trigger autocompletion
+imap <C-F> tx<Tab><C-R>=feedkeys('.')?'':''<CR>
 
 augroup review_setting
     au!
