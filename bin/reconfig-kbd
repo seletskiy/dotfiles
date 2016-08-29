@@ -22,14 +22,13 @@ fi
 
 setxkbmap \
     -keycodes \
-        "evdev+aliases(qwerty)" \
+        "evdev+aliases(qwerty)+hjkl" \
     -symbols $(echo \
         "pc+us+ru:2"`             # common layout settings`\
         "level3(lwin_switch)"`    # use win as lvl3 modifier`\
         "mod4-lvl3"`              # use lvl3 as mod4`\
         "hjkl"`                   # map mod3+hjkl to arrow keys`\
         "hjkl(caret)"`            # mod3+u-]: home/end/insert/delete/pgup/pkdown`\
-        "hjkl(rctrl-rshift)"`     # remap right ctrl to right shift`\
         "hjkl(fast-enter)"`       # mod3+m -> enter`\
         "capslock(swapescape)"`   # use capslock as esc`\
         "altwin(swap_lalt_lwin)"`   # swap alt and win`\
@@ -37,7 +36,6 @@ setxkbmap \
         "rshift-ralt"`            # swap rshift and ralt`\
         "level5-menu"`            # use menu for level5 switch as well`\
         "ctrl-shift-caps"`        # remap ctrl/shift/caps` \
-        "terminate(ctrl_alt_bksp)"`# terminate X on ctrl+alt+bs`\
         "footswitch(f8-second-layout)"` # pedal for switching language layout`\
         "footswitch(f7-multi-key)"`     # pedal for compose key`\
         "esc-to-execute"`     # esc to lock screen`\

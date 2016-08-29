@@ -1,0 +1,56 @@
+super + Return
+    marvex -cs
+
+super + Shift + Return
+    marvex -cs
+
+super + r
+    modal-run
+
+shift + Delete
+    window-kill-focused
+
+super + control + s
+    i3-sensible-browser
+
+super + F1
+    screenshot > ~/.screenshot
+
+super + F2
+    volume down
+
+super + F3
+    volume up
+
+super + F5
+    mplayer-control pt_step -1
+
+super + F6
+    mplayer-control pause
+
+super + F7
+    mplayer-control pt_step 1
+
+Execute
+    screen-lock
+
+super + y
+    translator
+
+super + Shift + backslash
+    kuake --focus --height 75
+
+super + grave
+    kuake --terminal --bottom
+
+super + backslash
+    autocomplete-tmux
+
+super + x
+    carcosa-ui
+
+super + b
+    google
+
+super + Print
+    screenshot public

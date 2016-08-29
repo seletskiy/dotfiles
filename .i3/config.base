@@ -26,17 +26,10 @@ font pango:Monaco 12
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec marvex -cs
 bindsym $mod+Shift+Return exec i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+Ctrl+q kill
-
-bindsym $mod+r exec dmenu_run
-bindsym $mod+x exec carcosa-ui
-bindsym $mod+b exec google
-bindsym $mod+backslash exec autocomplete-tmux
-bindsym $mod+y exec translator
 
 # change focus
 bindsym Ctrl+Home focus left
@@ -113,8 +106,6 @@ bindsym $mod+Shift+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym Mod1+Shift+Ctrl+r restart
 
-bindsym Ctrl+Insert exec sh -c 'xsel | xclip -selection clipbord'
-
 bindsym $mod+Shift+minus mark quick_1
 bindsym $mod+minus [con_mark="quick_1"] focus
 
@@ -122,11 +113,6 @@ bindsym $mod+Shift+equal mark quick_2
 bindsym $mod+equal [con_mark="quick_2"] focus
 
 bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
-bindsym $mod+Shift+grave exec kuake --focus --bottom
-bindsym $mod+grave exec kuake --terminal --bottom
-
-bindsym Mod1+Shift+Ctrl+t exec anki-add-word
-bindsym Execute exec xautolock -locknow
 
 bindsym --release Print exec screenshot
 bindsym --release Shift+Print exec screenshot border
@@ -134,13 +120,8 @@ bindsym --release Ctrl+Print exec screenshot delayed
 bindsym --release $mod+Print exec screenshot select
 bindsym --release Ctrl+Shift+Print exec screenshot public
 
-bindcode 233 exec sudo brightness up
-bindcode 232 exec sudo brightness down
-
-bindsym F2 exec volume down
-bindsym F3 exec volume up
-
 for_window [class="google-chrome"] border none
+for_window [title="Uzbl Browser"] floating enable
 for_window [instance="^screenkey$"] floating enable
 for_window [class="fontforge"] floating enable
 for_window [instance="^kuake_"] floating enable
@@ -177,6 +158,11 @@ mode "resize" {
         bindsym Ctrl+Shift+j move down 1px
         bindsym Ctrl+Shift+k move up 1px
         bindsym Ctrl+Shift+l move right 1px
+
+        bindsym Shift+h move left 50 px
+        bindsym Shift+j move down 50 px
+        bindsym Shift+k move up 50 px
+        bindsym Shift+l move right 50 px
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
