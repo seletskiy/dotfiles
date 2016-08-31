@@ -12,6 +12,11 @@ lock()    { exec 200<$0 ; flock 200 || exit 1 ; }
 action="$1"
 data="$2"
 
+if [[ "$action" == "MSG" && "$data" == "IN" ]]; then
+    action="UNREAD"
+    data="_ _ _ 1"
+fi
+
 if [ "$action" == "UNREAD" ]; then
     count="$(cut -d' ' -f4 <<< "$data")"
     if [ ${count%% *} -gt 0 ]; then
