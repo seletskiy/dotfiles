@@ -115,14 +115,6 @@
                 echo vim 2 ~/.vim
                 echo go 3 ~/.go/src
             }
-
-            favorite-directories:on-cd() {
-                context-aliases:on-precmd
-
-                prompt_lambda17_precmd
-
-                zle reset-prompt
-            }
         }
 
         if :is-interactive; then
@@ -642,9 +634,9 @@ fi
             eval cd "$dir"
         fi
 
-        prompt_lambda17_precmd
-
-        context-aliases:on-precmd
+        for func in "${precmd_functions[@]}"; do
+            "$func"
+        done
 
         zle reset-prompt
     }
