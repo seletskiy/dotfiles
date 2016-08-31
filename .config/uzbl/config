@@ -470,7 +470,7 @@ set formfiller spawn @scripts_dir/formfiller.sh
 #@cbind  gO<uri:>_       = event NEW_TAB_NEXT %s
 
 # Closing / resetting
-@cbind  gC              = exit
+@cbind  q               = exit
 @cbind  gQ              = event CLEAN_TABS
 
 # Tab navigating
@@ -548,7 +548,5 @@ set ssl_policy fail
 # === Post-load misc commands ================================================
 spawn_sync_exec @scripts_dir/load_cookies.sh
 spawn_sync_exec @scripts_dir/load_cookies.sh @(echo "${UZBL_SESSION_COOKIE_FILE:-@data_home/session-cookies.txt}")@
-
-uri about:blank
 
 # vim: set fdm=syntax:
