@@ -87,4 +87,6 @@ qmark c http://confluence.rn/
 
 set! browser.tabs.closeWindowWithLastTab=false
 
+echomsg
+
 " vim: set ft=vimperator:
