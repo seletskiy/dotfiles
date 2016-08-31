@@ -501,7 +501,9 @@ fi
             local line="-        $url"
             $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE <<< "$line"
             if [ $? -eq 0 ]; then
-                echo "$line" >> $DOTFILES_PATH/profiles.txt
+                if ! grep -qFx -- "$line" $DOTFILES_PATH/profiles.txt; then
+                    echo "$line" >> $DOTFILES_PATH/profiles.txt
+                fi
                 return 1
             fi
         else
