@@ -158,7 +158,7 @@
     }
 
     {
-        ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+        ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern hijack)
         ZSH_HIGHLIGHT_PATTERNS=('//*' 'fg=245')
     }
 
@@ -1096,7 +1096,7 @@ COMMANDS
     bindkey -v
 
     bindkey -v "^A" beginning-of-line
-    bindkey -v "^[OA" history-substring-search-up
+    bindkey -v "^[OA" hijack:history-substring-search-up
     bindkey -v "^[OB" history-substring-search-down
     bindkey -v "^[[3~" delete-char
     bindkey -v '^A' beginning-of-line
