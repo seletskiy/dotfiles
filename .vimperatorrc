@@ -1,3 +1,5 @@
+source ~/.deadfiles/.vimperator/settings.vim
+
 command! -nargs=1 Plug source ~/.vimperator/bundle/<args>.js
 
 Plug auto_reload
