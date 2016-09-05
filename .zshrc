@@ -1172,6 +1172,8 @@ COMMANDS
 :aliases:load() {
     unalias -m '*'
 
+    alias help=guess
+
     alias v='vim'
 
     alias l='ls'
