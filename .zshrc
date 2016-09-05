@@ -1213,16 +1213,16 @@ COMMANDS
 
     alias apm='adb-push-music'
 
-    alias -- +='systemctl --user'
-    alias -- +R='+ daemon-reload'
-    alias -- +r='+R && systemctl-command-and-status --user restart'
-    alias -- +s='+ status'
-    alias -- +t='+ stop'
-    alias -- +e='+ enable'
-    alias -- +E='+ reenable'
-    alias -- +d='+ disable'
-    alias -- +l='+ list-unit-files'
-    alias -- +p='+ list-dependencies'
+    alias -- ::='systemctl --user'
+    alias -- :R=':: daemon-reload'
+    alias -- :r=':R && systemctl-command-and-status --user restart'
+    alias -- :s=':: status'
+    alias -- :t=':: stop'
+    alias -- :e=':: enable'
+    alias -- :E=':: reenable'
+    alias -- :d=':: disable'
+    alias -- :l=':: list-unit-files'
+    alias -- :p=':: list-dependencies'
 
     alias -- +x='chmod-alias'
 
@@ -1425,7 +1425,7 @@ COMMANDS
         alias mm='git-merge-with-rebase'
         alias me='git-remote-add-me'
 
-        alias ppr='p && pr'
+        alias prr='p && pr'
 
     context-aliases:match "is_inside_git_repo && git remote show -n origin \
             | grep -q git.rn"
