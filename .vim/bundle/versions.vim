@@ -14,7 +14,7 @@ repeat.vim 80d2320
 revim 97eb5a9
 SearchParty f0d68ee
 seoul256.vim ca2499b
-snippets af3ee37
+snippets d9e5387
 surround.vim 324a873
 synta fcfa11b
 tabular 00e1e7f
@@ -32,7 +32,7 @@ vim-bash 992d8e5
 vim-enmasse bc8e2bc
 vim-fugitive aac85a2
 vim-gitgutter 26c6b54
-vim-go c63c798
+vim-go a4ba0a5
 vim-hacks f423472
 vim-indent-object 1d3e4aa
 vim-jsbeautify caffda6
