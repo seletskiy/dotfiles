@@ -280,8 +280,16 @@ fi
         systemctl $1 status "$3"
     }
 
-    find-alias() {
-        find -iname "*$1*"
+    :find() {
+        find -iname "*$1*" "${@:2}"
+    }
+
+    :find-and-cd() {
+        cd "$(
+            :find "$1" -type d \
+                | grep -vw '\.git' \
+                | head -n1
+        )"
     }
 
     vim-which() {
@@ -1064,14 +1072,18 @@ COMMANDS
 
         uber-ssh:alias -s smart-ssh-tmux "$ip"
     }
+
+    :ag() {
+        ag -f --hidden --silent "${(j:.*?:)@}"
+    }
 }
 
 # autoloads
 {
-    autoload smart-insert-last-word
-    autoload is_inside_git_repo
-    autoload is_git_repo_dirty
-    autoload is_rebase_in_progress
+    autoload -U smart-insert-last-word
+    autoload -U is_inside_git_repo
+    autoload -U is_git_repo_dirty
+    autoload -U is_rebase_in_progress
 }
 
 # widgets
@@ -1161,7 +1173,7 @@ COMMANDS
     hijack:transform '^(\w+)( .*)!$' \
         'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-    hijack:transform '^[ct]!? ' \
+    hijack:transform '^[ct/]!? ' \
         'sed -r s"/([\\$<>{}&\\\"([!?)''#^])/\\\\\1/g"'
 
     hijack:transform '^c\\!' \
@@ -1173,6 +1185,8 @@ COMMANDS
     unalias -m '*'
 
     alias help=guess
+
+    alias xdis='printf "Disconnecting from %s" $DISPLAY && export DISPLAY='
 
     alias v='vim'
 
@@ -1227,9 +1241,9 @@ COMMANDS
     alias -- +x='chmod-alias'
 
     alias jf='sudo journalctl -ef'
-    alias ag='ag -f --hidden --silent'
-    alias /='ag'
-    alias f='find-alias'
+    alias /=':ag'
+    alias f=':find'
+    alias fd=':find-and-cd'
 
     alias ipa='ip a'
 
@@ -1388,6 +1402,7 @@ COMMANDS
         alias r='git-smart-remote'
         alias e=':git:rebase-interactive'
         alias b='git branch'
+        alias bm='git branch -m'
         alias h='git reset HEAD'
         alias i='git add -p'
         alias v='git mv'
@@ -1460,11 +1475,11 @@ COMMANDS
     context-aliases:match 'is_inside_git_repo && [ -f .git/MERGE_MSG ]'
         alias m=':vim-merge'
 
-    context-aliases:match "find  -maxdepth 1 -name '*.tar.xz' | grep -q ."
+    context-aliases:match "test -e PKGBUILD && find -maxdepth 1 -name '*.tar.xz' | grep -q ."
         alias pu=":repo:upload:repos \$(ls -1t --color=never *.tar.xz \
             | head -n1)"
 
-    context-aliases:match "find -maxdepth 1  -name '*.deb' | grep -q ."
+    context-aliases:match "find -maxdepth 1 -name '*.deb' | grep -q ."
         alias pu=":repo:upload:old \$(ls -1t --color=never *.deb | head -n1)"
 
     context-aliases:on-precmd
