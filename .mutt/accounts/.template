@@ -1,4 +1,4 @@
-account-hook {{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}/ '\
+folder-hook {{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}/ '\
     set \
     sendmail="msmtp --host={{SMTP HOST}} \
         --user={{USER}} --from={{USER}} \
@@ -8,10 +8,12 @@ account-hook {{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}/ '\
         --auth=on"\
     imap_pass={{PASSWORD}}\
     from="{{FULL NAME}} <{{USER}}>"\
-    folder={{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}/\
     record="+{{SENT MAILBOX}}"\
     postponed="+{{DRAFT MAILBOX}}"'
 
+set folder='{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}'
+
 set spoolfile='{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}'
 
-macro index \C{{HOTKEY}} "<enter-command>set spoolfile='{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}'<enter>"
+macro index \C{{HOTKEY}} \
+    "<change-folder>{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}<enter>"
