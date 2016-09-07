@@ -1405,7 +1405,7 @@ COMMANDS
         alias bm='git branch -m'
         alias h='git reset HEAD'
         alias i='git add -p'
-        alias v='git mv'
+        alias M='git mv'
         alias R='git rm'
         alias y='git show'
         alias ys='y --stat'
