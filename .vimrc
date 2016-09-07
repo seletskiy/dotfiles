@@ -555,6 +555,8 @@ cnoremap <C-E> <End>
 " feedkeys required to trigger autocompletion
 imap <C-F> tx<Tab><C-R>=feedkeys('.')?'':''<CR>
 
+noremap <expr> <Leader>e feedkeys(":sp " . expand('%:h') . "/")
+
 augroup review_setting
     au!
     au FileType diff nnoremap <buffer> <CR> o<C-R>=(getline('.')[0] == '#')
