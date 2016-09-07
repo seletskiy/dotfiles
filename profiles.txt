@@ -323,6 +323,5 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/sxhkd-git
 -        https://aur.archlinux.org/packages/thyme-git
 -        https://aur.archlinux.org/packages/nodejs-nomnoml-cli
--        uzbl-browser
 -        https://aur.archlinux.org/packages/xcb-util-xrm
 -        https://aur.archlinux.org/packages/sxhkd-git
