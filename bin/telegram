@@ -1,3 +1,3 @@
 #!/bin/bash
 
-i3-sensible-browser --app=https://web.telegram.org
+google-chrome-stable --app=https://web.telegram.org --kiosk
