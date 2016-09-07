@@ -19,7 +19,7 @@ surround.vim 324a873
 synta fcfa11b
 tabular 00e1e7f
 targets.vim 80cafa1
-ultisnips ff10513
+ultisnips 7549874
 unite-git fdf7457
 unite.vim 9696ff5
 urxvt.vim b986053
