@@ -659,6 +659,10 @@ fi
         fi
 
         git clone $who/$reponame ~/sources/$clone_path
+        if [[ "$?" != "0" ]]; then
+            return 1
+        fi
+
         cd ~/sources/$clone_path
 
         local site=$(
@@ -1189,6 +1193,7 @@ COMMANDS
     alias xdis='printf "Disconnecting from %s" $DISPLAY && export DISPLAY='
 
     alias v='vim'
+    alias vi='vim'
 
     alias l='ls'
     alias ls='ls --color=always'
@@ -1252,7 +1257,7 @@ COMMANDS
 
     alias dt='cd ~/sources/dotfiles && git status -s'
     alias de='cd ~/sources/dotfiles/.deadfiles && git status -s'
-    alias kb='cd ~/sources/kb'
+    alias kb='cd ~/sources/kb; :knowledge-base'
     alias se='cd ~/.secrets && carcosa -Lc'
 
     alias pp='sudo pacman -S'
@@ -1424,9 +1429,8 @@ COMMANDS
         alias gmp='gm && pu'
         alias rs='git-smart-remote show'
         alias ru='git-smart-remote set-url'
-        alias kb='git checkout -b'
-        alias kB='git checkout -B'
-        alias kb!='kB'
+        alias kn='git checkout -b'
+        alias kj='git checkout -B'
         alias rso='git-smart-remote show origin'
         alias st='git stash'
         alias fk='hub fork'
