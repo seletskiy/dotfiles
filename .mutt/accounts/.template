@@ -8,6 +8,8 @@ folder-hook {{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}/ '\
         --auth=on"\
     imap_pass={{PASSWORD}}\
     from="{{FULL NAME}} <{{USER}}>"\
+    folder="{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}"\
+    spoolfile="{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}"\
     record="+{{SENT MAILBOX}}"\
     postponed="+{{DRAFT MAILBOX}}"'
 
