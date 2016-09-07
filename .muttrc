@@ -2,7 +2,6 @@ set ssl_verify_dates=no
 set ssl_verify_host=no
 set sleep_time=0
 set index_format="%4C %Z %{%d/%m %T} %-20.20L %s"
-set sendmail=/usr/bin/msmtp
 set markers=no
 set editor=vim
 set imap_check_subscribed
@@ -26,7 +25,8 @@ mailboxes =INBOX
 
 source $alias_file
 source ~/.mutt/theme_$BACKGROUND
-source ~/.mutt/accounts
+source ~/.mutt/accounts/personal
+source ~/.mutt/accounts/office
 
 alternative_order text/plain text/html
 auto_view text/html text/calendar

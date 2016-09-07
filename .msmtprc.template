@@ -1,7 +1,0 @@
-account default
-host {{HOST}}
-from {{USERNAME}}
-user {{USERNAME}}
-auth plain
-password {{PASSWORD}}
-logfile ~/.msmtp.log
