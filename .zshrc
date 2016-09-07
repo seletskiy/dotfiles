@@ -1061,7 +1061,7 @@ COMMANDS
 
     :ssh:find-and-connect-vpn-machine() {
         local ip=$(
-            orgalorg -twc 500 -o192.168.34.{2..10} -C echo 2>/dev/null \
+            orgalorg -twc 500 -o192.168.34.{2..15} -C echo 2>/dev/null \
                 | awk '{print $1}'
         )
 
