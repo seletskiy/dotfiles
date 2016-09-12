@@ -7,4 +7,4 @@ else
     exec=("exec")
 fi
 
-"${exec[@]}" zsh -is <<< "${*}"
+"${exec[@]}" zsh -ic "$(printf '%q ' "${@}")"
