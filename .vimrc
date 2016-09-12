@@ -14,6 +14,8 @@ call plug#begin('~/.vim/bundle')
 
 let mapleader="\<space>"
 
+let s:nbsp=" "
+
 let g:vim_indent_cont = shiftwidth()
 
 Plug 'nevar/revim', {'for': 'erlang'}
@@ -421,15 +423,22 @@ Plug 'tpope/vim-abolish'
 
 Plug 'airblade/vim-gitgutter'
     let g:gitgutter_sign_removed='-'
-    let g:gitgutter_sign_modified=' ±'
+    let g:gitgutter_sign_modified=s:nbsp . '±'
     let g:gitgutter_sign_modified_removed='-±'
     let g:gitgutter_sign_column_always=1
+    let g:gitgutter_enabled = 0
 
 call plug#end()
 
+sign define GitGutterDummy text=.
+exec "sign place 9999 line=9999 name=GitGutterDummy buffer=" . bufnr('')
+
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 au VimEnter * au! run_after_plug_end
-au VimEnter * EclimDisable
+
+au CursorHold * if get(g:, 'gitgutter_flicker_workaround')
+    \ | GitGutterEnable
+    \ | let g:gitgutter_flicker_workaround=1
 
 colorscheme reconquest
 
