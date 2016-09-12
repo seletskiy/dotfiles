@@ -1,4 +1,5 @@
 source ~/.deadfiles/.vimperator/settings.vim
+source ~/.deadfiles/.vimperator/mappings.vim
 
 command! -nargs=1 Plug source ~/.vimperator/bundle/<args>.js
 
@@ -19,21 +20,7 @@ set hto=0
 nnoremap j 5j
 nnoremap k 5k
 
-map s :tabopen https://slovari.yandex.ru/
-
-map } gt
-map { gT
-
-nmap <C-K> <NOP>
 map gf <NOP>
-
-map <C-I> gt
-map <C-U> gT
-
-nmap v cv
-vmap c <Esc><Esc>c
-
-imap <C-}> <C-I>
 
 nnoremap % :source ~/.vimperatorrc<CR>:echomsg "Resourced!"<CR>
 
