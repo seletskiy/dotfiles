@@ -43,7 +43,7 @@ Plug 'repeat.vim'
 
 Plug 'tpope/vim-scriptease'
 
-Plug 'junegunn/seoul256.vim'
+Plug 'reconquest/vim-colorscheme'
 
 Plug 'surround.vim'
     vmap ( S)i
@@ -140,13 +140,11 @@ Plug 'Shougo/neoyank.vim'
 
 Plug 'yuku-t/unite-git'
 
-Plug 'vim-airline/vim-airline-themes'
-
 Plug 'vim-airline/vim-airline'
     let g:airline_powerline_fonts = 1
     let g:airline_inactive_collapse = 1
     let g:airline_skip_empty_sections = 1
-    let g:airline_theme = 'lucius'
+    let g:airline_theme = 'reconquest'
     let g:airline#extensions#whitespace#symbol = '☼'
 
 Plug 'seletskiy/vim-autosurround'
@@ -254,7 +252,7 @@ Plug 'kristijanhusak/vim-multiple-cursors'
 Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
     let g:go_snippet_engine = "skip"
-    let g:go_fmt_autosave = 0
+    let g:go_fmt_autosave = 1
     let g:go_metalinter_command = "gometalinter"
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
@@ -422,12 +420,18 @@ Plug 'kovetskiy/vim-hacks'
 Plug 'tpope/vim-abolish'
 
 Plug 'airblade/vim-gitgutter'
+    let g:gitgutter_sign_removed='-'
+    let g:gitgutter_sign_modified=' ±'
+    let g:gitgutter_sign_modified_removed='-±'
+    let g:gitgutter_sign_column_always=1
 
 call plug#end()
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 au VimEnter * au! run_after_plug_end
 au VimEnter * EclimDisable
+
+colorscheme reconquest
 
 syntax on
 
@@ -480,8 +484,8 @@ set shortmess+=sAIc
 set formatoptions=qrn1tol
 
 set list
-set lcs=eol:¶,trail:·,tab:\ \  " <- trailing space here
-set fcs=vert:\  " <- trailing space there
+set lcs=trail:·,tab:\ \  " <- trailing space here
+set fcs=vert:│
 
 let html_no_rendering=1
 
@@ -499,10 +503,10 @@ map <Leader>` :tabnew ~/.vimrc<CR>
 noremap <Leader>v V`]
 noremap <Leader>p "1p
 
-nmap <Leader>; :w<CR>
-nmap <Leader>q :q<CR>
-nmap <Leader>Q :qa!<CR>
-imap <Leader>; <C-\><C-O>:w<CR>
+nmap <silent> <Leader>; :w<CR>
+nmap <silent> <Leader>q :q<CR>
+nmap <silent> <Leader>Q :qa!<CR>
+imap <silent> <Leader>; <C-\><C-O>:w<CR>
 
 
 map <Leader>3 :b #<CR>
@@ -619,7 +623,7 @@ augroup go_src
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
     au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
     au FileType go map <buffer> <Leader>t <Plug>(go-test)
-    au FileType go map <buffer> <Leader>b :call go#fmt#Format(-1)<CR>:call synta#go#build(1)<CR>
+    au FileType go map <buffer> <Leader>b <CR>:call synta#go#build(1)<CR>
     au FileType go call InstallGoHandlers()
     au BufEnter *.go let g:argwrap_tail_comma = 1
     au FileType go nnoremap <buffer> <C-T> :call synta#quickfix#next()<CR>
@@ -736,90 +740,90 @@ function! QuickFixOpenAll()
     endfor
 endfunction
 
-fun! g:LightRoom()
-    set background=light
-    let g:seoul256_background = 255
-    call s:ApplyColorscheme()
-    hi underlined cterm=underline
-    hi CursorLineNr ctermfg=241 ctermbg=none
-    hi LineNr ctermfg=249 ctermbg=none
-    hi SignColumn ctermfg=none ctermbg=none
-    hi ColorColumn ctermbg=15
-    hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
-    hi NonText ctermfg=254 cterm=none term=none
-    hi Search cterm=none ctermfg=none ctermbg=226
-    hi IncSearch cterm=none ctermfg=none ctermbg=230
-    hi Visual ctermbg=231 cterm=none ctermfg=none
+"fun! g:LightRoom()
+"    set background=light
+"    let g:seoul256_background = 255
+"    call s:ApplyColorscheme()
+"    hi underlined cterm=underline
+"    hi CursorLineNr ctermfg=241 ctermbg=none
+"    hi LineNr ctermfg=249 ctermbg=none
+"    hi SignColumn ctermfg=none ctermbg=none
+"    hi ColorColumn ctermbg=15
+"    hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
+"    hi NonText ctermfg=254 cterm=none term=none
+"    hi Search cterm=none ctermfg=none ctermbg=226
+"    hi IncSearch cterm=none ctermfg=none ctermbg=230
+"    hi Visual ctermbg=231 cterm=none ctermfg=none
 
-    hi Function ctermfg=14 cterm=bold
+"    hi Function ctermfg=14 cterm=bold
 
-    hi Cursor ctermbg=0 ctermfg=15
-    hi PmenuSel ctermbg=136 ctermfg=15 cterm=bold
+"    hi Cursor ctermbg=0 ctermfg=15
+"    hi PmenuSel ctermbg=136 ctermfg=15 cterm=bold
 
-    hi SneakPluginTarget cterm=none ctermbg=190 ctermfg=88
-    hi SneakStreakMask ctermbg=190 ctermfg=190 cterm=bold
-    hi SneakStreakTarget ctermbg=190 ctermfg=88 cterm=bold
-endfun
+"    hi SneakPluginTarget cterm=none ctermbg=190 ctermfg=88
+"    hi SneakStreakMask ctermbg=190 ctermfg=190 cterm=bold
+"    hi SneakStreakTarget ctermbg=190 ctermfg=88 cterm=bold
+"endfun
 
-fun! g:DarkRoom()
-    set background=dark
-    let g:seoul256_background = 234
-    call s:ApplyColorscheme()
-    hi underlined cterm=underline
-    hi CursorLineNr ctermfg=242 ctermbg=none
-    hi LineNr ctermfg=238 ctermbg=none
-    hi SignColumn ctermfg=none ctermbg=none
-    hi ColorColumn ctermbg=235
-    hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
-    hi NonText ctermfg=235 cterm=none term=none
-    hi IncSearch cterm=bold ctermfg=234 ctermbg=220
-    hi Visual ctermbg=17 cterm=none ctermfg=none
+"fun! g:DarkRoom()
+"    set background=dark
+"    let g:seoul256_background = 234
+"    call s:ApplyColorscheme()
+"    hi underlined cterm=underline
+"    hi CursorLineNr ctermfg=242 ctermbg=none
+"    hi LineNr ctermfg=238 ctermbg=none
+"    hi SignColumn ctermfg=none ctermbg=none
+"    hi ColorColumn ctermbg=235
+"    hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
+"    hi NonText ctermfg=235 cterm=none term=none
+"    hi IncSearch cterm=bold ctermfg=234 ctermbg=220
+"    hi Visual ctermbg=17 cterm=none ctermfg=none
 
-    hi Cursor ctermbg=15 ctermfg=0
-    hi PmenuSel ctermbg=136 ctermfg=16 cterm=bold
-    hi Pmenu ctermfg=245 ctermbg=235 cterm=none
+"    hi Cursor ctermbg=15 ctermfg=0
+"    hi PmenuSel ctermbg=136 ctermfg=16 cterm=bold
+"    hi Pmenu ctermfg=245 ctermbg=235 cterm=none
 
-    hi SneakPluginTarget cterm=none ctermbg=17 ctermfg=15
-    hi SneakStreakMask ctermbg=17 ctermfg=17 cterm=bold
-    hi SneakStreakTarget ctermbg=17 ctermfg=15 cterm=bold
-    hi level10c ctermfg=208
-    hi level14c ctermfg=208
-endfun
+"    hi SneakPluginTarget cterm=none ctermbg=17 ctermfg=15
+"    hi SneakStreakMask ctermbg=17 ctermfg=17 cterm=bold
+"    hi SneakStreakTarget ctermbg=17 ctermfg=15 cterm=bold
+"    hi level10c ctermfg=208
+"    hi level14c ctermfg=208
+"endfun
 
-fun! s:ApplyColorscheme()
-    colorscheme seoul256
-    hi! link WildMenu PmenuSel
-    hi erlangEdocTag cterm=bold ctermfg=14
-    hi erlangFunHead cterm=bold ctermfg=4
-    hi SPM1 ctermbg=1 ctermfg=7
-    hi SPM2 ctermbg=2 ctermfg=7
-    hi SPM3 ctermbg=3 ctermfg=7
-    hi SPM4 ctermbg=4 ctermfg=7
-    hi SPM5 ctermbg=5 ctermfg=7
-    hi SPM6 ctermbg=6 ctermfg=7
-    hi VertSplit cterm=none ctermbg=none ctermfg=16
+"fun! s:ApplyColorscheme()
+"    colorscheme seoul256
+"    hi! link WildMenu PmenuSel
+"    hi erlangEdocTag cterm=bold ctermfg=14
+"    hi erlangFunHead cterm=bold ctermfg=4
+"    hi SPM1 ctermbg=1 ctermfg=7
+"    hi SPM2 ctermbg=2 ctermfg=7
+"    hi SPM3 ctermbg=3 ctermfg=7
+"    hi SPM4 ctermbg=4 ctermfg=7
+"    hi SPM5 ctermbg=5 ctermfg=7
+"    hi SPM6 ctermbg=6 ctermfg=7
+"    hi VertSplit cterm=none ctermbg=none ctermfg=16
 
-    " disable weird standout mode
-    hi ErrorMsg term=none
-    hi Todo term=none
-    hi SignColumn term=none
-    hi FoldColumn term=none
-    hi Folded term=none
-    hi WildMenu term=none
-    hi WarningMsg term=none
-    hi Question term=none
-    hi ErrorMsg term=none
+"    " disable weird standout mode
+"    hi ErrorMsg term=none
+"    hi Todo term=none
+"    hi SignColumn term=none
+"    hi FoldColumn term=none
+"    hi Folded term=none
+"    hi WildMenu term=none
+"    hi WarningMsg term=none
+"    hi Question term=none
+"    hi ErrorMsg term=none
 
-    hi SneakPluginTarget cterm=none ctermbg=190 ctermfg=88
-    hi SneakStreakMask ctermbg=190 ctermfg=190 cterm=bold
-    hi SneakStreakTarget ctermbg=190 ctermfg=88 cterm=bold
-endfun
+"    hi SneakPluginTarget cterm=none ctermbg=190 ctermfg=88
+"    hi SneakStreakMask ctermbg=190 ctermfg=190 cterm=bold
+"    hi SneakStreakTarget ctermbg=190 ctermfg=88 cterm=bold
+"endfun
 
-if system('background') == "light\n"
-    call g:LightRoom()
-else
-    call g:DarkRoom()
-endif
+"if system('background') == "light\n"
+"    call g:LightRoom()
+"else
+"    call g:DarkRoom()
+"endif
 
 fun! g:ApplySyntaxForDiffComments()
     let extension = expand('%:e')
