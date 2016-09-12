@@ -2,12 +2,11 @@
 Description=Simple X Hotkey Daemon
 Documentation=man:sxhkd(1)
 Requires=graphical.target
-After=display-manager.target
+Before=display-manager.target
 
 [Service]
 ExecStart=/usr/bin/sxhkd
 ExecReload=/usr/bin/kill -SIGUSR1 $MAINPID
 
 [Install]
-WantedBy=graphical.target
-
+WantedBy=display-manager.target
