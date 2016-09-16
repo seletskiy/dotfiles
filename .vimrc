@@ -493,7 +493,7 @@ set shortmess+=sAIc
 set formatoptions=qrn1tol
 
 set list
-set lcs=trail:·,tab:\ \  " <- trailing space here
+set lcs=trail:·,space:┈,tab:\┈\┈ " <- trailing space here
 set fcs=vert:│
 
 let html_no_rendering=1
