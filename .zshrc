@@ -296,10 +296,11 @@ fi
         vim "$(which "$1")"
     }
 
-    :watcher:run-tests() {
+    :watcher:guess() {
         local timeout=""
         local extensions=()
         local options=()
+        local directory=false
 
         while [ "${1:---}" != "--" ]; do
             if grep -qPx '\d+' <<< "$1"; then
@@ -310,6 +311,12 @@ fi
 
             if grep -qPx '\w+' <<< "$1"; then
                 extensions+=("$1")
+                shift
+                continue
+            fi
+
+            if grep -qP '^[./]$' <<< "$1"; then
+                directory=true
                 shift
                 continue
             fi
@@ -357,12 +364,17 @@ fi
 
         regexp="\.(${(j:|:)extensions[@]})$"
 
+        if $directory; then
+            extensions=("current directory")
+            regexp="."
+        fi
+
         printf "## watching %s files -> %s%s\n" \
             "${(j:, :)extensions[*]}" "${command[*]}" \
             "${timeout:+ (with ${timeout}s timeout)}"
 
-        watcher -e close_write ${timeout:+-w$timeout} "$regexp" \
-            -- zsh-do "${command[@]}"
+        watcher -e close_write \
+            ${timeout:+-w$timeout} "$regexp" -- zsh-do "${command[@]}"
     }
 
     :ash:inbox-or-review() {
@@ -1080,6 +1092,68 @@ COMMANDS
     :ag() {
         ag -f --hidden --silent "${(j:.*?:)@}"
     }
+
+    :knowledge-base:toc:overwrite() {
+        local readme="$1"
+
+        touch "$readme"
+
+        sed -r '/^\s*\*/,$d' -i "$readme"
+
+        :knowledge-base:toc:generate "${readme:h}" >> "$readme"
+    }
+
+    :knowledge-base:toc:generate() {
+        local dir="$1"
+
+        cd "$dir"
+
+        tree --noreport -ifP '*.md' \
+            | sed -r '1d;s|^\./||' \
+            | grep -v '^README' \
+            | sed -r 's|\S+|&\n(&)|' \
+            | sed -r '/^[^(]/{s|(.*)[0-9]{2}-|\1|;s|[^/]+/|\t|g}' \
+            | sed -r '/^[^(]/{s|-| |g;s|\.md||;s|\S.*|[&]|}' \
+            | sed -r '/\[/{N;s|\n||}' \
+            | sed -r 's|\S|* &|'
+    }
+
+    :knowledge-base:create() {
+        local base="$1"
+        shift
+
+        local glob="${(j:/:)${${@:1:-1}[@]/#/*-}}"
+        local name="${@[-1]}"
+
+        cd "$base"
+
+        if ! eval "cd $glob" &>/dev/null; then
+            printf "%s\n" "specified directory tree does not exist"
+            return 1
+        fi
+
+        local index=$(
+            find -type f \
+                | sed -r 's|^\./||' \
+                | grep -oP '^\d{2}' \
+                | sort -rn \
+                | head -n1
+        )
+
+        local next=$(printf "%02d" "$(( index + 1 ))")
+
+        vim "$next-$name.md"
+
+        :knowledge-base:toc:overwrite "$base/README.md"
+    }
+
+    :knowledge-base() {
+        if [[ ! "${*}" ]]; then
+            return
+        fi
+
+        :knowledge-base:create "${@}"
+    }
 }
 
 # autoloads
@@ -1143,7 +1217,7 @@ COMMANDS
     bindkey "^[[11^" noop
     bindkey '^R' fzf-history-widget
 
-    bindkey -s '^Y' 'vim\n'
+    bindkey -s '^Y' 'vim-select-file\n'
 }
 
 # hijacks
@@ -1196,7 +1270,7 @@ COMMANDS
     alias vi='vim'
 
     alias l='ls'
-    alias ls='ls --color=always'
+    alias ls='ls --color=auto'
     alias ll='ls -al'
     alias li='\k'
     alias lt='ls -alt'
@@ -1257,7 +1331,7 @@ COMMANDS
 
     alias dt='cd ~/sources/dotfiles && git status -s'
     alias de='cd ~/sources/dotfiles/.deadfiles && git status -s'
-    alias kb='cd ~/sources/kb; :knowledge-base'
+    alias kb=':knowledge-base ~/sources/kb'
     alias se='cd ~/.secrets && carcosa -Lc'
 
     alias pp='sudo pacman -S'
@@ -1289,8 +1363,8 @@ COMMANDS
     alias gg='go get'
 
     alias 1='watch -n1'
-    alias wt=':watcher:run-tests'
-    alias wto=':watcher:run-tests -O'
+    alias wt=':watcher:guess'
+    alias wto=':watcher:guess -O'
 
     alias a=':ash:inbox-or-review'
     alias an=':ash:review-next'
