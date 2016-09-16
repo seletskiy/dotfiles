@@ -29,7 +29,7 @@ vim-airline-themes 020b843
 vim-argwrap 7e5465a
 vim-autosurround 6860ea9
 vim-bash 992d8e5
-vim-colorscheme 42864a8
+vim-colorscheme ad036b4
 vim-enmasse bc8e2bc
 vim-fugitive aac85a2
 vim-gitgutter efa1ead
