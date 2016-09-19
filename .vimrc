@@ -516,7 +516,7 @@ nmap <silent> <Leader>; :w<CR>
 nmap <silent> <Leader>q :q<CR>
 nmap <silent> <Leader>Q :qa!<CR>
 imap <silent> <Leader>; <C-\><C-O>:w<CR>
-
+nmap <silent> <Leader>e :e!<CR>
 
 map <Leader>3 :b #<CR>
 map <Leader>c :cd %:h<CR>
@@ -568,7 +568,7 @@ cnoremap <C-E> <End>
 " feedkeys required to trigger autocompletion
 imap <C-F> tx<Tab><C-R>=feedkeys('.')?'':''<CR>
 
-noremap <expr> <Leader>e feedkeys(":sp " . expand('%:h') . "/")
+noremap <expr> <Leader>s feedkeys(":sp " . expand('%:h') . "/")
 
 augroup review_setting
     au!
