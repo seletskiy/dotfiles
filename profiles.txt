@@ -325,3 +325,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/nodejs-nomnoml-cli
 -        https://aur.archlinux.org/packages/xcb-util-xrm
 -        https://aur.archlinux.org/packages/sxhkd-git
+-        https://aur.archlinux.org/packages/ttf-roboto

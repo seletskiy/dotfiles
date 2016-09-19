@@ -374,7 +374,7 @@ fi
             "${timeout:+ (with ${timeout}s timeout)}"
 
         watcher -e close_write \
-            ${timeout:+-w$timeout} "$regexp" -- zsh-do "${command[@]}"
+            ${timeout:+-w$timeout} "$regexp" -- "${command[@]}"
     }
 
     :ash:inbox-or-review() {
@@ -751,7 +751,7 @@ fi
                 git init
                 ;;
             *)
-                cks $project
+                ck-source-dir $project
                 ;;
         esac
 
@@ -1154,6 +1154,14 @@ COMMANDS
 
         :knowledge-base:create "${@}"
     }
+
+    :ps-grep() {
+        if [[ "${*}" ]]; then
+            ps axfu | grep "${@}"
+        else
+            ps axfu | less
+        fi
+    }
 }
 
 # autoloads
@@ -1350,8 +1358,7 @@ COMMANDS
 
     alias asp='ASPROOT=~/sources/asp asp'
 
-    alias psx='ps axfu'
-    alias psg='psx | grep -P'
+    alias psx=':ps-grep'
 
     alias al='alias | grep -P --'
 
@@ -1430,6 +1437,8 @@ COMMANDS
     alias d=':sources:clone git.rn:devops'
     alias s=':sources:clone git.rn:specs'
     alias n=':sources:clone git.rn:ngs'
+
+    alias gh=':sources:clone github.com:'
 
     alias mgp=':sources:move-to-gopath'
 
