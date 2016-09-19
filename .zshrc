@@ -77,7 +77,9 @@
         fi
 
         zle() {
-            if [ "$1" = "-R" ]; then
+            builtin zle "${@}"
+
+            if [[ "$1" == "-R" || "$1" == "-U" ]]; then
                 unset -f zle
 
                 :plugins:load
@@ -86,8 +88,6 @@
                 :hijack:load
                 :aliases:load
             fi
-
-            builtin zle "${@}"
         }
     }
 
