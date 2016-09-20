@@ -1,5 +1,8 @@
 source ~/.deadfiles/.vimperator/settings.vim
 source ~/.deadfiles/.vimperator/mappings.vim
+source ~/.deadfiles/.vimperator/style.vim
+
+hi Hint -append text-transform: none; padding: 1px 2px 1px 2px;
 
 command! -nargs=1 Plug source ~/.vimperator/bundle/<args>.js
 
@@ -7,22 +10,44 @@ Plug auto_reload
 
 set hintchars=qdrguopnb
 
-hi CompResult -append font-family: Monaco; font-size: 12px;
-hi CompDesc -append font-family: Monaco; font-size: 12px;
-hi CmdLine>* font-family: Monaco; font-size: 12px;
-hi StatusLine -append font-family: Monaco; font-size: 12px;
-hi Hint font-size: 12px; font-weight: bold; color: white; background-color: red; border-color: ButtonShadow; border-width: 0px; border-style: solid; padding: 0px 1px 0px 1px; font-family: Monaco
-
 set editor="sh -c 'i3-msg workspace 2 ; vim --remote-tab-wait-silent $0 ; i3-msg workspace back_and_forth'"
 set gui=none
 set hto=0
 
-nnoremap j 5j
-nnoremap k 5k
-
 map gf <NOP>
 
 nnoremap % :source ~/.vimperatorrc<CR>:echomsg "Resourced!"<CR>
+
+map U gT
+map I gt
+
+nmap g      :tabopen http://google.ru/search?q=
+nmap x      :tabopen http://slovari.yandex.ru/
+nmap q      <ESC>
+nmap s      :tabopen<space>
+nmap b      :buffer<space>
+nmap <C-P>  :set apptab=true<CR>:echomsg "Pinned"<CR>
+nmap <C-N>  :set apptab=false<CR>:echomsg "Unpinned"<CR>
+nmap v      cv
+nmap w      gT
+nmap e      gt
+nmap .      /
+nmap <C-L>  O
+
+imap <C-}>  <C-I>
+imap jk     <ESC>
+
+vmap c      <ESC><ESC>c
+
+nnoremap j   5j
+nnoremap k   5k
+nnoremap ee  :buffer<space>
+
+inoremap <C-]> <Ins><C-a><Ins><C-I>
+inoremap <C-a> <Ins><C-a><Ins>
+
+inoremap <C-K>  <NOP>
+nnoremap <C-K>  <ESC>
 
 js <<EOJS
 var slack_fix_esc = function() {
