@@ -108,7 +108,7 @@ work     nvidia-340xx
 
 -        https://aur.archlinux.org/packages/screenkey-git
 
--        rxvt-unicode
+-        https://aur.archlinux.org/packages/rxvt-unicode-nobuiltins
 -        https://aur.archlinux.org/packages/urxvt-autocomplete-all-the-things-git
 -        https://aur.archlinux.org/packages/urxvt-fifo
 -        https://aur.archlinux.org/packages/urxvt-perls-git
@@ -326,3 +326,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/xcb-util-xrm
 -        https://aur.archlinux.org/packages/sxhkd-git
 -        https://aur.archlinux.org/packages/ttf-roboto
+-        https://aur.archlinux.org/packages/args-git
