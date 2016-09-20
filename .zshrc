@@ -237,6 +237,18 @@ fi
     }
 
     :sed-replace:interactive() {
+        if [[ "$#" -lt 2 ]]; then
+            echo 'usage: sed-replace <from> <to> [<file>...]'
+
+            return 1
+        fi
+
+        if [[ "$#" -lt 3 ]]; then
+            :sed-replace:interactive "$1" "$2" *
+
+            return
+        fi
+
         sed-replace "${@}" '!'
 
         printf "\n"
