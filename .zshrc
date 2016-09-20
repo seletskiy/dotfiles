@@ -77,8 +77,6 @@
         fi
 
         zle() {
-            builtin zle "${@}"
-
             if [[ "$1" == "-R" || "$1" == "-U" ]]; then
                 unset -f zle
 
@@ -88,6 +86,8 @@
                 :hijack:load
                 :aliases:load
             fi
+
+            builtin zle "${@}"
         }
     }
 
@@ -206,16 +206,10 @@ if :is-interactive; then
     {
         source /usr/share/zsh/functions/Prompts/promptinit
 
-        promptinit
+        prompt lambda17
 
-        case "$DOTFILES_PROFILE" in
-            work)
-                prompt lambda17 196 221 ☫
-                ;;
-            *)
-                prompt lambda17 220 0 ☫
-                ;;
-        esac
+        zstyle 'lambda17:05-sign' text "☫"
+
     }
 
     # term
