@@ -258,6 +258,7 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_metalinter_command = "gometalinter"
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
+    let g:go_template_autocreate = 0
 
 Plug 'kshenoy/vim-signature'
     let g:SignatureMarkOrder = "\m"
