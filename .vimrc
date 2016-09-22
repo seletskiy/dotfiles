@@ -46,6 +46,7 @@ Plug 'repeat.vim'
 Plug 'tpope/vim-scriptease'
 
 Plug 'reconquest/vim-colorscheme'
+    let g:colors_name = "reconquest"
 
 Plug 'surround.vim'
     vmap ( S)i
@@ -259,6 +260,8 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
     let g:go_template_autocreate = 0
+    let g:go_def_mapping_enabled = 0
+    let g:go_def_mode = 'godef'
 
 Plug 'kshenoy/vim-signature'
     let g:SignatureMarkOrder = "\m"
@@ -429,6 +432,8 @@ Plug 'airblade/vim-gitgutter'
     let g:gitgutter_sign_column_always=1
     let g:gitgutter_enabled = 0
 
+    au CursorHold * GitGutterEnable
+
 call plug#end()
 
 sign define GitGutterDummy text=.
@@ -436,12 +441,6 @@ exec "sign place 9999 line=9999 name=GitGutterDummy buffer=" . bufnr('')
 
 au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 au VimEnter * au! run_after_plug_end
-
-au CursorHold * if get(g:, 'gitgutter_flicker_workaround')
-    \ | GitGutterEnable
-    \ | let g:gitgutter_flicker_workaround=1
-
-colorscheme reconquest
 
 syntax on
 
@@ -526,12 +525,11 @@ nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
 
 nnoremap <Leader><Leader>u :PlugUpdate<CR>
 nnoremap <Leader><Leader>i :PlugInstall<CR>
-nnoremap <silent> <Leader>s :ArgWrap<CR>
 
 
 map <silent> <Leader>l <Plug>NERDCommenterToggle
-nnoremap <silent> @l :call search('[\(\{\[]', 'cs')<CR>l:ArgWrap<CR>
-nnoremap <silent> <Leader>s :ArgWrap<CR>
+nnoremap <silent> <C-D> :ArgWrap<CR>
+inoremap <silent> <C-D> <C-\><C-O>:ArgWrap<CR>
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
@@ -553,8 +551,6 @@ vmap <expr> @ feedkeys(':norm @' . nr2char(getchar()) . "\<CR>")
 
 vmap <silent> > >gv
 vmap <silent> < <gv
-
-map <C-D> $%
 
 inoremap jj <ESC>
 nnoremap j gj
@@ -639,8 +635,9 @@ augroup go_src
     au FileType go nnoremap <buffer> <C-T> :call synta#quickfix#next()<CR>
     au FileType go nnoremap <buffer> <C-E><C-R> :call synta#quickfix#prev()<CR>
     au FileType go nnoremap <buffer> <C-E><C-T> :call synta#quickfix#error()<CR>
-    au FileType go nnoremap <buffer> <C-D><C-D> :normal! A,<CR>
-    au FileType go inoremap <buffer> <C-D><C-D> <C-\><C-O>:normal! A,<CR>
+    au FileType go nnoremap <buffer> <C-Q><C-D> :normal! A,<CR>
+    au FileType go inoremap <buffer> <C-Q><C-D> <C-\><C-O>:normal! A,<CR>
+    au FileType go nnoremap <buffer> gd :GoDef<CR>
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
@@ -749,91 +746,6 @@ function! QuickFixOpenAll()
         let s:prev_val = s:curr_val
     endfor
 endfunction
-
-"fun! g:LightRoom()
-"    set background=light
-"    let g:seoul256_background = 255
-"    call s:ApplyColorscheme()
-"    hi underlined cterm=underline
-"    hi CursorLineNr ctermfg=241 ctermbg=none
-"    hi LineNr ctermfg=249 ctermbg=none
-"    hi SignColumn ctermfg=none ctermbg=none
-"    hi ColorColumn ctermbg=15
-"    hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
-"    hi NonText ctermfg=254 cterm=none term=none
-"    hi Search cterm=none ctermfg=none ctermbg=226
-"    hi IncSearch cterm=none ctermfg=none ctermbg=230
-"    hi Visual ctermbg=231 cterm=none ctermfg=none
-
-"    hi Function ctermfg=14 cterm=bold
-
-"    hi Cursor ctermbg=0 ctermfg=15
-"    hi PmenuSel ctermbg=136 ctermfg=15 cterm=bold
-
-"    hi SneakPluginTarget cterm=none ctermbg=190 ctermfg=88
-"    hi SneakStreakMask ctermbg=190 ctermfg=190 cterm=bold
-"    hi SneakStreakTarget ctermbg=190 ctermfg=88 cterm=bold
-"endfun
-
-"fun! g:DarkRoom()
-"    set background=dark
-"    let g:seoul256_background = 234
-"    call s:ApplyColorscheme()
-"    hi underlined cterm=underline
-"    hi CursorLineNr ctermfg=242 ctermbg=none
-"    hi LineNr ctermfg=238 ctermbg=none
-"    hi SignColumn ctermfg=none ctermbg=none
-"    hi ColorColumn ctermbg=235
-"    hi SpecialKey term=bold cterm=bold ctermfg=1 ctermbg=none
-"    hi NonText ctermfg=235 cterm=none term=none
-"    hi IncSearch cterm=bold ctermfg=234 ctermbg=220
-"    hi Visual ctermbg=17 cterm=none ctermfg=none
-
-"    hi Cursor ctermbg=15 ctermfg=0
-"    hi PmenuSel ctermbg=136 ctermfg=16 cterm=bold
-"    hi Pmenu ctermfg=245 ctermbg=235 cterm=none
-
-"    hi SneakPluginTarget cterm=none ctermbg=17 ctermfg=15
-"    hi SneakStreakMask ctermbg=17 ctermfg=17 cterm=bold
-"    hi SneakStreakTarget ctermbg=17 ctermfg=15 cterm=bold
-"    hi level10c ctermfg=208
-"    hi level14c ctermfg=208
-"endfun
-
-"fun! s:ApplyColorscheme()
-"    colorscheme seoul256
-"    hi! link WildMenu PmenuSel
-"    hi erlangEdocTag cterm=bold ctermfg=14
-"    hi erlangFunHead cterm=bold ctermfg=4
-"    hi SPM1 ctermbg=1 ctermfg=7
-"    hi SPM2 ctermbg=2 ctermfg=7
-"    hi SPM3 ctermbg=3 ctermfg=7
-"    hi SPM4 ctermbg=4 ctermfg=7
-"    hi SPM5 ctermbg=5 ctermfg=7
-"    hi SPM6 ctermbg=6 ctermfg=7
-"    hi VertSplit cterm=none ctermbg=none ctermfg=16
-
-"    " disable weird standout mode
-"    hi ErrorMsg term=none
-"    hi Todo term=none
-"    hi SignColumn term=none
-"    hi FoldColumn term=none
-"    hi Folded term=none
-"    hi WildMenu term=none
-"    hi WarningMsg term=none
-"    hi Question term=none
-"    hi ErrorMsg term=none
-
-"    hi SneakPluginTarget cterm=none ctermbg=190 ctermfg=88
-"    hi SneakStreakMask ctermbg=190 ctermfg=190 cterm=bold
-"    hi SneakStreakTarget ctermbg=190 ctermfg=88 cterm=bold
-"endfun
-
-"if system('background') == "light\n"
-"    call g:LightRoom()
-"else
-"    call g:DarkRoom()
-"endif
 
 fun! g:ApplySyntaxForDiffComments()
     let extension = expand('%:e')
