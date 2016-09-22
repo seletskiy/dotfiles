@@ -14,7 +14,7 @@ repeat.vim 80d2320
 revim 97eb5a9
 SearchParty f0d68ee
 seoul256.vim ca2499b
-snippets d9e5387
+snippets 92cb8b4
 surround.vim 324a873
 synta 6e1f18e
 tabular 00e1e7f
@@ -29,11 +29,11 @@ vim-airline-themes 020b843
 vim-argwrap 7e5465a
 vim-autosurround 6860ea9
 vim-bash 992d8e5
-vim-colorscheme ad036b4
+vim-colorscheme cebaaa3
 vim-enmasse bc8e2bc
 vim-fugitive aac85a2
 vim-gitgutter efa1ead
-vim-go a4ba0a5
+vim-go 8205e35
 vim-hacks f423472
 vim-indent-object 1d3e4aa
 vim-jsbeautify caffda6
