@@ -32,7 +32,7 @@ super + F7
     mplayer-control pt_step 1
 
 Execute
-    screen-lock
+    xautolock -locknow
 
 super + y
     translator
