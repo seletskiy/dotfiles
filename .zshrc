@@ -1201,7 +1201,9 @@ COMMANDS
 
     bindkey -v "^A" beginning-of-line
     bindkey -v "^[OA" hijack:history-substring-search-up
+    bindkey -v "^[[A" hijack:history-substring-search-up
     bindkey -v "^[OB" history-substring-search-down
+    bindkey -v "^[[B" history-substring-search-down
     bindkey -v "^[[3~" delete-char
     bindkey -v '^A' beginning-of-line
     bindkey -v '^E' end-of-line
@@ -1211,7 +1213,6 @@ COMMANDS
     bindkey -v '^O' toggle-quotes
     bindkey -v '^ ' autosuggest-execute
     bindkey -v '^_' favorite-directories:cd
-    bindkey -a '^[' vi-insert
     bindkey -a '^[d' delete-word
     bindkey -a '^[Od' backward-word
     bindkey -a '^[Oc' forward-word
@@ -1440,9 +1441,9 @@ COMMANDS
     alias m=':sources:clone github.com:seletskiy'
     alias k=':sources:clone github.com:kovetskiy'
     alias r=':sources:clone github.com:reconquest'
-    alias d=':sources:clone git.rn:devops'
-    alias s=':sources:clone git.rn:specs'
-    alias n=':sources:clone git.rn:ngs'
+    alias d=':sources:clone git+ssh://git.rn/devops'
+    alias s=':sources:clone git+ssh://git.rn/specs'
+    alias n=':sources:clone git+ssh://git.rn/ngs'
 
     alias gh=':sources:clone github.com:'
 
