@@ -536,6 +536,42 @@ fi
         dotfiles-bootstrap https://aur.archlinux.org/packages/$1
     }
 
+    dotfiles:migrate-to-deadfiles() {
+        local subject="$1"
+        shift
+
+        (
+            local dotfiles=$DOTFILES_PATH
+            local deadfiles=$DOTFILES_PATH/.deadfiles
+
+            cd $dotfiles
+            git stash
+            git pull --rebase origin master
+
+            cd $deadfiles
+            git stash
+            git pull --rebase origin master
+
+            for file in $@; do
+                install -DT $dotfiles/$file $deadfiles/$file
+                rm -r $dotfiles/$file
+            done
+
+            cd $deadfiles
+            git add .
+            git commit -m "$subject migrated from seletskiy/dotfiles"
+            git push origin master
+            git stash pop
+
+            cd $dotfiles
+            git add .
+            git commit -m "$subject migrated to deadcrew/deadfiles"
+            git push origin master
+            git stash pop
+        )
+    }
+
+
     godoc-less() {
         \godoc -ex "${@}" | less -SX
     }
