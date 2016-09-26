@@ -2,7 +2,7 @@
 Description=Simple X Hotkey Daemon
 Documentation=man:sxhkd(1)
 Requires=graphical.target
-Before=display-manager.target
+After=display-manager.target
 
 [Service]
 ExecStart=/usr/bin/sxhkd
