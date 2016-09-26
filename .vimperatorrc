@@ -2,7 +2,7 @@ source ~/.deadfiles/.vimperator/settings.vim
 source ~/.deadfiles/.vimperator/mappings.vim
 source ~/.deadfiles/.vimperator/style.vim
 
-hi Hint -append text-transform: none; padding: 1px 2px 1px 2px;
+hi Hint -append text-transform: none; padding: 1px; min-width: 18px; min-height: 14px;
 
 command! -nargs=1 Plug source ~/.vimperator/bundle/<args>.js
 
