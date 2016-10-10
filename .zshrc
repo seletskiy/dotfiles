@@ -492,9 +492,24 @@ fi
         local resolver_host=$2
         local resolver_port=${3:-53}
 
-        dig @$resolver_host -p$resolver_port axfr s \
-            | awk '$4 == "A" || $4 == "CNAME" { print $1 }' \
-            | grep -P "$domain"
+        local axfr=$(dig @$resolver_host -p$resolver_port axfr s)
+
+        local records_a=$(awk '$4 == "A" { print $1 }' <<< "$axfr")
+        local records_cname=$(awk '$4 == "CNAME" { print $5 }' <<< "$axfr")
+        local records_srv=$(awk '$4 == "SRV" { print $1 }' <<< "$axfr" | uniq)
+
+        {
+            printf '%s\n' "$records_a"
+
+            # do not show SRV CNAME records
+            diff --changed-group-format='%>' --unchanged-group-format='' \
+                <(<<< "$records_srv") <(<<< "$records_cname")
+        } \
+            | grep -v '^\*' \
+            | sed -r 's/\.$//' \
+            | sort \
+            | uniq
+
     }
 
     axfr() {
