@@ -493,7 +493,7 @@ fi
         local resolver_port=${3:-53}
 
         dig @$resolver_host -p$resolver_port axfr s \
-            | awk '{print $1}' \
+            | awk '$4 == "A" || $4 == "CNAME" { print $1 }' \
             | grep -P "$domain"
     }
 
