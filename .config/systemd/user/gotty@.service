@@ -1,0 +1,26 @@
+[Unit]
+Description=Share tmux session "%i" over HTTP
+
+[Service]
+Environment=TERM=screen-256color
+
+ExecStartPre=/bin/bash -c ' \
+    cp $HOME/.gotty /tmp/gotty.config && \
+    palette=$( \
+        grep "\*color" .Xresources.$BACKGROUND \
+            | cut -b7- \
+            | sort -n \
+            | grep -Eo "#.+" \
+            | sed -r \'s/.*/"&"/\' \
+            | paste -sd, \
+    ) && \
+    sed -ir "s|//!pallete|color_palette_overrides = [$palette]|" \
+        /tmp/gotty.config'
+
+ExecStart=/bin/bash -c ' \
+    set $(tmux lsp -t "%i" -F "#{session_width} #{session_height}") && \
+    gotty --config /tmp/gotty.config \
+        tmux \
+            new-session -x $1 -y $2 -A -s "gotty@%i[#D]" \
+                "tmux set force-height $2 ; TMUX= tmux attach -t \"%i\""\
+        '
