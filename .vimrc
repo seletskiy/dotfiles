@@ -255,7 +255,7 @@ Plug 'kristijanhusak/vim-multiple-cursors'
 Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
     let g:go_snippet_engine = "skip"
-    let g:go_fmt_autosave = 1
+    let g:go_fmt_autosave = 0
     let g:go_metalinter_command = "gometalinter"
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
@@ -729,6 +729,7 @@ function! InstallGoHandlers()
         autocmd BufWritePre *.go if searchpos('^\v(const)?\s+usage\s+\=\s+`', 'nw') != [0, 0] |
                 \ silent! exe '/^\v(const)?\s+usage\s+\=\s+`/+1,/^`$/s/\t/    /' |
             \ endif
+        autocmd BufWritePre *.go GoFmt
     augroup end
 endfunction
 
