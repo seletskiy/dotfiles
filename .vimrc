@@ -795,3 +795,34 @@ EOF
     call vimproc#system('i3-msg "workspace 1"')
     call vimproc#system('firefox https://google.ru/search?q=' . l:query_encoded)
 endfunction!
+
+func! DiffApplyTop()
+    let start = line('.')
+    call search(">>>>>>", "cs")
+    let end = line('.')
+    execute start.",".end "delete"
+    call search("<<<<<", "bcs")
+    execute "delete"
+    nohlsearch
+endfunc!
+
+func! DiffApplyBottom()
+    let start = line('.')
+    call search("<<<<<", "bcs")
+    let end = line('.')
+    execute start.",".end "delete"
+    call search(">>>>>", "bcs")
+    execute "delete"
+    nohlsearch
+endfunc!
+
+func! DiffEnable()
+    nmap <buffer> <C-F><C-D> :Grep '\=\=\=\=\=\=\='<CR><CR>
+    nmap <buffer> rr :/=====<CR>zz:noh<CR>
+    nmap <buffer> rk :call DiffApplyTop()<CR>rr
+    nmap <buffer> rj :call DiffApplyBottom()<CR>rr
+endfunc!
+
+command!
+    \ Diff
+    \ call DiffEnable()
