@@ -1,3 +1,9 @@
 #!/bin/bash
 
-vim '+call g:UniteFileOrGit()' "${@}"
+selector_command='Unite -hide-source-names buffer git_cached git_untracked'
+
+if ! git rev-parse --abbref-rev HEAD &>/dev/null; then
+    selector_command='Unite -hide-source-names buffer file_rec/async'
+fi
+
+vim "+$selector_command" "${@}"
