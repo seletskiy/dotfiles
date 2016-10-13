@@ -594,6 +594,11 @@ fi
     }
 
     man-search() {
+        if [[ ! -t 1 ]]; then
+            command man "$@"
+            return
+        fi
+
         if grep -qoP '^\d+$' <<< "$1"; then
             MANSECT=$1 man-search $2 ${@:3}
             return
