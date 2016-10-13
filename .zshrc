@@ -1544,7 +1544,7 @@ COMMANDS
     alias k=':sources:clone github.com:kovetskiy'
     alias r=':sources:clone github.com:reconquest'
     alias d=':sources:clone git+ssh://git.rn/devops'
-    alias s=':sources:clone git+ssh://git.rn/specs'
+    alias s=':sources:clone git+ssh://git.rn/core'
     alias n=':sources:clone git+ssh://git.rn/ngs'
 
     alias gh=':sources:clone github.com:'
