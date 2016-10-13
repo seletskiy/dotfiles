@@ -1,0 +1,13 @@
+[Unit]
+Description=Configure Touchpad
+Requires=graphical.target
+After=graphical.target
+Before=display-manager.target
+
+[Service]
+ExecStart=/bin/synclient TouchpadOff=1
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=display-manager.target
