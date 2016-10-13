@@ -329,3 +329,5 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/args-git
 -        https://aur.archlinux.org/packages/spin-git
 -        https://aur.archlinux.org/packages/highlight-git
+-        https://aur.archlinux.org/packages/ttyrec
+-        https://aur.archlinux.org/packages/gotty
