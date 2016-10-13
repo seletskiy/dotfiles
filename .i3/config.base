@@ -124,6 +124,7 @@ for_window [class="google-chrome"] border none
 for_window [title="Uzbl Browser"] floating enable
 for_window [instance="^screenkey$"] floating enable
 for_window [class="fontforge"] floating enable
+for_window [class="Firefox"] floating enable
 for_window [instance="^kuake_"] floating enable
 for_window [title="^ffplay_gif_player"] floating enable
 
