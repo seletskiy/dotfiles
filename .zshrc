@@ -1276,27 +1276,27 @@ COMMANDS
 
 # bindkeys
 {
-    bindkey -v
+    bindkey -e
 
-    bindkey -v "^A" beginning-of-line
-    bindkey -v "^[OA" hijack:history-substring-search-up
-    bindkey -v "^[[A" hijack:history-substring-search-up
-    bindkey -v "^[OB" history-substring-search-down
-    bindkey -v "^[[B" history-substring-search-down
-    bindkey -v "^[[3~" delete-char
-    bindkey -v '^A' beginning-of-line
-    bindkey -v '^E' end-of-line
-    bindkey -v '^[[Z' reverse-menu-complete
-    bindkey -v '^[d' delete-word
-    bindkey -v '^K' add-params
-    bindkey -v '^O' toggle-quotes
-    bindkey -v '^ ' autosuggest-execute
-    bindkey -v '^_' favorite-directories:cd
-    bindkey -a '^[d' delete-word
-    bindkey -a '^[Od' backward-word
-    bindkey -a '^[Oc' forward-word
-    bindkey -a '^?' backward-delete-char
-    bindkey -a '^H' backward-delete-char
+    bindkey "^A" beginning-of-line
+    bindkey "^[OA" hijack:history-substring-search-up
+    bindkey "^[[A" hijack:history-substring-search-up
+    bindkey "^[OB" history-substring-search-down
+    bindkey "^[[B" history-substring-search-down
+    bindkey "^[[3~" delete-char
+    bindkey '^A' beginning-of-line
+    bindkey '^E' end-of-line
+    bindkey '^[[Z' reverse-menu-complete
+    bindkey '^[d' delete-word
+    bindkey '^K' add-params
+    bindkey '^O' toggle-quotes
+    bindkey '^ ' autosuggest-execute
+    bindkey -e '^_' favorite-directories:cd
+    bindkey '^[d' delete-word
+    bindkey '^[Od' backward-word
+    bindkey '^[Oc' forward-word
+    bindkey '^?' backward-delete-char
+    bindkey '^H' backward-delete-char
     bindkey '^W' smart-backward-kill-word
     bindkey '^S' smart-forward-kill-word
     bindkey '^P' fuzzy-search-and-edit
