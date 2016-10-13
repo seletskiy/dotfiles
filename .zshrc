@@ -1573,7 +1573,7 @@ COMMANDS
         alias o='git log --oneline --graph --decorate --all'
         alias c='git-smart-commit --amend'
         alias p='git-smart-push seletskiy'
-        alias k='git checkout'
+        alias k='git-smart-checkout'
         alias j='k master'
         alias j!='j && rst!'
         alias ju='j && u'
