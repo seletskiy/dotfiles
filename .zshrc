@@ -85,6 +85,7 @@
 
                 :hijack:load
                 :aliases:load
+                :compdef:load
             fi
 
             builtin zle "${@}"
@@ -1219,6 +1220,26 @@ COMMANDS
             ps axfu | less
         fi
     }
+
+    :git:commit:interactively() {
+        local message
+        while git add -p; do
+            if git diff --cached --quiet; then
+                printf 'No changes detected.\n'
+                return 0
+            fi
+
+            vared -p "Commit message [empty to amend HEAD]: " message
+
+            if [[ "$message" ]]; then
+                git commit -m "$message"
+            else
+                git commit --amend
+            fi
+
+            printf '\n'
+        done
+    }
 }
 
 # autoloads
@@ -1240,10 +1261,12 @@ COMMANDS
 
 # compdefs
 {
-    compdef systemctl-command-and-status=systemctl
-    compdef _git-merge-with-rebase git-merge-with-rebase
-    compdef man-search=man
-    compdef vim-which=which
+    :compdef:load() {
+        compdef systemctl-command-and-status=systemctl
+        compdef _git-merge-with-rebase git-merge-with-rebase
+        compdef man-search=man
+        compdef vim-which=which
+    }
 }
 
 # bindkeys
@@ -1553,6 +1576,7 @@ COMMANDS
         alias bm='git branch -m'
         alias h='git reset HEAD'
         alias i='git add -p'
+        alias ii=':git:commit:interactively'
         alias M='git mv'
         alias R='git rm'
         alias y='git show'
