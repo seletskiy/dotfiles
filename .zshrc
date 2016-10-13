@@ -1226,15 +1226,29 @@ COMMANDS
         local message
         while git add -p; do
             if git diff --cached --quiet; then
-                printf 'No changes detected.\n'
+                highlight bold fg red
+                printf ':: no changes detected\n'
                 return 0
             fi
 
-            printf 'Changes to be commited:\n'
+            highlight bold fg yellow
+            printf ':: following changes will be commited\n'
+            highlight reset
 
-            git commit --cached
+            git diff --cached
 
-            vared -p "Commit message [empty to amend HEAD]: " message
+            printf '\n'
+
+            message=$(grep -Po '^([^:]+:) ' <<< "$message")
+
+            local prompt=$(
+                printf "%s%s: %s" \
+                    "$(highlight bold fg blue)" \
+                    "Commit message [empty to amend HEAD]" \
+                    "$(highlight reset)"
+            )
+
+            vared -p "$prompt"  message
 
             if [[ "$message" ]]; then
                 git commit -m "$message"
