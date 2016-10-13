@@ -8,7 +8,7 @@ super + r
     modal-run
 
 shift + Delete
-    window-kill-focused
+    kill-focus
 
 super + control + s
     i3-sensible-browser
