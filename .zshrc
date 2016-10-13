@@ -1432,6 +1432,7 @@ COMMANDS
     alias pp='sudo pacman -S'
     alias pp!='yes | sudo pacman --force --noconfirm -S'
     alias ppy='sudo pacman -Sy'
+    alias ppyu='sudo pacman -Syu'
     alias ppr='sudo pacman -R'
     alias pqo='pacman -Qo'
     alias pql='pacman -Ql'
