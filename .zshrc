@@ -186,6 +186,7 @@
         zgen load deadcrew/deadfiles
 
         if :is-interactive; then
+            zgen load kovetskiy/zsh-alias-search
             zgen load seletskiy/zsh-ash-completion
             zgen load seletskiy/zsh-smart-kill-word
             zgen load kovetskiy/zsh-add-params
@@ -1229,12 +1230,16 @@ COMMANDS
                 return 0
             fi
 
+            printf 'Changes to be commited:\n'
+
+            git commit --cached
+
             vared -p "Commit message [empty to amend HEAD]: " message
 
             if [[ "$message" ]]; then
                 git commit -m "$message"
             else
-                git commit --amend
+                git commit --amend -C HEAD
             fi
 
             printf '\n'
@@ -1301,6 +1306,7 @@ COMMANDS
     bindkey '^[[6~' backward-word
     bindkey "^T" prepend-sudo
     bindkey "^F" leap-back
+    bindkey "^G" alias-search
     bindkey "\e." smart-insert-last-word-wrapper
     bindkey "\e," smart-insert-prev-word
     bindkey "^[[11^" noop
