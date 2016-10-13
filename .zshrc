@@ -1396,6 +1396,8 @@ COMMANDS
     alias ppu='sudo pacman -U'
     alias pps='pacman -Ss'
     alias po='pkgfile'
+    alias ppyu='sudo pacman -Syu'
+    alias ppyuz='ppyu --ignore linux,zfs-linux-git,zfs-utils-linux-git,spl-linux-git,spl-utils-linux-git'
 
     alias zgu='zgen update && zr'
 
