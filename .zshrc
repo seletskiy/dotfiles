@@ -1529,6 +1529,8 @@ COMMANDS
     alias -s ru='uber-ssh:alias -s smart-ssh-tmux'
     alias -s rn='uber-ssh:alias -s smart-ssh-tmux'
 
+    alias -s local='uber-ssh:alias -s smart-ssh-tmux'
+
     alias ck='mkdir-and-cd'
 
     alias cks='ck-source-dir'
@@ -1583,6 +1585,10 @@ COMMANDS
         xdg-open /tmp/thyme.html && rm /tmp/thyme.html'
 
     alias home=':ssh:find-and-connect-vpn-machine'
+
+    alias btc='bitcoin-cli getbalance'
+    alias btcs='bitcoin-cli sendtoaddress'
+    alias btcx='bitcoin-cli gettransaction'
 
     hash-aliases:install
 
