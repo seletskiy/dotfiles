@@ -1268,6 +1268,18 @@ COMMANDS
             printf '\n'
         done
     }
+
+    :zsh:edit-config() {
+        vim -o ~/.zshrc -c "/^# aliases" -c "normal zt"
+    }
+
+    :zsh:reload-config() {
+        source ~/.zshrc
+
+        tmux ls -F '#{pane_current_command} #{session_name}' \
+            | awk '$1 == "zsh" { print $2 }' \
+            | xargs -n1 -I{} tmux send-keys -t{} 'source ~/.zshrc' enter
+    }
 }
 
 # autoloads
@@ -1494,7 +1506,7 @@ COMMANDS
     alias az=':ash:fzf'
 
     alias zr='. ~/.zshrc'
-    alias za='vim -o ~/.zshrc -c "/^# aliases" -c "normal zt" && source ~/.zshrc'
+    alias za=':zsh:edit-config && :zsh:reload-config'
 
     alias zsw=':zabbix:switch-on-call'
     alias zp='zabbixctl -Tpxxxxd'
