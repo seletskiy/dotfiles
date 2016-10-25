@@ -475,9 +475,13 @@ fi
             else
                 format="#[underscore bold bg=colour229 fg=colour196]"
             fi
-            tmux set status-right \
-                "$format φ $SSH_ADDRESS #[default bg=default] "
+
+            local tmux_status="$format φ $SSH_ADDRESS #[default bg=default] "
+
+            tmux set status-left "$tmux_status"
+            tmux set status-left-length "${#tmux_status}"
             tmux set status on
+
             tmux rename-window "ssh [$SSH_ADDRESS]"
         fi
 
