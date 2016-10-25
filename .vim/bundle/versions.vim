@@ -58,4 +58,4 @@ vim-ski 24d8cd0
 vim-sneak 28a505a
 vim-toml f6f79f3
 ycm-sh d1f85f3
-YouCompleteMe d38ffc5
+YouCompleteMe ddf18cc
