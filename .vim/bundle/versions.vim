@@ -34,7 +34,7 @@ vim-colorscheme cebaaa3
 vim-enmasse bc8e2bc
 vim-fugitive aac85a2
 vim-gitgutter 26c6b54
-vim-go 8205e35
+vim-go 10c805b
 vim-go-impl 3a68a75
 vim-hacks f423472
 vim-indent-object 1d3e4aa
