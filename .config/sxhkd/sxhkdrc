@@ -2,7 +2,7 @@ super + Return
     marvex -cs
 
 super + Shift + Return
-    marvex -cs
+    urxvt
 
 super + r
     modal-run
@@ -48,6 +48,9 @@ super + backslash
 
 super + x
     carcosa-ui
+
+super + shift + x
+    carcosa-ui login-password
 
 super + b
     google
