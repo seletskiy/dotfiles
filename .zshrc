@@ -1494,7 +1494,7 @@ COMMANDS
     alias dt='cd ~/sources/dotfiles && git status -s'
     alias de='cd ~/sources/dotfiles/.deadfiles && git status -s'
     alias kb=':knowledge-base ~/sources/kb'
-    alias se='cd ~/.secrets && carcosa -Lc'
+    alias se='cd ~/.secrets && carcosa -Lc | sort'
 
     alias pp='sudo pacman -S'
     alias pp!='yes | sudo pacman --force --noconfirm -S'
