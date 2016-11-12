@@ -1280,6 +1280,38 @@ COMMANDS
             | awk '$1 == "zsh" { print $2 }' \
             | xargs -n1 -I{} tmux send-keys -t{} 'source ~/.zshrc' enter
     }
+
+    :file:telecopy() {
+        local source="$1"
+
+        local pipe="/tmp/zsh-telecopy.pipe"
+
+        if [[ -p "$pipe" ]]; then
+            {
+                local filename="$(head -n1)"
+
+                printf 'Receiving %s...\n' "$filename"
+
+                cat >! "$(basename "$filename")"
+            } < $pipe
+
+            rm "$pipe"
+        else
+            if [[ ! -f "$source" ]]; then
+                printf 'No such file: %s\n' "$source"
+
+                return 1
+            fi >&2
+
+            mkfifo "$pipe"
+
+            {
+                realpath "$source"
+
+                cat "$source"
+            } > $pipe
+        fi
+    }
 }
 
 # autoloads
@@ -1601,6 +1633,8 @@ COMMANDS
     alias btc='bitcoin-cli getbalance'
     alias btcs='bitcoin-cli sendtoaddress'
     alias btcx='bitcoin-cli gettransaction'
+
+    alias -- '-'=':file:telecopy'
 
     hash-aliases:install
 
