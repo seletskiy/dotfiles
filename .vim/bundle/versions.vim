@@ -8,13 +8,13 @@ neoyank.vim e8f0cca
 nerdcommenter c3d6a20
 nginx-vim-syntax d05a84a
 PHP-correct-Indenting d5b4566
-python-mode 4bda303
+python-mode da4bfe5
 rainbow_parentheses.vim eb8baa5
 repeat.vim 80d2320
 revim 97eb5a9
 SearchParty f0d68ee
 seoul256.vim ca2499b
-snippets 4c2b220
+snippets e820142
 surround.vim 324a873
 synta fcfa11b
 tabular 00e1e7f
@@ -27,7 +27,7 @@ vim-abolish 125908e
 vim-airline d00f7b3
 vim-airline-themes 005f8ac
 vim-argwrap 7e5465a
-vim-autosurround 6860ea9
+vim-autosurround 316819c
 vim-bash 992d8e5
 vim-choosewin d9fe961
 vim-colorscheme cebaaa3
