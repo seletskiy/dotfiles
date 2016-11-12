@@ -156,11 +156,8 @@ Plug 'seletskiy/vim-autosurround'
     " oh, how I like to remap different plugin mappings
     au User _OverwriteMatchemMappings
         \ autocmd VimEnter,BufEnter,FileType *
-            \ inoremap <buffer> ( <C-R>=InsertSmartParenthesis()<CR>(<C-R>=AutoSurround(")") ? '' : MatchemMatchStart()<CR>
-
-    "au User _OverwriteMatchemMappings
-    "    \ autocmd VimEnter,BufEnter,FileType *
-    "        \ inoremap <buffer> { {<C-R>=AutoSurround("}")?'':g:MatchemMatchStart()<CR>
+            \ inoremap <buffer> ( <C-R>=InsertSmartParenthesis()<CR>(
+                \<C-R>=AutoSurround(")") ? '' : MatchemMatchStart()<CR>
 
     au User _OverwriteMatchemMappings
         \ autocmd VimEnter,BufEnter,FileType * call AutoSurroundInitMappings()
