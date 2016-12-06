@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 session="$(basename $0)"
 
 export EDITOR=${EDITOR:-vim}
