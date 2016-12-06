@@ -1113,6 +1113,18 @@ COMMANDS
         orgalorg -p -o <(nodectl:filter -pp "${@}") -i /dev/stdin -C bash -s
     }
 
+    :orgalorg:mysql() {
+        local nodes=(${(s: :)1})
+        shift
+
+        local query=$*
+
+        nodectl:filter -pp ${nodes[*]} \
+            | orgalorg -spxlC \
+                "ls /var/run/mysqld/*.sock | \
+                    xargs -n1 -I{} mysql --socket={} -Ne '$query'"
+    }
+
     bitbucket:pull-request() {
         stacket-pull-request-create "${@}" && reviewers-add > /dev/null | {
             tee /proc/self/fd/3 \
@@ -1158,7 +1170,7 @@ COMMANDS
     }
 
     :ag() {
-        ag -f --hidden --silent "${(j:.*?:)@}"
+        ag -f --hidden --silent -- "${(j:.*?:)@}"
     }
 
     :knowledge-base:toc:overwrite() {
@@ -1635,6 +1647,8 @@ COMMANDS
     alias btcx='bitcoin-cli gettransaction'
 
     alias -- '-'=':file:telecopy'
+
+    alias mqs=':orgalorg:mysql "cluster:db role:mysql"'
 
     hash-aliases:install
 
