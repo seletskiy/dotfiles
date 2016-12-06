@@ -37,7 +37,6 @@ setxkbmap \
         "level5-menu"`            # use menu for level5 switch as well`\
         "ctrl-shift-caps"`        # remap ctrl/shift/caps` \
         "footswitch(f8-second-layout)"` # pedal for switching language layout`\
-        "footswitch(f7-multi-key)"`     # pedal for compose key`\
         "esc-to-execute"`     # esc to lock screen`\
         "fast-copy-paste"`    # alt+c -> ctrl+c, alt+v -> shift+ins`\
         | sed 's/ /+/g') \
