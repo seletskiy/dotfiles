@@ -14,12 +14,13 @@ repeat.vim 80d2320
 revim 97eb5a9
 SearchParty f0d68ee
 seoul256.vim ca2499b
-snippets e820142
+sessionman.vim 845d35b
+snippets f8d56e9
 surround.vim 324a873
 synta fcfa11b
 tabular 00e1e7f
 targets.vim 80cafa1
-ultisnips 7549874
+ultisnips 9a670c5
 unite-git fdf7457
 unite.vim 9696ff5
 urxvt.vim b986053
