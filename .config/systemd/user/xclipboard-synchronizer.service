@@ -5,7 +5,7 @@ After=graphical.target
 Before=display-manager.target
 
 [Service]
-ExecStart=/bin/sh clipboard-sync
+ExecStart=/bin/sh -c clipboard-sync
 
 [Install]
 WantedBy=display-manager.target
