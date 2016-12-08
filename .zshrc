@@ -1033,6 +1033,14 @@ COMMANDS
         pdns soa update -n s
     }
 
+    pdns:container:new() {
+        local domain=$1
+        local ip=$2
+
+        pdns:a:new "$domain" "$ip"
+        pdns:cname:new "$domain"
+    }
+
     create-new-project:go() {
         create-new-project "$1" "go/$2"
     }
@@ -1109,6 +1117,29 @@ COMMANDS
                 cat
             fi
         }
+    }
+
+    orgalorg:upload() {
+        local hosts=$1
+        local root=$2
+
+        shift 2
+
+        hosts=("${${(s/,/)hosts}[@]//#/-o}")
+
+        orgalorg "${hosts[@]}" -x -y -e -r "$root" -U "$@"
+    }
+
+    orgalorg:upload:run() {
+        local command=$1
+        local hosts=$2
+        local root=$3
+
+        shift 3
+
+        hosts=("${${(s/,/)hosts}[@]//#/-o}")
+
+        orgalorg "${hosts[@]}" -x -y -e -r "$root" -n "$command" -S "$@"
     }
 
     orgalorg:shell:with-password() {
@@ -1409,6 +1440,9 @@ COMMANDS
     hijack:transform '^f([0-9]+)' \
         'sed -re "s/^.([0-9]+)/frontend\1.x/"'
 
+    hijack:transform '^c([0-9]+)' \
+        'sed -re "s/^.([0-9]+)/cachenode\1.x/"'
+
     hijack:transform '^d([0-9]+)' \
         'sed -re "s/^.([0-9]+)/dbnode\1.x/"'
 
@@ -1638,6 +1672,8 @@ COMMANDS
     alias xp='orgalorg -spxl'
     alias xps='orgalorg:shell:with-password'
     alias xpc='xp -C'
+    alias xpu='orgalorg:upload'
+    alias xpur='orgalorg:upload:run'
 
     alias thr='thyme show -i ~/.thyme.json -w stats > /tmp/thyme.html &&
         xdg-open /tmp/thyme.html && rm /tmp/thyme.html'
