@@ -734,7 +734,7 @@ fi
     :sources:clone() {
         local who=$1
         local reponame="$2" ; shift
-        local clone_path="${2:-$reponame}"
+        local clone_path="${2:-${${who##*/}%:}/$reponame}"
 
         if [ -z "$1" ]; then
             return
@@ -981,7 +981,7 @@ fi
 
     :repo:upload:old() {
         scp "$1" "repo.in.ngs.ru:/tmp/$1"
-        ssh "repo.in.ngs.ru" -t sudo -i sh -s <<COMMANDS
+        command ssh "repo.in.ngs.ru" -t sudo -i sh -s <<COMMANDS
             cd /data/repositories/ngs-packages/ && \
                 mv -v /tmp/$1 ${2:-lucid}/ && \
                 ./rescan_${2:-lucid}.sh
@@ -1683,6 +1683,11 @@ COMMANDS
     alias btc='bitcoin-cli getbalance'
     alias btcs='bitcoin-cli sendtoaddress'
     alias btcx='bitcoin-cli gettransaction'
+
+    alias tl='stacket repositories list'
+    alias tc='stacket repositories create'
+
+    alias pq='printf "%q\n"'
 
     alias -- '-'=':file:telecopy'
 
