@@ -87,6 +87,10 @@ Plug 'Shougo/unite.vim'
         \ 'file_rec/async', 'converters', 'converter_relative_word'
     \ )
 
+    au User _VimrcRunAfterPlugEnd call unite#custom#source(
+        \ 'file_rec/async,git_cached,git_untracked', 'ignore_pattern',
+		\ '.*/vendor/.*')
+
     function! s:unite_my_settings()
         imap <buffer> <C-R> <Plug>(unite_redraw)
         inoremap <silent><buffer> <CR>  <C-R>=unite#do_action('open')<CR>
