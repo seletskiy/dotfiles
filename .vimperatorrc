@@ -14,6 +14,8 @@ set editor="sh -c 'i3-msg workspace 2 ; vim --remote-tab-wait-silent $0 ; i3-msg
 set gui=none
 set hto=0
 
+set wildoptions=auto
+
 map gf <NOP>
 
 nnoremap % :source ~/.vimperatorrc<CR>:echomsg "Resourced!"<CR>
