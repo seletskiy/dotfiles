@@ -1508,7 +1508,7 @@ COMMANDS
 
     alias lgs=':git:show-sources-status'
 
-    alias s/=':sed-replace:interactive'
+    alias '$'=':sed-replace:interactive'
 
     alias x=':go:compile-and-run'
 
