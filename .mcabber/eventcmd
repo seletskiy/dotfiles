@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "${@}" >> /tmp/mcabber.log
-
 timeout=0.05
 blinks=5
 

@@ -734,7 +734,7 @@ fi
     :sources:clone() {
         local who=$1
         local reponame="$2" ; shift
-        local clone_path="${2:-${${who##*/}%:}/$reponame}"
+        local clone_path="${${2:-${${who##*/}%:}/$reponame}//://}"
 
         if [ -z "$1" ]; then
             return

@@ -433,7 +433,7 @@ Plug 'airblade/vim-gitgutter'
     let g:gitgutter_sign_column_always=1
     let g:gitgutter_enabled = 0
 
-    au CursorHold * GitGutterEnable
+    "au CursorHold * GitGutterEnable
 
 call plug#end()
 

@@ -2,16 +2,7 @@
 
 (
     if pgrep mcabber; then
-        echo /dnd Меня здесь нет. | tee ~/.mcabber/fifo/*
-
-        if pgrep -f mcabber-postdevops; then
-            find ~/.mcabber/history -lname /dev/null \
-                | grep -oP '[\w.]+@' \
-                | while read name; do
-                    echo /roster search $name
-                    echo /clear
-                done | tee ~/.mcabber/fifo/postdevops
-        fi
+        echo /dnd - | tee ~/.mcabber/fifo/*
     fi
 ) >/dev/null &
 
