@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -euo pipefail
+
+:main() {
+    local disk
+    local path
+
+    for disk in /dev/disk/by-path/*; do
+        if sudo cryptsetup isLuks "$disk"; then
+            path=$(readlink -f "$disk")
+            break
+        fi
+    done
+
+    if [[ ! "${path:-}" ]]; then
+        exit 1
+    fi
+
+    local name=$(md5sum <<< $disk | awk '{print $1}')
+    local target="/var/run/user/$UID/crypt-$name"
+
+    sudo cryptsetup open "$path" "$name"
+
+    mkdir -p "$target"
+
+    sudo mount -o uid=$UID "/dev/mapper/$name" "$target"
+
+    trap ":cleanup $name" EXIT
+
+    printf 'Starting shell at encrypted device.\n'
+    printf 'Device will be closed after shell exit.\n'
+
+    (
+        cd "$target"
+
+        $SHELL -i
+    )
+
+    printf 'Closing encrypted device.\n'
+}
+
+:cleanup() {
+    local name=$1
+
+    sudo umount "/dev/mapper/$name"
+    sudo cryptsetup close "$name"
+}
+
+:main "$@"
