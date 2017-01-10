@@ -1,0 +1,11 @@
+pty "pptp {{VPN_HOST}} --nolaunchpppd"
+name {{VPN_USER}}
+remotename vpn
+ipparam vpn
+lock
+noauth
+nobsdcomp
+nodeflate
+require-mppe-128
+defaultroute
+usepeerdns

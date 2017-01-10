@@ -1,9 +1,0 @@
-pty "pptp {{SERVER}} --nolaunchpppd"
-name {{DOMAIN}}\\{{USERNAME}}
-remotename ngs
-ipparam ngs
-lock
-noauth
-nobsdcomp
-nodeflate
-require-mppe

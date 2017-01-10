@@ -20,3 +20,9 @@ if [[ "$6" == "ngs" ]]; then
    # rutracker.org
    ip r a 195.82.146.214 dev $1
 fi
+
+if [[ "$6" == "vpn" ]]; then
+    resolvconf -l "$1" > /etc/resolv.conf
+
+    ip r a default dev "$1"
+fi

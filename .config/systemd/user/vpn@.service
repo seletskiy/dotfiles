@@ -1,0 +1,11 @@
+[Unit]
+Description="VPN Connection (%i)"
+
+[Service]
+ExecStart=/usr/bin/sudo pon %i logfd 2 nodetach debug
+ExecStop=/usr/bin/sudo poff %i
+Restart=always
+RestartSec=1m
+
+[Install]
+WantedBy=environment.target
