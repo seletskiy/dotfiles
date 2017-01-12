@@ -19,6 +19,10 @@ set -euo pipefail
 
     local name=$(md5sum <<< $disk | awk '{print $1}')
     local target="/var/run/user/$UID/crypt-$name"
+    
+    if findmnt "$target" > /dev/null; then
+        :shell "$target"
+    fi
 
     sudo cryptsetup open "$path" "$name"
 
@@ -31,13 +35,15 @@ set -euo pipefail
     printf 'Starting shell at encrypted device.\n'
     printf 'Device will be closed after shell exit.\n'
 
-    (
-        cd "$target"
-
-        $SHELL -i
-    )
+    ( :shell "$target" )
 
     printf 'Closing encrypted device.\n'
+}
+
+:shell() {
+    local dir=$1
+
+    cd "$dir" && exec $SHELL -i
 }
 
 :cleanup() {
