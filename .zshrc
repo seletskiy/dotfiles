@@ -1693,6 +1693,9 @@ COMMANDS
 
     alias mqs=':orgalorg:mysql "cluster:db role:mysql"'
 
+    alias mh='mcabber-history -S'
+    alias mhp='mcabber-history -S postdevops/'
+
     hash-aliases:install
 
     context-aliases:init
