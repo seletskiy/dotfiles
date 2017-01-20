@@ -468,6 +468,7 @@ set hlsearch
 set incsearch
 set history=500
 set smartcase
+set ignorecase
 set expandtab
 set autoindent
 set shiftwidth=4
