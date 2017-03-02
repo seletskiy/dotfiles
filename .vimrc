@@ -91,12 +91,18 @@ Plug 'Shougo/unite.vim'
         \ 'file_rec/async,git_cached,git_untracked', 'ignore_pattern',
 		\ '.*/vendor/.*')
 
+    function! UniteScaleWindow()
+        if winheight(0) < 2
+            call feedkeys(":10wincmd+\<CR>")
+        endif
+    endfunction
+
     function! s:unite_my_settings()
         imap <buffer> <C-R> <Plug>(unite_redraw)
         inoremap <silent><buffer> <CR>  <C-R>=unite#do_action('open')<CR>
-            \<esc>:10wincmd +<CR>
+            \<esc>:call UniteScaleWindow()<CR>
         inoremap <silent><buffer> <C-T> <C-R>=unite#do_action('splitswitch')<CR>
-            \<esc>:10wincmd +<CR>
+            \<esc>:call UniteScaleWindow()<CR>
         inoremap <silent><buffer> <C-J> <C-R>=unite#do_action('vsplitswitch')
         call unite#custom#alias('ash_review', 'split', 'ls')
     endfunction
