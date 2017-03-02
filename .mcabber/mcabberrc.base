@@ -33,7 +33,10 @@ set message_autoaway = Auto-away (idle)
 
 set escdelay = 50
 
-set roster_width=40
+set roster_width = 40
+set roster_hide_domain = 1
+
+set buffer_smart_scrolling = 1
 
 set caps_directory = "~/.mcabber/caps"
 
