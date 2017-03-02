@@ -243,7 +243,7 @@ Plug 'Valloric/YouCompleteMe'
     let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
     let g:ycm_allow_changing_updatetime = 0
     let g:ycm_confirm_extra_conf = 1
-    let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+    let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/.ycm_extra_conf.py'
     let g:ycm_collect_identifiers_from_comments_and_strings = 1
     let g:ycm_collect_identifiers_from_tags_files = 1
     let g:ycm_use_ultisnips_completer = 0
