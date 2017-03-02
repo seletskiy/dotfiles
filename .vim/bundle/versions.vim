@@ -15,14 +15,14 @@ revim 97eb5a9
 SearchParty f0d68ee
 seoul256.vim ca2499b
 sessionman.vim 845d35b
-snippets f809bf1
+snippets 4175afe
 surround.vim 324a873
 synta fcfa11b
 tabular 00e1e7f
 targets.vim 80cafa1
 ultisnips 5352d98
 unite-git fdf7457
-unite.vim 9696ff5
+unite.vim 9696ff5c
 urxvt.vim b986053
 vim-abolish 125908e
 vim-airline d00f7b3
@@ -59,4 +59,4 @@ vim-ski 24d8cd0
 vim-sneak 28a505a
 vim-toml f6f79f3
 ycm-sh d1f85f3
-YouCompleteMe ddf18cc
+YouCompleteMe ddf18cc6
