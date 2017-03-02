@@ -331,3 +331,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/highlight-git
 -        https://aur.archlinux.org/packages/ttyrec
 -        https://aur.archlinux.org/packages/gotty
+-        https://aur.archlinux.org/packages/ix
