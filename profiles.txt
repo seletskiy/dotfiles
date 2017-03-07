@@ -332,3 +332,6 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/ttyrec
 -        https://aur.archlinux.org/packages/gotty
 -        https://aur.archlinux.org/packages/ix
+-        https://aur.archlinux.org/packages/mingw-w64-pkg-config
+-        https://aur.archlinux.org/packages/mingw-w64-configure
+-        https://aur.archlinux.org/packages/mingw-w64-libsodium
