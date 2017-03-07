@@ -36,3 +36,5 @@
 
 [url "git+ssh://github.com/"]
 	insteadOf = https://git::@github.com/
+[http "https://gopkg.in"]
+	followRedirects = true
