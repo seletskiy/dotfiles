@@ -81,15 +81,15 @@ bindsym $mod+s workspace s
 bindsym $mod+d workspace d
 
 # move focused container to workspace
-bindcode $mod+Shift+10 move container to workspace 1
-bindcode $mod+Shift+11 move container to workspace 2
-bindcode $mod+Shift+12 move container to workspace 3
-bindcode $mod+Shift+24 move container to workspace q
-bindcode $mod+Shift+25 move container to workspace w
-bindcode $mod+Shift+26 move container to workspace e
-bindcode $mod+Shift+38 move container to workspace a
-bindcode $mod+Shift+39 move container to workspace s
-bindcode $mod+Shift+40 move container to workspace d
+bindcode $mod+Shift+10 exec i3-move-container 1
+bindcode $mod+Shift+11 exec i3-move-container 2
+bindcode $mod+Shift+12 exec i3-move-container 3
+bindcode $mod+Shift+24 exec i3-move-container q
+bindcode $mod+Shift+25 exec i3-move-container w
+bindcode $mod+Shift+26 exec i3-move-container e
+bindcode $mod+Shift+38 exec i3-move-container a
+bindcode $mod+Shift+39 exec i3-move-container s
+bindcode $mod+Shift+40 exec i3-move-container d
 
 workspace 1 output xinerama-0
 workspace 2 output xinerama-1
