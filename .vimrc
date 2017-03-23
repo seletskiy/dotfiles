@@ -622,7 +622,6 @@ augroup ft_customization
     au FileType sh set iskeyword+=-,:
     au BufEnter php setl noexpandtab
     au FileType sql set ft=mysql
-    au FileType tex :e ++enc=cp1251
     au BufEnter /data/projects/*.conf set ft=nginx
     au BufEnter /data/projects/*.conf syn on
     au BufEnter *.test.sh set ft=test.sh
