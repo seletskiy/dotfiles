@@ -632,6 +632,7 @@ augroup ft_customization
     au FileType snippets let g:pymode_rope_project_root=expand('%:h')
     au BufRead,BufNewFile incident.md set et ft=markdown.incident
     au BufEnter * let g:argwrap_tail_comma = 0
+    au FileType c,cpp set noet
 augroup end
 
 augroup go_src
