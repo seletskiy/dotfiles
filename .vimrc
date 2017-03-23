@@ -468,6 +468,7 @@ set wildmenu
 set undofile
 set undodir=$HOME/.vim/tmp/
 set directory=$HOME/.vim/tmp/
+set backupdir=$HOME/.vim/tmp/
 set ttyfast
 set relativenumber
 set hlsearch
@@ -494,6 +495,8 @@ set nofoldenable
 set noequalalways
 set winminheight=0
 set shortmess+=sAIc
+
+set backup
 
 " autocomplete list numbers
 " autoinsert comment Leader
@@ -705,6 +708,9 @@ augroup winfixheight
     au BufwinEnter set winfixheight
 augroup end
 
+augroup backups
+    au BufWritePre * let &bex = '.' . strftime("%y%m%d%H%M") . '.bak'
+augroup end
 
 func! _tags_sh()
     if &ft != "sh"
