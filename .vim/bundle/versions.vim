@@ -15,7 +15,7 @@ revim 97eb5a9
 SearchParty f0d68ee
 seoul256.vim ca2499b
 sessionman.vim 845d35b
-snippets 4175afe
+snippets bdbcff2
 surround.vim 324a873
 synta fcfa11b
 tabular 00e1e7f
@@ -25,7 +25,7 @@ unite-git fdf7457
 unite.vim 9696ff5c
 urxvt.vim b986053
 vim-abolish 125908e
-vim-airline d00f7b3
+vim-airline 134c020
 vim-airline-themes 005f8ac
 vim-argwrap 7e5465a
 vim-autosurround 316819c
