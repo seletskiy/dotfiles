@@ -1,0 +1,29 @@
+#!/bin/bash
+
+mupdf_pid=""
+
+:main() {
+    local source=$1
+    local output=$2
+
+    :mupdf:start "$output"
+
+    watcher "$source" -- sh -c \
+        'pdflatex -interaction=nonstopmode "$1" "$2" && kill -HUP "$3"' \
+            _ "$source" "$output" "$mupdf_pid"
+}
+
+:compile() {
+    local source=$1
+    local output=$2
+
+}
+
+:mupdf:start() {
+    local output=$1
+
+    mupdf "$output" &
+    mupdf_pid=$!
+}
+
+:main "$@"
