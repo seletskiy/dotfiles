@@ -25,7 +25,7 @@ snippet 2 "h2" w
 endsnippet
 
 snippet - "mdash" w
-&mdash; 
+&mdash;
 endsnippet
 
 snippet -- "minus" i
@@ -44,15 +44,8 @@ snippet b "b" w
 <b>$1</b>
 endsnippet
 
-snippet X "Description" w
-&#x2718;
-endsnippet
-
-snippet V "Description" w
-&x2714;
-endsnippet
-
 priority 10
+pre_expand "snip.buffer[snip.cursor[0]] = snip.buffer[snip.cursor[0]].strip('>')"
 snippet "<(\w+)" "tag completion" r
-<`!p snip.rv = match.group(1)`>$1</`!p snip.rv = match.group(1)`
+<`!p snip.rv = match.group(1)`>$1</`!p snip.rv = match.group(1)`>
 endsnippet
