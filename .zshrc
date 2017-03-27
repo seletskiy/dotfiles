@@ -21,6 +21,8 @@
 
     HEAVERD_PRODUCTION='foci.cname.s:8081'
     HEAVERD_DEVELOPMENT='container.s:8081'
+
+    FZF_TMUX_HEIGHT=0
 }
 
 # environment
