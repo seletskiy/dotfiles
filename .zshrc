@@ -1,19 +1,23 @@
 # detect zsh -is
 {
-    INTERACTIVE=$([ -t 0 ] && echo 1)
-
-    :is-interactive() {
-        [ "$INTERACTIVE" ]
-    }
+    if [ -t 0 ]; then
+        :is-interactive() {
+            return 0
+        }
+    else
+        :is-interactive() {
+            return 1
+        }
+    fi
 }
 
 # globals
 {
     ZDOTDIR=~/.zsh
-
     ZGEN_DIR=$ZDOTDIR/.zgen/
 
-    DOTFILES_PATH=~/sources/dotfiles
+    DOTFILES=~/.dotfiles/
+    SSH_USERNAME=s.seletskiy
 
     KEYTIMEOUT=1
 
@@ -37,6 +41,8 @@
     )
 
     export DISPLAY=${display:-$DISPLAY}
+
+    unset display
 }
 
 # prezto
@@ -326,7 +332,7 @@ fi
         'sed -re "s/^(..)((..)+)(\s|$)/\1\2.x\4/"'
 
     hijack:transform '^([[:alnum:].-]+\.x)(\s+me)' \
-        'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -ls.seletskiy/"'
+        'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -l'$SSH_USERNAME'/"'
 
     hijack:transform '^([[:alnum:].-]+\.x)($|\s+[^-s][^lu])' \
         'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'

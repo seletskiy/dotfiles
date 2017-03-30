@@ -254,6 +254,10 @@ def install_template(source, destination)
         secure_destination = destination
         destination = `mktemp`.strip()
     end
+
+    if File.symlink?(destination) && !File.exists?(destination)
+	    File.unlink(destination)
+    end
     File.open(destination, 'w') do |f|
         f.puts(expanded_lines.join(""))
     end

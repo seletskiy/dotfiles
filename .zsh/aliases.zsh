@@ -8,8 +8,8 @@
     alias v='vim'
     alias vi='vim'
 
-    alias l='ls'
     alias ls='ls --color=auto'
+    alias l='ls --group-directories-first --time-style=long-iso -tAlh'
     alias ll='ls -al'
     alias li='\k'
     alias lt='ls -alt'
@@ -72,8 +72,8 @@
     alias vf='vim $(fzf)'
     alias vw='() { vim $(which $1) }'
 
-    alias dt='cd ~/sources/dotfiles && git status -s'
-    alias de='cd ~/sources/dotfiles/.deadfiles && git status -s'
+    alias dt='cd $DOTFILES && git status -s'
+    alias de='cd $DOTFILES/.deadfiles && git status -s'
     alias kb=':knowledge-base ~/sources/kb'
     alias se='cd ~/.secrets && carcosa -Lc | sort'
 
@@ -161,9 +161,9 @@
 
     alias cks='() { ck ~/sources/"$1" && git init }'
 
-    alias di!="cd $DOTFILES_PATH && git-smart-pull && ./bootstrap"
+    alias di!="cd $DOTFILES && git-smart-pull && ./bootstrap"
     alias du!="di! $DOTFILES_PROFILE"
-    alias di="cd $DOTFILES_PATH && ./dotfiles install"
+    alias di="cd $DOTFILES && ./dotfiles install"
     alias db='dotfiles-bootstrap'
 
     alias aur='dotfiles-bootstrap-aur -S'
@@ -203,11 +203,13 @@
     alias ns='nodectl:filter'
     alias nsp='nodectl:filter -pp'
 
-    alias xp='orgalorg -spxl'
-    alias xps='orgalorg:shell:with-password'
-    alias xpc='xp -C'
-    alias xpu='orgalorg:upload'
-    alias xpur='orgalorg:upload:run'
+    alias xc=':orgalorg:command'
+
+    #alias xp='orgalorg -spxl'
+    #alias xps='orgalorg:shell:with-password'
+    #alias xpc='xp -C'
+    #alias xpu='orgalorg:upload'
+    #alias xpur='orgalorg:upload:run'
 
     alias thr='thyme show -i ~/.thyme.json -w stats > /tmp/thyme.html &&
         xdg-open /tmp/thyme.html && rm /tmp/thyme.html'
@@ -233,6 +235,8 @@
     alias vms='() { vboxheadless --startvm $1 --vrde on }'
     alias vmt='() { vboxmanage controlvm $1 poweroff }'
     alias vma='rdesktop -K 127.1:3389'
+
+    alias stl='stalk -n 127.1 --'
 
     hash-aliases:install
 
@@ -280,6 +284,7 @@
         alias kj='git checkout -B'
         alias rso='git-smart-remote show origin'
         alias st='git stash'
+        alias stp='st show -p'
         alias fk='hub fork'
         alias pr='hub pull-request'
         alias lk='github-browse'
@@ -653,16 +658,16 @@
 
         if grep -qP "^https?:" <<< "$url"; then
             local line="-        $url"
-            $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE <<< "$line"
+            $DOTFILES/bootstrap $DOTFILES_PROFILE <<< "$line"
             if [ $? -eq 0 ]; then
-                if ! grep -qFx -- "$line" $DOTFILES_PATH/profiles.txt; then
-                    echo "$line" >> $DOTFILES_PATH/profiles.txt
+                if ! grep -qFx -- "$line" $DOTFILES/profiles.txt; then
+                    echo "$line" >> $DOTFILES/profiles.txt
                 fi
                 return 1
             fi
         else
-            grep "${@}" $DOTFILES_PATH/profiles.txt \
-                | $DOTFILES_PATH/bootstrap $DOTFILES_PROFILE
+            grep "${@}" $DOTFILES/profiles.txt \
+                | $DOTFILES/bootstrap $DOTFILES_PROFILE
 
         fi
     }
@@ -677,8 +682,8 @@
         shift
 
         (
-            local dotfiles=$DOTFILES_PATH
-            local deadfiles=$DOTFILES_PATH/.deadfiles
+            local dotfiles=$DOTFILES
+            local deadfiles=$DOTFILES/.deadfiles
 
             cd $dotfiles
             git stash
@@ -1269,6 +1274,26 @@ COMMANDS
             | orgalorg -spxlC \
                 "ls /var/run/mysqld/*.sock | \
                     xargs -n1 -I{} mysql --socket={} -Ne '$query'"
+    }
+
+    :orgalorg:command() {
+        local hosts=()
+
+        while [[ "${1:---}" != "--" ]]; do
+            hosts+=("$1")
+
+            shift
+        done
+
+        shift
+
+        local flags=("${hosts[@]//#/-o}")
+
+        :orgalorg "${flags[@]}" -pxy -C "$@"
+    }
+
+    :orgalorg() {
+        orgalorg -u "$SSH_USERNAME" "$@"
     }
 
     bitbucket:pull-request() {

@@ -6,7 +6,7 @@ else
     verbose=
 fi
 
-export XAUTHORITY=/home/s.seletskiy/.Xauthority
+export XAUTHORITY=/home/operator/.Xauthority
 export DISPLAY=${DISPLAY:-:0.0}
 
 xset r rate 90 145

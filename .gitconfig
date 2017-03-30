@@ -19,17 +19,14 @@
 	xfuncname = "^[\t ]*(((public|protected|private|static)[\t ]+)?function.*)$"
 
 [core]
-	attributesfile = /home/s.seletskiy/.gitattributes
-	excludesfile = /home/s.seletskiy/.gitignore
+	attributesfile = /home/operator/.gitattributes
+	excludesfile = /home/operator/.gitignore
 
 [push]
 	default = simple
 
 [gpg]
 	program = gpg-passphrase
-
-[init]
-	templatedir = /home/s.seletskiy/.gittemplates/
 
 [url "git+ssh://github.com/"]
 	insteadOf = https://github.com/

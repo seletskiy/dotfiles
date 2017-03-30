@@ -60,8 +60,20 @@ def main(requested_profile)
 end
 
 def ensure_deps(name, force)
+    if check_deps(name)
+        return true
+    end
+
     if !install_pkg(name, false)
         return install_aur(name, false)
+    else
+        return true
+    end
+end
+
+def check_deps(name)
+    if `pacman -T #{name}` != ""
+        return false
     else
         return true
     end

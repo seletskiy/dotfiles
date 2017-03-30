@@ -21,6 +21,9 @@ set max_history_blocks = 8
 set iq_hide_requests = 1
 
 set events_command = ~/.mcabber/eventcmd
+set events_ignore_active_window = 1
+set event_log_files = 0
+set event_log_dir = ~/.mcabber/events
 
 module load fifo
 

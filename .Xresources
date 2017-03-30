@@ -25,8 +25,8 @@ URxvt.keysym.Mod4-period: autocomplete-ALL-the-things:surround-complete
 URxvt.keysym.Mod4-bar: perl:fifo:start
 URxvt.keysym.Mod4-n: string:\033\033[24~
 URxvt.keysym.Mod4-slash: string:\033\033[24~?
-URxvt.fifo.file: /home/s.seletskiy/.tmp/urxvt.fifo
-URxvt.chdir: /home/s.seletskiy/
+URxvt.fifo.file: /home/operator/.tmp/urxvt.fifo
+URxvt.chdir: /home/operator/
 URxvt.pointerBlank: true
 URxvt.buffered: false
 URxvt.depth: 24

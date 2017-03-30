@@ -26,7 +26,7 @@
 -      ! $ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 -      ! $ sudo groupadd -f operator
--      ! $ sudo usermod -aG operator s.seletskiy
+-      ! $ sudo usermod -aG operator operator
 
 -      ! $ systemctl --user --preset-mode=disable-only preset-all
 -      ! $ systemctl --user daemon-reload
@@ -88,7 +88,7 @@ android  https://aur.archlinux.org/packages/android-sdk-platform-tools
 android  https://aur.archlinux.org/packages/android-apktool
 android  https://aur.archlinux.org/packages/eclim
 android  https://aur.archlinux.org/packages/simple-mtpfs
--      ! $ sudo usermod -aG adbusers s.seletskiy
+-      ! $ sudo usermod -aG adbusers operator
 
 -        https://aur.archlinux.org/packages/asp-git
 
@@ -335,3 +335,8 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/mingw-w64-pkg-config
 -        https://aur.archlinux.org/packages/mingw-w64-configure
 -        https://aur.archlinux.org/packages/mingw-w64-libsodium
+-        https://aur.archlinux.org/packages/virtualbox-ext-oracle
+-        https://aur.archlinux.org/packages/opts-bash
+-        https://aur.archlinux.org/packages/orgalorg-git
+-        https://aur.archlinux.org/packages/ash
+-        https://aur.archlinux.org/packages/zabbixctl

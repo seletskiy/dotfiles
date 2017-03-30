@@ -10,9 +10,6 @@ super + r
 shift + Delete
     kill-focus
 
-super + control + s
-    i3-sensible-browser
-
 super + F1
     screenshot > ~/.screenshot
 
