@@ -238,6 +238,9 @@
 
     alias stl='stalk -n 127.1 --'
 
+    alias ua="find -maxdepth 1 -mindepth 1 -type d \
+        | xargs -n1 sh -c 'cd \$0; git pull --rebase'"
+
     hash-aliases:install
 
     context-aliases:init

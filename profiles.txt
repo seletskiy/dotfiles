@@ -340,3 +340,4 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/orgalorg-git
 -        https://aur.archlinux.org/packages/ash
 -        https://aur.archlinux.org/packages/zabbixctl
+-        https://aur.archlinux.org/packages/google-chrome
