@@ -1,1 +1,3 @@
 set logging = 0
+
+otrpolicy default always
