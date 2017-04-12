@@ -1,1 +1,56 @@
-../../.deadfiles/.config/dunst/dunstrc
+[global]
+    font = Monaco 12
+    allow_markup = yes
+    format = "<b>%b</b>"
+    sort = no
+    indicate_hidden = yes
+    alignment = left
+    bounce_freq = 0
+    show_age_threshold = -1
+    word_wrap = yes
+    ignore_newline = no
+    geometry = "=300x50+0-40"
+    transparency = 0
+    idle_threshold = 0
+    follow = keyboard
+    sticky_history = yes
+    line_height = 4
+    separator_height = 1
+    padding = 6
+    horizontal_padding = 8
+    separator_color = frame
+    startup_notification = false
+    dmenu = /usr/bin/dmenu -p dunst:
+    browser = browser
+
+[frame]
+    width = 0
+    color = "#2f4f4f"
+
+[shortcuts]
+    close = ctrl+space
+    close_all = ctrl+shift+space
+    history = ctrl+grave
+    context = ctrl+shift+period
+
+[urgency_low]
+    # vim text background
+    background = "#163ccb"
+     # vim text white
+    foreground = "#dadada"
+    timeout = 1
+
+[urgency_normal]
+    # vim secondary gray (airline right section)
+    background = "#163ccb"
+    # vim text white
+    foreground = "#dadada"
+    timeout = 4
+
+[urgency_critical]
+    # unique gray-red color
+    background = "#ff8c00"
+    # vim text white
+    foreground = "#8b0000"
+    frame_color = "#ff0000"
+    timeout = 6
