@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for bin in ~/.dotfiles/bin/mcabber-*; do
+    if [[ "$bin" == "mcabber-tmux" ]]; then
+        continue
+    fi
+
+    TERM=dumb "$bin" &
+    disown
+done
