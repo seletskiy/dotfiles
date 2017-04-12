@@ -118,12 +118,12 @@
 
         {
             favorite-directories:get() {
-                echo src 1 ~/sources
+                echo src 3 ~/sources
                 echo core 1 ~/sources/core
                 echo devops 1 ~/sources/devops
                 echo zsh 2 ~/.zsh/.zgen
                 echo vim 2 ~/.vim
-                echo go 3 ~/.go/src
+                echo go 3 ~/go/src
             }
         }
 
@@ -220,7 +220,6 @@ if :is-interactive; then
         prompt lambda17
 
         zstyle 'lambda17:05-sign' text "☫"
-
     }
 
     # term
