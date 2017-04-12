@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -euo pipefail
+
+filter=$1
+protocol=udp
+
+if [[ ! -d .vpn ]]; then
+    printf ".vpn directory is not found\n"
+
+    exit 1
+fi
+
+config=$(ls .vpn/config/$filter*.$protocol*.ovpn | sort -R | tail -n 1)
+
+printf "$(highlight fg red)%s$(highlight reset)\n" "$config"
+
+{ cat $config; printf "auth-user-pass .vpn/account\n"; } \
+    | sudo openvpn --config /dev/stdin --script-security 2 \
+        --up   '/bin/sh -c "resolvconf -a $1 <<< \"nameserver 8.8.8.8\"" --' \
+        --down '/bin/sh -c "resolvconf -d $1" --'
