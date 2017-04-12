@@ -164,7 +164,7 @@
     alias di!="cd $DOTFILES && git-smart-pull && ./bootstrap"
     alias du!="di! $DOTFILES_PROFILE"
     alias di="cd $DOTFILES && ./dotfiles install"
-    alias db='dotfiles-bootstrap'
+    alias pkg='dotfiles-bootstrap'
 
     alias aur='dotfiles-bootstrap-aur -S'
 
@@ -229,8 +229,8 @@
 
     alias mqs=':orgalorg:mysql "cluster:db role:mysql"'
 
-    alias mh='mcabber-history -S'
-    alias mhp='mcabber-history -S postdevops/'
+    alias mh='mcabber-history --ignore-channels=zabbix -S'
+    alias mhp='mh postdevops/'
 
     alias vms='() { vboxheadless --startvm $1 --vrde on }'
     alias vmt='() { vboxmanage controlvm $1 poweroff }'
@@ -239,7 +239,9 @@
     alias stl='stalk -n 127.1 --'
 
     alias ua="find -maxdepth 1 -mindepth 1 -type d \
-        | xargs -n1 sh -c 'cd \$0; git pull --rebase'"
+        | xargs -n1 sh -c 'echo \$0; cd \$0; git pull --rebase'"
+
+    alias tg='telegram-cli'
 
     hash-aliases:install
 
