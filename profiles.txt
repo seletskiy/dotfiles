@@ -341,3 +341,6 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/ash
 -        https://aur.archlinux.org/packages/zabbixctl
 -        https://aur.archlinux.org/packages/google-chrome
+-        https://aur.archlinux.org/packages/tmux-git
+-        https://aur.archlinux.org/packages/telegram-cli-git
+-        https://aur.archlinux.org/packages/dunst-git
