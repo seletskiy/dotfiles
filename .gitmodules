@@ -1,23 +1,23 @@
 [submodule ".fonts"]
 	path = .fonts
-	url = github.com:seletskiy/monaco-font
+	url = https://github.com/seletskiy/monaco-font
 	branch = master
 [submodule "<root>/usr/share/X11/xkb"]
 	path = <root>/usr/share/X11/xkb
-	url = github.com:reconquest/rex
+	url = https://github.com/reconquest/rex
 	branch = master
 [submodule ".vimperator/bundle"]
 	path = .vimperator/bundle
 	url = https://github.com/vimpr/vimperator-plugins
 [submodule "deadcrew/deadfiles"]
 	path = .deadfiles
-	url = git@github.com:deadcrew/deadfiles
+	url = https://github.com/deadcrew/deadfiles
 	branch = master
 [submodule "bin/.master-of-android"]
 	path = bin/.master-of-android
-	url = git@github.com:deadcrew/master-of-android
+	url = https://github.com/deadcrew/master-of-android
 	branch = master
 [submodule ".secrets"]
 	path = .secrets
-	url = github.com:seletskiy/secrets
+	url = https://github.com/seletskiy/secrets
 	branch = master

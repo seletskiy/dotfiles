@@ -1,5 +1,4 @@
 Section "Device"
-	Identifier  "Card0"
-	Driver      "modesetting"
-	BusID       "PCI:0:2:0"
+    Identifier "intel"
+	Driver "intel"
 EndSection

@@ -160,7 +160,7 @@ def install_aur(url, force, flags='')
             puts "failed to install package"
             output = `yes | makepkg -rsi --force #{flags} 2>&1`
             if output[/PGP signatures could not be verified/]
-                reesult = install_aur(url, force, '--skippgpcheck')
+                reesult = install_aur(url, force, '--skippgpcheck -e')
             end
             keep_pkgbuild = true
         end

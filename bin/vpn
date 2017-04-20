@@ -3,7 +3,7 @@
 set -euo pipefail
 
 filter=$1
-protocol=udp
+protocol=tcp
 
 if [[ ! -d .vpn ]]; then
     printf ".vpn directory is not found\n"

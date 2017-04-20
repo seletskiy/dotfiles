@@ -3,7 +3,7 @@ Description=X Server Socket Ready /tmp/.X11-unix/X%i
 Before=graphical.target
 
 [Service]
-ExecStart=/usr/bin/sh -c 'while [ ! -e /tmp/.X11-unix/X%i ]; do :; done'
+ExecStart=/usr/bin/sh -c 'while [ ! -e /tmp/.X11-unix/X%i ]; do sleep 0.5; done'
 Type=oneshot
 RemainAfterExit=yes
 

@@ -6,10 +6,11 @@ Requires=x:socket@.service
 [Service]
 Environment=DISPLAY=:%i
 ExecStartPre=/usr/bin/systemctl --user import-environment DISPLAY
-ExecStart=/usr/bin/bash -c 'exec Xorg $DISPLAY \
+ExecStart=/usr/bin/bash -c 'exec sudo Xorg $DISPLAY \
     -nolisten tcp \
     -noreset \
     -verbose 2 \
+    -keeptty \
     $${XORG_VT:-vt0$$((%i+1))}'
 WorkingDirectory=%h
 

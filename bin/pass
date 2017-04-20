@@ -1,0 +1,62 @@
+#!/bin/bash
+
+:main() {
+    if [[ ! "$*" ]]; then
+        printf "Usage: pass <token>\n"
+
+        exit 1
+    fi
+
+    local token=$1
+
+    local mode=password
+    if [[ "$token" =~ .*# ]]; then
+        mode=head
+        token=${token%*#}
+    else
+        token=passwords/$token
+    fi
+
+    if [[ "$token" =~ .*\* ]]; then
+        token=${token%*\*}
+        if ! token=$(:get-token "$token"); then
+            return $?
+        fi
+    fi
+
+    case "$mode" in
+        head)
+            basename "$(:get-token "$token")"
+            ;;
+
+        password)
+            :carcosa -Gc $token
+            ;;
+    esac
+}
+
+:carcosa() {
+    cd ~/.secrets
+
+    carcosa "$@"
+}
+
+:get-token() {
+    local suffix=$1
+
+    local candidates=$(:carcosa -Lc | grep -F $suffix)
+    if [[ ! "$candidates" ]]; then
+        printf "No matches found.\n" >&2
+        return 1
+    fi
+
+    if [[ "$(wc -l <<< $candidates)" > 1 ]]; then
+        printf "More than 1 match found:\n" >&2
+        printf "%s\n" "$candidates" >&2
+        return 1
+    fi
+
+    printf "%s" "$candidates"
+}
+
+:main "$@"

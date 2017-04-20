@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'tempfile'
+require 'shellwords'
 
 def main(action, profile)
     if action == nil
@@ -208,13 +209,20 @@ def rejoin_template(source, destination)
 end
 
 def query_all_placeholders(line, cache)
-    while line =~ /({{.+?}})/
+    while line =~ /({{(.+?)}})/
         placeholder = $1
+        name = $2
 
         value = cache[placeholder]
         if !value
-            value = get_user_input("#{placeholder}: ",
-                placeholder =~ /PASSWORD/)
+            value = query_external_placeholder(name)
+            if value == nil
+                value = get_user_input(
+                    "#{placeholder}: ",
+                    placeholder =~ /PASSWORD/
+                )
+            end
+
             cache[placeholder] = value
         end
 
@@ -222,6 +230,20 @@ def query_all_placeholders(line, cache)
     end
 
     return line
+end
+
+def query_external_placeholder(placeholder)
+    parts = placeholder.split(":")
+    if parts.length < 2
+        return nil
+    else
+        value = %x(#{parts[0]} #{Shellwords.escape(parts[1])})
+        if $?.to_i != 0
+            return nil
+        end
+
+        return value.chomp("\n")
+    end
 end
 
 def install_template(source, destination)

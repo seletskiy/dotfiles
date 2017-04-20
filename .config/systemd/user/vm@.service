@@ -1,0 +1,6 @@
+[Unit]
+Description=Start VirtualBox Virtual Machine
+Requires=graphical.target
+
+[Service]
+ExecStart=/usr/bin/vboxheadless --startvm %i --vrde on

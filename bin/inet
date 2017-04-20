@@ -1,6 +1,8 @@
 #!/bin/bash
 
-interface=${1:-wlan0}
+wlan_interface=$(ip l | grep -m1 --color=never -Po '^\d+: \Kw[^:]+')
+
+interface=${1:-$wlan_interface}
 
 echo -n "restarting netctl-auto... "
 sudo systemctl restart netctl-auto@$interface

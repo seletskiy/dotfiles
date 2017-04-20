@@ -1,6 +1,6 @@
 GRUB_DEFAULT=0
 GRUB_DISTRIBUTOR="Arch"
-GRUB_CMDLINE_LINUX_DEFAULT="elevator=noop zfs=zroot zfs_force=1 acpi_osi=Linux acpi_backlight=vendor fsck.mode=skip"
+GRUB_CMDLINE_LINUX_DEFAULT="elevator=noop zfs=zroot zfs_force=1 fsck.mode=skip modeset=1 enable_rc6=1 enable_fbc=1"
 GRUB_CMDLINE_LINUX=""
 
 GRUB_PRELOAD_MODULES="part_gpt part_msdos"

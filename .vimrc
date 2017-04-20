@@ -32,7 +32,7 @@ Plug 'dahu/SearchParty'
 
     nmap <silent> <Leader><Leader> :let @/=''<CR><Plug>SearchPartyHighlightClear
 
-Plug 'edsono/vim-matchit'
+Plug 'tmhedberg/matchit'
 
 Plug 'scrooloose/nerdcommenter'
     nmap <Leader>l <Leader>cl

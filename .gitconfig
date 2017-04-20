@@ -1,37 +1,38 @@
 [user]
-	email = s.seletskiy@gmail.com
-	name = Stanislav Seletskiy
-	signingkey = AC87B82D
+    email = s.seletskiy@gmail.com
+    name = Stanislav Seletskiy
+    signingkey = AC87B82D
 
 [credential]
-	helper = cache --timeout=3600000
+    helper = cache --timeout=3600000
 
 [color]
-	branch = auto
-	diff = auto
-	status = auto
-	sh = auto
+    branch = auto
+    diff = auto
+    status = auto
+    sh = auto
 
 [merge]
-	tool = vimdiff
+    tool = vimdiff
 
 [diff "phpf"]
-	xfuncname = "^[\t ]*(((public|protected|private|static)[\t ]+)?function.*)$"
+    xfuncname = "^[\t ]*(((public|protected|private|static)[\t ]+)?function.*)$"
 
 [core]
-	attributesfile = /home/operator/.gitattributes
-	excludesfile = /home/operator/.gitignore
+    attributesfile = /home/operator/.gitattributes
+    excludesfile = /home/operator/.gitignore
 
 [push]
-	default = simple
+    default = simple
 
 [gpg]
-	program = gpg-passphrase
+    program = gpg-passphrase
 
 [url "git+ssh://github.com/"]
-	insteadOf = https://github.com/
+    insteadOf = https://github.com/
 
 [url "git+ssh://github.com/"]
-	insteadOf = https://git::@github.com/
+    insteadOf = https://git::@github.com/
+
 [http "https://gopkg.in"]
-	followRedirects = true
+    followRedirects = true

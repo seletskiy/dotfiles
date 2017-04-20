@@ -1,0 +1,10 @@
+[Unit]
+Description=Attach to VirtualBox Virtual Machine %i
+Requires=vm@%i.service
+
+[Service]
+ExecStart=/usr/bin/bash -c ' \
+    exec rdesktop -K 127.1:$$( \
+        vboxmanage showvminfo win \
+            | grep --color=never -Po "VRDE port:\\s+\\K\\d+" \
+    )'

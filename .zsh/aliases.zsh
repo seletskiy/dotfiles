@@ -5,6 +5,8 @@
 
     alias xdis='printf "Disconnecting from %s" $DISPLAY && export DISPLAY='
 
+    alias sudo='sudo '
+
     alias v='vim'
     alias vi='vim'
 
@@ -45,7 +47,8 @@
 
     alias x=':go:compile-and-run'
 
-    alias np=':carcosa-new-password'
+    alias cnp=':carcosa:new-password'
+    alias cap=':carcosa:add-password'
 
     alias apm='adb-push-music'
 
@@ -89,6 +92,7 @@
     alias ppu='sudo pacman -U'
     alias pps='pacman -Ss'
     alias po='pkgfile'
+    alias pos='() { pp "$(po "$1")" }'
     alias ppyu='sudo pacman -Syu'
     alias ppyuz='ppyu --ignore linux,zfs-linux-git,zfs-utils-linux-git,spl-linux-git,spl-utils-linux-git'
 
@@ -195,30 +199,20 @@
 
     alias gc='git clone'
 
-    alias @=':heaver:list-or-attach "$HEAVERD_DEVELOPMENT"'
-    alias @h=':heaver:find-host-by-container-name "$HEAVERD_DEVELOPMENT"'
-    alias %=':heaver:list-or-attach "$HEAVERD_PRODUCTION"'
-    alias %h=':heaver:find-host-by-container-name "$HEAVERD_PRODUCTION"'
-
     alias ns='nodectl:filter'
     alias nsp='nodectl:filter -pp'
 
     alias xc=':orgalorg:command'
 
-    #alias xp='orgalorg -spxl'
-    #alias xps='orgalorg:shell:with-password'
-    #alias xpc='xp -C'
-    #alias xpu='orgalorg:upload'
-    #alias xpur='orgalorg:upload:run'
-
-    alias thr='thyme show -i ~/.thyme.json -w stats > /tmp/thyme.html &&
-        xdg-open /tmp/thyme.html && rm /tmp/thyme.html'
-
     alias home=':ssh:find-and-connect-vpn-machine'
 
-    alias btc='bitcoin-cli getbalance'
-    alias btcs='bitcoin-cli sendtoaddress'
-    alias btcx='bitcoin-cli gettransaction'
+    alias electrum='command electrum -w btc.wallet'
+    alias btc='electrum getbalance | jq -r .confirmed'
+    alias btcx='() {
+        electrum payto -f "${3:-0.00001}" "$1" "$2" \\
+            | electrum signtransaction - \\
+            | electrum broadcast -
+    }'
 
     alias tl='stacket repositories list'
     alias tc='stacket repositories create'
@@ -232,16 +226,15 @@
     alias mh='mcabber-history --ignore-channels=zabbix -S'
     alias mhp='mh postdevops/'
 
-    alias vms='() { vboxheadless --startvm $1 --vrde on }'
-    alias vmt='() { vboxmanage controlvm $1 poweroff }'
-    alias vma='rdesktop -K 127.1:3389'
-
     alias stl='stalk -n 127.1 --'
 
     alias ua="find -maxdepth 1 -mindepth 1 -type d \
         | xargs -n1 sh -c 'echo \$0; cd \$0; git pull --rebase'"
 
     alias tg='telegram-cli'
+
+    alias ntl='netctl list'
+    alias ntw='netctl switch-to'
 
     hash-aliases:install
 
@@ -399,13 +392,16 @@
         sed-replace "${@}"
     }
 
-    :carcosa-new-password() {
-        cd ~/.secrets && \
-            carcosa -Sn && \
-            pwgen 10 1\
-                | tee /dev/stderr \
-                | xclip -f \
-                | carcosa -Ac "passwords/$1"
+    :carcosa:new-password() {
+        pwgen 10 1 \
+            | xclip -f \
+            | :carcosa:add-password "$1"
+    }
+
+    :carcosa:add-password() {
+        cd ~/.secrets
+
+        carcosa -Ac "passwords/$1"
     }
 
     adb-push-music() {

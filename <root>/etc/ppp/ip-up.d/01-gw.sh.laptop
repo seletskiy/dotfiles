@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$6" == "ngs" ]]; then
+if [[ "$6" == "work" ]]; then
    ip r a 192.168.160.0/24 dev $1
    ip r a 192.168.0.5 dev $1
    ip r a 192.168.0.6 dev $1

@@ -1,17 +1,34 @@
 #!/bin/bash
 
-IFS='' outputs=$(
+:map-outputs() {
+    while read line; do
+        if [[ "$line" =~ "connected " ]]; then
+            output="${line%% *}"
+        else
+            if [[ "$line" =~ ^[0-9]+x[0-9]+ ]]; then
+                read size _ <<< "$line"
+
+                printf "%s %s\n" "$size" "$output"
+            fi
+        fi
+    done
+}
+
+output=$(
     xrandr \
-        | grep -Po '.*( connected \d?)'
+        | :map-outputs \
+        | sort -nr \
+        | head -n1 \
+        | awk '{ print $2 }'
 )
 
-grep -P '\d$' <<< "$outputs" \
-    | cut -f1 -d' ' \
-    | xargs -II -n1 xrandr --output I --off
+xrandr --output "$output" --preferred
 
-xrandr --output $(
-    grep -m1 -P '\D$' <<< $outputs \
-        | cut -f1 -d' '
-) --preferred
+xrandr \
+    | grep -vFw "$output" \
+    | grep -Fw "connected" \
+    | awk '{ print $1 }' \
+    | xargs -n1 -I{} xrandr --output {} --off
 
-i3-msg restart
+systemctl --user restart i3
+systemctl --user restart keynav

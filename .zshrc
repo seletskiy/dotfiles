@@ -23,15 +23,12 @@
 
     AUTOPAIR_INHIBIT_INIT=1
 
-    HEAVERD_PRODUCTION='foci.cname.s:8081'
-    HEAVERD_DEVELOPMENT='container.s:8081'
-
     FZF_TMUX_HEIGHT=0
 }
 
 # environment
 {
-    display=$DISPLAY
+    _DISPLAY=$DISPLAY
 
     eval $(
         eval ${SUDO_USER:+sudo -iu $SUDO_USER} \
@@ -40,9 +37,13 @@
                 | sed "s/^/export /"
     )
 
-    export DISPLAY=${display:-$DISPLAY}
+    export DISPLAY=${_DISPLAY:-$DISPLAY}
 
-    unset display
+    if [[ "$PATH_PREPEND" ]]; then
+        export PATH=$PATH_PREPEND:$PATH
+    fi
+
+    unset _DISPLAY
 }
 
 # prezto
@@ -81,7 +82,7 @@
 
         # unless, zsh will crash with core dumped
         if ! type zgen >/dev/null 2>&1; then
-            source /usr/share/zsh/scripts/zgen/zgen.zsh
+            source $ZGEN_DIR/tarjoilija/zgen/zgen.zsh
         fi
 
         zle() {
