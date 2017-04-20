@@ -45,7 +45,7 @@
 
     alias '$'=':sed-replace:interactive'
 
-    alias x=':go:compile-and-run'
+    alias x='crypt'
 
     alias cnp=':carcosa:new-password'
     alias cap=':carcosa:add-password'
@@ -92,7 +92,7 @@
     alias ppu='sudo pacman -U'
     alias pps='pacman -Ss'
     alias po='pkgfile'
-    alias pos='() { pp "$(po "$1")" }'
+    alias ppo='() { pp "$(po "$1")" }'
     alias ppyu='sudo pacman -Syu'
     alias ppyuz='ppyu --ignore linux,zfs-linux-git,zfs-utils-linux-git,spl-linux-git,spl-utils-linux-git'
 
