@@ -45,7 +45,7 @@
 
     alias '$'=':sed-replace:interactive'
 
-    alias x='crypt'
+    alias x='exec crypt'
 
     alias cnp=':carcosa:new-password'
     alias cap=':carcosa:add-password'
