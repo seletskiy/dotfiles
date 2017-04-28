@@ -53,15 +53,23 @@
     alias apm='adb-push-music'
 
     alias -- ::='systemctl --user'
-    alias -- :R=':: daemon-reload'
-    alias -- :r=':R && systemctl-command-and-status --user restart'
+    alias -- :r=':: daemon-reload && () {
+        :: restart "$1"
+        :: status "$1"
+    }'
     alias -- :s=':: status'
     alias -- :t=':: stop'
     alias -- :e=':: enable'
-    alias -- :E=':: reenable'
+    alias -- :ee=':: reenable'
     alias -- :d=':: disable'
     alias -- :l=':: list-unit-files'
     alias -- :p=':: list-dependencies'
+    alias -- :j='journalctl --user'
+    alias -- :y='() {
+        systemctl --user status "$(
+            systemd-run --user "$@" 2>&1 | grep -Po "Running as unit: \\K.*"
+        )"
+    }'
 
     alias -- +x='chmod-alias'
 
@@ -209,9 +217,12 @@
     alias electrum='command electrum -w btc.wallet'
     alias btc='electrum getbalance | jq -r .confirmed'
     alias btcx='() {
-        electrum payto -f "${3:-0.00001}" "$1" "$2" \\
+        electrum daemon start
+        electrum daemon load_wallet
+        electrum payto -f "${3:-0.0017}" "$1" "$2" \\
             | electrum signtransaction - \\
             | electrum broadcast -
+        electrum daemon stop
     }'
 
     alias tl='stacket repositories list'

@@ -224,7 +224,7 @@ if :is-interactive; then
 
         if [[ "$ENCRYPTED" ]]; then
             zstyle 'lambda17:00-banner' bg 1
-            zstyle 'lambda17:00-banner' fg 16
+            zstyle 'lambda17:00-banner' fg 15
             zstyle 'lambda17:05-sign' fg 15
         fi
     }
