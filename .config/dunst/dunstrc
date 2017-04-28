@@ -1,7 +1,7 @@
 [global]
     font = Monaco 12
     allow_markup = yes
-    format = "<b>%b</b>"
+    format = "<b>%s</b>"
     sort = no
     indicate_hidden = yes
     alignment = left
@@ -54,3 +54,11 @@
     foreground = "#8b0000"
     frame_color = "#ff0000"
     timeout = 6
+
+[filter:bad]
+    category = "bad"
+    background = "#ff0000"
+
+[filter:good]
+    category = "good"
+    background = "#00ff00"
