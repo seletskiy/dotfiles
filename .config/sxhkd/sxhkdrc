@@ -28,6 +28,9 @@ super + F6
 super + F7
     mplayer-control pt_step 1
 
+super + F12
+    external-monitor
+
 Execute
     xautolock -locknow
 
@@ -54,3 +57,6 @@ super + b
 
 super + Print
     screenshot public
+
+super + Execute
+    environment-info
