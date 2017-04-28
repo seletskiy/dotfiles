@@ -159,6 +159,7 @@ Plug 'vim-airline/vim-airline'
     let g:airline_skip_empty_sections = 1
     let g:airline_theme = 'reconquest'
     let g:airline#extensions#whitespace#symbol = '☼'
+    au User _VimrcRunAfterPlugEnd let g:airline_symbols['notexists'] = '?'
 
 Plug 'seletskiy/vim-autosurround'
     au! User _OverwriteMatchemMappings
@@ -398,7 +399,8 @@ Plug 'seletskiy/vim-nunu'
 
 Plug 'kovetskiy/urxvt.vim'
     let g:urxvt_fifo = $HOME . '/.tmp/urxvt.fifo'
-    map <expr> <space>q urxvt#put("!!\<CR>")
+
+    map <expr> <space>p urxvt#put(g:urxvt_command)
 
 Plug 'junegunn/fzf'
 
@@ -423,8 +425,6 @@ Plug 'deadcrew/deadfiles'
 Plug 'kovetskiy/vim-ski'
     let g:skeletons_dir=$HOME . '/.deadfiles/.vim/skeletons/'
 
-augroup end
-
 Plug 'FooSoft/vim-argwrap'
 
 Plug 'kovetskiy/synta'
@@ -441,6 +441,10 @@ Plug 'airblade/vim-gitgutter'
     let g:gitgutter_enabled = 0
 
     "au CursorHold * GitGutterEnable
+
+Plug 'digitaltoad/vim-pug'
+
+augroup end
 
 call plug#end()
 
@@ -522,7 +526,6 @@ imap <C-Y> u<TAB>
 map <Leader>` :tabnew ~/.vimrc<CR>
 
 noremap <Leader>v V`]
-noremap <Leader>p "1p
 
 nmap <silent> <Leader>; :w<CR>
 nmap <silent> <Leader>q :q<CR>
@@ -632,7 +635,8 @@ augroup ft_customization
     au FileType snippets let g:pymode_rope_project_root=expand('%:h')
     au BufRead,BufNewFile incident.md set et ft=markdown.incident
     au BufEnter * let g:argwrap_tail_comma = 0
-    au FileType c,cpp set noet
+    au FileType c,cpp setl noet
+    au BufEnter *.amber set ft=pug
 augroup end
 
 augroup go_src
