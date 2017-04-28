@@ -1,3 +1,9 @@
 #!/bin/bash
 
-exec /bin/shift-shift
+match=keyboard
+
+if /bin/shift-shift -list | grep -qi razer; then
+    match=razer
+fi
+
+/bin/shift-shift -match "$match" -first CAPSLOCK
