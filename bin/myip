@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if ! ip l | grep -v LOOPBACK | grep -q UP; then
+    printf "no connection\n"
+    exit
+fi
+
+curl -s ipinfo.io \
+    | jq -r '.ip, .country' \
+    | paste -sd' '

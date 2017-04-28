@@ -1,0 +1,27 @@
+#!/bin/bash
+
+:main() {
+    notify-send "DATE » $(
+        date +'%T %D %a %b' \
+            | tr '[[:lower:]]' '[[:upper:]]'
+    )"
+
+    local battery=$(acpi -b | cut -d' ' -f4,5 | tr -d , | awk '{print $2" "$1}')
+    local urgency=normal
+    if grep -q "\W(1\d|\d)%" <<< "$battery"; then
+        urgency=critical
+    fi
+
+    notify-send -u "$urgency" "BATT » ${battery}"
+
+    local ip=$(myip)
+
+    local urgency=normal
+    if grep -qF "RU" <<< "$ip"; then
+        urgency=critical
+    fi
+
+    notify-send -u "$urgency" "INET » $ip"
+}
+
+:main "$@"
