@@ -1,11 +1,17 @@
 #!/bin/bash
 
 :map-outputs() {
+    local connected=false
+
     while read line; do
-        if [[ "$line" =~ "connected " ]]; then
+        if [[ "$line" =~ "disconnected " ]]; then
+            connected=false
+            continue
+        elif [[ "$line" =~ "connected " ]]; then
+            connected=true
             output="${line%% *}"
         else
-            if [[ "$line" =~ ^[0-9]+x[0-9]+ ]]; then
+            if $connected && [[ "$line" =~ ^[0-9]+x[0-9]+ ]]; then
                 read size _ <<< "$line"
 
                 printf "%s %s\n" "$size" "$output"
