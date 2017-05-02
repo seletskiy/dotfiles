@@ -9,7 +9,8 @@
     show_age_threshold = -1
     word_wrap = yes
     ignore_newline = no
-    geometry = "=300x50+0-40"
+    geometry = "300x50+0-40"
+    centering = "horizontal"
     transparency = 0
     idle_threshold = 0
     follow = keyboard
