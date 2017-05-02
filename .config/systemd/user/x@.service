@@ -12,6 +12,7 @@ ExecStart=/usr/bin/bash -c 'exec sudo Xorg $DISPLAY \
     -verbose 2 \
     -keeptty \
     $${XORG_VT:-vt0$$((%i+1))}'
+ExecStop=/usr/bin/sudo kill $MAINPID
 WorkingDirectory=%h
 
 [Install]
