@@ -2,17 +2,46 @@
 
 :main() {
     notify-send "DATE » $(
-        date +'%T %D %a %b' \
+        date +'%T %d/%m/%y %a %b' \
             | tr '[[:lower:]]' '[[:upper:]]'
     )"
 
-    local battery=$(acpi -b | cut -d' ' -f4,5 | tr -d , | awk '{print $2" "$1}')
+    local loadavg=$(cut -f1 -d' ' /proc/loadavg)
+    local temperature=$(
+        sensors -u \
+            | grep -oP 'temp\d+_input: \K\w+' \
+            | sort -rn \
+            | head -n1
+    )
     local urgency=normal
-    if grep -q "\W(1\d|\d)%" <<< "$battery"; then
+    if [[ "$temperature" > "80" ]]; then
         urgency=critical
     fi
 
-    notify-send -u "$urgency" "BATT » ${battery}"
+    notify-send -u "$urgency" "TEMP » ${temperature}C ($loadavg)"
+
+    local acpi=$(acpi -b)
+    local battery=$(
+        cut -d' ' -f4,5 <<< "$acpi" \
+            | tr -d , \
+            | awk '{print $2" "$1}'
+
+    )
+    if grep -qiF "full" <<< "$acpi"; then
+        battery="FULL"
+    fi
+
+    local charging="↑"
+    if grep -qi "discharging" <<< "$acpi"; then
+        charging="↓"
+    fi
+
+    local urgency=normal
+    if grep -qP '\W(1\d|\d)%' <<< "$battery"; then
+        urgency=critical
+    fi
+
+    notify-send -u "$urgency" "BTRY » ${battery} ${charging}"
 
     local ip=$(myip)
 

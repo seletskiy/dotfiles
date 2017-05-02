@@ -5,6 +5,12 @@ if ! ip l | grep -v LOOPBACK | grep -q UP; then
     exit
 fi
 
-curl -s ipinfo.io \
+output=$(curl -s ipinfo.io \
     | jq -r '.ip, .country' \
-    | paste -sd' '
+    | paste -sd' ')
+
+if [[ "$output" ]]; then
+    printf "%s\n" "$output"
+else
+    printf "no info\n"
+fi
