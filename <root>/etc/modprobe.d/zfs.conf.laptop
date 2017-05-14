@@ -1,2 +1,2 @@
-options zfs zfs_arc_max=67108864
-options zfs zfs_arc_min=67108864
+options zfs zfs_arc_max=536870912
+options zfs zfs_arc_min=536870912
