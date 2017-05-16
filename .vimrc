@@ -256,6 +256,7 @@ Plug 'Valloric/YouCompleteMe'
     let g:ycm_use_ultisnips_completer = 0
     let g:ycm_complete_in_comments = 1
     let g:ycm_extra_conf_globlist = [$HOME . '/simulacrum/*']
+    let g:ycm_show_diagnostics_ui = 0
 
     let g:pymode_lint_ignore = 'E128'
 
@@ -392,6 +393,8 @@ Plug 'justinmk/vim-sneak'
     nmap F <Plug>Sneak_F
     vmap F <Plug>Sneak_F
 
+    au ColorScheme * hi Sneak ctermfg=226
+
 Plug 'kovetskiy/vim-plugvim-utils'
     au BufRead .vimrc nnoremap <buffer> <Leader>r :call NewPlugFromClipboard()<CR>
 
@@ -400,7 +403,15 @@ Plug 'seletskiy/vim-nunu'
 Plug 'kovetskiy/urxvt.vim'
     let g:urxvt_fifo = $HOME . '/.tmp/urxvt.fifo'
 
-    map <expr> <space>p urxvt#put(g:urxvt_command)
+    function! RunUrxvtCommand()
+        if !exists('g:urxvt_command')
+            let g:urxvt_command = input("urxvt fifo: ")
+        end
+
+        call urxvt#put(g:urxvt_command)
+    endfunction
+
+    map <expr> <space>p RunUrxvtCommand()
 
 Plug 'junegunn/fzf'
 
