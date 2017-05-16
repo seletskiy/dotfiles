@@ -320,3 +320,6 @@ home     xf86-video-nouveau
 -        https://aur.archlinux.org/packages/dunst-git
 -        https://aur.archlinux.org/packages/shift-shift
 -        https://aur.archlinux.org/packages/libtinfo
+laptop   https://aur.archlinux.org/packages/xf86-video-intel-git
+-        https://aur.archlinux.org/packages/runki-git
+-        https://aur.archlinux.org/packages/notify-desktop-git
