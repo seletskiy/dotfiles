@@ -3,7 +3,6 @@
     allow_markup = yes
     format = "<b>%s</b>"
     sort = no
-    indicate_hidden = yes
     alignment = left
     bounce_freq = 0
     show_age_threshold = -1
@@ -23,6 +22,9 @@
     startup_notification = false
     dmenu = /usr/bin/dmenu -p dunst:
     browser = browser
+    stack_duplicates = yes
+    hide_duplicates_count = yes
+
 
 [frame]
     width = 0
