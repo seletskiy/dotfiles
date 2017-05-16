@@ -1,4 +1,4 @@
-client.focused          #163ccb #163ccb #ffffff #000000
+client.focused          #163ccb #ff00ff #ffffff #000000
 client.focused_inactive #1c1c1c #4c4c4c #ffffff #000000
 client.unfocused        #1c1c1c #1c1c1c #4c4c4c #000000
 
