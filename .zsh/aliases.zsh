@@ -46,6 +46,7 @@
     alias '$'=':sed-replace:interactive'
 
     alias x='exec crypt'
+    alias u='exec usb-shell'
 
     alias cnp=':carcosa:new-password'
     alias cap=':carcosa:add-password'
@@ -65,6 +66,7 @@
     alias -- :l=':: list-unit-files'
     alias -- :p=':: list-dependencies'
     alias -- :j='journalctl --user'
+    alias -- :jf=':j -f'
     alias -- :y='() {
         systemctl --user status "$(
             systemd-run --user "$@" 2>&1 | grep -Po "Running as unit: \\K.*"
@@ -239,13 +241,22 @@
 
     alias stl='stalk -n 127.1 --'
 
-    alias ua="find -maxdepth 1 -mindepth 1 -type d \
-        | xargs -n1 sh -c 'echo \$0; cd \$0; git pull --rebase'"
+    alias prefix='() {
+        while read -n line; do printf "%s%s\n" "$1" "$line"; done
+    }'
+
+    alias ua='find -maxdepth 1 -mindepth 1 -type d |
+        cut -b3- |
+        while read -n dir; do
+            ( cd $dir; [ -d .git ] && git pull --rebase |& prefix "{$dir} "; )
+        done'
 
     alias tg='telegram-cli'
 
     alias ntl='netctl list'
     alias ntw='netctl switch-to'
+
+    alias 8='ping 8.8.8.8'
 
     hash-aliases:install
 
