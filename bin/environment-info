@@ -44,13 +44,18 @@
     notify-send -u "$urgency" "BTRY » ${battery} ${charging}"
 
     local ip=$(myip)
+    local ping=$(ping -c 1 8.8.8.8 2>/dev/null | grep -oP 'time=\K\d+')
+
+    if [[ "$ping" ]]; then
+        ping=" (${ping}ms)"
+    fi
 
     local urgency=normal
     if grep -qF "RU" <<< "$ip"; then
         urgency=critical
     fi
 
-    notify-send -u "$urgency" "INET » $ip"
+    notify-send -u "$urgency" "INET » $ip$ping"
 }
 
 :main "$@"
