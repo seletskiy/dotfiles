@@ -1,3 +1,4 @@
+URxvt.fading: 10
 URxvt.loginShell: true
 URxvt.transparent: false
 URxvt.scrollBar: false
