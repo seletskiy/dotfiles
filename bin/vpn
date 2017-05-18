@@ -2,29 +2,141 @@
 
 set -euo pipefail
 
-if [[ ! "$1" ]]; then
-    printf "Usage: vpn <country> [(tcp|udp)]\n" >&2
-    exit 1
-fi
+:tor:connect() {
+    local socks=$1
+    local temp_dir=$2
 
-filter=$1
-protocol=${2:-tcp}
+    local tor_log=$temp_dir/tor.log
 
-if [[ -d /x/ ]]; then
-    cd /x/
-fi
+    sudo -u tor bash -c 'tor -f <(cat <<<"
+        SocksPort '$socks'
+        ExcludeExitNodes {ru},{ua},{by},{kz},{??}
+        StrictNodes 1
+        RunAsDaemon 1
+        Log notice file '$tor_log'
+    ")'
 
-if [[ ! -d .vpn ]]; then
-    printf ".vpn directory is not found\n"
+    while read line; do
+        printf "%s\n" "$line"
+        if [[ "$line" =~ Bootstrapped\ 100%:\ Done ]]; then
+            return
+        fi
+    done < <(tail -f "$tor_log")
+}
 
-    exit 1
-fi
+:vpn:connect() {
+    local filter=$1
+    local protocol=$2
+    local socks=$3
+    local temp_dir=$4
 
-config=$(ls .vpn/config/$filter*.$protocol*.ovpn | sort -R | tail -n 1)
+    local config=$(ls .vpn/config/$filter*.$protocol*.ovpn | sort -R | tail -n 1)
 
-printf "$(highlight fg red)%s$(highlight reset)\n" "$config"
+    local socks_flag=()
+    if [[ "$socks" ]]; then
+        socks_flag=(--socks-proxy 127.0.0.1 "$socks")
+    fi
 
-{ cat $config; printf "auth-user-pass .vpn/account\n"; } \
-    | sudo openvpn --config /dev/stdin --script-security 2 \
-        --up   '/bin/sh -c "resolvconf -a $1 <<< \"nameserver 8.8.8.8\"" --' \
-        --down '/bin/sh -c "resolvconf -d $1" --'
+    local up_script="resolvconf -a \$1 <<< 'nameserver 8.8.8.8'"
+    local down_script="resolvconf -d \$1"
+
+    if [[ "$socks" ]]; then
+        up_script+="
+            table_tor=7
+            table_vpn=14
+
+            iptables -t mangle -A OUTPUT -j MARK --set-mark \$table_vpn
+            iptables -t mangle -A OUTPUT -m owner --uid-owner tor -j MARK --set-mark \$table_tor
+
+            iptables -tnat -A POSTROUTING -o \$1 -j SNAT --to-source \$4
+
+            ip rule add fwmark \$table_tor priority \$table_tor table \$table_tor
+            ip rule add fwmark \$table_vpn priority \$table_vpn table \$table_vpn
+
+            ip route add default dev \$1 table \$table_vpn
+            ip route add \$(ip route | grep -P 'default') table \$table_tor
+
+            sysctl -qw net.ipv4.conf.\$1.rp_filter=2
+
+            ip route flush cache
+        "
+
+        down_script+="
+            table_tor=7
+            table_vpn=14
+
+            iptables -t mangle -D OUTPUT -j MARK --set-mark \$table_vpn
+            iptables -t mangle -D OUTPUT -m owner --uid-owner tor -j MARK --set-mark \$table_tor
+
+            iptables -tnat -D POSTROUTING -o \$1 -j SNAT --to-source \$4
+
+            ip rule delete table \$table_tor
+            ip rule delete table \$table_vpn
+
+            ip route flush table \$table_tor
+            ip route flush table \$table_vpn
+
+            ip route flush cache
+        "
+    fi
+
+    local up=$temp_dir/up.sh
+    local down=$temp_dir/down.sh
+
+    printf "%s" "$up_script"   > "$up"
+    printf "%s" "$down_script" > "$down"
+
+    { cat $config; printf "auth-user-pass .vpn/account\n"; } \
+        | sudo openvpn --config /dev/stdin --script-security 2 \
+            --up   "/bin/sh $up"   \
+            --down "/bin/sh $down" \
+            --route-nopull \
+            ${socks_flag[@]}
+            #--route 0.0.0.0 128.0.0.0 \
+}
+
+:cleanup() {
+    local temp_dir=$1
+
+    sudo -u tor killall tor
+    sudo rm -rf "$temp_dir"
+}
+
+:main() {
+    if [[ ! "$1" ]]; then
+        printf "Usage: vpn <country> [(tcp|udp)]\n" >&2
+        exit 1
+    fi
+
+    local filter=$1
+    local protocol=${2:-tcp}
+
+    if [[ -d /x/ ]]; then
+        cd /x/
+    fi
+
+    if [[ ! -d .vpn ]]; then
+        printf ".vpn directory is not found\n"
+
+        exit 1
+    fi
+
+    local temp_dir=$(mktemp -d --suffix=.vpn)
+    chmod ugo+rwx "$temp_dir"
+
+    local socks
+    if [[ "$protocol" == "tor" ]]; then
+        socks=9050
+        protocol=tcp
+    fi
+
+    if [[ "$socks" ]]; then
+        :tor:connect "$socks" "$temp_dir"
+    fi
+
+    trap ":cleanup $temp_dir" EXIT INT ERR
+
+    :vpn:connect "$filter" "$protocol" "$socks" "$temp_dir"
+}
+
+:main "$@"
