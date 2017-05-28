@@ -634,7 +634,7 @@ augroup end
 
 augroup ft_customization
     au!
-    au FileType sh set iskeyword+=-,:
+    au FileType sh setl iskeyword+=-,:
     au BufEnter php setl noexpandtab
     au FileType sql set ft=mysql
     au BufEnter /data/projects/*.conf set ft=nginx
