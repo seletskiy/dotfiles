@@ -1,19 +1,18 @@
 #!/bin/bash
 
-SYS=/sys/class/backlight/psb-bl/
-CUR=$(cat $SYS/brightness)
+device=/sys/class/backlight/intel_backlight
+current=$(cat $device/brightness)
+step=${2:-500}
 
-if [ $CUR -le 10 ]; then
-	STEP=1
-else
-	STEP=10
+if [ $current -le 10 ]; then
+    step=$((step / 10))
 fi
 
 if [ $# -eq 0 ]; then
-	cat $SYS/actual_brightness
+	cat $device/actual_brightness
 elif [ $1 == "up" ]; then
-	echo echo $(($CUR+$STEP)) \> $SYS/brightness
-	echo $(($CUR+$STEP)) > $SYS/brightness
+	echo echo $(($current+$step)) \> $device/brightness
+	echo $(($current+$step)) > $device/brightness
 elif [ $1 == "down" ]; then
-	echo $(($CUR-$STEP)) > $SYS/brightness
+	echo $(($current-$step)) > $device/brightness
 fi

@@ -28,7 +28,7 @@ super + F6
 super + F7
     mplayer-control pt_step 1
 
-super + F12
+super + F8
     external-monitor
 
 Execute
@@ -60,3 +60,9 @@ super + Print
 
 super + Execute
     environment-info
+
+super + F11
+    sudo brightness down
+
+super + F12
+    sudo brightness up
