@@ -82,6 +82,11 @@
 
         # unless, zsh will crash with core dumped
         if ! type zgen >/dev/null 2>&1; then
+            if [[ ! -d $ZGEN_DIR/tarjoilija/zgen ]]; then
+                git clone https://github.com/tarjoilija/zgen.git \
+                    "~/.zgen/tarjoilija/zgen"
+            fi
+
             source $ZGEN_DIR/tarjoilija/zgen/zgen.zsh
         fi
 
