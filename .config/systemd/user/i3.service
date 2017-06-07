@@ -4,6 +4,7 @@ Before=display-manager.target
 After=i3:config.service
 Wants=i3:config.service
 Requires=graphical.target
+PartOf=graphical.target
 
 [Service]
 ExecStart=/usr/bin/i3
