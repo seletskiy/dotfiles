@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -euo pipefail
+
+browser_id=$1
+
+active_window=$(xdotool getwindowfocus)
+
+xdotool windowactivate --sync $browser_id key ctrl+r windowactivate $active_window
