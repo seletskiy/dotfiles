@@ -180,7 +180,7 @@
     alias di="cd $DOTFILES && ./dotfiles install"
     alias pkg='dotfiles-bootstrap'
 
-    alias aur='dotfiles-bootstrap-aur -S'
+    alias aur='yaourt --noconfirm -S'
 
     alias godoc='godoc-less'
 
