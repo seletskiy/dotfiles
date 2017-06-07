@@ -258,6 +258,8 @@
 
     alias 8='ping 8.8.8.8'
 
+    alias -g -- '#cc'='xclip -i'
+
     hash-aliases:install
 
     context-aliases:init
