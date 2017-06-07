@@ -321,3 +321,4 @@ home     xf86-video-nouveau
 laptop   https://aur.archlinux.org/packages/xf86-video-intel-git
 -        https://aur.archlinux.org/packages/runki-git
 -        https://aur.archlinux.org/packages/notify-desktop-git
+-        https://aur.archlinux.org/packages/upwork
