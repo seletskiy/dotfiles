@@ -1,8 +1,0 @@
-[server]
-    address  = "{{ZABBIX_HOSTNAME}}"
-    username = "{{ZABBIX_USERNAME}}"
-    password = "{{ZABBIX_PASSWORD}}"
-
-[session]
-    path = "~/.cache/zabbixctl.session"
-

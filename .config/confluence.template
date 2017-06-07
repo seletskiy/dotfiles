@@ -1,3 +1,0 @@
-host={{CONFLUENCE_HOST}}
-user={{CONFLUENCE_USER}}
-password={{CONFLUENCE_PASSWORD}}

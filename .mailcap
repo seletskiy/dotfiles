@@ -1,13 +1,2 @@
-text/html; ash-mailcap \
-               -x "i3-sensible-browser %s" %s; \
-               needsterminal;
-
-text/html; ash-mailcap \
-               -c \
-               -x "mailcap-html %{charset} %s" \
-               -t /usr/share/ash-mailcap-autoview/editor %s; \
-               copiousoutput
-
 image/gif;                      ffplay -window_title ffplay_gif_player %s
 image/*;                        feh %s
-text/calendar;                  goik; copiousoutput

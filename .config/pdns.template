@@ -1,4 +1,0 @@
-host="dn.s"
-name="pdns"
-user="{{PDNS_USER}}"
-password="{{PDNS_PASSWORD}}"

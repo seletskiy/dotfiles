@@ -125,8 +125,6 @@
         {
             favorite-directories:get() {
                 echo src 3 ~/sources
-                echo core 1 ~/sources/core
-                echo devops 1 ~/sources/devops
                 echo zsh 2 ~/.zsh/.zgen
                 echo vim 2 ~/.vim
                 echo go 3 ~/go/src

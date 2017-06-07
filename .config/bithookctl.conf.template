@@ -1,6 +1,0 @@
-user = "{{STASH_USERNAME}}"
-pass = "{{STASH_PASSWORD}}"
-
-[aliases]
-pre = "com.ngs.stash.externalhooks.external-hooks:external-pre-receive-hook"
-post = "com.ngs.stash.externalhooks.external-hooks:external-post-receive-hook"

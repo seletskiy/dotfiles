@@ -3,8 +3,6 @@
 
     alias help=guess
 
-    alias xdis='printf "Disconnecting from %s" $DISPLAY && export DISPLAY='
-
     alias sudo='sudo '
 
     alias v='vim'
@@ -27,21 +25,7 @@
 
     alias i='image-upload'
 
-    alias bl='batrak -L'
-    alias bd='batrak -M 21 -n'
-    alias bp='batrak -Lf 16058'
-
-    alias fin='get-stock ABBV MSFT TSLA TWTR'
-
-    alias duty:dev='cake --id 41882909 -L'
-    alias duty:production='cake --id 39095231 -L'
-
-    alias duty='figlet -f mini devops && duty:dev &&
-        figlet -f mini production && duty:production'
-
     alias //='true'
-
-    alias lgs=':git:show-sources-status'
 
     alias '$'=':sed-replace:interactive'
 
@@ -87,7 +71,6 @@
 
     alias dt='cd $DOTFILES && git status -s'
     alias de='cd $DOTFILES/.deadfiles && git status -s'
-    alias kb=':knowledge-base ~/sources/kb'
     alias se='cd ~/.secrets && carcosa -Lc | sort'
 
     alias pp='sudo pacman -S'
@@ -108,14 +91,11 @@
 
     alias zgu='zgen update && zr'
 
-    alias asp='ASPROOT=~/sources/asp asp'
-
     alias psx=':ps-grep'
 
     alias al='alias | grep -P --'
 
     alias ma='mplayer -novideo'
-    alias yt='youtube-viewer -n'
 
     alias gi='go install'
     alias gb='go-fast-build'
@@ -125,60 +105,24 @@
     alias wt=':watcher:guess'
     alias wto=':watcher:guess -O'
 
-    alias a=':ash:inbox-or-review'
-    alias an=':ash:review-next'
-    alias ap=':ash:approve'
-    alias aa=':ash:open-my-review'
-    alias am=':ash:merge-my-review'
-    alias az=':ash:fzf'
-
     alias zr='source ~/.zshrc'
     alias za='vim ~/.zsh/aliases.zsh && source ~/.zsh/aliases.zsh \
         && :aliases:load'
 
-    alias zsw=':zabbix:switch-on-call'
-    alias zp='zabbixctl -Tpxxxxd'
-    alias zz='zabbixctl -Tpxxxxxd'
-    alias zk='zz -k'
-    alias zl='zabbixctl -L'
-    alias zls=':zabbix:open-graph --stacked'
-    alias zln=':zabbix:open-graph --normal'
-    alias zl!='zls'
-
     alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent \
         | head -n1)"'
 
-    alias t='t --task-dir ~/tasks --list tasks'
-    alias tf='t -f'
-
     alias ssh='uber-ssh:alias -s smart-ssh-tmux'
 
-    # 20.12.L -> ssh 192.168.20.12
-    # 20.12.P -> ssh 172.16.20.12
-    # t1.e    -> ssh ngs.ru.t1
-    # s.s     -> ssh s.s
-    # blah.ru -> ssh blah.ru
-    # node.p  -> ssh node.in.ngs.ru
-    # node.x  -> (resolve via search domain setting) ssh node
     alias -s  L='uber-ssh:alias -s smart-ssh-tmux -P 192.168.   -R .L'
-    alias -s  P='uber-ssh:alias -s smart-ssh-tmux -P 172.16.    -R .P'
-    alias -s  e='uber-ssh:alias -s smart-ssh-tmux -P ngs.ru.    -R .e'
-    alias -s  p='uber-ssh:alias -s smart-ssh-tmux -A .in.ngs.ru -R .p'
-    alias -s  x='uber-ssh:alias -s smart-ssh-tmux -R .x'
     alias -s  s='uber-ssh:alias -s smart-ssh-tmux'
     alias -s ru='uber-ssh:alias -s smart-ssh-tmux'
-    alias -s rn='uber-ssh:alias -s smart-ssh-tmux'
-
-    alias -s local='uber-ssh:alias -s smart-ssh-tmux'
 
     alias ck='() { mkdir -p $1 && cd $1 }'
-
-    alias cks='() { ck ~/sources/"$1" && git init }'
 
     alias di!="cd $DOTFILES && git-smart-pull && ./bootstrap"
     alias du!="di! $DOTFILES_PROFILE"
     alias di="cd $DOTFILES && ./dotfiles install"
-    alias pkg='dotfiles-bootstrap'
 
     alias aur='yaourt --noconfirm -S'
 
@@ -189,32 +133,14 @@
     alias m=':sources:clone github.com:seletskiy'
     alias k=':sources:clone github.com:kovetskiy'
     alias r=':sources:clone github.com:reconquest'
-    alias d=':sources:clone git+ssh://git.rn/devops'
-    alias c=':sources:clone git+ssh://git.rn/core'
-    alias n=':sources:clone git+ssh://git.rn/ngs'
 
     alias gh=':sources:clone github.com:'
 
     alias mgp=':sources:move-to-gopath'
 
-    alias crd='cr d'
-    alias crr='cr r'
-    alias crm='cr m'
-
-    alias crdg='create-new-project:go d'
-    alias crrg='create-new-project:go r'
-    alias crmg='create-new-project:go m'
-
-    alias cr='create-new-project'
-
     alias gc='git clone'
 
-    alias ns='nodectl:filter'
-    alias nsp='nodectl:filter -pp'
-
     alias xc=':orgalorg:command'
-
-    alias home=':ssh:find-and-connect-vpn-machine'
 
     alias electrum='command electrum -w btc.wallet'
     alias btc='electrum getbalance | jq -r .confirmed'
@@ -227,17 +153,11 @@
         electrum daemon stop
     }'
 
-    alias tl='stacket repositories list'
-    alias tc='stacket repositories create'
-
     alias pq='printf "%q\n"'
 
     alias -- '-'=':file:telecopy'
 
-    alias mqs=':orgalorg:mysql "cluster:db role:mysql"'
-
-    alias mh='mcabber-history --ignore-channels=zabbix -S'
-    alias mhp='mh postdevops/'
+    alias mh='mcabber-history -S'
 
     alias stl='stalk -n 127.1 --'
 
@@ -250,8 +170,6 @@
         while read -n dir; do
             ( cd $dir; [ -d .git ] && git pull --rebase |& prefix "{$dir} "; )
         done'
-
-    alias tg='telegram-cli'
 
     alias ntl='netctl list'
     alias ntw='netctl switch-to'
@@ -324,11 +242,6 @@
 
         alias gg='() { git grep $1 $(git rev-list --all) -- ${@:2} }'
 
-    context-aliases:match "is_inside_git_repo && git remote show -n origin \
-            | grep -q git.rn"
-        alias pr='bitbucket:pull-request'
-        alias lk='bitbucket:browse'
-
     context-aliases:match "test -e PKGBUILD"
         alias g='go-makepkg-enhanced'
         alias m='makepkg -f'
@@ -361,33 +274,11 @@
     context-aliases:match 'is_inside_git_repo && [ -f .git/MERGE_MSG ]'
         alias m=':vim-merge'
 
-    context-aliases:match "test -e PKGBUILD && find -maxdepth 1 -name '*.tar.xz' | grep -q ."
-        alias pu=":repo:upload:repos \$(ls -1t --color=never *.tar.xz \
-            | head -n1)"
-
-    context-aliases:match "find -maxdepth 1 -name '*.deb' | grep -q ."
-        alias pu=":repo:upload:old \$(ls -1t --color=never *.deb | head -n1)"
-
     context-aliases:on-precmd
 }
 
 # functions
 {
-    :aliases:eval() {
-        local command=$1
-        shift
-
-        eval "_alias_eval() { eval \$command; }"
-
-        _alias_eval $@
-
-        unset _alias_eval
-    }
-
-    :git:show-sources-status() {
-        lsgs -Rbrd $GOPATH/src ~/sources/ $ZGEN_DIR ~/.vim/bundle/
-    }
-
     :sed-replace:interactive() {
         if [[ "$#" -lt 2 ]]; then
             echo 'usage: sed-replace <from> <to> [<file>...]'
@@ -434,11 +325,6 @@
         adb push $dir /storage/sdcard1/Music/
         adb shell am broadcast -a android.intent.action.MEDIA_MOUNTED \
             -d file:///storage/sdcard1/
-    }
-
-    systemctl-command-and-status() {
-        systemctl $1 $2 "$3"
-        systemctl $1 status "$3"
     }
 
     :find-and-cd() {
@@ -530,88 +416,6 @@
             ${timeout:+-w$timeout} "$regexp" -- "${command[@]}"
     }
 
-    :ash:inbox-or-review() {
-        if [ $# -gt 0 ]; then
-            ash "${@}"
-        else
-            ash inbox reviewer
-        fi
-    }
-
-    :ash:review-next() {
-        local offset="${1:-1}"
-        local review=$(ash inbox reviewer | sed -n "${offset}p" | awk '{ print $1 }')
-
-        ash "$review"
-    }
-
-    :ash:open-my-review() {
-        local offset="${1:-1}"
-        local review=$(ash inbox author | sed -n "${offset}p" | awk '{ print $1 }')
-
-        ash "$review"
-    }
-
-    :ash:merge-my-review() {
-        local offset="${1:-1}"
-        local review=$(ash inbox author | sed -n "${offset}p" | awk '{ print $1 }')
-
-        ash "$review" merge
-    }
-
-    :ash:approve() {
-        local offset="${1:-1}"
-        local review=$(ash inbox reviewer | sed -n "${offset}p" | awk '{ print $1 }')
-
-        ash "$review" approve
-    }
-
-    :ash:fzf() {
-        local review="$(
-            ash inbox \
-                | awk '$6 = ":"' \
-                | awk -F: '{ print $1 }' \
-                | column -xt \
-                | fzf \
-                | awk '{ print $1 }'
-            )"
-
-        if [ -z "$review" ]; then
-            return 1
-        fi
-
-        ash "$review" "${@}"
-    }
-
-    :zabbix:switch-on-call() {
-        local next="${1:-$USER}"
-        local current=$(
-            zabbixctl -G NGS_ADM_WC_MAIN_SEND 2>/dev/null \
-                | awk '{print $3}'
-        )
-
-        printf "Switching pager duty: %s -> %s\n" "$current" "$next"
-
-        {
-            for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND}; do
-                zabbixctl -f -G "$group" -a "$next"
-                zabbixctl -f -G "$group" -r "$current"
-            done
-
-            zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -a "$current"
-            zabbixctl -f -G NGS_ADM_WC_BACKUP_SEND -r "$next"
-        } >/dev/null 2>/dev/null
-
-        printf "---\n"
-        for group in {NGS_ADM_WC_MAIN_SEND,HTTP_NGS_SEND,HTTP_HSDRN_SEND,NGS_ADM_WC_BACKUP_SEND}; do
-            zabbixctl -f -G "$group" 2>/dev/null
-        done
-    }
-
-    :zabbix:open-graph() {
-        zabbixctl -L "${@}" | xargs xdg-open 2>/dev/null
-    }
-
     smart-ssh-tmux() {
         (
             smart-ssh-tmux:cleanup() {
@@ -644,35 +448,6 @@
 
             smart-ssh-tmux:cleanup
         )
-    }
-
-    search-domain() {
-        local domain=$1
-        local resolver_host=$2
-        local resolver_port=${3:-53}
-
-        local axfr=$(dig @$resolver_host -p$resolver_port axfr s)
-
-        local records_a=$(awk '$4 == "A" { print $1 }' <<< "$axfr")
-        local records_cname=$(awk '$4 == "CNAME" { print $5 }' <<< "$axfr")
-        local records_srv=$(awk '$4 == "SRV" { print $1 }' <<< "$axfr" | uniq)
-
-        {
-            printf '%s\n' "$records_a"
-
-            # do not show SRV CNAME records
-            diff --changed-group-format='%>' --unchanged-group-format='' \
-                <(<<< "$records_srv") <(<<< "$records_cname")
-        } \
-            | grep -v '^\*' \
-            | sed -r 's/\.$//' \
-            | sort \
-            | uniq
-
-    }
-
-    axfr() {
-        search-domain "$1" dn.s 53000
     }
 
     dotfiles-bootstrap() {
@@ -821,34 +596,6 @@
         CURSOR=$(($CURSOR+5))
     }
 
-    smart-insert-last-word-wrapper() {
-        _altdot_reset=1
-        smart-insert-last-word
-    }
-
-    smart-insert-prev-word() {
-        if (( _altdot_reset )); then
-            _altdot_histno=$HISTNO
-            (( _altdot_line=-_ilw_count ))
-            _altdot_reset=0
-            _altdot_word=-2
-        elif (( _altdot_histno != HISTNO || _ilw_cursor != $CURSOR )); then
-            _altdot_histno=$HISTNO
-            _altdot_word=-1
-            _altdot_line=-1
-        else
-            _altdot_word=$((_altdot_word-1))
-        fi
-
-        smart-insert-last-word $_altdot_line $_altdot_word 1
-
-        if [[ $? -gt 0 ]]; then
-            _altdot_word=-1
-            _altdot_line=$((_altdot_line-1))
-            smart-insert-last-word $_altdot_line $_altdot_word 1
-        fi
-    }
-
     noop() {
         # nothing
     }
@@ -934,56 +681,6 @@
         cd $target_path
     }
 
-    create-new-project() {
-        local where=$1
-        local project=$2
-
-        local namespace=""
-        if [ "${project##*/}" != "$project" ]; then
-            local namespace=${project%%/*}/
-            local project=${project##*/}
-        fi
-
-        local server="github.com"
-        local org="seletskiy"
-        case "$where" in
-            d)
-                org="devops"
-                server="git.rn"
-                ;;
-            r)
-                org="reconquest"
-                server="github.com"
-                ;;
-        esac
-
-        case "$namespace" in
-            go/)
-                mkdir -p $GOPATH/src/$server/$org/$project
-                cd $GOPATH/src/$server/$org/$project
-                git init
-                ;;
-            *)
-                cks $project
-                ;;
-        esac
-
-        case "$where" in
-            d)
-                stacket repositories create devops $project
-                ;;
-            g)
-                hub create $namespace$project
-                ;;
-            r)
-                hub create reconquest/$project
-                ;;
-            m)
-                hub create seletskiy/$project
-                ;;
-        esac
-    }
-
     github:browse() {
         local file="$1"
         local line="${2:+#L$2}"
@@ -995,29 +692,6 @@
 
         hub browse -u -- $type/$(git rev-parse --short HEAD)/$file$line \
             2>/dev/null
-    }
-
-    bitbucket:browse() {
-        local file="$1"
-        local line="${2:+#$2}"
-
-        local type=commits
-        if [ "$file" ]; then
-            type=browse
-        fi
-
-        IFS='/' read host project repo <<< $(
-            git remote show -n origin \
-                | grep -P 'Push +URL' \
-                | grep -Po ':/(/[^/]+){3}' \
-                | grep -Po '[^@/]+(/[^/]+){2}$'
-        )
-
-        printf "http://%s/projects/%s/repos/%s/%s/%s%s\n" \
-            "$host" "$project" "$repo" \
-            "$type" \
-            "$(git rev-parse --short HEAD)" \
-            "$line"
     }
 
     git-merge-with-rebase() {
@@ -1074,192 +748,9 @@
         makepkg -f
     }
 
-    :heaver:list-or-attach() {
-        if [ $# -lt 2 ]; then
-            :heaver:list-containers "$1"
-        else
-            local containers=($(:heaver:find-container-by-name "$1" "$2"))
-
-            if [ "${#containers[@]}" -eq 0 ]; then
-                return 1
-            fi
-
-            if [ "${#containers[@]}" -gt 1 ]; then
-                printf "%s\n" "${containers[@]}"
-                return
-            fi
-
-            :heaver:attach \
-                "$(:heaver:find-host-by-container-name "$1" "$2")" \
-                "${containers[@]}"
-        fi
-    }
-
-    :heaver:list-containers() {
-        local source="$1"
-        curl -s --fail $source/v2/h \
-            | jq -r '.data[].Containers[] | "\(.host) \(.name)"'
-    }
-
-    :heaver:find-host-by-container-name() {
-        :heaver:list-containers "$1" | awk "\$2 ~ /$2/" | awk '{ print $1 }'
-    }
-
-    :heaver:find-container-by-name() {
-        :heaver:list-containers "$1" | awk "\$2 ~ /$2/" | awk '{ print $2 }'
-    }
-
-    :heaver:attach() {
-        local server="$1"
-        local container="$2"
-
-        ssh "$server" -t sudo -i heaver -A "$container"
-    }
-
-    :repo:upload:repos() {
-        scp "$1" "repo.s:/tmp/$1"
-        ssh "repo.s" sudo -i \
-            repos -AC -e "${3:-stable}" "${2:-arch-ngs}" "/tmp/$1"
-    }
-
-    :repo:upload:old() {
-        scp "$1" "repo.in.ngs.ru:/tmp/$1"
-        command ssh "repo.in.ngs.ru" -t sudo -i sh -s <<COMMANDS
-            cd /data/repositories/ngs-packages/ && \
-                mv -v /tmp/$1 ${2:-lucid}/ && \
-                ./rescan_${2:-lucid}.sh
-COMMANDS
-    }
-
-    pdns:cname:new() {
-        local name="$1"
-        local address="$2"
-        local domain=""
-
-        IFS="." read -r domain suffix <<< "$name"
-
-        local zone="${${suffix##*.}:-s}"
-        local domain_id="$(pdns domains list -f id -n "$zone")"
-
-        pdns records add -t CNAME -d "$domain_id" \
-            -n "${address:-$domain.cname.$zone}" \
-            -c "$name"
-        pdns soa update -n "$zone"
-    }
-
-    pdns:a:new() {
-        local name="$1"
-        local address="$2"
-        local domain=""
-
-        IFS="." read -r domain suffix <<< "$name"
-
-        local zone="${${suffix##*.}:-s}"
-        local domain_id="$(pdns domains list -f id -n "$zone")"
-
-        pdns records add -t A -d "$domain_id" -n "$name" -c "$address"
-    }
-
-    pdns:srv:new() {
-        local name="$1"
-        local hostname="$2"
-        local port="${3:-80}"
-        local domain=""
-
-        IFS="." read -r domain suffix <<< "$name"
-
-        local zone="${${suffix##*.}:-s}"
-        local domain_id="$(pdns domains list -f id -n "$zone")"
-
-        pdns records add -t SRV -d "$domain_id" -l 60 \
-            -n "$domain.${suffix:-_tcp.s}" -c "0 $port $hostname"
-        pdns soa update -n s
-    }
-
-    pdns:container:new() {
-        local domain=$1
-        local ip=$2
-
-        pdns:a:new "$domain" "$ip"
-        pdns:cname:new "$domain"
-    }
-
-    create-new-project:go() {
-        create-new-project "$1" "go/$2"
-    }
 
     :vim-merge() {
         vim -o $(git status -s | grep "^UU " | awk '{print $2}')
-    }
-
-    amf:new() {
-        cd ~/sources/
-
-        stacket repositories create specs "$1"
-        git clone "git+ssh://git.rn/specs/$1"
-
-        cd "$1"
-
-        bithookctl -p pre -A sould primary
-
-        touch amfspec
-
-        git add .
-        git commit -m "initial commit"
-        git push origin master
-    }
-
-    duty:production:update-slack-channel-topic() {
-        :heaver:list-or-attach "$HEAVERD_DEVELOPMENT" slack-devops \
-            <<< "systemctl restart caked-production &&
-                while ! update-duty auto production; do sleep 0.1; done"
-    }
-
-    duty:dev:set-slack-channel-topic() {
-        :heaver:list-or-attach "$HEAVERD_DEVELOPMENT" slack-devops \
-            <<< "update-duty $1 dev"
-    }
-
-    nodectl:filter() {
-        local include=()
-        local exclude=()
-        local filter=()
-        local args=()
-
-        while [ -n "${*:-}" ]; do
-            case "$1" in
-                -*)
-                    args+=("$1")
-                    ;;
-                ^*)
-                    exclude+=("$1")
-                    ;;
-
-                *:*)
-                    filter+=("$1")
-                    ;;
-
-                *)
-                    include+=("$1")
-                    ;;
-            esac
-
-            shift
-        done
-
-        nodectl -S ${args[@]} ${filter[@]} | {
-            if [[ "${include[@]:-}" ]]; then
-                grep -f <(printf "%s\n" "${include[@]}")
-            else
-                cat
-            fi
-        } | {
-            if [[ "${exclude[@]:-}" ]]; then
-                grep -vf <(printf "%s\n" "${exclude[@]}")
-            else
-                cat
-            fi
-        }
     }
 
     orgalorg:upload() {
@@ -1285,21 +776,6 @@ COMMANDS
         orgalorg "${hosts[@]}" -x -y -e -r "$root" -n "$command" -S "$@"
     }
 
-    orgalorg:shell:with-password() {
-        orgalorg -p -o <(nodectl:filter -pp "${@}") -i /dev/stdin -C bash -s
-    }
-
-    :orgalorg:mysql() {
-        local nodes=(${(s: :)1})
-        shift
-
-        local query=$*
-
-        nodectl:filter -pp ${nodes[*]} \
-            | orgalorg -spxlC \
-                "ls /var/run/mysqld/*.sock | \
-                    xargs -n1 -I{} mysql --socket={} -Ne '$query'"
-    }
 
     :orgalorg:command() {
         local hosts=()
@@ -1321,17 +797,6 @@ COMMANDS
         orgalorg -u "$SSH_USERNAME" "$@"
     }
 
-    bitbucket:pull-request() {
-        stacket-pull-request-create "${@}" && reviewers-add > /dev/null | {
-            tee /proc/self/fd/3 \
-                | grep devops | {
-                    echo '/roster search reviews@'
-                    echo -n '/say @here: '
-                    cat
-                } > ~/.mcabber/fifo/postdevops
-        } 3>&1
-    }
-
     :go:compile-and-run() {
         local pwd="$(pwd)"
         local name="$(basename "$pwd")"
@@ -1351,85 +816,8 @@ COMMANDS
         fi
     }
 
-    :ssh:find-and-connect-vpn-machine() {
-        local ip=$(
-            orgalorg -twc 500 -o192.168.34.{2..15} -C echo 2>/dev/null \
-                | awk '{print $1}' \
-                | grep -vFf <(ip a | grep -Po 'inet \K[\d.]+')
-        )
-
-        if [[ -z "$ip" ]]; then
-            echo "can't find connected vpn machine" >&2
-            return 1
-        fi
-
-        uber-ssh:alias -s smart-ssh-tmux "$ip"
-    }
-
     :ag() {
         ag -f --hidden --silent -- "${(j:.*?:)@}"
-    }
-
-    :knowledge-base:toc:overwrite() {
-        local readme="$1"
-
-        touch "$readme"
-
-        sed -r '/^\s*\*/,$d' -i "$readme"
-
-        :knowledge-base:toc:generate "${readme:h}" >> "$readme"
-    }
-
-    :knowledge-base:toc:generate() {
-        local dir="$1"
-
-        cd "$dir"
-
-        tree --noreport -ifP '*.md' \
-            | sed -r '1d;s|^\./||' \
-            | grep -v '^README' \
-            | sed -r 's|\S+|&\n(&)|' \
-            | sed -r '/^[^(]/{s|(.*)[0-9]{2}-|\1|;s|[^/]+/|\t|g}' \
-            | sed -r '/^[^(]/{s|-| |g;s|\.md||;s|\S.*|[&]|}' \
-            | sed -r '/\[/{N;s|\n||}' \
-            | sed -r 's|\S|* &|'
-    }
-
-    :knowledge-base:create() {
-        local base="$1"
-        shift
-
-        local glob="${(j:/:)${${@:1:-1}[@]/#/*-}}"
-        local name="${@[-1]}"
-
-        cd "$base"
-
-        if ! eval "cd $glob" &>/dev/null; then
-            printf "%s\n" "specified directory tree does not exist"
-            return 1
-        fi
-
-        local index=$(
-            find -type f \
-                | sed -r 's|^\./||' \
-                | grep -oP '^\d{2}' \
-                | sort -rn \
-                | head -n1
-        )
-
-        local next=$(printf "%02d" "$(( index + 1 ))")
-
-        vim "$next-$name.md"
-
-        :knowledge-base:toc:overwrite "$base/README.md"
-    }
-
-    :knowledge-base() {
-        if [[ ! "${*}" ]]; then
-            return
-        fi
-
-        :knowledge-base:create "${@}"
     }
 
     :ps-grep() {

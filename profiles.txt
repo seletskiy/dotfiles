@@ -14,8 +14,6 @@
 
 #-        $ ./dotfiles install
 
-#-        $ sudo pacman-key --keyserver repo.s --recv-keys 7AE38D7E
-#-        $ sudo pacman-key --lsign-key 7AE38D7E
 -      ! archlinux-keyring
 #-        $ sudo pacman -Sy
 
@@ -64,7 +62,6 @@
 -        https://aur.archlinux.org/packages/mcabber-module-focus
 -        https://aur.archlinux.org/packages/mcabber-module-autojoin
 -        https://aur.archlinux.org/packages/mcabber-module-slack-completion
--        $ ln -sf /dev/null ~/.mcabber/history/postdevops/e.kovetskiy@postdevops.xmpp.slack.com
 
 -        https://aur.archlinux.org/packages/imgur
 
@@ -210,7 +207,6 @@ work     mongodb
 -        mysql-python
 -        netctl
 -        ngrep
-work     ngs.devops-ca
 -        nmap
 -        optipng
 -        p7zip

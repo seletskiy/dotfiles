@@ -1,5 +1,0 @@
-host="{{JIRA_HOST}}"
-user="{{JIRA_USERNAME}}"
-password="{{JIRA_PASSWORD}}"
-project="{{JIRA_PROJECT}}"
-issuetype="Задача"

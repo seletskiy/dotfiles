@@ -16,6 +16,3 @@ folder-hook {{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}/ '\
 set folder='{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}'
 
 set spoolfile='{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}'
-
-macro index \C{{HOTKEY}} \
-    "<change-folder>{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}<enter>"
