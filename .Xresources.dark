@@ -16,8 +16,8 @@
 *color9:       #e9605f
 *background:   #1c1c1c
 *foreground:   #d8d8d8
-*cursorColor:  #ff00ff
-*cursorColor2: #ffffff
+*cursorColor:  #dfff00
+*cursorColor2: #000000
 
 rofi.color-normal: #eeeeee, #444444, #eeeeee, #af8700, #ffffff
 rofi.color-active: #eeeeee, #444444, #eeeeee, #af8700, #ffffff

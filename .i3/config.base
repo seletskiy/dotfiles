@@ -121,17 +121,15 @@ bindsym --release $mod+Print exec screenshot select
 bindsym --release Ctrl+Shift+Print exec screenshot public
 
 for_window [class="google-chrome"] border none
-for_window [title="Uzbl Browser"] floating enable
 for_window [instance="^screenkey$"] floating enable
 for_window [class="fontforge"] floating enable
-for_window [class="Firefox"] floating enable
-for_window [instance="^kuake_"] floating enable
+for_window [title="^kuake_"] floating enable
 for_window [title="^ffplay_gif_player"] floating enable
 for_window [title="QUIK"] floating enable
 
 floating_minimum_size 70 x 15
 
-hide_edge_borders both
+hide_edge_borders smart
 
 new_window 1pixel
 
