@@ -1,0 +1,308 @@
+#!/bin/bash
+
+[ -n "$_LOCK" ] || _LOCK=x exec flock -n $0 $0 "$@"
+
+set -euo pipefail
+
+:usage() {
+    cat <<CODE
+kuake
+
+Usage:
+    kuake [options] --terminal
+    kuake [options] --focus
+
+Options:
+    --terminal    Kuakize terminal.
+    --focus       Kuakize focused window.
+    --top         Show kuake at top of screen, default position.
+    --bottom      Show kuake at bottom of screen.
+    --right       Show kuake at right of screen.
+    --left        Show kuake at left of screen.
+    --center      Show kuake at center (vertical) of screen;
+    --middle      Show kuake at center (horizontal) of screen;
+    --height      Set kuake height as procent of screne height, default: 35.
+    --width       Set kuake height as procent of screne height, default: 50.
+    --opacity     Set kuake opacity, default: 1.
+    --class       Specify kuake window class name, default: kuake.
+    --exec        Exec command in spawned kuake terminal.
+    -h --help     Show this screen.
+CODE
+}
+
+:main() {
+    local _terminal=false
+    local _focus=false
+    local _horizontal=middle
+    local _vertical=center
+    local _height=35
+    local _width=50
+    local _opacity=1
+    local _classname=kuake
+    local _exec=
+
+    while [[ $# -ne 0 ]]; do
+        case "$1" in
+            --terminal)
+                _terminal=true
+                ;;
+
+            --focus)
+                _focus=true
+                ;;
+
+            --top)
+                _vertical=top
+                ;;
+
+            --bottom)
+                _vertical=bottom
+                ;;
+
+            --center)
+                _vertical=center
+                ;;
+
+            --right)
+                _horizontal=right
+                ;;
+
+            --left)
+                _horizontal=left
+                ;;
+
+            --middle)
+                _horizontal=middle
+                ;;
+
+            --height)
+                _height="$2"
+                shift
+                ;;
+
+            --width)
+                _width="$2"
+                shift
+                ;;
+
+            --opacity)
+                _opacity="$2"
+                shift
+                ;;
+
+            --class)
+                _classname="$2"
+                shift
+                ;;
+
+            --exec)
+                _exec="$2"
+                shift
+                ;;
+
+            -h | --help)
+                :usage
+                exit 0
+                ;;
+        esac
+
+        shift
+    done
+
+    if $_terminal; then
+        _classname="${_classname}_terminal"
+    elif $_focus; then
+        _classname="${_classname}_focus"
+    else
+        :usage
+        exit 1
+    fi
+
+    local window_id=$(:window-find $_classname)
+    local window_geometry=$(
+        :get-kuake-geometry $_width $_height $_vertical $_horizontal
+    )
+
+    if [[ "$window_id" ]]; then
+        :window-toggle "$window_id"
+
+        if :is-another-screen $window_geometry; then
+            :window-kuakize $window_id $_opacity $window_geometry
+        fi
+
+        return
+    fi
+
+    if $_terminal; then
+        :spawn-terminal $_classname "$_exec" $window_geometry
+
+        while [[ ! "$window_id" ]]; do
+            local window_id=$(:window-find $_classname)
+        done
+    else
+        local window_id=$(:window-get-active)
+
+        :window-set-classname $_classname $window_id
+    fi
+
+    :window-hide   "$window_id"
+    :window-toggle "$window_id"
+
+    :window-kuakize $window_id $_opacity $window_geometry
+}
+
+:get-kuake-geometry() {
+    local width="$1"
+    local height="$2"
+    local vertical=$3
+    local horizontal=$4
+
+    read \
+        screen_number \
+        screen_x screen_y \
+        screen_width screen_height <<< $(:xscreeninfo)
+
+    local window_x
+    local window_y
+    local window_width=$(($screen_width*$width/100))
+    local window_height=$(($screen_height*$height/100))
+
+    case "$vertical" in
+        top)
+            window_y=$screen_y
+            ;;
+
+        center)
+            window_y=$(($screen_y+($screen_height-$window_height)/2))
+            ;;
+
+        bottom)
+            window_y=$(($screen_y+$screen_height-$window_height))
+            ;;
+    esac
+
+    case "$horizontal" in
+        left)
+            window_x=$screen_x
+            ;;
+
+        middle)
+            window_x=$(($screen_x+($screen_width-$window_width)/2))
+            ;;
+
+        right)
+            window_x=$(($screen_x+$screen_width-$window_width))
+            ;;
+    esac
+
+    echo $window_x $window_y $window_width $window_height $screen_number
+}
+
+:spawn-terminal() {
+    local name="$1"
+    local command=$2
+    local window_x="$3"
+    local window_y="$4"
+    local window_width="$5"
+    local window_height="$6"
+
+    window_x=$((window_x - 1))
+    window_y=$((window_y - 1))
+
+    local geometry="${window_width}x${window_height}+${window_x}+${window_y}"
+
+    if ! tmux has-session -t $name; then
+        tmux new-session -d -s $name
+    fi
+
+    i3-msg -q "exec konsole --geometry $geometry -title $name -e \
+        sh -c \"xdotool getactivewindow set_window --classname $name && \
+            exec tmux attach-session -t $name\""
+
+    if [[ "$command" ]]; then
+        tmux send -t "$name" "$command"$'\n'
+    fi
+}
+
+:window-get-active() {
+    xdotool getactivewindow | head -n1
+}
+
+:window-set-classname() {
+    local classname="$1"
+    local window_id="$2"
+
+    xdotool set_window --classname "$classname" "$window_id"
+}
+
+:window-hide() {
+    local window_name="$1"
+
+    i3-msg -q "[id=\"$window_name\"] move scratchpad"
+}
+
+:window-find() {
+    local window_name="$1"
+
+    xdotool search --classname "^$window_name$" | head -n1
+}
+
+:window-toggle() {
+    local window_name="$1"
+
+    i3-msg -q "[id=\"$window_name\"] scratchpad show"
+}
+
+:window-kuakize() {
+    local window_id="$1"
+    local opacity="$2"
+    local window_x="$3"
+    local window_y="$4"
+    local window_width="$5"
+    local window_height="$6"
+    local window_screen="$7"
+
+    xdotool windowmove --sync $window_id $window_x $window_y
+    xdotool windowsize --sync $window_id $window_width $window_height
+
+    if [[ "$opacity" != "1" ]]; then
+        transset-df -i "$window_id" "$opacity"
+    fi
+}
+
+:is-another-screen() {
+    local window_x="$1"
+    local window_y="$2"
+    local window_width="$3"
+    local window_height="$4"
+    local window_screen="$5"
+
+    local cache_path="/tmp/kuake.$window_id"
+    local cache_screen=$(cat $cache_path 2>/dev/null)
+
+    if [[ "$cache_screen" != "$window_screen" ]]; then
+        echo -n "$window_screen" > "$cache_path"
+        return 0
+    fi
+
+    return 1
+}
+
+:xscreeninfo() {
+    python2 <<PYTHON
+import gtk.gdk
+
+screen   = gtk.gdk.screen_get_default()
+monitors = int(screen.get_n_monitors())
+display  = gtk.gdk.display_get_default()
+pointer  = display.get_pointer()
+
+cursor_monitor = screen.get_monitor_at_point(pointer[1], pointer[2])
+geometry = screen.get_monitor_geometry(cursor_monitor)
+print "%d %d %d %d %d" % (
+    cursor_monitor, geometry.x, geometry.y, geometry.width, geometry.height
+)
+PYTHON
+}
+
+:main "${@}"

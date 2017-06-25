@@ -159,6 +159,8 @@
             }
         fi
 
+        zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
         compinit
     }
 
@@ -213,7 +215,9 @@ if :is-interactive; then
 
         prompt lambda17
 
-        zstyle 'lambda17:05-sign' text "☫"
+        zstyle lambda17:05-sign text "α"
+        zstyle lambda17:20-git left "┉"
+        zstyle lambda17:01-git-stash text "⚑"
     }
 
     # term

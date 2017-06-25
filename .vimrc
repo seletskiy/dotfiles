@@ -48,6 +48,12 @@ Plug 'tpope/vim-scriptease'
 Plug 'reconquest/vim-colorscheme'
     let g:colors_name = "reconquest"
 
+    au ColorScheme * hi MatchParen ctermfg=226 ctermbg=none cterm=bold
+    au ColorScheme * hi Search cterm=bold ctermfg=16 ctermbg=226
+    au ColorScheme * hi IncSearch cterm=none ctermfg=15 ctermbg=92
+    au ColorScheme * hi Cursor cterm=bold ctermfg=16 ctermbg=226
+
+
 Plug 'surround.vim'
     vmap ( S)i
     vmap ) S)%a
@@ -147,6 +153,8 @@ Plug 'Shougo/unite.vim'
 
     map <C-E><C-P> :call g:UniteWithBufferDirFileOrGit()<CR>
 
+    au ColorScheme * hi uniteCandidateInputKeyword cterm=bold ctermfg=226 ctermbg=none
+
 Plug 'Shougo/vimproc'
 
 Plug 'Shougo/neoyank.vim'
@@ -158,8 +166,9 @@ Plug 'vim-airline/vim-airline'
     let g:airline_inactive_collapse = 1
     let g:airline_skip_empty_sections = 1
     let g:airline_theme = 'reconquest'
-    let g:airline#extensions#whitespace#symbol = '☼'
+    let g:airline#extensions#whitespace#symbol ='⍰'
     au User _VimrcRunAfterPlugEnd let g:airline_symbols['notexists'] = '?'
+    au User _VimrcRunAfterPlugEnd let g:airline_symbols['linenr'] = '≣'
 
 Plug 'seletskiy/vim-autosurround'
     au! User _OverwriteMatchemMappings

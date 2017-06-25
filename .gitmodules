@@ -1,7 +1,3 @@
-[submodule ".fonts"]
-	path = .fonts
-	url = https://github.com/seletskiy/monaco-font
-	branch = master
 [submodule "<root>/usr/share/X11/xkb"]
 	path = <root>/usr/share/X11/xkb
 	url = https://github.com/reconquest/rex

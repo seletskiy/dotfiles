@@ -1,0 +1,21 @@
+#!/bin/bash
+
+mode="-dmenu"
+if printf '%s\n' "$@" | grep -xE -- '-e'; then
+    mode=""
+fi
+
+exec rofi \
+    -font "Iosevka 10" \
+    -bw 1 \
+    -padding 1 \
+    -line-margin 1 \
+    -width 30 \
+    -location 0 \
+    -hide-scrollbar \
+    -color-enabled \
+    -separator-style none \
+    -i \
+    -p "" \
+    "$mode" \
+    "$@"
