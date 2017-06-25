@@ -21,8 +21,6 @@
 
     KEYTIMEOUT=1
 
-    AUTOPAIR_INHIBIT_INIT=1
-
     FZF_TMUX_HEIGHT=0
 }
 
@@ -133,13 +131,6 @@
 
         if :is-interactive; then
             {
-                if [ ! "$_autopair_initialized" ]; then
-                    _autopair_initialized=1
-                    autopair-init
-                fi
-            }
-
-            {
                 eval "$(sed -r -e 's/\+s//' -e '/bindkey/d' \
                     /usr/share/fzf/key-bindings.zsh)"
             }
@@ -205,7 +196,6 @@
             zgen load kovetskiy/zsh-add-params
             zgen load kovetskiy/zsh-quotes
             zgen load seletskiy/zsh-favorite-directories
-            zgen load hlissner/zsh-autopair autopair.zsh
             zgen load knu/zsh-manydots-magic
             zgen load brnv/zsh-too-long
             zgen load seletskiy/zsh-syntax-highlighting
