@@ -15,9 +15,6 @@
 [merge]
     tool = vimdiff
 
-[diff "phpf"]
-    xfuncname = "^[\t ]*(((public|protected|private|static)[\t ]+)?function.*)$"
-
 [core]
     attributesfile = /home/operator/.gitattributes
     excludesfile = /home/operator/.gitignore
