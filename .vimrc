@@ -464,6 +464,8 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'digitaltoad/vim-pug'
 
+Plug 'tomlion/vim-solidity'
+
 augroup end
 
 call plug#end()
