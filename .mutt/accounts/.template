@@ -1,11 +1,6 @@
 folder-hook {{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}/ '\
     set \
-    sendmail="msmtp --host={{SMTP HOST}} \
-        --user={{USER}} --from={{USER}} \
-        --passwordeval='msmtp-password\ {{USER}}' \
-        --tls=on \
-        --tls-trust-file=/etc/ssl/certs/ca-certificates.crt \
-        --auth=on"\
+    sendmail="msmtp -C $HOME/.config/msmtp/{{SMTP ACCOUNT}}"\
     imap_pass={{PASSWORD}}\
     from="{{FULL NAME}} <{{USER}}>"\
     folder="{{IMAP PROTOCOL}}://{{USER}}@{{IMAP HOST}}"\

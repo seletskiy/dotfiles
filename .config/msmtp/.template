@@ -1,0 +1,7 @@
+host {{SMTP HOST}}
+user {{SMTP USER}}
+password "{{SMTP PASSWORD}}"
+auto_from on
+tls on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+auth on
