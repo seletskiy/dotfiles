@@ -37,6 +37,26 @@
 
     alias apm='adb-push-music'
 
+    alias -- :!='sudo systemctl'
+    alias -- :r!=':! daemon-reload && () {
+        :! restart "$1"
+        :! status "$1"
+    }'
+    alias -- :s!=':! status'
+    alias -- :t!=':! stop'
+    alias -- :e!=':! enable'
+    alias -- :ee!=':! reenable'
+    alias -- :d!=':! disable'
+    alias -- :l!=':! list-unit-files'
+    alias -- :p!=':! list-dependencies'
+    alias -- :j!='journalctl --user'
+    alias -- :jf!=':j -f'
+    alias -- :y!='() {
+        systemctl --user status "$(
+            systemd-run --user "$@" 2>&1 | grep -Po "Running as unit: \\K.*"
+        )"
+    }'
+
     alias -- ::='systemctl --user'
     alias -- :r=':: daemon-reload && () {
         :: restart "$1"
@@ -135,6 +155,7 @@
     alias r=':sources:clone github.com:reconquest'
 
     alias gh=':sources:clone github.com:'
+    alias gb=':sources:clone bitbucket.org:'
 
     alias mgp=':sources:move-to-gopath'
 
@@ -155,7 +176,7 @@
 
     alias pq='printf "%q\n"'
 
-    alias -- '-'=':file:telecopy'
+    alias -- '-'=':pipe'
 
     alias mh='mcabber-history -S'
 
@@ -178,6 +199,22 @@
 
     alias -g -- '#cc'='xclip -i'
 
+    alias ku='kubectl'
+    alias kua=':kubectl:file apply'
+
+    alias kud=':kubectl:file delete'
+
+    alias kugp='kubectl get pods --all-namespaces'
+
+    alias kup='kugp -o name | cut -f2- -d/ | grep -F'
+    alias kul='kubectl logs'
+    alias kulf='kul -f'
+    alias kue='kubectl exec -it'
+
+    alias mks='minikube start --cpus 1 --memory 1024'
+    alias mks!='minikube stop'
+    alias mke='eval $(minikube docker-env)'
+
     hash-aliases:install
 
     context-aliases:init
@@ -187,7 +224,9 @@
         alias w='git diff --cached'
         alias a='git-smart-add'
         alias s='git status -s'
-        alias o='git log --oneline --graph --decorate --all'
+        alias o="git log --graph --all \
+            --format='format:%C(yellow)%h %Cblue%>(12)%ad%Cred%d %Creset%s' \
+            --date=relative"
         alias c='git-smart-commit --amend'
         alias p='git-smart-push seletskiy'
         alias k='git-smart-checkout'
@@ -375,8 +414,12 @@
 
         local command=""
 
-        if find -maxdepth 1 -name '*.go' | grep -q "."; then
+        if find -maxdepth 1 -name '*_test.go' | grep -q "."; then
             command=("go" "test")
+        fi
+
+        if find -maxdepth 1 -name '*.go' | grep -q "."; then
+            command=("go-fast-build")
         fi
 
         if find . ./tests -maxdepth 1 -name 'run_tests*' | grep -q "."; then
@@ -866,37 +909,28 @@
         done
     }
 
-    :file:telecopy() {
-        local source="$1"
+    :pipe() {
+        local pipe="/tmp/zsh.pipe"
 
-        local pipe="/tmp/zsh-telecopy.pipe"
-
-        if [[ -p "$pipe" ]]; then
-            {
-                local filename="$(head -n1)"
-
-                printf 'Receiving %s...\n' "$filename"
-
-                cat >! "$(basename "$filename")"
-            } < $pipe
-
-            rm "$pipe"
+        if [[ -t 0 ]]; then
+            cat "$pipe"
         else
-            if [[ ! -f "$source" ]]; then
-                printf 'No such file: %s\n' "$source"
-
-                return 1
-            fi >&2
-
-            mkfifo "$pipe"
-
-            {
-                realpath "$source"
-
-                cat "$source"
-            } > $pipe
+            if [[ ! -p "$pipe" ]]; then
+                mkfifo "$pipe"
+            fi
+            cat > "$pipe"
+            rm "$pipe"
         fi
     }
+
+    :kubectl:file() {
+        local command=$1
+        shift
+
+        kubectl $command "-f${^@}"
+    }
+
+    compdef '_files -g "*.yaml"' :kubectl:file
 
     _autocd() {
         if [[ "${BUFFER:0:1}" == " " ]]; then
