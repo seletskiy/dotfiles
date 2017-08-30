@@ -95,7 +95,7 @@ Plug 'Shougo/unite.vim'
 
     au User _VimrcRunAfterPlugEnd call unite#custom#source(
         \ 'file_rec/async,git_cached,git_untracked', 'ignore_pattern',
-		\ '.*/vendor/.*')
+		\ 'vendor/')
 
     function! UniteScaleWindow()
         if winheight(0) < 2
@@ -275,6 +275,7 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
     let g:go_snippet_engine = "skip"
     let g:go_fmt_autosave = 0
+    let g:go_fmt_fail_silently = 1
     let g:go_metalinter_command = "gometalinter"
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
