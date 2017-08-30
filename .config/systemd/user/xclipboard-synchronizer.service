@@ -5,7 +5,11 @@ After=graphical.target
 Before=display-manager.target
 
 [Service]
-ExecStart=/bin/sh -c clipboard-sync
+Type=forking
+ExecStart=/bin/bash -c ' \
+    autocutsel -fork -selection PRIMARY && \
+    autocutsel -fork -selection CLIPBOARD \
+'
 
 [Install]
 WantedBy=display-manager.target
