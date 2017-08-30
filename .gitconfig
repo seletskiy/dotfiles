@@ -25,6 +25,9 @@
 [gpg]
     program = gpg-passphrase
 
+[url "git+ssh://bitbucket.org/"]
+    insteadOf = https://bitbucket.org/
+
 [url "git+ssh://github.com/"]
     insteadOf = https://github.com/
 
