@@ -122,10 +122,10 @@
 
         {
             favorite-directories:get() {
-                echo src 3 ~/sources
-                echo zsh 2 ~/.zsh/.zgen
-                echo vim 2 ~/.vim
-                echo go 3 ~/go/src
+                echo src 3 ~/sources 3
+                echo zsh 2 ~/.zsh/.zgen 2
+                echo vim 2 ~/.vim 2
+                echo go 3 ~/go/src 3
             }
         }
 
