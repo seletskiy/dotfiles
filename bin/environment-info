@@ -1,10 +1,19 @@
 #!/bin/bash
 
 :main() {
-    notify-send "DATE » $(
-        date +'%T %d/%m/%y %a %b' \
-            | tr '[[:lower:]]' '[[:upper:]]'
-    )"
+    notify-send \
+        "TIME » $(
+            date +'[LOC] %T %d/%m/%y %a' \
+                | tr '[[:lower:]]' '[[:upper:]]'
+        )
+       $(
+            TZ=America/Los_Angeles date +'[PST] %T %d/%m/%y %a' \
+                | tr '[[:lower:]]' '[[:upper:]]'
+        )
+       $(
+            date -u +'[UTC] %T %d/%m/%y %a' \
+                | tr '[[:lower:]]' '[[:upper:]]'
+        )"
 
     local loadavg=$(cut -f1 -d' ' /proc/loadavg)
     local temperature=$(
@@ -51,9 +60,6 @@
     fi
 
     local urgency=normal
-    if grep -qF "RU" <<< "$ip"; then
-        urgency=critical
-    fi
 
     notify-send -u "$urgency" "INET » $ip$ping"
 }
