@@ -20,15 +20,15 @@ r cell-select 14
 f cell-select 15
 v cell-select 16
 
-h move-left
-j move-down
-k move-up
-l move-right
+h move-left,warp
+j move-down,warp
+k move-up,warp
+l move-right,warp
 
-Shift+h cut-left
-Shift+j cut-down
-Shift+k cut-up
-Shift+l cut-right
+u cut-left
+i cut-down
+o cut-up
+p cut-right
 
 space warp,click 1
 g warp,click 2
@@ -43,12 +43,7 @@ Escape end
 
 Tab grid 4x4,cursorzoom 320 200
 
-o warp,grid 1x1,cursorzoom 9 9
-p grid 1x1,cursorzoom 9 9,warp,click 1,end
-i windowzoom
-
-y record
-t playback
+y grid 1x1,cursorzoom 9 9,warp,click 1,end
 
 n warp,click 4
 m warp,click 5
