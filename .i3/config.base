@@ -25,9 +25,6 @@ font pango:Iosevka 11
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# start a terminal
-bindsym $mod+Shift+Return exec i3-sensible-terminal
-
 # kill focused window
 bindsym $mod+Ctrl+q kill
 
