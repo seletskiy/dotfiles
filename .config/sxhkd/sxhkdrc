@@ -1,8 +1,8 @@
 super + Return
     marvex -csb /usr/bin/konsole
 
-super + Shift + Return
-    urxvt
+super + shift + Return
+    marvex -dsb /usr/bin/konsole
 
 super + r
     modal-run
