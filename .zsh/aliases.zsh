@@ -201,8 +201,8 @@
 
     alias ku='kubectl'
     alias kua=':kubectl:file apply'
-
     alias kud=':kubectl:file delete'
+    compdef '_files -g "*.yaml"' :kubectl:file
 
     alias kugp='kubectl get pods --all-namespaces'
 
@@ -929,8 +929,6 @@
 
         kubectl $command "-f${^@}"
     }
-
-    compdef '_files -g "*.yaml"' :kubectl:file
 
     _autocd() {
         if [[ "${BUFFER:0:1}" == " " ]]; then
