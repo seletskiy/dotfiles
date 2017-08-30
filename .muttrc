@@ -8,7 +8,6 @@ set imap_check_subscribed
 set mail_check=60
 set sort=threads
 set narrow_tree=yes
-set metoo
 set alias_file=~/.mutt/aliases
 set certificate_file=~/.mutt/certificates
 set header_cache=~/.mutt/header_cache
