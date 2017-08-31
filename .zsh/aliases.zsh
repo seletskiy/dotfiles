@@ -177,6 +177,8 @@
     alias pq='printf "%q\n"'
 
     alias -- '-'=':pipe'
+    alias -- '-:'=':pipe:tar:send'
+    alias -- ':-'=':pipe:tar:receive'
 
     alias mh='mcabber-history -S'
 
@@ -921,6 +923,14 @@
             cat > "$pipe"
             rm "$pipe"
         fi
+    }
+
+    :pipe:tar:send() {
+        tar c "${1:-.}" | :pipe
+    }
+
+    :pipe:tar:receive() {
+        :pipe | tar x
     }
 
     :kubectl:file() {
