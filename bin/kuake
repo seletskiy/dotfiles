@@ -212,7 +212,7 @@ CODE
     local geometry="${window_width}x${window_height}+${window_x}+${window_y}"
 
     if ! tmux has-session -t $name; then
-        tmux new-session -d -s $name
+        i3-msg -q "exec tmux new-session -d -s $name"
     fi
 
     i3-msg -q "exec konsole --geometry $geometry -title $name -e \
