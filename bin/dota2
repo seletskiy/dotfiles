@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if pgrep steam &>/dev/null; then
+    exec steam steam://rungameid/570
+else
+    exec steam-ext4 steam://rungameid/570
+fi
