@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [[ "$*" ]]; then
+    channel=$(mktemp -dt rebirth.XXXXXX)/pids
+    trap "rm -r $(dirname $channel)" EXIT ERR
+    mkfifo "$channel"
+
+    while :; do
+        { coproc { "$@"; } >&3; } 3>&1
+        printf "%d\n" "$COPROC_PID" >$channel
+    done
+else
+    channel=$(echo ${TMPDIR:-/tmp}/rebirth.*/pids)
+
+    if [[ ! -p "$channel" ]]; then
+        exit 1
+    fi
+
+    kill -11 $(head -n1 "$channel") 2>&-
+fi
