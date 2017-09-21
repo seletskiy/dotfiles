@@ -29,7 +29,6 @@
 
     alias '$'=':sed-replace:interactive'
 
-    alias x='exec crypt'
     alias u='exec usb-shell'
 
     alias cnp=':carcosa:new-password'
@@ -81,6 +80,7 @@
 
     alias jf='sudo journalctl -ef'
     alias /=':ag'
+    alias /g='AG_ARGS=--go :ag'
     alias f='() { find -iname "*$1*" "${@:2}" }'
     alias fd=':find-and-cd'
 
@@ -199,23 +199,35 @@
 
     alias 8='ping 8.8.8.8'
 
-    alias -g -- '#cc'='xclip -i'
+    alias -g -- '#cc'='| xclip -i'
 
     alias ku='kubectl'
-    alias kua=':kubectl:file apply'
-    alias kud=':kubectl:file delete'
+    alias ka=':kubectl:file apply'
+    alias kd=':kubectl:file delete'
     compdef '_files -g "*.yaml"' :kubectl:file
 
-    alias kugp='kubectl get pods --all-namespaces'
+    alias kdp='() { ku delete po/$1; }'
+    alias kbb='ku run -i --tty --image radial/busyboxplus busybox-$RANDOM --restart=Never --rm'
 
-    alias kup='kugp -o name | cut -f2- -d/ | grep -F'
-    alias kul='kubectl logs'
-    alias kulf='kul -f'
-    alias kue='kubectl exec -it'
+    alias kg='ku get'
+    alias kgp='kg pods'
+    alias kgp!='kgp --all-namespaces'
+    alias kgn='ku get nodes'
+
+    alias kp='kgp -o name | cut -f2- -d/ | grep -F'
+    alias kl='ku logs'
+    alias klf='kl -f'
+    alias ke='ku exec -it'
+    alias kc='ku config use-context'
+    alias kff='ku port-forward'
 
     alias mks='minikube start --cpus 1 --memory 1024'
     alias mks!='minikube stop'
     alias mke='eval $(minikube docker-env)'
+
+    alias pk='pkill -f'
+
+    alias x=':context:command magalix'
 
     hash-aliases:install
 
@@ -314,6 +326,11 @@
 
     context-aliases:match 'is_inside_git_repo && [ -f .git/MERGE_MSG ]'
         alias m=':vim-merge'
+
+    context-aliases:match '[ "$CONTEXT" = "magalix" ]'
+        alias i='influx -host magalix -port 8086 -database k8s'
+        alias gh=':sources:clone github.com:MagalixTechnologies'
+        alias ku=':magalix:kubectl'
 
     context-aliases:on-precmd
 }
@@ -416,12 +433,12 @@
 
         local command=""
 
-        if find -maxdepth 1 -name '*_test.go' | grep -q "."; then
-            command=("go" "test")
-        fi
-
         if find -maxdepth 1 -name '*.go' | grep -q "."; then
             command=("go-fast-build")
+        fi
+
+        if find -maxdepth 1 -name '*_test.go' | grep -q "."; then
+            command=("go" "test")
         fi
 
         if find . ./tests -maxdepth 1 -name 'run_tests*' | grep -q "."; then
@@ -525,6 +542,11 @@
     dotfiles:migrate-to-deadfiles() {
         local subject="$1"
         shift
+
+        if [[ ! "$*" ]]; then
+            echo 'files argument required' >&2
+            return 1
+        fi
 
         (
             local dotfiles=$DOTFILES
@@ -695,14 +717,6 @@
         fi
     }
 
-    :sources:clone-and-cd() {
-        local reponame="$1"
-        local dirname="${2:-${reponame#*/}}"
-
-        git clone gh:reconquest/$reponame ~/sources/$dirname
-        cd ~/sources/$dirname
-    }
-
     :sources:move-to-gopath() {
         local directory=${1:-.}
         local site=${2:-github.com}
@@ -862,7 +876,7 @@
     }
 
     :ag() {
-        ag -f --hidden --silent -- "${(j:.*?:)@}"
+        ag $AG_ARGS -f --hidden --silent -- "${(j:.*?:)@}"
     }
 
     :ps-grep() {
@@ -940,6 +954,14 @@
         kubectl $command "-f${^@}"
     }
 
+    :context:command() {
+        CONTEXT=$1 context-aliases:on-precmd
+
+        shift
+
+        eval "${(q)@}"
+    }
+
     _autocd() {
         if [[ "${BUFFER:0:1}" == " " ]]; then
             CURRENT=$((CURRENT + 1))
@@ -947,5 +969,29 @@
         else
             _command_names
         fi
+    }
+
+    :magalix:kubectl() {
+        local arg
+        local context
+        local args=()
+
+        for arg in "$@"; do
+            if [[ "$arg" =~ @.* ]]; then
+                context=$(
+                    kubectl config get-contexts --no-headers -o name \
+                        | grep -F "${arg:1}"
+                )
+            else
+                args+=("$arg")
+            fi
+        done
+
+        if [[ ! "$context" ]]; then
+            printf ":: no context found matching specifier\n"
+            return 1
+        fi
+
+        kubectl --context=$context "${args[@]}"
     }
 }

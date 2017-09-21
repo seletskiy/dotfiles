@@ -22,6 +22,9 @@
     KEYTIMEOUT=1
 
     FZF_TMUX_HEIGHT=0
+
+    HISTSIZE=30000
+    HISTFILE=~/.zsh/.zhistory
 }
 
 # environment
@@ -44,29 +47,28 @@
     unset _DISPLAY
 }
 
-# prezto
+
 {
     # wow, such integration! https://github.com/tarjoilija/zgen/pull/27
     ln -sfT $ZDOTDIR/.zgen/sorin-ionescu/prezto-master $ZDOTDIR/.zprezto
 
     zstyle ':prezto:*:*' case-sensitive 'yes'
-
     zstyle ':prezto:*:*' color 'yes'
 
     zstyle ':prezto:load' pmodule \
+        'editor' \
         'environment' \
         'terminal' \
-        'editor' \
         'history' \
         'directory' \
-        'completion' \
-        'history-substring-search'
+        'completion'
 
-    zstyle ':prezto:module:editor' key-bindings 'vi'
 }
 
 # plugins
 {
+    zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
     {
         if ! :is-interactive; then
             compinit() {
@@ -92,12 +94,15 @@
             if [[ "$1" == "-R" || "$1" == "-U" ]]; then
                 unset -f zle
 
+                compinit
+
                 :plugins:load
                 :plugins:post-init
 
                 :hijack:load
                 :aliases:load
                 :compdef:load
+
             fi
 
             builtin zle "${@}"
@@ -114,6 +119,7 @@
             unsetopt correct_all
             unsetopt global_rcs
             unsetopt menu_complete
+            setopt prompt_sp
         }
 
         {
@@ -159,14 +165,18 @@
             }
         fi
 
-        zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
-        compinit
+        {
+            # https://github.com/sorin-ionescu/prezto/issues/1468#issuecomment-329265331
+            bindkey ' ' self-insert
+        }
     }
 
     {
         ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern hijack)
         ZSH_HIGHLIGHT_PATTERNS=('//*' 'fg=245')
+
+        ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(forward-char)
+        ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(end-of-line)
     }
 
     if ! zgen saved; then
@@ -201,6 +211,7 @@
             zgen load knu/zsh-manydots-magic
             zgen load brnv/zsh-too-long
             zgen load seletskiy/zsh-syntax-highlighting
+            zgen load zsh-users/zsh-history-substring-search
 
             # must be last!
             zgen load seletskiy/zsh-autosuggestions
@@ -269,19 +280,20 @@ fi
 {
     bindkey -e
 
+    bindkey "^[[1~" beginning-of-line
     bindkey "^A" beginning-of-line
-    bindkey "^[OA" hijack:history-substring-search-up
-    bindkey "^[[A" hijack:history-substring-search-up
-    bindkey "^[OB" history-substring-search-down
-    bindkey "^[[B" history-substring-search-down
+    bindkey '^[[A' hijack:history-substring-search-up
+    bindkey '^[[B' hijack:history-substring-search-up
+    #bindkey "^[OB" history-substring-search-down
+    #bindkey "^[[B" history-substring-search-down
     bindkey "^[[3~" delete-char
     bindkey '^A' beginning-of-line
+    bindkey '^[[4~' end-of-line
     bindkey '^E' end-of-line
     bindkey '^[[Z' reverse-menu-complete
     bindkey '^[d' delete-word
     bindkey '^K' add-params
     bindkey '^O' toggle-quotes
-    bindkey '^ ' autosuggest-execute
     bindkey -e '^_' favorite-directories:cd
     bindkey '^[d' delete-word
     bindkey '^[Od' backward-word
@@ -291,15 +303,9 @@ fi
     bindkey '^W' smart-backward-kill-word
     bindkey '^S' smart-forward-kill-word
     bindkey '^P' fuzzy-search-and-edit
-    bindkey '^[Od' backward-word
-    bindkey '^[Oc' forward-word
-    bindkey '^[[5~' forward-word
-    bindkey '^[[6~' backward-word
     bindkey "^T" prepend-sudo
     bindkey "^F" leap-back
     bindkey "^G" alias-search
-    bindkey "\e." smart-insert-last-word-wrapper
-    bindkey "\e," smart-insert-prev-word
     bindkey "^[[11^" noop
     bindkey '^R' fzf-history-widget
 
@@ -309,38 +315,16 @@ fi
 # hijacks
 :hijack:load() {
     hijack:reset
-
-    hijack:transform '^p([0-9]+)' \
-        'sed -re "s/^.([0-9]+)/phpnode\1.x/"'
-
-    hijack:transform '^t([0-9]+)' \
-        'sed -re "s/^.([0-9]+)/task\1.x/"'
-
-    hijack:transform '^f([0-9]+)' \
-        'sed -re "s/^.([0-9]+)/frontend\1.x/"'
-
-    hijack:transform '^c([0-9]+)' \
-        'sed -re "s/^.([0-9]+)/cachenode\1.x/"'
-
-    hijack:transform '^d([0-9]+)' \
-        'sed -re "s/^.([0-9]+)/dbnode\1.x/"'
-
-    hijack:transform '^(ri|ya|fo)((no|pa|re|ci|vo|mu|xa|ze|bi|so)+)(\s|$)' \
-        'sed -re "s/^(..)((..)+)(\s|$)/\1\2.x\4/"'
-
-    hijack:transform '^([[:alnum:].-]+\.x)(\s+me)' \
-        'sed -re "s/^([[:alnum:].-]+\\.x)(\s+me)/\1 -l'$SSH_USERNAME'/"'
-
-    hijack:transform '^([[:alnum:].-]+\.x)($|\s+[^-s][^lu])' \
-        'sed -re "s/^([[:alnum:].-]+\\.x)($|\s+[^-s][^lu])/\1 sudo -i\2/"'
+    hijack:transform '^([[:alnum:].-]+@)?([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})' \
+        'sed -re "s/^/ssh /"'
 
     hijack:transform '^(\w{1,3}) ! ' \
         'sed -re "s/^(\w{1,3}) ! /\1! /"'
 
-    hijack:transform '^(\w+)( .*)!$' \
+    hijack:transform '^(\S+)(\s.*)!$' \
         'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-    hijack:transform '^[ct/]!? ' \
+    hijack:transform '^[ct]!? |^/[g]? ' \
         'sed -r s"/([\\$<>{}&\\\"([!?)''#^])/\\\\\1/g"'
 
     hijack:transform '^c\\!' \
