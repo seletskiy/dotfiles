@@ -201,12 +201,11 @@
 
     alias -g -- '#cc'='| xclip -i'
 
-    alias ku='kubectl'
-    alias ka=':kubectl:file apply'
-    alias kd=':kubectl:file delete'
-    compdef '_files -g "*.yaml"' :kubectl:file
+    alias ku=':kubectl'
+    alias kaf='ku apply -f'
+    alias kdf='ku delete -f'
 
-    alias kdp='() { ku delete po/$1; }'
+    alias kdp='ku delete pods'
     alias kbb='ku run -i --tty --image radial/busyboxplus busybox-$RANDOM --restart=Never --rm'
 
     alias kg='ku get'
@@ -214,12 +213,13 @@
     alias kgp!='kgp --all-namespaces'
     alias kgn='ku get nodes'
 
-    alias kp='kgp -o name | cut -f2- -d/ | grep -F'
+    alias kp='() { kgp "${@:2}" -o name | cut -f2- -d/ | grep -F ${1}; }'
     alias kl='ku logs'
-    alias klf='kl -f'
+    alias klf='kl -f --tail=0'
     alias ke='ku exec -it'
     alias kc='ku config use-context'
     alias kff='ku port-forward'
+    alias ks='ku describe'
 
     alias mks='minikube start --cpus 1 --memory 1024'
     alias mks!='minikube stop'
@@ -228,6 +228,9 @@
     alias pk='pkill -f'
 
     alias x=':context:command magalix'
+    alias mk=':context:command minikube'
+
+    alias forever='() { while :; do eval "$@"; done; }'
 
     hash-aliases:install
 
@@ -243,6 +246,8 @@
             --date=relative"
         alias c='git-smart-commit --amend'
         alias p='git-smart-push seletskiy'
+        alias t='() { c "$@" && p ; }'
+        alias t!='() { c "$@" && p! ; }'
         alias k='git-smart-checkout'
         alias j='k master'
         alias j!='j && rst!'
@@ -330,7 +335,10 @@
     context-aliases:match '[ "$CONTEXT" = "magalix" ]'
         alias i='influx -host magalix -port 8086 -database k8s'
         alias gh=':sources:clone github.com:MagalixTechnologies'
-        alias ku=':magalix:kubectl'
+
+    context-aliases:match '[ "$CONTEXT" = "minikube" ]'
+        alias ku=':kubectl @minikube'
+        alias gh=':sources:clone github.com:MagalixTechnologies'
 
     context-aliases:on-precmd
 }
@@ -395,10 +403,9 @@
 
     :watcher:guess() {
         local timeout=""
-        local extensions=()
+        local patterns=()
+        local message=()
         local options=()
-        local directory=false
-
         while [ "${1:---}" != "--" ]; do
             if grep -qPx '\d+' <<< "$1"; then
                 timeout="$1"
@@ -406,14 +413,23 @@
                 continue
             fi
 
+            if grep -qPx '\w+\.\w+' <<< "$1"; then
+                patterns+=("$1")
+                message+=("$1")
+                shift
+                continue
+            fi
+
             if grep -qPx '\w+' <<< "$1"; then
-                extensions+=("$1")
+                patterns+=("\.$1$")
+                message+=("$1")
                 shift
                 continue
             fi
 
             if grep -qP '^[./]$' <<< "$1"; then
-                directory=true
+                patterns=(".")
+                message+=("current directory")
                 shift
                 continue
             fi
@@ -445,7 +461,7 @@
             command=(./*/run_tests*)
         fi &>/dev/null
 
-        if [ -e Makefile ]; then
+        if [[ -e Makefile ]] && grep -qP '^test:' Makefile; then
             command=("make" "test")
         fi
 
@@ -457,21 +473,17 @@
             options+=("${@}")
         fi
 
-        if [ -z "${extensions[*]}" ]; then
-            extensions=("go" "sh" "py")
+        if [ -z "${patterns[*]}" ]; then
+            patterns=("\.go$" "\.sh$" "\.py$")
+            message=("go" "sh" "py")
         fi
 
         command+=("${options[@]}")
 
-        regexp="\.(${(j:|:)extensions[@]})$"
-
-        if $directory; then
-            extensions=("current directory")
-            regexp="."
-        fi
+        regexp="${(j:|:)patterns[@]}"
 
         printf "## watching %s files -> %s%s\n" \
-            "${(j:, :)extensions[*]}" "${command[*]}" \
+            "${(j:, :)message[*]}" "${command[*]}" \
             "${timeout:+ (with ${timeout}s timeout)}"
 
         watcher -e close_write \
@@ -951,7 +963,7 @@
         local command=$1
         shift
 
-        kubectl $command "-f${^@}"
+        :kubectl $command "-f${^@}"
     }
 
     :context:command() {
@@ -971,10 +983,11 @@
         fi
     }
 
-    :magalix:kubectl() {
+    :kubectl() {
         local arg
         local context
         local args=()
+        local entity
 
         for arg in "$@"; do
             if [[ "$arg" =~ @.* ]]; then
@@ -987,11 +1000,35 @@
             fi
         done
 
+        set -- "${args[@]}"
+
+        args=()
+        targets=()
+
+        for arg in "$@"; do
+            if [[ "$arg" =~ %.* ]]; then
+                entity=${arg%/*}
+
+                if [[ "$entity" == "$arg" ]]; then
+                    entity=pod
+                fi
+
+                args+=($(
+                    kubectl --context=$context get "$entity" --no-headers \
+                            -o name \
+                        | cut -f2- -d/ \
+                        | grep -F "${${arg:1}#*/}"
+                ))
+            else
+                args+=("$arg")
+            fi
+        done
+
         if [[ ! "$context" ]]; then
             printf ":: no context found matching specifier\n"
             return 1
         fi
 
-        kubectl --context=$context "${args[@]}"
+        kubectl --context=$context ${(q)args[@]}
     }
 }
