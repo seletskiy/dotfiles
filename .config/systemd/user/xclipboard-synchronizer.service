@@ -7,8 +7,8 @@ Before=display-manager.target
 [Service]
 Type=forking
 ExecStart=/bin/bash -c ' \
-    autocutsel -fork -selection PRIMARY && \
-    autocutsel -fork -selection CLIPBOARD \
+    autocutsel -fork -pause 150 -selection PRIMARY && \
+    autocutsel -fork -pause 150 -selection CLIPBOARD \
 '
 
 [Install]
