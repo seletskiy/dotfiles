@@ -66,3 +66,9 @@ super + F11
 
 super + F12
     sudo brightness up
+
+super + Insert
+    upwork-suspend
+
+super + shift + Insert
+    upwork-kill-notification
