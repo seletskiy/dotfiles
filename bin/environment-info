@@ -1,19 +1,12 @@
 #!/bin/bash
 
 :main() {
-    notify-send \
-        "TIME » $(
-            date +'[LOC] %T %d/%m/%y %a' \
-                | tr '[[:lower:]]' '[[:upper:]]'
-        )
-       $(
-            TZ=America/Los_Angeles date +'[PST] %T %d/%m/%y %a' \
-                | tr '[[:lower:]]' '[[:upper:]]'
-        )
-       $(
-            date -u +'[UTC] %T %d/%m/%y %a' \
-                | tr '[[:lower:]]' '[[:upper:]]'
-        )"
+    :notify:send \
+        "normal" \
+        "TIME" \
+        "$(:date "LOC" && echo -n '      ')" \
+        "$(TZ=America/Los_Angeles :date "PST" && echo -n '      ')" \
+        "$(TZ=UTC :date "UTC")"
 
     local loadavg=$(cut -f1 -d' ' /proc/loadavg)
     local temperature=$(
@@ -27,7 +20,10 @@
         urgency=critical
     fi
 
-    notify-send -u "$urgency" "TEMP » ${temperature}C ($loadavg)"
+    local memory=$(free -mt | awk '/Total/ { print $4 }')
+
+    :notify:send "$urgency" "TEMP" \
+        "${temperature}C (LA $loadavg) (RAM ${memory}MiB)"
 
     local acpi=$(acpi -b)
     local battery=$(
@@ -50,7 +46,7 @@
         urgency=critical
     fi
 
-    notify-send -u "$urgency" "BTRY » ${battery} ${charging}"
+    :notify:send "$urgency" "BTRY" "${battery} ${charging}"
 
     local ip=$(myip)
     local ping=$(ping -c 1 8.8.8.8 2>/dev/null | grep -oP 'time=\K\d+')
@@ -61,7 +57,16 @@
 
     local urgency=normal
 
-    notify-send -u "$urgency" "INET » $ip$ping"
+    :notify:send "$urgency" "INET" "$ip$ping"
+}
+
+:date() {
+    date +"[$1] %T %d/%m/%y %a" \
+        | tr '[[:lower:]]' '[[:upper:]]'
+}
+
+:notify:send() {
+    notify-send -u "$1" "environment" "<b>$2 » </b>${*:3}"
 }
 
 :main "$@"
