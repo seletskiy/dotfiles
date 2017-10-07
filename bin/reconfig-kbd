@@ -9,7 +9,7 @@ fi
 export XAUTHORITY=/home/operator/.Xauthority
 export DISPLAY=${DISPLAY:-:0.0}
 
-xset r rate 90 145
+xset r rate 80 155
 
 if [ "$DOTFILES_PROFILE" == "laptop" ]; then
     xset r rate 120 130
