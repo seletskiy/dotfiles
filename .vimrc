@@ -14,16 +14,7 @@ call plug#begin('~/.vim/bundle')
 
 let mapleader="\<space>"
 
-let s:nbsp=" "
-
 let g:vim_indent_cont = shiftwidth()
-
-Plug 'nevar/revim', {'for': 'erlang'}
-
-Plug 'tpope/vim-fugitive'
-    map <C-G><C-G> :Gstatus<CR>
-
-Plug 'Gundo', {'on': 'GundoToggle'}
 
 Plug 'dahu/SearchParty'
     au VimEnter * au! SearchPartySearching
@@ -43,8 +34,6 @@ Plug 'wojtekmach/vim-rename'
 
 Plug 'repeat.vim'
 
-Plug 'tpope/vim-scriptease'
-
 Plug 'reconquest/vim-colorscheme'
     let g:colors_name = "reconquest"
 
@@ -52,6 +41,8 @@ Plug 'reconquest/vim-colorscheme'
     au ColorScheme * hi Search cterm=bold ctermfg=16 ctermbg=226
     au ColorScheme * hi IncSearch cterm=none ctermfg=15 ctermbg=92
     au ColorScheme * hi Cursor cterm=bold ctermfg=16 ctermbg=226
+    au ColorScheme * hi DiffChange ctermbg=162 ctermfg=15 cterm=bold
+    au ColorScheme * hi Error ctermbg=1 ctermfg=16 cterm=bold
 
 
 Plug 'surround.vim'
@@ -63,103 +54,93 @@ Plug 'surround.vim'
 
     imap <C-S> <C-\><C-O>:normal va"S)<CR>
 
-    map <Leader>f dt(ds)
+    noremap <Leader>f dt(ds)
+
     augroup surround_bash
         au!
         au FileType sh map <silent> <C-O> :normal viWS"<CR>
         au FileType sh map <silent> <C-]> :normal viWS)i$<CR>
     augroup END
 
-Plug 'git@github.com:seletskiy/nginx-vim-syntax'
+Plug 'seletskiy/nginx-vim-syntax'
 
-Plug 'PHP-correct-Indenting', { 'for': 'php' }
+Plug 'junegunn/fzf', {'do': './install --all'}
+Plug 'junegunn/fzf.vim'
+    let g:fzf_prefer_tmux = 1
+    au FileType * let g:fzf#vim#default_layout  = {'bottom': '10%'}
 
-Plug 'Shougo/unite.vim'
-    let g:unite_split_rule = "botright"
-    let g:unite_source_history_yank_enable = 1
-    let g:unite_enable_start_insert = 1
-    let g:unite_source_history_yank_file = $HOME.'/.vim/yankring.txt'
+Plug 'nixprime/cpsm', {'do': 'PY3=OFF ./install.sh' }
+Plug 'ctrlpvim/ctrlp.vim'
+    func! _ctrlp_buffer_add_augroup()
+        augroup _ctrlp_buffer_bufenter
+            au!
+            au BufEnter * exe "wincmd" "_" |
+                        \ call _ctrlp_buffer_remove_augroup()
+        augroup end
+    endfunc!
 
-    au User _VimrcRunAfterPlugEnd call unite#custom#source(
-        \ 'file,file/new,buffer,file_rec,file_rec/async,git_cached,git_untracked,directory',
-        \ 'matchers', 'matcher_fuzzy')
+    func! _ctrlp_buffer_remove_augroup()
+        augroup _ctrlp_buffer_bufenter
+            au!
+        augroup end
+    endfunc!
 
-    au User _VimrcRunAfterPlugEnd call unite#custom#default_action(
-        \ 'directory', 'cd')
+    func! _ctrlp_buffer()
+        CtrlPBuffer
+        call _ctrlp_buffer_add_augroup()
+    endfunc!
 
-    au User _VimrcRunAfterPlugEnd call unite#filters#sorter_default#use(['sorter_selecta'])
+    func! _ctrlp()
+        call _snippets_stop()
+        CtrlP
+    endfunc!
 
-    au User _VimrcRunAfterPlugEnd call unite#custom#source(
-        \ 'file_rec/async', 'converters', 'converter_relative_word'
-    \ )
+    "nnoremap <C-B> :call _ctrlp_buffer()<CR>
 
-    au User _VimrcRunAfterPlugEnd call unite#custom#source(
-        \ 'file_rec/async,git_cached,git_untracked', 'ignore_pattern',
-		\ 'vendor/')
+    let g:ctrlp_working_path_mode='ra'
+    let g:ctrlp_user_command = 'ctrlp-search %s'
+    let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:50'
+    let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
-    function! UniteScaleWindow()
-        if winheight(0) < 2
-            call feedkeys(":10wincmd+\<CR>")
-        endif
-    endfunction
+    "let g:ctrlp_max_depth = 10
 
-    function! s:unite_my_settings()
-        imap <buffer> <C-R> <Plug>(unite_redraw)
-        inoremap <silent><buffer> <CR>  <C-R>=unite#do_action('open')<CR>
-            \<esc>:call UniteScaleWindow()<CR>
-        inoremap <silent><buffer> <C-T> <C-R>=unite#do_action('splitswitch')<CR>
-            \<esc>:call UniteScaleWindow()<CR>
-        inoremap <silent><buffer> <C-J> <C-R>=unite#do_action('vsplitswitch')
-        call unite#custom#alias('ash_review', 'split', 'ls')
-    endfunction
+    let g:ctrlp_clear_cache_on_exit = 1
+    let g:ctrlp_use_caching = 0
+    let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp.vim'
 
-    function! g:UniteWithBufferDirFileOrGit()
-        lcd %:h
+    hi! def link CtrlPMatch Search
 
-        if fugitive#head() == ''
-            Unite -hide-source-names buffer file_rec/async
-        else
-            Unite -hide-source-names buffer git_cached git_untracked
-        endif
+    let g:ctrlp_map = '<nop>'
+    map <silent> <C-P> :call _ctrlp()<CR>
 
-        lcd!
-    endfunction
+    let g:grep_last_query = ""
 
-    function! g:UniteFileOrGit()
-        if fugitive#head() == ''
-            Unite -hide-source-names buffer file_rec/async
-        else
-            Unite -hide-source-names buffer git_cached git_untracked
-        endif
-    endfunction
+    func! _grep(query)
+        let g:grep_last_query = a:query
 
-    let g:unite_source_grep_max_candidates = 200
+        let @/ = a:query
+        call fzf#vim#ag(a:query, fzf#vim#layout(0))
+    endfunc!
 
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden --depth=-1 --ignore=vendor'
-    let g:unite_source_grep_recursive_opt = ''
-    let g:unite_source_grep_recursive_opt = ''
-    let g:unite_source_grep_search_word_highlight = 'IncSearch'
+    func! _grep_word()
+        let l:word = expand('<cword>')
+        call _grep(l:word)
+    endfunc!
 
-    map <C-P> :call g:UniteFileOrGit()<CR>
-    map <C-Y> :Unite -hide-source-names history/yank<CR>
-    map <C-U> :Unite -hide-source-names buffer<CR>
-    map <C-E><C-G> :Unite -hide-source-names grep:.<CR>
-    map <C-E><C-L> :exec ":Unite -hide-source-names grep:.::(?=\\\\w)"<CR>
-    map <C-E><C-F> <Leader>*:exec "Unite -hide-source-names grep:.::".
-            \substitute(@/, "\\\\<\\(.*\\)\\\\>", "\\1", "")."(?=\\\\W)"<CR>
-    map <C-E><C-A> :Unite ash_inbox<CR>
-    map <C-E><C-R> :UniteResume<CR>
+    func! _grep_slash()
+        let l:slash = strpart(@/, 2)
+        call _grep(l:slash)
+    endfunc!
 
-    map <C-E><C-P> :call g:UniteWithBufferDirFileOrGit()<CR>
+    func! _grep_recover()
+        call _grep(g:grep_last_query)
+    endfunc!
 
-    au ColorScheme * hi uniteCandidateInputKeyword cterm=bold ctermfg=226 ctermbg=none
+    command! -nargs=* Grep call _grep(<q-args>)
 
-Plug 'Shougo/vimproc'
-
-Plug 'Shougo/neoyank.vim'
-
-Plug 'yuku-t/unite-git'
+    nnoremap <C-E> :Grep<CR>
+    "nnoremap <C-E><C-E> :call _grep_word()<CR>
+    "nnoremap <C-G> :call _grep_recover()<CR>
 
 Plug 'vim-airline/vim-airline'
     let g:airline_powerline_fonts = 1
@@ -171,45 +152,11 @@ Plug 'vim-airline/vim-airline'
     au User _VimrcRunAfterPlugEnd let g:airline_symbols['linenr'] = '≣'
 
 Plug 'seletskiy/vim-autosurround'
-    au! User _OverwriteMatchemMappings
 
-    " oh, how I like to remap different plugin mappings
-    au User _OverwriteMatchemMappings
-        \ autocmd VimEnter,BufEnter,FileType *
-            \ inoremap <buffer> ( <C-R>=InsertSmartParenthesis()<CR>(
-                \<C-R>=AutoSurround(")") ? '' : MatchemMatchStart()<CR>
-
-    au User _OverwriteMatchemMappings
-        \ autocmd VimEnter,BufEnter,FileType * call AutoSurroundInitMappings()
-
-    au User _VimrcRunAfterPlugEnd doautocmd User _OverwriteMatchemMappings
-
-    doautocmd User _OverwriteMatchemMappings
-
-Plug 'seletskiy/matchem'
-    " required to be setup before ultisnips inclusion
+Plug 'SirVer/ultisnips'
     let g:UltiSnipsJumpForwardTrigger = '<C-J>'
     let g:UltiSnipsJumpBackwardTrigger = '<C-K>'
 
-    " wow, \<lt>lt>c-o> will expand to \<lt>c-o> by feedkeys, and then to
-    " <c-o> by matchem.
-    au User _VimrcRunAfterPlugEnd inoremap <expr> <C-O> (
-        \ pumvisible()
-            \ ? feedkeys("\<C-N>")
-            \ : feedkeys("\<C-R>=g:MatchemRepeatFixupFlush('\<lt>lt>c-o>')\<CR>\<C-O>", 'n')
-        \ ) ? '' : ''
-
-
-    au User _VimrcRunAfterPlugEnd inoremap <Tab>
-        \ <c-r>=g:MatchemRepeatFixupFlush('<lt>c-j>')<cr>
-        \<c-r>=UltiSnips#ExpandSnippet()<cr>
-
-    au User _VimrcRunAfterPlugEnd snoremap <Tab>
-        \ <c-g><esc>:call UltiSnips#SaveLastVisualSelection()<cr>gvs
-
-    au User UltiSnipsEnterFirstSnippet call g:MatchemRepeatFixupFlush('<lt>c-j>')
-
-Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetDirectories = [
     \ $HOME.'/.vim/bundle/snippets',
     \ $HOME.'/.vim/UltiSnips'
@@ -253,8 +200,6 @@ Plug 'SirVer/ultisnips'
         au BufEnter,BufWinEnter *.py let g:pymode_lint = 1
     augroup END
 
-Plug 'epmatsw/ag.vim'
-
 Plug 'Valloric/YouCompleteMe'
     let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
     let g:ycm_allow_changing_updatetime = 0
@@ -269,7 +214,7 @@ Plug 'Valloric/YouCompleteMe'
 
     let g:pymode_lint_ignore = 'E128'
 
-Plug 'kristijanhusak/vim-multiple-cursors'
+Plug 'terryma/vim-multiple-cursors'
 
 Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
@@ -318,13 +263,10 @@ Plug 'seletskiy/vim-over'
     au User _VimrcRunAfterPlugEnd nnoremap g/ /
     au User _VimrcRunAfterPlugEnd nnoremap g? ?
 
-    nmap LL VH
-
-    nmap L <Leader>*:OverCommandLine %s//<CR>
-
-    nnoremap H :OverExec %s/<CR>
-    vnoremap H :OverExec s/<CR>
-    vnoremap L :OverExec s/<CR>
+    nnoremap <silent> H :OverExec %s/<CR>
+    vnoremap <silent> H :OverExec s/<CR>
+    nnoremap <silent> L :OverExec s/<CR>
+    nnoremap <silent> U :exec printf("OverExec %d,%ds/", line("w0"), line("w$"))<CR>
 
     augroup vim_over
         au User OverCmdLineExecute call searchparty#mash#mash()
@@ -410,24 +352,6 @@ Plug 'kovetskiy/vim-plugvim-utils'
 
 Plug 'seletskiy/vim-nunu'
 
-Plug 'kovetskiy/urxvt.vim'
-    let g:urxvt_fifo = $HOME . '/.tmp/urxvt.fifo'
-
-    function! RunUrxvtCommand()
-        if !exists('g:urxvt_command')
-            let g:urxvt_command = input("urxvt fifo: ")
-        end
-
-        call urxvt#put(g:urxvt_command)
-    endfunction
-
-    map <expr> <space>p RunUrxvtCommand()
-
-Plug 'junegunn/fzf'
-
-Plug 'seletskiy/ashium'
-    nmap <C-M><C-M> :py ashium.commit()<CR>
-
 Plug 'hynek/vim-python-pep8-indent'
 
 Plug 'klen/python-mode'
@@ -448,13 +372,14 @@ Plug 'kovetskiy/vim-ski'
 
 Plug 'FooSoft/vim-argwrap'
 
-Plug 'kovetskiy/synta'
+"Plug 'kovetskiy/synta'
 
 Plug 'kovetskiy/vim-hacks'
 
 Plug 'tpope/vim-abolish'
 
 Plug 'airblade/vim-gitgutter'
+    let s:nbsp=" "
     let g:gitgutter_sign_removed='-'
     let g:gitgutter_sign_modified=s:nbsp . '±'
     let g:gitgutter_sign_modified_removed='-±'
@@ -465,7 +390,9 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'digitaltoad/vim-pug'
 
-Plug 'tomlion/vim-solidity'
+Plug 'kovetskiy/vim-autoresize'
+
+Plug 'nathanielc/vim-tickscript'
 
 augroup end
 
@@ -537,8 +464,6 @@ set fcs=vert:│
 
 let html_no_rendering=1
 
-let g:EclimCompletionMethod = 'omnifunc'
-
 " Ctrl+Backspace in cmd line
 cmap <C-H> <C-W>
 
@@ -559,13 +484,12 @@ nmap <silent> <Leader>e :e!<CR>
 map <Leader>3 :b #<CR>
 map <Leader>c :cd %:h<CR>
 
-nnoremap <silent> <Leader><Leader>g :call GoogleSearch()<CR>
-
 nnoremap <Leader><Leader>u :PlugUpdate<CR>
 nnoremap <Leader><Leader>i :PlugInstall<CR>
 
 
 map <silent> <Leader>l <Plug>NERDCommenterToggle
+vnoremap <silent> <C-D> $%
 nnoremap <silent> <C-D> :ArgWrap<CR>
 inoremap <silent> <C-D> <C-\><C-O>:ArgWrap<CR>
 
@@ -580,7 +504,6 @@ vnoremap $ g_
 
 noremap > >>
 noremap < <<
-imap <silent> <S-TAB> <C-O><<
 
 nnoremap Q qq
 nnoremap ! :g//norm n@q<CR>
@@ -600,17 +523,11 @@ nnoremap <F1> <ESC>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 
-" feedkeys required to trigger autocompletion
-imap <C-F> tx<Tab><C-R>=feedkeys('.')?'':''<CR>
-
 noremap <expr> <Leader>s feedkeys(":sp " . expand('%:h') . "/")
 
-augroup review_setting
-    au!
-    au FileType diff nnoremap <buffer> <CR> o<C-R>=(getline('.')[0] == '#')
-        \ ? ' '
-        \ : '# '<CR>
-augroup end
+inoremap <expr> <C-O> pumvisible()
+            \ ? (feedkeys("\<C-N>") ? '' : '')
+            \ : (feedkeys("\<C-O>", 'n') ? '' : '')
 
 augroup unite_setting
     au!
@@ -647,16 +564,10 @@ augroup end
 augroup ft_customization
     au!
     au FileType sh setl iskeyword+=-,:
-    au BufEnter php setl noexpandtab
     au FileType sql set ft=mysql
-    au BufEnter /data/projects/*.conf set ft=nginx
-    au BufEnter /data/projects/*.conf syn on
     au BufEnter *.test.sh set ft=test.sh
-    au FileType erlang setl comments=:%%%,:%%,:%
-    au FileType php setl comments+=mb:*
     au FileType snippets setl ft+=.python
     au FileType snippets let g:pymode_rope_project_root=expand('%:h')
-    au BufRead,BufNewFile incident.md set et ft=markdown.incident
     au BufEnter * let g:argwrap_tail_comma = 0
     au FileType c,cpp setl noet
     au BufEnter *.amber set ft=pug
@@ -768,8 +679,8 @@ function! InstallGoHandlers()
     augroup go_fmt
         au!
 
-        autocmd BufWritePre *.go if searchpos('^\v(const)?\s+usage\s+\=\s+`', 'nw') != [0, 0] |
-                \ silent! exe '/^\v(const)?\s+usage\s+\=\s+`/+1,/^`$/s/\t/    /' |
+        autocmd BufWritePre *.go if searchpos('^\v(const|var)?\s+usage\s+\=\s+`', 'nw') != [0, 0] |
+                \ silent! exe '/^\v(const|var)?\s+usage\s+\=\s+`/+1,/^`$/s/\t/    /' |
             \ endif
         autocmd BufWritePre *.go GoFmt
     augroup end
@@ -789,18 +700,6 @@ function! QuickFixOpenAll()
         let s:prev_val = s:curr_val
     endfor
 endfunction
-
-fun! InsertSmartParenthesis()
-    if pumvisible()
-        if getline('.')[col('.')-2] == '('
-            return "\<BS>"
-        else
-            return ''
-        endif
-    else
-        return ''
-    endif
-endfun
 
 fun! g:ApplySyntaxForDiffComments()
     let extension = expand('%:e')
@@ -825,21 +724,6 @@ fun! g:ApplySyntaxForDiffComments()
 
     set nolist
 endfun
-
-function! GoogleSearch()
-    let query = input('Google: ')
-
-    python <<EOF
-import urllib
-import vim
-
-query = vim.eval('l:query')
-vim.command("let l:query_encoded = '%s'" % urllib.quote_plus(query))
-EOF
-
-    call vimproc#system('i3-msg "workspace 1"')
-    call vimproc#system('firefox https://google.ru/search?q=' . l:query_encoded)
-endfunction!
 
 func! DiffApplyTop()
     let start = line('.')
