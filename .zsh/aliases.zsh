@@ -340,6 +340,9 @@
         alias ku=':kubectl @minikube'
         alias gh=':sources:clone github.com:MagalixTechnologies'
 
+    context-aliases:on-precmd '[ "$(pwd)" = ~/notes ]'
+        alias sync='adb push * /sdcard/notes'
+
     context-aliases:on-precmd
 }
 
