@@ -1,7 +1,7 @@
 [global]
     font = Iosevka 12
     allow_markup = yes
-    format = "<b>%s</b>"
+    format = "%b"
     sort = no
     alignment = left
     bounce_freq = 0
