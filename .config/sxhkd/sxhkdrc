@@ -1,8 +1,8 @@
 super + Return
-    marvex -cb /usr/bin/konsole
+    marvex -cb konsole --terminal '@path --title @title -e "@command"'
 
 super + shift + Return
-    marvex -db /usr/bin/konsole
+    marvex -db konsole --terminal '@path --title @title -e "@command"'
 
 super + r
     modal-run
