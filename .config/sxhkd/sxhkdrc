@@ -10,9 +10,6 @@ super + r
 shift + Delete
     kill-focus
 
-super + F1
-    screenshot > ~/.screenshot
-
 super + F2
     volume down
 
@@ -55,9 +52,6 @@ super + shift + x
 super + b
     google
 
-super + Print
-    screenshot public
-
 super + Execute
     environment-info
 
@@ -72,3 +66,12 @@ super + Insert
 
 super + shift + Insert
     upwork-kill-notification
+
+Print
+    screenshot public
+
+ctrl + Print
+    screenshot
+
+super + ctrl + Insert
+    uidle-toggle
