@@ -2,7 +2,7 @@
     font = Iosevka 12
     allow_markup = yes
     format = "%b"
-    sort = no
+    sort = yes
     alignment = left
     bounce_freq = 0
     show_age_threshold = -1
@@ -22,8 +22,9 @@
     startup_notification = false
     dmenu = /usr/bin/dmenu -p dunst:
     browser = browser
-    stack_duplicates = yes
-    hide_duplicates_count = yes
+    stack_duplicates = true
+    hide_duplicates_count = true
+    show_indicators = false
 
 
 [frame]
