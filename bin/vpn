@@ -90,15 +90,13 @@ set -euo pipefail
         | sudo openvpn --config /dev/stdin --script-security 2 \
             --up   "/bin/sh $up"   \
             --down "/bin/sh $down" \
-            --route-nopull \
             ${socks_flag[@]}
-            #--route 0.0.0.0 128.0.0.0 \
 }
 
 :cleanup() {
     local temp_dir=$1
 
-    sudo -u tor killall tor
+    sudo -u tor killall -q tor
     sudo rm -rf "$temp_dir"
 }
 
@@ -124,7 +122,7 @@ set -euo pipefail
     local temp_dir=$(mktemp -d --suffix=.vpn)
     chmod ugo+rwx "$temp_dir"
 
-    local socks
+    local socks=""
     if [[ "$protocol" == "tor" ]]; then
         socks=9050
         protocol=tcp

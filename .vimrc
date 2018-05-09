@@ -142,14 +142,15 @@ Plug 'ctrlpvim/ctrlp.vim'
     "nnoremap <C-E><C-E> :call _grep_word()<CR>
     "nnoremap <C-G> :call _grep_recover()<CR>
 
-Plug 'vim-airline/vim-airline'
-    let g:airline_powerline_fonts = 1
-    let g:airline_inactive_collapse = 1
-    let g:airline_skip_empty_sections = 1
-    let g:airline_theme = 'reconquest'
-    let g:airline#extensions#whitespace#symbol ='⍰'
-    au User _VimrcRunAfterPlugEnd let g:airline_symbols['notexists'] = '?'
-    au User _VimrcRunAfterPlugEnd let g:airline_symbols['linenr'] = '≣'
+Plug 'itchyny/lightline.vim'
+    let g:lightline = {}
+
+    let g:lightline.enable = {
+        \ 'statusline': 1,
+        \ 'tabline': 0
+        \ }
+
+    let g:lightline.colorscheme = 'wombat'
 
 Plug 'seletskiy/vim-autosurround'
 
@@ -200,19 +201,11 @@ Plug 'SirVer/ultisnips'
         au BufEnter,BufWinEnter *.py let g:pymode_lint = 1
     augroup END
 
-Plug 'Valloric/YouCompleteMe'
-    let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
-    let g:ycm_allow_changing_updatetime = 0
-    let g:ycm_confirm_extra_conf = 1
-    let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/.ycm_extra_conf.py'
-    let g:ycm_collect_identifiers_from_comments_and_strings = 1
-    let g:ycm_collect_identifiers_from_tags_files = 1
-    let g:ycm_use_ultisnips_completer = 0
-    let g:ycm_complete_in_comments = 1
-    let g:ycm_extra_conf_globlist = [$HOME . '/simulacrum/*']
-    let g:ycm_show_diagnostics_ui = 0
-
-    let g:pymode_lint_ignore = 'E128'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+   let g:deoplete#enable_at_startup = 1
 
 Plug 'terryma/vim-multiple-cursors'
 
@@ -221,15 +214,44 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_snippet_engine = "skip"
     let g:go_fmt_autosave = 0
     let g:go_fmt_fail_silently = 1
-    let g:go_metalinter_command = "gometalinter"
+    let g:go_metalinter_command="gometalinter -D golint --cyclo-over 15"
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
     let g:go_template_autocreate = 0
     let g:go_def_mapping_enabled = 0
     let g:go_def_mode = 'godef'
+    let g:go_list_type = "quickfix"
 
-Plug 'kshenoy/vim-signature'
-    let g:SignatureMarkOrder = "\m"
+    func! _goto_prev_func()
+        call search('^func ', 'b')
+        nohlsearch
+        normal zt
+    endfunc!
+
+    func! _goto_next_func()
+        call search('^func ', '')
+        nohlsearch
+        normal zt
+    endfunc!
+
+    "au operations FileType go nmap <buffer><silent> <C-Q> :call _goto_prev_func()<CR>
+    "au operations FileType go nmap <buffer><silent> <C-A> :call _goto_next_func()<CR>
+
+    augroup vim_go_custom
+        au!
+        au FileType go nmap <buffer> <Leader>f :GoFmt<CR>
+        au FileType go nmap <buffer> <Leader>h :GoDoc<CR>
+        au FileType go let w:go_stack = 'fix that shit'
+        au FileType go let w:go_stack_level = 'fix that shit'
+        au FileType go nmap <silent><buffer> gd :GoDef<CR>
+        au FileType go nmap <silent><buffer> gl :call go#def#Jump('vsplit')<CR>
+        au FileType go nmap <silent><buffer> gk :call go#def#Jump('split')<CR>
+
+        au FileType go nmap <silent><buffer> <Leader>, :w<CR>:call synta#go#build()<CR>
+        au FileType go nmap <silent><buffer> <Leader>' :call synta#go#build()<CR>
+        au FileType go imap <silent><buffer> <Leader>, <ESC>:w<CR>:call synta#go#build()<CR>
+        au FileType go nmap <silent><buffer> <Leader>l :GoLint .<CR>
+    augroup END
 
 Plug 'vim-ruby/vim-ruby'
 
@@ -240,91 +262,92 @@ Plug 'xolox/vim-misc'
 Plug 'cespare/vim-toml'
 
 Plug 'seletskiy/vim-over80'
+Plug 'markonm/traces.vim'
 
-Plug 'seletskiy/vim-over'
-    nnoremap H :OverCommandLine %s/<CR>
-    vnoremap H :OverCommandLine s/<CR>
+"Plug 'seletskiy/vim-over'
+"    nnoremap H :OverCommandLine %s/<CR>
+"    vnoremap H :OverCommandLine s/<CR>
 
-    let g:over#command_line#search#enable_move_cursor = 1
-    let g:over#command_line#search#very_magic = 1
+"    let g:over#command_line#search#enable_move_cursor = 1
+"    let g:over#command_line#search#very_magic = 1
 
-    au VimEnter * nnoremap / :call g:over80#disable_highlight()
-        \<CR>:OverExec /<CR>
+"    au VimEnter * nnoremap / :call g:over80#disable_highlight()
+"        \<CR>:OverExec /<CR>
 
-    au VimEnter * vnoremap g/ :call g:over80#disable_highlight()
-        \<CR>:'<,'>OverExec /<CR>
+"    au VimEnter * vnoremap g/ :call g:over80#disable_highlight()
+"        \<CR>:'<,'>OverExec /<CR>
 
-    au VimEnter * nnoremap ? :call g:over80#disable_highlight()
-        \<CR>:OverExec ?<CR>
+"    au VimEnter * nnoremap ? :call g:over80#disable_highlight()
+"        \<CR>:OverExec ?<CR>
 
-    au VimEnter * vnoremap g? :call g:over80#disable_highlight()
-        \<CR>:'<,'>OverExec ?<CR>
+"    au VimEnter * vnoremap g? :call g:over80#disable_highlight()
+"        \<CR>:'<,'>OverExec ?<CR>
 
-    au User _VimrcRunAfterPlugEnd nnoremap g/ /
-    au User _VimrcRunAfterPlugEnd nnoremap g? ?
+"    au User _VimrcRunAfterPlugEnd nnoremap g/ /
+"    au User _VimrcRunAfterPlugEnd nnoremap g? ?
 
-    nnoremap <silent> H :OverExec %s/<CR>
-    vnoremap <silent> H :OverExec s/<CR>
-    nnoremap <silent> L :OverExec s/<CR>
-    nnoremap <silent> U :exec printf("OverExec %d,%ds/", line("w0"), line("w$"))<CR>
+"    nnoremap <silent> H :OverExec %s/<CR>
+"    vnoremap <silent> H :OverExec s/<CR>
+"    nnoremap <silent> L :OverExec s/<CR>
+"    nnoremap <silent> U :exec printf("OverExec %d,%ds/", line("w0"), line("w$"))<CR>
 
-    augroup vim_over
-        au User OverCmdLineExecute call searchparty#mash#mash()
-        au BufAdd,BufEnter * nnoremap / :OverExec /<CR>
-        au BufAdd,BufEnter * vnoremap / :'<,'>OverExec /<CR>
+"    augroup vim_over
+"        au User OverCmdLineExecute call searchparty#mash#mash()
+"        au BufAdd,BufEnter * nnoremap / :OverExec /<CR>
+"        au BufAdd,BufEnter * vnoremap / :'<,'>OverExec /<CR>
 
-        au User OverCmdLineExecute call OverExecAutocmd()
-    augroup END
+"        au User OverCmdLineExecute call OverExecAutocmd()
+"    augroup END
 
-    let g:over_exec_autocmd_skip = 0
-    function! OverExecAutocmd()
-        if g:over_exec_autocmd_skip
-            let g:over_exec_autocmd_skip = 0
-            return
-        endif
+"    let g:over_exec_autocmd_skip = 0
+"    function! OverExecAutocmd()
+"        if g:over_exec_autocmd_skip
+"            let g:over_exec_autocmd_skip = 0
+"            return
+"        endif
 
-        call searchparty#mash#mash()
-    endfunction!
+"        call searchparty#mash#mash()
+"    endfunction!
 
-    function! OverExec(line1, line2, args)
-        let g:over#command_line#search#enable_move_cursor = 1
-        call over#command_line(
-        \   g:over_command_line_prompt,
-        \   a:line1 != a:line2 ? printf("'<,'>%s", a:args) : a:args
-        \)
-    endfunction!
-    command! -range -nargs=* OverExec call OverExec(<line1>, <line2>, <q-args>)
-    nmap <Plug>(OverExec) :OverExec<CR>
+"    function! OverExec(line1, line2, args)
+"        let g:over#command_line#search#enable_move_cursor = 1
+"        call over#command_line(
+"        \   g:over_command_line_prompt,
+"        \   a:line1 != a:line2 ? printf("'<,'>%s", a:args) : a:args
+"        \)
+"    endfunction!
+"    command! -range -nargs=* OverExec call OverExec(<line1>, <line2>, <q-args>)
+"    nmap <Plug>(OverExec) :OverExec<CR>
 
-    function! s:over_exec_do(args)
-        let g:over_exec_autocmd_skip = 1
-        let g:over#command_line#search#enable_move_cursor = 0
-        call feedkeys("\<CR>" . a:args . "\<Plug>(OverExec)\<Up>")
-    endfunction!
+"    function! s:over_exec_do(args)
+"        let g:over_exec_autocmd_skip = 1
+"        let g:over#command_line#search#enable_move_cursor = 0
+"        call feedkeys("\<CR>" . a:args . "\<Plug>(OverExec)\<Up>")
+"    endfunction!
 
-    function! OverNext()
-        call s:over_exec_do("n")
-        return ""
-    endfunction!
+"    function! OverNext()
+"        call s:over_exec_do("n")
+"        return ""
+"    endfunction!
 
-    let g:over#command_line#substitute#highlight_string = "DiffChange"
+"    let g:over#command_line#substitute#highlight_string = "DiffChange"
 
-    let g:over_command_line_key_mappings = {
-        \ "\<C-F>": ".",
-        \ "\<C-E>": '\w+',
-        \ "\<C-O>": ".*",
-        \ "\<C-L>": "\\zs",
-        \
-        \ "\<C-K>": "\<Left>\\\<Right>",
-        \ "\<C-D>": "\<Left>\<BackSpace>\<Right>",
-        \
-        \ "\<C-N>" : {
-        \ 	"key" : "OverNext()",
-        \   "expr": 1,
-        \ 	"noremap" : 1,
-        \ 	"lock" : 1,
-        \ },
-    \ }
+"    let g:over_command_line_key_mappings = {
+"        \ "\<C-F>": ".",
+"        \ "\<C-E>": '\w+',
+"        \ "\<C-O>": ".*",
+"        \ "\<C-L>": "\\zs",
+"        \
+"        \ "\<C-K>": "\<Left>\\\<Right>",
+"        \ "\<C-D>": "\<Left>\<BackSpace>\<Right>",
+"        \
+"        \ "\<C-N>" : {
+"        \ 	"key" : "OverNext()",
+"        \   "expr": 1,
+"        \ 	"noremap" : 1,
+"        \ 	"lock" : 1,
+"        \ },
+"    \ }
 
 Plug 'wellle/targets.vim'
 
@@ -372,7 +395,7 @@ Plug 'kovetskiy/vim-ski'
 
 Plug 'FooSoft/vim-argwrap'
 
-"Plug 'kovetskiy/synta'
+Plug 'kovetskiy/synta'
 
 Plug 'kovetskiy/vim-hacks'
 
@@ -401,7 +424,7 @@ call plug#end()
 sign define GitGutterDummy text=.
 exec "sign place 9999 line=9999 name=GitGutterDummy buffer=" . bufnr('')
 
-au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
+"au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 au VimEnter * au! run_after_plug_end
 
 syntax on
@@ -421,9 +444,9 @@ set printencoding=cp1251
 set timeoutlen=180
 set wildmenu
 set undofile
-set undodir=$HOME/.vim/tmp/
-set directory=$HOME/.vim/tmp/
-set backupdir=$HOME/.vim/tmp/
+set undodir=$HOME/.vim/runtime/undo
+set directory=$HOME/.vim/runtime/tmp
+set backupdir=$HOME/.vim/runtime/backup
 set ttyfast
 set relativenumber
 set hlsearch
@@ -489,9 +512,9 @@ nnoremap <Leader><Leader>i :PlugInstall<CR>
 
 
 map <silent> <Leader>l <Plug>NERDCommenterToggle
-vnoremap <silent> <C-D> $%
-nnoremap <silent> <C-D> :ArgWrap<CR>
-inoremap <silent> <C-D> <C-\><C-O>:ArgWrap<CR>
+vnoremap <silent> @; $%
+nnoremap <silent> @; :ArgWrap<CR>
+inoremap <silent> @; <C-\><C-O>:ArgWrap<CR>
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
@@ -545,11 +568,6 @@ augroup syntax_hacks
     au FileType diff call ApplySyntaxForDiffComments()
 augroup end
 
-augroup airline_customization
-    au FileType * let g:airline#extensions#whitespace#checks = [ 'indent', 'trailing' ]
-    au FileType diff let g:airline#extensions#whitespace#checks = []
-augroup end
-
 augroup dir_autocreate
     au!
     au BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
@@ -571,29 +589,30 @@ augroup ft_customization
     au BufEnter * let g:argwrap_tail_comma = 0
     au FileType c,cpp setl noet
     au BufEnter *.amber set ft=pug
+    au FileType yaml setl ts=2 sts=2 sw=2
 augroup end
 
 augroup go_src
     au!
     au FileType go setl noexpandtab
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
-    au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
-    au FileType go map <buffer> <Leader>t <Plug>(go-test)
-    au FileType go map <buffer> <Leader>b <CR>:call synta#go#build(1)<CR>
+    "au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
+    "au FileType go map <buffer> <Leader>t <Plug>(go-test)
+    "au FileType go map <buffer> <Leader>b <CR>:call synta#go#build(1)<CR>
     au FileType go call InstallGoHandlers()
     au BufEnter *.go let g:argwrap_tail_comma = 1
-    au FileType go nnoremap <buffer> <C-T> :call synta#quickfix#next()<CR>
-    au FileType go nnoremap <buffer> <C-E><C-R> :call synta#quickfix#prev()<CR>
-    au FileType go nnoremap <buffer> <C-E><C-T> :call synta#quickfix#error()<CR>
-    au FileType go nnoremap <buffer> <C-Q><C-D> :normal! A,<CR>
-    au FileType go inoremap <buffer> <C-Q><C-D> <C-\><C-O>:normal! A,<CR>
-    au FileType go nnoremap <buffer> gd :GoDef<CR>
+    "au FileType go nnoremap <buffer> <C-T> :call synta#quickfix#next()<CR>
+    "au FileType go nnoremap <buffer> <C-E><C-R> :call synta#quickfix#prev()<CR>
+    "au FileType go nnoremap <buffer> <C-E><C-T> :call synta#quickfix#error()<CR>
+    "au FileType go nnoremap <buffer> <C-Q><C-D> :normal! A,<CR>
+    "au FileType go inoremap <buffer> <C-Q><C-D> <C-\><C-O>:normal! A,<CR>
+    "au FileType go nnoremap <buffer> gd :GoDef<CR>
     au BufRead,BufNewFile *.slide setfiletype present
 augroup end
 
 augroup vimrc
     au!
-    au BufWritePost */.vimrc source % | AirlineRefresh
+    au BufWritePost */.vimrc source %
     au BufWritePost */.Xresources call system('systemctl --user restart xrdb')
     au BufWritePost */.i3.config.* call system('systemctl --user restart i3:config')
 

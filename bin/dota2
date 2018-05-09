@@ -1,7 +1,6 @@
 #!/bin/bash
 
-if pgrep steam &>/dev/null; then
-    exec steam steam://rungameid/570
-else
-    exec steam-ext4 steam://rungameid/570
-fi
+#xrandr --output DP1 --mode 1920x1080
+#GAME=1 reconfig-kbd
+
+exec steam steam://rungameid/570

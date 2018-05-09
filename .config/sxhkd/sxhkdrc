@@ -28,13 +28,10 @@ super + F7
 super + F8
     external-monitor
 
-Execute
-    xautolock -locknow
-
 super + y
     translator
 
-super + bar
+super + asciitilde
     kuake --focus --height 75
 
 super + grave
@@ -74,4 +71,4 @@ ctrl + Print
     screenshot
 
 super + ctrl + Insert
-    uidle-toggle
+    jidle-toggle

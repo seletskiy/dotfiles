@@ -1,2 +1,2 @@
-check_hash = yes
+check_hash = no
 directory = /home/operator/downloads/

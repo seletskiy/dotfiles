@@ -1,0 +1,9 @@
+[Unit]
+Description="vimruntime-init"
+
+[Service]
+ExecStart=/usr/bin/sh -c vimruntime-init
+Type=oneshot
+
+[Install]
+WantedBy=environment.target

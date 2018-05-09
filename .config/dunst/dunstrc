@@ -2,7 +2,7 @@
     font = Iosevka 12
     allow_markup = yes
     format = "%b"
-    sort = yes
+    sort = no
     alignment = left
     bounce_freq = 0
     show_age_threshold = -1

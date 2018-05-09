@@ -17,7 +17,6 @@
     ZGEN_DIR=$ZDOTDIR/.zgen/
 
     DOTFILES=~/.dotfiles/
-    SSH_USERNAME=s.seletskiy
 
     KEYTIMEOUT=1
 
@@ -90,23 +89,29 @@
             source $ZGEN_DIR/tarjoilija/zgen/zgen.zsh
         fi
 
-        zle() {
-            if [[ "$1" == "-R" || "$1" == "-U" ]]; then
-                unset -f zle
+        if :is-interactive; then
+            zle() {
+                if [[ "$1" == "-R" || "$1" == "-U" ]]; then
+                    unset -f zle
 
-                compinit
+                    compinit
 
-                :plugins:load
-                :plugins:post-init
+                    :plugins:load
+                    :plugins:post-init
 
-                :hijack:load
-                :aliases:load
-                :compdef:load
+                    :hijack:load
+                    :aliases:load
+                    :compdef:load
 
-            fi
+                fi
 
-            builtin zle "${@}"
-        }
+                builtin zle "${@}"
+            }
+        else
+            :plugins:load
+            :plugins:post-init
+            :aliases:load
+        fi
     }
 
     :plugins:post-init() {
@@ -120,6 +125,8 @@
             unsetopt global_rcs
             unsetopt menu_complete
             setopt prompt_sp
+            setopt inc_append_history
+            setopt share_history
         }
 
         {
@@ -131,7 +138,7 @@
                 echo src 3 ~/sources 3
                 echo zsh 2 ~/.zsh/.zgen 2
                 echo vim 2 ~/.vim 2
-                echo go 3 ~/go/src 3
+                echo go 3 ~/go/src/github.com 2
             }
         }
 
@@ -165,8 +172,8 @@
             }
 
             {
-                autoload -Uz bracketed-paste-magic
-                zle -N bracketed-paste bracketed-paste-magic
+                #autoload -Uz bracketed-paste-magic
+                #zle -N bracketed-paste bracketed-paste-magic
             }
         fi
 
@@ -214,7 +221,6 @@
             zgen load kovetskiy/zsh-quotes
             zgen load seletskiy/zsh-favorite-directories
             zgen load knu/zsh-manydots-magic
-            zgen load brnv/zsh-too-long
             zgen load seletskiy/zsh-syntax-highlighting
             zgen load zsh-users/zsh-history-substring-search
 
@@ -287,10 +293,9 @@ fi
 
     bindkey "^[[1~" beginning-of-line
     bindkey "^A" beginning-of-line
-    bindkey '^[[A' hijack:history-substring-search-up
-    bindkey '^[[B' hijack:history-substring-search-up
-    #bindkey "^[OB" history-substring-search-down
-    #bindkey "^[[B" history-substring-search-down
+    #bindkey '^[[A' hijack:history-substring-search-up
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
     bindkey "^[[3~" delete-char
     bindkey '^A' beginning-of-line
     bindkey '^[[4~' end-of-line
@@ -337,6 +342,9 @@ fi
 
     hijack:transform '^ ' \
         'sed -re "s/^ /cd /"'
+
+    hijack:transform '^https://github.com/' \
+        'sed -re "s#^https://github.com/#gh #"'
 }
 
 source ~/.zsh/aliases.zsh

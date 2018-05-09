@@ -1,0 +1,11 @@
+[Unit]
+Description=battery nagbar service
+Requires=graphical.target
+After=graphical.target
+Before=display-manager.target
+
+[Service]
+ExecStart=/usr/bin/i3-battery-nagbar
+
+[Install]
+WantedBy=display-manager.target

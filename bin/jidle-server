@@ -1,0 +1,31 @@
+#!/bin/bash
+
+geometry=$(xrandr -q | grep '\*' | awk '{print $1}')
+xstartup=$(mktemp)
+
+cat > $xstartup <<EOF
+    export BACKGROUND=dark
+
+    xsetroot -solid gray
+    xrdb -load ~/.Xresources.\$BACKGROUND
+    i3 &
+    reconfig-kbd
+    TMUX= konsole -e tmux -S /tmp/jidle-tmux.sock new &
+    sleep 0.5
+    tmux -S /tmp/jidle-tmux.sock send-keys 'jvim' 'Enter'
+    sleep 0.5
+    i3-msg workspace s
+    browser http://magalixcorp.slack.com/ &
+    sleep 2
+    i3-msg workspace d
+    upwork-ramfs
+    xdotool key ctrl+shift+bracketright
+    i3-msg workspace 1
+    jidle-toggle
+
+    rm $xstartup
+EOF
+
+chmod +x $xstartup
+
+vncserver :9 -geometry $geometry -SecurityTypes=none -xstartup $xstartup -SendPrimary=0

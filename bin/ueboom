@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bluetooth-connect C0:28:8D:35:3D:ED

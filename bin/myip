@@ -5,9 +5,11 @@ if ! ip l | grep -v LOOPBACK | grep -q UP; then
     exit
 fi
 
-output=$(curl -s ipinfo.io \
-    | jq -r '.ip, .country' \
-    | paste -sd' ')
+output=$(curl -s https://www.speedtest.net/speedtest-config.php | \
+    xml2 | \
+    grep -F '/settings/client' | \
+    grep -Po '@(ip|isp)=\K.*' | \
+    paste -sd' ')
 
 if [[ "$output" ]]; then
     printf "%s\n" "$output"

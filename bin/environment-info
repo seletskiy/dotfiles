@@ -23,7 +23,7 @@
     local memory=$(free -mt | awk '/Total/ { print $4 }')
 
     :notify:send "$urgency" "TEMP" \
-        "${temperature}C (LA $loadavg) (RAM ${memory}MiB)"
+        "${temperature}C | <b>LA</b> $loadavg | <b>RAM</b> ${memory}MiB"
 
     local acpi=$(acpi -b)
     local battery=$(
@@ -48,16 +48,18 @@
 
     :notify:send "$urgency" "BTRY" "${battery} ${charging}"
 
-    local ip=$(myip)
-    local ping=$(ping -c 1 8.8.8.8 2>/dev/null | grep -oP 'time=\K\d+')
-
-    if [[ "$ping" ]]; then
-        ping=" (${ping}ms)"
-    fi
-
     local urgency=normal
 
-    :notify:send "$urgency" "INET" "$ip$ping"
+    local ssid=$(iw dev | grep -Po 'ssid \K.*')
+
+    :notify:send "$urgency" "WIFI" "${ssid:-NONE}"
+
+    local ip=$(myip)
+    local ping_target=8.8.8.8
+
+    local ping=$(ping -c 1 $ping_target 2>/dev/null | grep -oP 'time=\K\d+')
+
+    :notify:send "$urgency" "INET" "$ip"$'\n'"       ${ping:-??}ms -> $ping_target"
 }
 
 :date() {
@@ -66,7 +68,7 @@
 }
 
 :notify:send() {
-    notify-send -u "$1" "environment" "<b>$2 » </b>${*:3}"
+    notify-replace "$2" -u "$1" "environment" "<b>$2 » </b>${*:3}"
 }
 
 :main "$@"

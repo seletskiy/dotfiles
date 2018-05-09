@@ -1,6 +1,8 @@
 :aliases:load() {
     unalias -m '*'
 
+    alias hoho='ma ~/.pangolier/ho-ho.mp3'
+
     alias help=guess
 
     alias sudo='sudo '
@@ -10,16 +12,10 @@
 
     alias ls='ls --color=auto'
     alias l='ls --group-directories-first --time-style=long-iso -tAlh'
-    alias ll='ls -al'
-    alias li='\k'
-    alias lt='ls -alt'
 
     alias rf='rm -rf'
 
     alias cu='curl -LO'
-
-    alias g='git init'
-    alias z='zfs list'
 
     alias skr='ssh-keygen -R'
 
@@ -33,8 +29,6 @@
 
     alias cnp=':carcosa:new-password'
     alias cap=':carcosa:add-password'
-
-    alias apm='adb-push-music'
 
     alias -- :!='sudo systemctl'
     alias -- :r!=':! daemon-reload && () {
@@ -70,15 +64,9 @@
     alias -- :p=':: list-dependencies'
     alias -- :j='journalctl --user'
     alias -- :jf=':j -f'
-    alias -- :y='() {
-        systemctl --user status "$(
-            systemd-run --user "$@" 2>&1 | grep -Po "Running as unit: \\K.*"
-        )"
-    }'
 
     alias -- +x='chmod-alias'
 
-    alias jf='sudo journalctl -ef'
     alias /=':ag'
     alias /g='AG_ARGS=--go :ag'
     alias f='() { find -iname "*$1*" "${@:2}" }'
@@ -107,7 +95,7 @@
     alias po='pkgfile'
     alias ppo='() { pp "$(po "$1")" }'
     alias ppyu='sudo pacman -Syu'
-    alias ppyuz='ppyu --ignore linux,zfs-linux-git,zfs-utils-linux-git,spl-linux-git,spl-utils-linux-git'
+    alias ppyuz='ppyu --ignore linux,zfs-linux,zfs-utils-linux,spl-linux,spl-utils-linux'
 
     alias zgu='zgen update && zr'
 
@@ -115,15 +103,15 @@
 
     alias al='alias | grep -P --'
 
-    alias ma='mplayer -novideo'
+    alias ma='mplayer -novideo -really-quiet'
 
     alias gi='go install'
     alias gb='go-fast-build'
     alias gg='go get'
+    alias ggu='gg -u'
 
     alias 1='watch -n1'
     alias wt=':watcher:guess'
-    alias wto=':watcher:guess -O'
 
     alias zr='source ~/.zshrc'
     alias za='vim ~/.zsh/aliases.zsh && source ~/.zsh/aliases.zsh \
@@ -132,11 +120,7 @@
     alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent \
         | head -n1)"'
 
-    alias ssh='uber-ssh:alias -s smart-ssh-tmux'
-
-    alias -s  L='uber-ssh:alias -s smart-ssh-tmux -P 192.168.   -R .L'
-    alias -s  s='uber-ssh:alias -s smart-ssh-tmux'
-    alias -s ru='uber-ssh:alias -s smart-ssh-tmux'
+    alias ssh='uber-ssh:alias -s smart-ssh-tmux --'
 
     alias ck='() { mkdir -p $1 && cd $1 }'
 
@@ -156,6 +140,7 @@
 
     alias gh=':sources:clone github.com:'
     alias gb=':sources:clone bitbucket.org:'
+    alias gl=':sources:clone gitlab.com:'
 
     alias mgp=':sources:move-to-gopath'
 
@@ -163,30 +148,13 @@
 
     alias xc=':orgalorg:command'
 
-    alias electrum='command electrum -w btc.wallet'
-    alias btc='electrum getbalance | jq -r .confirmed'
-    alias btcx='() {
-        electrum daemon start
-        electrum daemon load_wallet
-        electrum payto -f "${3:-0.0017}" "$1" "$2" \\
-            | electrum signtransaction - \\
-            | electrum broadcast -
-        electrum daemon stop
-    }'
-
     alias pq='printf "%q\n"'
 
     alias -- '-'=':pipe'
-    alias -- '-:'=':pipe:tar:send'
-    alias -- ':-'=':pipe:tar:receive'
-
-    alias mh='mcabber-history -S'
+    alias -- '-+'=':pipe:tar:send'
+    alias -- '-.'=':pipe:tar:receive'
 
     alias stl='stalk -n 127.1 --'
-
-    alias prefix='() {
-        while read -n line; do printf "%s%s\n" "$1" "$line"; done
-    }'
 
     alias ua='find -maxdepth 1 -mindepth 1 -type d |
         cut -b3- |
@@ -194,14 +162,16 @@
             ( cd $dir; [ -d .git ] && git pull --rebase |& prefix "{$dir} "; )
         done'
 
-    alias ntl='netctl list'
-    alias ntw='netctl switch-to'
+    alias ntl='netctl-auto list'
+    alias ntw='netctl-auto switch-to'
 
     alias 8='ping 8.8.8.8'
 
     alias -g -- '#cc'='| xclip -i'
+    alias -g -- '#j'='| jq .'
+    alias -g -- '#!'='# -v'
 
-    alias ku=':kubectl'
+    alias ku='kubectl'
     alias kaf='ku apply -f'
     alias kdf='ku delete -f'
 
@@ -213,13 +183,18 @@
     alias kgp!='kgp --all-namespaces'
     alias kgn='ku get nodes'
 
+    alias kd='ku delete'
+
     alias kp='() { kgp "${@:2}" -o name | cut -f2- -d/ | grep -F ${1}; }'
     alias kl='ku logs'
-    alias klf='kl -f --tail=0'
-    alias ke='ku exec -it'
+    alias klf='kl -f --tail=10'
+    alias ke='ku exec'
+    alias kei='ke -it'
     alias kc='ku config use-context'
     alias kff='ku port-forward'
     alias ks='ku describe'
+    alias ksp='ks po'
+    alias ksh='() { ke "${@:2}" $(kp "$@" #h 1) -- sh; }'
 
     alias mks='minikube start --cpus 1 --memory 1024'
     alias mks!='minikube stop'
@@ -231,6 +206,18 @@
     alias mk=':context:command minikube'
 
     alias forever='() { while :; do eval "$@"; done; }'
+
+    alias rtorrent=':rtorrent'
+
+    alias cci='circleci-cli --token-file ~/.config/circleci-cli/token'
+
+    alias ssha='() {
+        eval "$(ssh-agent -s)"
+        ssh-add
+        ssh -A "$@"
+    }'
+
+    alias 9='DISPLAY=:9'
 
     hash-aliases:install
 
@@ -298,7 +285,7 @@
 
 		alias au='git log --format=%aN | sort -u'
 
-        alias gg='() { git grep $1 $(git rev-list --all) -- ${@:2} }'
+        #alias gg='() { git grep $1 $(git rev-list --all) -- ${@:2} }'
 
     context-aliases:match "test -e PKGBUILD"
         alias g='go-makepkg-enhanced'
@@ -337,11 +324,8 @@
         alias gh=':sources:clone github.com:MagalixTechnologies'
 
     context-aliases:match '[ "$CONTEXT" = "minikube" ]'
-        alias ku=':kubectl @minikube'
+        alias ku='kubectl @minikube'
         alias gh=':sources:clone github.com:MagalixTechnologies'
-
-    context-aliases:on-precmd '[ "$(pwd)" = ~/notes ]'
-        alias sync='adb push * /sdcard/notes'
 
     context-aliases:on-precmd
 }
@@ -489,7 +473,7 @@
             "${(j:, :)message[*]}" "${command[*]}" \
             "${timeout:+ (with ${timeout}s timeout)}"
 
-        watcher -e close_write \
+        watcher -e close_write -t 0.1 \
             ${timeout:+-w$timeout} "$regexp" -- "${command[@]}"
     }
 
@@ -966,7 +950,7 @@
         local command=$1
         shift
 
-        :kubectl $command "-f${^@}"
+        kubectl $command "-f${^@}"
     }
 
     :context:command() {
@@ -986,52 +970,11 @@
         fi
     }
 
-    :kubectl() {
-        local arg
-        local context
-        local args=()
-        local entity
+    :rtorrent() {
+        sudo iptables -t nat -A OUTPUT -p tcp -m tcp --dport 80 -d 195.82.146.120/30 -j DNAT --to-destination 163.172.167.207:3128
 
-        for arg in "$@"; do
-            if [[ "$arg" =~ @.* ]]; then
-                context=$(
-                    kubectl config get-contexts --no-headers -o name \
-                        | grep -F "${arg:1}"
-                )
-            else
-                args+=("$arg")
-            fi
-        done
+        command rtorrent "$@"
 
-        set -- "${args[@]}"
-
-        args=()
-        targets=()
-
-        for arg in "$@"; do
-            if [[ "$arg" =~ %.* ]]; then
-                entity=${arg%/*}
-
-                if [[ "$entity" == "$arg" ]]; then
-                    entity=pod
-                fi
-
-                args+=($(
-                    kubectl --context=$context get "$entity" --no-headers \
-                            -o name \
-                        | cut -f2- -d/ \
-                        | grep -F "${${arg:1}#*/}"
-                ))
-            else
-                args+=("$arg")
-            fi
-        done
-
-        if [[ ! "$context" ]]; then
-            printf ":: no context found matching specifier\n"
-            return 1
-        fi
-
-        kubectl --context=$context ${(q)args[@]}
+        sudo iptables -t nat -D OUTPUT -p tcp -m tcp --dport 80 -d 195.82.146.120/30 -j DNAT
     }
 }
