@@ -1,0 +1,12 @@
+#!/bin/bash
+
+input=${1:-alsa_input.pci-0000_00_1f.3.analog-stereo}
+
+# disable noise
+amixer -q -c PCH cset 'name=Headphone Mic Boost Volume' 1
+
+# use headset mic for recording
+pactl set-source-port "$input" analog-input-headset-mic
+
+# max recording volume
+pactl set-source-volume "$input" 65536
