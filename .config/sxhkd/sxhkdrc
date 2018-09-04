@@ -1,8 +1,5 @@
 super + Return
-    marvex -cb konsole --terminal '@path --title @title -e "@command"'
-
-super + shift + Return
-    marvex -db konsole --terminal '@path --title @title -e "@command"'
+    konsole -e 'tmux new'
 
 super + r
     modal-run
