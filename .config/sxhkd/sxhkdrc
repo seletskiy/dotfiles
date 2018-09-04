@@ -25,6 +25,9 @@ super + F7
 super + F8
     external-monitor
 
+super + F9
+    reconfig-kbd
+
 super + y
     translator
 
@@ -33,9 +36,6 @@ super + asciitilde
 
 super + grave
     kuake --terminal --bottom
-
-super + backslash
-    autocomplete-tmux
 
 super + x
     carcosa-ui
@@ -59,13 +59,10 @@ super + Insert
     upwork-suspend
 
 super + shift + Insert
-    upwork-kill-notification
+    upwork-switch
 
 Print
-    screenshot public
-
-ctrl + Print
-    screenshot
+    screenshot deepin
 
 super + ctrl + Insert
     jidle-toggle
