@@ -38,7 +38,7 @@ shift+space warp,drag 1
 shift+g warp,sh drag 2
 shift+b warp,sh drag 3
 
-Return warp,end
+Return warp,quit
 Escape end
 
 Tab grid 4x4,cursorzoom 320 200
