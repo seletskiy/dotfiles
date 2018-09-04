@@ -8,10 +8,10 @@ shift + Delete
     kill-focus
 
 super + F2
-    volume down
+    ;volume down
 
 super + F3
-    volume up
+    ;volume up
 
 super + F5
     mplayer-control pt_step -1

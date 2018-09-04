@@ -1,0 +1,10 @@
+#!/bin/bash
+
+volume_level=$(volumectl $1 2 -f "%.0f%%")
+
+id_file=/tmp/volume.notification.id
+
+last_id=$(cat $id_file 2>/dev/null)
+
+notify-desktop -r "$last_id" "volume" "<b>VOLM</b> » ${volume_level:-0%}" \
+    > $id_file
