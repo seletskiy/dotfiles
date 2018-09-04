@@ -1,0 +1,5 @@
+#!/bin/bash
+
+SHORTCUT_WORK_START="ctrl+shift+bracketright" \
+SHORTCUT_WORK_STOP="ctrl+shift+bracketleft" \
+    ~/.deadfiles/bin/upwork-switch

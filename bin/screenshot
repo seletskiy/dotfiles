@@ -18,7 +18,11 @@ elif [ "$1" == "public" ]; then
             | awk '{print $1}' \
             | xclip -i &&
         notify-send "screenshot" "SCRN » IMGUR"
+elif [ "$1" == "deepin" ]; then
+    deepin-screenshot -n -s "$filename"
 else
     maim --nokeyboard -s $filename &&
         notify-send "screenshot" "SCRN » ${filename##*/}"
 fi
+
+ln -sf "$filename" "$HOME/screenshot.png"

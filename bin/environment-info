@@ -1,12 +1,16 @@
 #!/bin/bash
 
+[ -n "$_LOCK" ] || _LOCK=x exec flock -n $0 $0 "$@"
+
 :main() {
-    :notify:send \
-        "normal" \
+    text=()
+
+    text=("$(:template \
         "TIME" \
         "$(:date "LOC" && echo -n '      ')" \
         "$(TZ=America/Los_Angeles :date "PST" && echo -n '      ')" \
-        "$(TZ=UTC :date "UTC")"
+        "$(TZ=UTC :date "UTC")" \
+    )" "${text[@]}")
 
     local loadavg=$(cut -f1 -d' ' /proc/loadavg)
     local temperature=$(
@@ -15,15 +19,19 @@
             | sort -rn \
             | head -n1
     )
+
     local urgency=normal
-    if [[ "$temperature" > "80" ]]; then
+    if (( $temperature > 80 )); then
         urgency=critical
     fi
 
     local memory=$(free -mt | awk '/Total/ { print $4 }')
 
-    :notify:send "$urgency" "TEMP" \
-        "${temperature}C | <b>LA</b> $loadavg | <b>RAM</b> ${memory}MiB"
+    text=("$(:template \
+        "TEMP" \
+        $(:urgency "$urgency" "${temperature}C") \
+        "| <b>LA</b> $loadavg <b>RAM</b> ${memory}MiB"
+    )" "${text[@]}")
 
     local acpi=$(acpi -b)
     local battery=$(
@@ -46,20 +54,48 @@
         urgency=critical
     fi
 
-    :notify:send "$urgency" "BTRY" "${battery} ${charging}"
-
-    local urgency=normal
+    text=("$(:template \
+        "BTRY" \
+        $(:urgency "$urgency" "${battery} ${charging}")
+    )" "${text[@]}")
 
     local ssid=$(iw dev | grep -Po 'ssid \K.*')
 
     :notify:send "$urgency" "WIFI" "${ssid:-NONE}"
 
-    local ip=$(myip)
-    local ping_target=8.8.8.8
+    text=("$(:template \
+        "WIFI" \
+        ${ssid:-NONE}
+    )" "${text[@]}")
 
-    local ping=$(ping -c 1 $ping_target 2>/dev/null | grep -oP 'time=\K\d+')
+    :notify:send "${text[@]}"
 
-    :notify:send "$urgency" "INET" "$ip"$'\n'"       ${ping:-??}ms -> $ping_target"
+    local ping
+    local urgency=normal
+    if ! ping=$(ping8); then
+        urgency=critical
+    fi
+
+    text=("$(:template \
+        "PING" \
+        $(:urgency "$urgency" "$ping")
+    )" "${text[@]}")
+
+    :notify:send "${text[@]}"
+
+    local ip
+
+    local urgency=normal
+    if ! ip=$(myip); then
+        urgency=critical
+    fi
+
+    text=("$(:template \
+        "INET" \
+        $(:urgency "$urgency" "$(myip)")
+    )" "${text[@]}")
+
+    :notify:send "${text[@]}"
 }
 
 :date() {
@@ -67,8 +103,23 @@
         | tr '[[:lower:]]' '[[:upper:]]'
 }
 
+:template() {
+    printf "<b>%s » </b>%s" "$1" "${*:2}"
+}
+
+:urgency() {
+    local urgency=$1
+    if [[ "$urgency" == "critical" ]]; then
+        printf '<span background="#ff8c00" foreground="#8b0000"><b> %s </b></span>' \
+            "${*:2}"
+    else
+        printf "%s" "${*:2}"
+    fi
+}
+
 :notify:send() {
-    notify-replace "$2" -u "$1" "environment" "<b>$2 » </b>${*:3}"
+    local IFS=$'\n'
+    notify-replace "environment-info" "environment" "$*"
 }
 
 :main "$@"

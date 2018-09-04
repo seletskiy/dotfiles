@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$1" = "-d" ]; then
+    dry=1
+else
+    dry=
+fi
+
 if [ "$1" = "-v" ]; then
     verbose=1
 else
@@ -9,22 +15,27 @@ fi
 export XAUTHORITY=/home/operator/.Xauthority
 export DISPLAY=${DISPLAY:-:0}
 
-xset r rate 80 155
+keyboards=$(sudo shift-shift -list)
 
-if [ "$DOTFILES_PROFILE" == "laptop" ]; then
-    xset r rate 120 130
+keyboard="keyboard"
+
+if grep -qi razer <<< "$keyboards"; then
+    keyboard="razer"
 fi
 
-if [[ "$DISPLAY" = ":0" ]]; then
-    if ! sudo footswitch -1 -k f8 -2 -k f7 -3 -k f6 2>/dev/null; then
-        sudo killall -q shift-shift
-        sudo -bE shift-shift 2>/dev/null
-    fi
+if grep -qi "USB KB" <<< "$keyboards"; then
+    keyboard="USB KB"
 fi
 
-game=false
-if [[ "$GAME" ]]; then
-    game=true
+sudo pkill shift-shift
+
+sudo -bE shift-shift -match "$keyboard" -first CAPSLOCK 2>/dev/null
+
+xset r rate 110 130
+
+# Xiaomi keyboard
+if [[ "$keyboard" == "USB KB" ]]; then
+    xset r rate 150 130
 fi
 
 setxkbmap \
@@ -38,20 +49,24 @@ setxkbmap \
         "hjkl(caret)"`            # mod3+u-]: home/end/insert/delete/pgup/pkdown`\
         "hjkl(fast-enter)"`       # mod3+m -> enter`\
         "capslock(swapescape)"`   # use capslock as esc`\
-        $($game || echo "altwin(swap_lalt_lwin)")`   # swap alt and win`\
+        "altwin(swap_lalt_lwin)"`   # swap alt and win`\
         "hjkl(fast-numpad)"`      # 1234qwerdf -> 1234567890`\
         "rshift-ralt"`            # swap rshift and ralt`\
-        "level5-menu"`            # use menu for level5 switch as well`\
         "ctrl-shift-caps"`        # remap ctrl/shift/caps` \
         "esc-to-execute"`     # esc to lock screen`\
         "fast-copy-paste"`    # alt+c -> ctrl+c, alt+v -> shift+ins`\
+        "compose(menu)"`    # enable compose key`\
         | sed 's/ /+/g') \
     -compat \
         "allow-control-leds+complete+fast-copy-paste+hjkl" \
     -print | (
-        if [ "$verbose" ]; then
-            xkbcomp - $DISPLAY
+        if [[ "$dry" ]]; then
+            xkbcomp -xkb - -
         else
-            xkbcomp - $DISPLAY &>/dev/null
+            if [ "$verbose" ]; then
+                xkbcomp - $DISPLAY
+            else
+                xkbcomp - $DISPLAY &>/dev/null
+            fi
         fi
     )

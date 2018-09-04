@@ -1,0 +1,6 @@
+#!/bin/bash
+
+pacmd list-cards \
+    | grep -Po 'name: \<\K[^>]+' \
+    | xargs -n1 -I{} \
+        pactl set-card-profile {} output:hdmi-stereo

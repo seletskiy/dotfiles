@@ -1,12 +1,35 @@
 #!/bin/bash
 
+set -euo pipefail
+
 wlan_interface=$(ip l | grep -m1 --color=never -Po '^\d+: \Kw[^:]+')
 
-interface=${1:-$wlan_interface}
+network=${1:-}
+interface=${2:-$wlan_interface}
 
-echo -n "restarting netctl-auto... "
-sudo systemctl restart netctl-auto@$interface
-echo ok
+if [[ "$network" ]]; then
+    network=$(netctl-auto list | cut -d- -f2- | grep -Fim1 "$network")
+    if [[ ! "$network" ]]; then
+        echo "no matching network found"
+        exit 1
+    fi
+
+    profile="${wlan_interface}-${network}"
+    if [[ $(netctl-auto is-active "$profile") == "active" ]]; then
+        echo "already connected to $network"
+        exit 0
+    fi
+
+    echo -n "connecting to $network... "
+    sudo netctl-auto switch-to "$profile"
+    echo ok
+fi
+
+if [[ ! "$network" ]]; then
+    echo -n "restarting netctl-auto... "
+    sudo systemctl restart netctl-auto@$interface
+    echo ok
+fi
 
 echo -n "waiting for address..."
 until inet_output=$(ip addr show dev $interface | grep -o 'inet .*'); do
@@ -16,3 +39,4 @@ done
 
 echo " ok"
 echo $inet_output
+iw dev | grep -Po --color=never 'ssid \K.*'

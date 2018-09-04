@@ -1,0 +1,18 @@
+#!/bin/bash
+
+target=8.8.8.8
+
+time=$(
+    ping -w 1 -nc 1 $target 2>/dev/null \
+        | grep --color=never -oP 'time=\K\d+'
+)
+
+if [[ "$time" ]]; then
+    printf "%dms -> %s\n" "$time" "$target"
+    if (( $time > 500 )); then
+        exit 2
+    fi
+else
+    printf "TIMEOUT\n"
+    exit 1
+fi

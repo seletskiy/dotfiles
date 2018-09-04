@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -euo pipefail
+
+statefile=$(sha256sum <<< "$@" | awk '{print $1}').mplayer-resume
+
+mplayer "$@" -ss "$(cat $statefile 2>&- || echo "0.0")" \
+    | tee /dev/stderr \
+    | stdbuf -o0 tr '\r' '\n' \
+    | stdbuf -o0 grep -Po '^[AV]:\s+ [\d.]+ \(\K([\d.]+)' \
+    | while read timestamp; do
+        echo "$timestamp" > $statefile
+    done
+
+rm -f "$statefile"
