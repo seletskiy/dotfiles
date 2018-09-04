@@ -30,9 +30,11 @@
 
 [url "git+ssh://github.com/"]
     insteadOf = https://github.com/
-
-[url "git+ssh://github.com/"]
     insteadOf = https://git::@github.com/
+    insteadOf = github:
+
+[url "git+ssh://gitlab.com/"]
+    insteadOf = https://gitlab.com/
 
 [http "https://gopkg.in"]
     followRedirects = true
