@@ -13,7 +13,3 @@
 	path = bin/.master-of-android
 	url = https://github.com/deadcrew/master-of-android
 	branch = master
-[submodule ".secrets"]
-	path = .secrets
-	url = https://github.com/seletskiy/secrets
-	branch = master
