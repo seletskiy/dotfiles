@@ -21,7 +21,7 @@
 
     alias i='image-upload'
 
-    alias //='true'
+    alias -g '//'='; :'
 
     alias '$'=':sed-replace:interactive'
 
@@ -42,7 +42,7 @@
     alias -- :d!=':! disable'
     alias -- :l!=':! list-unit-files'
     alias -- :p!=':! list-dependencies'
-    alias -- :j!='journalctl --user'
+    alias -- :j!='journalctl'
     alias -- :jf!=':j -f'
     alias -- :y!='() {
         systemctl --user status "$(
@@ -77,7 +77,7 @@
     alias vf='vim $(fzf)'
     alias vw='() { vim $(which $1) }'
 
-    alias dt='cd $DOTFILES && git status -s'
+        alias dt='cd $DOTFILES && git status -s'
     alias de='cd $DOTFILES/.deadfiles && git status -s'
     alias se='cd ~/.secrets && carcosa -Lc | sort'
 
@@ -103,7 +103,7 @@
 
     alias al='alias | grep -P --'
 
-    alias ma='mplayer -novideo -really-quiet'
+    alias ma='mplayer-resume -novideo'
 
     alias gi='go install'
     alias gb='go-fast-build'
@@ -113,14 +113,14 @@
     alias 1='watch -n1'
     alias wt=':watcher:guess'
 
+    alias vrc='vim ~/.vimrc'
+    alias zrc='vim ~/.zshrc'
     alias zr='source ~/.zshrc'
     alias za='vim ~/.zsh/aliases.zsh && source ~/.zsh/aliases.zsh \
         && :aliases:load'
 
     alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent \
         | head -n1)"'
-
-    alias ssh='uber-ssh:alias -s smart-ssh-tmux --'
 
     alias ck='() { mkdir -p $1 && cd $1 }'
 
@@ -150,9 +150,8 @@
 
     alias pq='printf "%q\n"'
 
-    alias -- '-'=':pipe'
-    alias -- '-+'=':pipe:tar:send'
-    alias -- '-.'=':pipe:tar:receive'
+    alias -- '+'=':pipe:tar:send'
+    alias -- '-'=':pipe:tar:receive'
 
     alias stl='stalk -n 127.1 --'
 
@@ -171,34 +170,35 @@
     alias -g -- '#j'='| jq .'
     alias -g -- '#!'='# -v'
 
-    alias ku='kubectl'
-    alias kaf='ku apply -f'
-    alias kdf='ku delete -f'
+    alias kub='kubectl'
+    alias kaf='kub apply -f'
+    alias kdf='kub delete -f'
 
-    alias kdp='ku delete pods'
-    alias kbb='ku run -i --tty --image radial/busyboxplus busybox-$RANDOM --restart=Never --rm'
+    alias kdp='kub delete pods'
+    alias kbb='kub run -i --tty --image radial/busyboxplus busybox-$RANDOM --restart=Never --rm'
 
-    alias kg='ku get'
+    alias kg='kub get'
     alias kgp='kg pods'
     alias kgp!='kgp --all-namespaces'
-    alias kgn='ku get nodes'
+    alias kgn='kub get nodes'
 
-    alias kd='ku delete'
+    alias kd='kub delete'
 
     alias kp='() { kgp "${@:2}" -o name | cut -f2- -d/ | grep -F ${1}; }'
-    alias kl='ku logs'
+    alias kl='kub logs'
     alias klf='kl -f --tail=10'
-    alias ke='ku exec'
+    alias ke='kub exec'
     alias kei='ke -it'
-    alias kc='ku config use-context'
-    alias kff='ku port-forward'
-    alias ks='ku describe'
+    alias kc='kub config use-context'
+    alias kff='kub port-forward'
+    alias ks='kub describe'
     alias ksp='ks po'
-    alias ksh='() { ke "${@:2}" $(kp "$@" #h 1) -- sh; }'
+    alias ksh='kei "$@" -- sh'
 
     alias mks='minikube start --cpus 1 --memory 1024'
     alias mks!='minikube stop'
     alias mke='eval $(minikube docker-env)'
+    alias ked='kub edit'
 
     alias pk='pkill -f'
 
@@ -215,6 +215,10 @@
         eval "$(ssh-agent -s)"
         ssh-add
         ssh -A "$@"
+    }'
+
+    alias len='() {
+        echo -n "$*" | wc -c
     }'
 
     alias 9='DISPLAY=:9'
@@ -239,10 +243,12 @@
         alias j='k master'
         alias j!='j && rst!'
         alias ju='j && u'
+        alias ku=':git:checkout-and-update'
         alias r='git-smart-remote'
         alias e=':git:rebase-interactive'
         alias b='git branch'
         alias bm='git branch -m'
+        alias bd!=':git:branch:delete'
         alias h='git reset HEAD'
         alias i='git add -p'
         alias ii=':git:commit:interactively'
@@ -284,6 +290,7 @@
         alias prr='p && pr'
 
 		alias au='git log --format=%aN | sort -u'
+        alias fpr='() { git fetch origin pull/$1/head:pr-$1 }'
 
         #alias gg='() { git grep $1 $(git rev-list --all) -- ${@:2} }'
 
@@ -326,6 +333,15 @@
     context-aliases:match '[ "$CONTEXT" = "minikube" ]'
         alias ku='kubectl @minikube'
         alias gh=':sources:clone github.com:MagalixTechnologies'
+
+    context-aliases:match '[[ "$PWD" =~ ~/go/ ]]'
+        alias gt='go test -failfast'
+        alias gb='go build'
+        alias gtb='go test -run none -cpuprofile cpu.prof -bench'
+        alias gtp='go tool pprof -nodecount 999 -png cpu.prof >| cpu.prof.png && \
+            feh --scroll-step 100 cpu.prof.png'
+        alias gtb!='() { gtb "${@}" && gtp; }'
+        alias gtt='go tool pprof cpu.prof'
 
     context-aliases:on-precmd
 }
@@ -441,12 +457,14 @@
         fi
 
         if find -maxdepth 1 -name '*_test.go' | grep -q "."; then
-            command=("go" "test")
+            command=("go" "test" "-failfast")
         fi
 
-        if find . ./tests -maxdepth 1 -name 'run_tests*' | grep -q "."; then
-            command=(./*/run_tests*)
-        fi &>/dev/null
+        if run_tests=$(find . ./tests -maxdepth 1 -name 'run_tests*' 2>&-); then
+            if [[ "$run_tests" ]]; then
+                command=("$run_tests")
+            fi
+        fi
 
         if [[ -e Makefile ]] && grep -qP '^test:' Makefile; then
             command=("make" "test")
@@ -618,7 +636,7 @@
                         +"set noignorecase" \
                         +"Man $1" \
                         +only \
-                        +"/\\n\\n^       \\zs${2:1}\\ze\( \|$\)"
+                        +"/\\n\\n^[ ]\\{5,\\}\\zs${2:1}\\ze\( \|$\)"
                     return
                     ;;
                 @)
@@ -786,6 +804,18 @@
         fi
     }
 
+    _:git:rebase-interactive() {
+        service="git-rebase" _git "${@}"
+    }
+
+    :git:checkout-and-update() {
+        git checkout "${@}" && git-smart-pull --rebase
+    }
+
+    _:git:checkout-and-update() {
+        service="git-checkout" _git "${@}"
+    }
+
     push-to-aur() {
         local package_name="${1:-$(basename $(git rev-parse --show-toplevel))}"
         local package_name=${package_name%*-pkgbuild}
@@ -924,6 +954,15 @@
         done
     }
 
+    :git:branch:delete() {
+        git branch -D "${@}"
+        git push origin ":${^@}"
+    }
+
+    _:git:branch:delete() {
+        service="git-branch" _git -D "${@}"
+    }
+
     :pipe() {
         local pipe="/tmp/zsh.pipe"
 
@@ -939,7 +978,7 @@
     }
 
     :pipe:tar:send() {
-        tar c "${1:-.}" | :pipe
+        tar c "${@:-.}" | :pipe
     }
 
     :pipe:tar:receive() {

@@ -129,25 +129,43 @@
             setopt share_history
         }
 
+        #{
+        #    zstyle ':smart-ssh' ssh 'ssh-urxvt'
+        #}
+
         {
-            zstyle ':smart-ssh' ssh 'ssh-urxvt'
+            zle -N :favor
+            bindkey '^N' :favor
+            :favor() {
+                local favor_dir="$(favor 2>/dev/null)"
+                if [[ ! "$favor_dir" ]]; then
+                    return
+                fi
+
+                eval cd "$favor_dir"
+                unset favor_dir
+
+                clear
+                zle -R
+                # uncomment for lambda17 prompt compatibility
+                lambda17:update
+                zle reset-prompt
+            }
         }
 
         {
-            favorite-directories:get() {
-                echo src 3 ~/sources 3
-                echo zsh 2 ~/.zsh/.zgen 2
-                echo vim 2 ~/.vim 2
-                echo go 3 ~/go/src/github.com 2
+            FAST_HIGHLIGHT_CUSTOM_HIGHLIGHTERS+=(:highlight-comment)
+
+            :highlight-comment() {
+                local prefix=${BUFFER%% // *}
+                if [[ "$BUFFER" != "$prefix" ]]; then
+                    _zsh_highlight_apply_zle_highlight custom-comment \
+                        "fg=238" "${#prefix}" "${#BUFFER}"
+                fi
             }
         }
 
         if :is-interactive; then
-            {
-                eval "$(sed -r -e 's/\+s//' -e '/bindkey/d' \
-                    /usr/share/fzf/key-bindings.zsh)"
-            }
-
             {
                 if [ "$BACKGROUND" = "light" ]; then
                     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=250"
@@ -170,11 +188,6 @@
                     manydots-magic
                 fi
             }
-
-            {
-                #autoload -Uz bracketed-paste-magic
-                #zle -N bracketed-paste bracketed-paste-magic
-            }
         fi
 
         {
@@ -184,8 +197,7 @@
     }
 
     {
-        ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern hijack)
-        ZSH_HIGHLIGHT_PATTERNS=('//*' 'fg=245')
+        FAST_HIGHLIGHT_CUSTOM_HIGHLIGHTERS+=(:hijack:highlight)
 
         ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(forward-char)
         ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(end-of-line)
@@ -204,25 +216,29 @@
     fi
 
     :plugins:load() {
-        zgen load kovetskiy/zsh-smart-ssh
-        zgen load seletskiy/zsh-ssh-urxvt
+        #zgen load kovetskiy/zsh-smart-ssh
+        #zgen load seletskiy/zsh-ssh-urxvt
         zgen load seletskiy/zsh-context-aliases
         zgen load seletskiy/zsh-git-smart-commands
         zgen load seletskiy/zsh-hijack
         zgen load seletskiy/zsh-hash-aliases
-        zgen load seletskiy/zsh-uber-ssh
+        #zgen load seletskiy/zsh-uber-ssh
         zgen load deadcrew/deadfiles
 
         if :is-interactive; then
+            {
+                eval "$(sed -r -e 's/\+s//' -e '/bindkey/d' /usr/share/fzf/key-bindings.zsh)"
+            }
+
             zgen load kovetskiy/zsh-alias-search
             zgen load seletskiy/zsh-ash-completion
             zgen load seletskiy/zsh-smart-kill-word
             zgen load kovetskiy/zsh-add-params
             zgen load kovetskiy/zsh-quotes
-            zgen load seletskiy/zsh-favorite-directories
             zgen load knu/zsh-manydots-magic
-            zgen load seletskiy/zsh-syntax-highlighting
             zgen load zsh-users/zsh-history-substring-search
+
+            zgen load zdharma/fast-syntax-highlighting
 
             # must be last!
             zgen load seletskiy/zsh-autosuggestions
@@ -284,6 +300,9 @@ fi
         compdef _git-merge-with-rebase git-merge-with-rebase
         compdef man-search=man
         compdef vim-which=which
+        compdef _:git:rebase-interactive :git:rebase-interactive
+        compdef _:git:checkout-and-update :git:checkout-and-update
+        compdef _:git:branch:delete :git:branch:delete
     }
 }
 
@@ -304,7 +323,6 @@ fi
     bindkey '^[d' delete-word
     bindkey '^K' add-params
     bindkey '^O' toggle-quotes
-    bindkey -e '^_' favorite-directories:cd
     bindkey '^[d' delete-word
     bindkey '^[Od' backward-word
     bindkey '^[Oc' forward-word
@@ -312,7 +330,6 @@ fi
     bindkey '^H' backward-delete-char
     bindkey '^W' smart-backward-kill-word
     bindkey '^S' smart-forward-kill-word
-    bindkey '^P' fuzzy-search-and-edit
     bindkey "^T" prepend-sudo
     bindkey "^F" leap-back
     bindkey "^G" alias-search
@@ -325,8 +342,9 @@ fi
 # hijacks
 :hijack:load() {
     hijack:reset
-    hijack:transform '^([[:alnum:].-]+@)?([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})' \
-        'sed -re "s/^/ssh /"'
+
+    hijack:transform ' // .*' \
+        'sed -re "s# // .*##"'
 
     hijack:transform '^(\w{1,3}) ! ' \
         'sed -re "s/^(\w{1,3}) ! /\1! /"'
@@ -344,7 +362,13 @@ fi
         'sed -re "s/^ /cd /"'
 
     hijack:transform '^https://github.com/' \
-        'sed -re "s#^https://github.com/#gh #"'
+        'sed -re "s#^https://github.com/([^/]+/[^/]+)#gh \1#"'
+
+    hijack:transform '^https://gitlab.com/' \
+        'sed -re "s#^https://gitlab.com/([^/]+/[^/]+)#gl \1#"'
+
+    hijack:transform '^https://' \
+        'sed -re "s#^https://#curl -sLO &#"'
 }
 
 source ~/.zsh/aliases.zsh
