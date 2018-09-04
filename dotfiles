@@ -33,7 +33,7 @@ def main(action, profile)
         case file_name
         when /README/
             # skip readme
-        when /^(dotfiles|bootstrap|profiles.txt)$/
+        when /^(dotfiles|bootstrap|profiles.txt|bin\/)$/
             # skip installation scripts
         when /(.*)\.(\$.*$)/
             placeholder_base = $1
