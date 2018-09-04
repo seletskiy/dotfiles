@@ -7,6 +7,7 @@ Type=forking
 ;ExecStart=/usr/bin/tmux new -ds __systemd sh
 ExecStart=/usr/bin/tmux start-server
 ExecStop=/usr/bin/tmux kill-server
+Restart=always
 
 [Install]
 WantedBy=multiplexer.target

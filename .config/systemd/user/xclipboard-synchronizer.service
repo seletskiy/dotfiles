@@ -1,15 +1,11 @@
-[Unit]
+kUnit]
 Description=Synchronize various X clipboard buffers for sane result
 Requires=graphical.target
 After=graphical.target
 Before=display-manager.target
 
 [Service]
-Type=forking
-ExecStart=/bin/bash -c ' \
-    autocutsel -fork -pause 150 -selection PRIMARY && \
-    autocutsel -fork -pause 150 -selection CLIPBOARD \
-'
+ExecStart=/bin/xcsyncd
 
 [Install]
 WantedBy=display-manager.target
