@@ -32,7 +32,7 @@ Plug 'kien/rainbow_parentheses.vim'
 
 Plug 'wojtekmach/vim-rename'
 
-Plug 'repeat.vim'
+Plug 'vim-scripts/repeat.vim'
 
 Plug 'reconquest/vim-colorscheme'
     let g:colors_name = "reconquest"
@@ -45,7 +45,7 @@ Plug 'reconquest/vim-colorscheme'
     au ColorScheme * hi Error ctermbg=1 ctermfg=16 cterm=bold
 
 
-Plug 'surround.vim'
+Plug 'vim-scripts/surround.vim'
     vmap ( S)i
     vmap ) S)%a
 
@@ -68,6 +68,10 @@ Plug 'junegunn/fzf', {'do': './install --all'}
 Plug 'junegunn/fzf.vim'
     let g:fzf_prefer_tmux = 1
     au FileType * let g:fzf#vim#default_layout  = {'bottom': '10%'}
+    let $FZF_DEFAULT_COMMAND = 'ctrlp-search'
+    func! _ctrlp()
+        exec 'FZF'
+    endfunc!
 
 Plug 'nixprime/cpsm', {'do': 'PY3=OFF ./install.sh' }
 Plug 'ctrlpvim/ctrlp.vim'
@@ -90,10 +94,9 @@ Plug 'ctrlpvim/ctrlp.vim'
         call _ctrlp_buffer_add_augroup()
     endfunc!
 
-    func! _ctrlp()
-        call _snippets_stop()
-        CtrlP
-    endfunc!
+    "func! _ctrlp()
+    "    CtrlP
+    "endfunc!
 
     "nnoremap <C-B> :call _ctrlp_buffer()<CR>
 
@@ -119,7 +122,7 @@ Plug 'ctrlpvim/ctrlp.vim'
         let g:grep_last_query = a:query
 
         let @/ = a:query
-        call fzf#vim#ag(a:query, fzf#vim#layout(0))
+        call fzf#vim#ag(a:query, {'options': '--delimiter : --nth 4..'})
     endfunc!
 
     func! _grep_word()
@@ -139,20 +142,20 @@ Plug 'ctrlpvim/ctrlp.vim'
     command! -nargs=* Grep call _grep(<q-args>)
 
     nnoremap <C-E> :Grep<CR>
-    "nnoremap <C-E><C-E> :call _grep_word()<CR>
-    "nnoremap <C-G> :call _grep_recover()<CR>
 
 Plug 'itchyny/lightline.vim'
-    let g:lightline = {}
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'enable': {
+      \     'statusline': 1,
+      \     'tabline': 0
+      \ },
+      \ 'component': {
+      \   'filename': '%f'
+      \ }
+      \ }
 
-    let g:lightline.enable = {
-        \ 'statusline': 1,
-        \ 'tabline': 0
-        \ }
-
-    let g:lightline.colorscheme = 'wombat'
-
-Plug 'seletskiy/vim-autosurround'
+"Plug 'seletskiy/vim-autosurround'
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsJumpForwardTrigger = '<C-J>'
@@ -202,14 +205,32 @@ Plug 'SirVer/ultisnips'
     augroup END
 
 Plug 'Shougo/deoplete.nvim'
+Plug 'zchee/deoplete-jedi'
+Plug 'fishbullet/deoplete-ruby'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'zchee/deoplete-go', { 'do': 'make'}
    let g:deoplete#enable_at_startup = 1
 
-Plug 'terryma/vim-multiple-cursors'
+    func! _setup_deoplete()
+       call deoplete#custom#source(
+           \ '_', 'min_pattern_length', 1)
 
-Plug 'fatih/vim-go', {'for': 'go'}
+        call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+        call deoplete#custom#source('_', 'sorters', [])
+
+       " unlimited candidate length
+        call deoplete#custom#source('_', 'max_kind_width', 0)
+        call deoplete#custom#source('_', 'max_menu_width', 0)
+        call deoplete#custom#source('_', 'max_abbr_width', 0)
+   endfunc!
+
+   augroup _setup_deoplete
+       au!
+       au VimEnter * call _setup_deoplete()
+   augroup end
+
+Plug 'kovetskiy/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
     let g:go_snippet_engine = "skip"
     let g:go_fmt_autosave = 0
@@ -239,7 +260,6 @@ Plug 'fatih/vim-go', {'for': 'go'}
 
     augroup vim_go_custom
         au!
-        au FileType go nmap <buffer> <Leader>f :GoFmt<CR>
         au FileType go nmap <buffer> <Leader>h :GoDoc<CR>
         au FileType go let w:go_stack = 'fix that shit'
         au FileType go let w:go_stack_level = 'fix that shit'
@@ -251,9 +271,11 @@ Plug 'fatih/vim-go', {'for': 'go'}
         au FileType go nmap <silent><buffer> <Leader>' :call synta#go#build()<CR>
         au FileType go imap <silent><buffer> <Leader>, <ESC>:w<CR>:call synta#go#build()<CR>
         au FileType go nmap <silent><buffer> <Leader>l :GoLint .<CR>
+        au FileType go nmap <silent><buffer> <Leader>t :GoTest<CR>
     augroup END
 
 Plug 'vim-ruby/vim-ruby'
+Plug 'ruby-formatter/rufo-vim'
 
 Plug 'michaeljsmith/vim-indent-object'
 
@@ -263,91 +285,6 @@ Plug 'cespare/vim-toml'
 
 Plug 'seletskiy/vim-over80'
 Plug 'markonm/traces.vim'
-
-"Plug 'seletskiy/vim-over'
-"    nnoremap H :OverCommandLine %s/<CR>
-"    vnoremap H :OverCommandLine s/<CR>
-
-"    let g:over#command_line#search#enable_move_cursor = 1
-"    let g:over#command_line#search#very_magic = 1
-
-"    au VimEnter * nnoremap / :call g:over80#disable_highlight()
-"        \<CR>:OverExec /<CR>
-
-"    au VimEnter * vnoremap g/ :call g:over80#disable_highlight()
-"        \<CR>:'<,'>OverExec /<CR>
-
-"    au VimEnter * nnoremap ? :call g:over80#disable_highlight()
-"        \<CR>:OverExec ?<CR>
-
-"    au VimEnter * vnoremap g? :call g:over80#disable_highlight()
-"        \<CR>:'<,'>OverExec ?<CR>
-
-"    au User _VimrcRunAfterPlugEnd nnoremap g/ /
-"    au User _VimrcRunAfterPlugEnd nnoremap g? ?
-
-"    nnoremap <silent> H :OverExec %s/<CR>
-"    vnoremap <silent> H :OverExec s/<CR>
-"    nnoremap <silent> L :OverExec s/<CR>
-"    nnoremap <silent> U :exec printf("OverExec %d,%ds/", line("w0"), line("w$"))<CR>
-
-"    augroup vim_over
-"        au User OverCmdLineExecute call searchparty#mash#mash()
-"        au BufAdd,BufEnter * nnoremap / :OverExec /<CR>
-"        au BufAdd,BufEnter * vnoremap / :'<,'>OverExec /<CR>
-
-"        au User OverCmdLineExecute call OverExecAutocmd()
-"    augroup END
-
-"    let g:over_exec_autocmd_skip = 0
-"    function! OverExecAutocmd()
-"        if g:over_exec_autocmd_skip
-"            let g:over_exec_autocmd_skip = 0
-"            return
-"        endif
-
-"        call searchparty#mash#mash()
-"    endfunction!
-
-"    function! OverExec(line1, line2, args)
-"        let g:over#command_line#search#enable_move_cursor = 1
-"        call over#command_line(
-"        \   g:over_command_line_prompt,
-"        \   a:line1 != a:line2 ? printf("'<,'>%s", a:args) : a:args
-"        \)
-"    endfunction!
-"    command! -range -nargs=* OverExec call OverExec(<line1>, <line2>, <q-args>)
-"    nmap <Plug>(OverExec) :OverExec<CR>
-
-"    function! s:over_exec_do(args)
-"        let g:over_exec_autocmd_skip = 1
-"        let g:over#command_line#search#enable_move_cursor = 0
-"        call feedkeys("\<CR>" . a:args . "\<Plug>(OverExec)\<Up>")
-"    endfunction!
-
-"    function! OverNext()
-"        call s:over_exec_do("n")
-"        return ""
-"    endfunction!
-
-"    let g:over#command_line#substitute#highlight_string = "DiffChange"
-
-"    let g:over_command_line_key_mappings = {
-"        \ "\<C-F>": ".",
-"        \ "\<C-E>": '\w+',
-"        \ "\<C-O>": ".*",
-"        \ "\<C-L>": "\\zs",
-"        \
-"        \ "\<C-K>": "\<Left>\\\<Right>",
-"        \ "\<C-D>": "\<Left>\<BackSpace>\<Right>",
-"        \
-"        \ "\<C-N>" : {
-"        \ 	"key" : "OverNext()",
-"        \   "expr": 1,
-"        \ 	"noremap" : 1,
-"        \ 	"lock" : 1,
-"        \ },
-"    \ }
 
 Plug 'wellle/targets.vim'
 
@@ -376,10 +313,6 @@ Plug 'kovetskiy/vim-plugvim-utils'
 Plug 'seletskiy/vim-nunu'
 
 Plug 'hynek/vim-python-pep8-indent'
-
-Plug 'klen/python-mode'
-
-Plug 'kovetskiy/ycm-sh'
 
 Plug 'vim-utils/vim-man'
 
@@ -416,6 +349,55 @@ Plug 'digitaltoad/vim-pug'
 Plug 'kovetskiy/vim-autoresize'
 
 Plug 'nathanielc/vim-tickscript'
+
+Plug 'w0rp/ale'
+    func! _ale_gotags()
+
+    endfunc!
+    let g:ale_enabled = 0
+
+    let g:ale_fixers = {
+    \   'go': [function("synta#ale#goimports#Fix")],
+    \   'ruby': [function('ale#fixers#rufo#Fix')],
+    \}
+    let g:ale_linters = {
+    \   'go': ['gobuild'],
+    \}
+    let g:ale_fix_on_save = 1
+    " au operations BufRead,BufNewFile *.go
+
+Plug 'mg979/vim-visual-multi', {'branch': 'test'}
+    let g:VM_leader = "\\"
+    let g:VM_no_meta_mappings = 1
+    let g:VM_maps = {
+    \ 'Select All': '<C-A>',
+    \ }
+
+    fun! VM_before_auto()
+        call MacroBefore()
+    endfun
+
+    fun! VM_after_auto()
+        call MacroAfter()
+    endfun
+
+    function! MacroBefore(...)
+        unmap f
+        unmap F
+        unmap t
+        unmap T
+        unmap ,
+        unmap ;
+    endfunction!
+
+    function! MacroAfter(...)
+        map f <Plug>Sneak_f
+        map F <Plug>Sneak_F
+        map t <Plug>Sneak_t
+        map T <Plug>Sneak_T
+        map , <Plug>Sneak_,
+        map ; <Plug>Sneak_;
+    endfunction!
 
 augroup end
 
@@ -466,7 +448,7 @@ set completeopt-=preview
 set nowrap
 set updatetime=150
 set showtabline=0
-set cino=(s,m1,+0
+set cino=(s,m1,+0,L0
 set comments-=mb:*
 set lazyredraw
 set nofoldenable
@@ -503,6 +485,7 @@ nmap <silent> <Leader>q :q<CR>
 nmap <silent> <Leader>Q :qa!<CR>
 imap <silent> <Leader>; <C-\><C-O>:w<CR>
 nmap <silent> <Leader>e :e!<CR>
+nmap <silent> <Leader>p "*p
 
 map <Leader>3 :b #<CR>
 map <Leader>c :cd %:h<CR>
@@ -515,6 +498,8 @@ map <silent> <Leader>l <Plug>NERDCommenterToggle
 vnoremap <silent> @; $%
 nnoremap <silent> @; :ArgWrap<CR>
 inoremap <silent> @; <C-\><C-O>:ArgWrap<CR>
+
+inoremap <C-J> <nop>
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
@@ -552,6 +537,9 @@ inoremap <expr> <C-O> pumvisible()
             \ ? (feedkeys("\<C-N>") ? '' : '')
             \ : (feedkeys("\<C-O>", 'n') ? '' : '')
 
+nnoremap <C-H> :%s/\v
+vnoremap <C-H> :s/\v
+
 augroup unite_setting
     au!
     au FileType unite call s:unite_my_settings()
@@ -561,11 +549,6 @@ augroup erlang_indent
     au!
     au FileType erlang set indentexpr=""
     au BufEnter *.erl,rebar.config,*.hrl set ai
-augroup end
-
-augroup syntax_hacks
-    au!
-    au FileType diff call ApplySyntaxForDiffComments()
 augroup end
 
 augroup dir_autocreate
@@ -585,11 +568,12 @@ augroup ft_customization
     au FileType sql set ft=mysql
     au BufEnter *.test.sh set ft=test.sh
     au FileType snippets setl ft+=.python
-    au FileType snippets let g:pymode_rope_project_root=expand('%:h')
     au BufEnter * let g:argwrap_tail_comma = 0
     au FileType c,cpp setl noet
     au BufEnter *.amber set ft=pug
     au FileType yaml setl ts=2 sts=2 sw=2
+    au FileType *.chart setl ft=chart
+    au FileType ruby setl et ts=2 sts=2 sw=2
 augroup end
 
 augroup go_src
@@ -701,7 +685,6 @@ function! InstallGoHandlers()
         autocmd BufWritePre *.go if searchpos('^\v(const|var)?\s+usage\s+\=\s+`', 'nw') != [0, 0] |
                 \ silent! exe '/^\v(const|var)?\s+usage\s+\=\s+`/+1,/^`$/s/\t/    /' |
             \ endif
-        autocmd BufWritePre *.go GoFmt
     augroup end
 endfunction
 
@@ -770,6 +753,11 @@ func! DiffEnable()
     nmap <buffer> rk :call DiffApplyTop()<CR>rr
     nmap <buffer> rj :call DiffApplyBottom()<CR>rr
 endfunc!
+
+augroup diff_mode
+    au!
+    au BufEnter * if search("<<<<<<", "cnw", 0, 500) > 0 | call DiffEnable() | endif
+augroup end
 
 command!
     \ Diff
