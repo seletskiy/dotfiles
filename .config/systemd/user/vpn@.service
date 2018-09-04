@@ -1,13 +1,10 @@
 [Unit]
-Description="PPTP VPN Connection <-> %i"
+Description="vpn %i"
 
 [Service]
-ExecStart=/usr/bin/sudo pvpn -i 20.10.0.100:20.10.0.2 -s %i root@%i default
-ExecStop=/usr/bin/sudo pvpn --stop
-PIDFile=/var/run/ppp0.pid
-Restart=always
-RestartSec=1m
-Type=forking
+ExecStart=/usr/bin/sh -c "vpn $(sed 's/:/ /' <<< %i)"
+ExecStop=/usr/bin/sh -c 'sudo pkill -P $MAINPID'
+WorkingDirectory=~
 
 [Install]
 WantedBy=environment.target
