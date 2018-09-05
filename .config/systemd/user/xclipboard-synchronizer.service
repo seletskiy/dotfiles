@@ -1,4 +1,4 @@
-kUnit]
+[Unit]
 Description=Synchronize various X clipboard buffers for sane result
 Requires=graphical.target
 After=graphical.target
