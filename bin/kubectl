@@ -42,10 +42,10 @@
             continue
         fi
 
-        if [[ "$arg" =~ :.* ]]; then
+        if [[ "$arg" =~ ::.* ]]; then
             namespace=$(
                 :kubectl get namespaces --no-headers -o name \
-                    | grep -F "${arg:1}" \
+                    | grep -F "${arg:2}" \
                     | cut -f2 -d/
             )
 
