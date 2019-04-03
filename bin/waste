@@ -74,6 +74,5 @@ mkdir -p trash
         -e ./.calc_history \
         -e ./.bash_history \
         -e ./.lesshst \
-        -e ./.sbt \
         -e ./.kube \
     | :mv trash
