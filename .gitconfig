@@ -1,7 +1,7 @@
 [user]
     email = s.seletskiy@gmail.com
+    signingkey = 40463A73EE7CAB70495389ABE6B40F71C367E6B5
     name = Stanislav Seletskiy
-    signingkey = AC87B82D
 
 [credential]
     helper = cache --timeout=3600000
@@ -24,6 +24,9 @@
 
 [gpg]
     program = gpg-passphrase
+
+[commit]
+    gpgsign = true
 
 [url "git+ssh://bitbucket.org/"]
     insteadOf = https://bitbucket.org/

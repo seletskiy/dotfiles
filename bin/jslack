@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec browser https://properhq.slack.com/messages/$1

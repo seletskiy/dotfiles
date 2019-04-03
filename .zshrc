@@ -1,3 +1,5 @@
+zmodload zsh/zprof
+
 # detect zsh -is
 {
     if [ -t 0 ]; then
@@ -21,9 +23,6 @@
     KEYTIMEOUT=1
 
     FZF_TMUX_HEIGHT=0
-
-    HISTSIZE=30000
-    HISTFILE=~/.zsh/.zhistory
 }
 
 # environment
@@ -58,16 +57,34 @@
         'editor' \
         'environment' \
         'terminal' \
-        'history' \
         'directory' \
         'completion'
 
+    HISTSIZE=300000
+
+    if :is-interactive; then
+        SAVEHIST=$HISTSIZE
+    fi
+
+    HISTFILE="$HOME/.zsh/.zhistory"
+
+    setopt bang_hist
+    setopt extended_history
+    setopt inc_append_history
+    setopt share_history
+    setopt hist_expire_dups_first
+    setopt hist_ignore_dups
+    setopt hist_ignore_all_dups
+    setopt hist_find_no_dups
+    setopt hist_ignore_space
+    setopt hist_save_no_dups
+    setopt hist_verify
+    setopt hist_beep
+    setopt rm_star_silent
 }
 
 # plugins
 {
-    zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
     {
         if ! :is-interactive; then
             compinit() {
@@ -89,44 +106,44 @@
             source $ZGEN_DIR/tarjoilija/zgen/zgen.zsh
         fi
 
-        if :is-interactive; then
-            zle() {
-                if [[ "$1" == "-R" || "$1" == "-U" ]]; then
-                    unset -f zle
+        zle() {
+            if [[ "$1" == "-R" || "$1" == "-U" ]]; then
+                unset -f zle
 
-                    compinit
+                compinit
 
-                    :plugins:load
-                    :plugins:post-init
+                :plugins:load
+                :plugins:post-init
 
+                :aliases:load
+
+                if :is-interactive; then
                     :hijack:load
-                    :aliases:load
                     :compdef:load
-
                 fi
+            fi
 
-                builtin zle "${@}"
-            }
-        else
-            :plugins:load
-            :plugins:post-init
-            :aliases:load
-        fi
+            builtin zle "${@}"
+        }
     }
 
     :plugins:post-init() {
+        {
+            zstyle ':completion:*' completer _expand _complete
+            zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+        }
+
         {
             fpath=(${ZGEN_COMPLETIONS[@]} $fpath)
         }
 
         {
+            unsetopt cdable_vars
             unsetopt correct
             unsetopt correct_all
             unsetopt global_rcs
             unsetopt menu_complete
             setopt prompt_sp
-            setopt inc_append_history
-            setopt share_history
         }
 
         #{
@@ -150,6 +167,7 @@
                 # uncomment for lambda17 prompt compatibility
                 lambda17:update
                 zle reset-prompt
+                context-aliases:on-precmd
             }
         }
 
@@ -181,13 +199,6 @@
                 zstyle ':zle:smart-kill-word' precise always
                 zstyle ':zle:smart-kill-word' keep-slash on
             }
-
-            {
-                if [ ${+functions[manydots-magic]} -eq 0 ]; then
-                    autoload -Uz manydots-magic
-                    manydots-magic
-                fi
-            }
         fi
 
         {
@@ -203,12 +214,16 @@
         ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(end-of-line)
     }
 
+    if :is-interactive; then
+        alias compinit='compinit-zgen'
+        function compinit-zgen() {
+            grep -q ".zgen" <<< "${@}" && \compinit "${@}"
+        }
+    fi
+
     if ! zgen saved; then
-        zgen load seletskiy/zsh-zgen-compinit-tweak
         zgen load sorin-ionescu/prezto
         zgen load mafredri/zsh-async
-        zgen load seletskiy/zsh-fuzzy-search-and-edit
-        zgen load seletskiy/zsh-prompt-lambda17
 
         zgen save
 
@@ -220,28 +235,26 @@
         #zgen load seletskiy/zsh-ssh-urxvt
         zgen load seletskiy/zsh-context-aliases
         zgen load seletskiy/zsh-git-smart-commands
-        zgen load seletskiy/zsh-hijack
         zgen load seletskiy/zsh-hash-aliases
+
         #zgen load seletskiy/zsh-uber-ssh
-        zgen load deadcrew/deadfiles
 
         if :is-interactive; then
             {
                 eval "$(sed -r -e 's/\+s//' -e '/bindkey/d' /usr/share/fzf/key-bindings.zsh)"
             }
 
+            zgen load deadcrew/deadfiles
+            zgen load seletskiy/zsh-hijack
             zgen load kovetskiy/zsh-alias-search
             zgen load seletskiy/zsh-ash-completion
             zgen load seletskiy/zsh-smart-kill-word
             zgen load kovetskiy/zsh-add-params
             zgen load kovetskiy/zsh-quotes
-            zgen load knu/zsh-manydots-magic
             zgen load zsh-users/zsh-history-substring-search
 
             zgen load zdharma/fast-syntax-highlighting
-
-            # must be last!
-            zgen load seletskiy/zsh-autosuggestions
+            zgen load zsh-users/zsh-autosuggestions && _zsh_autosuggest_start
         fi
     }
 }
@@ -249,13 +262,25 @@
 if :is-interactive; then
     # prompt
     {
-        source /usr/share/zsh/functions/Prompts/promptinit
+        zgen load seletskiy/zsh-prompt-lambda17
+
+        autoload -Uz promptinit && promptinit
 
         prompt lambda17
 
-        zstyle lambda17:05-sign text "α"
+        zstyle lambda17:00-banner bg "2"
+        zstyle lambda17:05-sign text ""
         zstyle lambda17:20-git left "┉"
         zstyle lambda17:01-git-stash text "⚑"
+        zstyle lambda17:01-git-stash fg "1"
+        zstyle lambda17:01-git-behind fg "0"
+        zstyle lambda17:01-git-ahead fg "0"
+        zstyle lambda17::terminal bg "234"
+
+        zstyle "lambda17:00-main::conceal:override" ribbon "❱"
+
+        zstyle "lambda17:00-main::conceal:override" format \
+            '%B%T%k %f%k$(sed -re "s/.$/& /" <<< "${${${${${${PWD#$HOME}:-~}##*/}:-/}/\\~/}}")%B%F{236}${padding}%b%F{240}❱%f %f'
     }
 
     # term
@@ -299,7 +324,7 @@ fi
         compdef systemctl-command-and-status=systemctl
         compdef _git-merge-with-rebase git-merge-with-rebase
         compdef man-search=man
-        compdef vim-which=which
+        compdef :vim-which=which
         compdef _:git:rebase-interactive :git:rebase-interactive
         compdef _:git:checkout-and-update :git:checkout-and-update
         compdef _:git:branch:delete :git:branch:delete
@@ -312,7 +337,7 @@ fi
 
     bindkey "^[[1~" beginning-of-line
     bindkey "^A" beginning-of-line
-    #bindkey '^[[A' hijack:history-substring-search-up
+    bindkey '^[[A' hijack:history-substring-search-up
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
     bindkey "^[[3~" delete-char
@@ -335,8 +360,6 @@ fi
     bindkey "^G" alias-search
     bindkey "^[[11^" noop
     bindkey '^R' fzf-history-widget
-
-    bindkey -s '^Y' 'vim-select-file\n'
 }
 
 # hijacks
@@ -346,8 +369,8 @@ fi
     hijack:transform ' // .*' \
         'sed -re "s# // .*##"'
 
-    hijack:transform '^(\w{1,3}) ! ' \
-        'sed -re "s/^(\w{1,3}) ! /\1! /"'
+    #hijack:transform '^(\w{1,3}) ! ' \
+    #    'sed -re "s/^(\w{1,3}) ! /\1! /"'
 
     hijack:transform '^(\S+)(\s.*)!$' \
         'sed -re "s/(\w+)( .*)!$/\1!\2/"'
@@ -371,13 +394,1059 @@ fi
         'sed -re "s#^https://#curl -sLO &#"'
 }
 
-source ~/.zsh/aliases.zsh
+:aliases:load() {
+    unalias -m '*'
 
-if [[ -f .zshrc && "$PWD" != "$HOME" ]]; then
-    printf "Sourcing local .zshrc...\n"
+    alias ...='cd ../..'
+    alias ....='cd ../../..'
 
-    source .zshrc
-fi
+    alias sudo='sudo '
+
+    alias v='vim'
+    alias vi='vim'
+
+    alias ls='ls --color=auto'
+    alias l='ls --group-directories-first --time-style=long-iso -tAlh'
+
+    alias rf='rm -rf'
+
+    alias cu='curl -LO'
+
+    alias skr='ssh-keygen -R'
+
+    alias i='image-upload'
+
+    alias -g '//'='; :'
+
+    alias '%'=':sed-replace:interactive'
+    alias '%j'='() { :sed-replace:interactive "$1" "$2" **/*.java; }'
+
+    alias u='exec usb-shell'
+
+    alias cnp=':carcosa:new-password'
+    alias cap=':carcosa:add-password'
+
+    alias re='rebirth'
+    alias reg='rebirth gorun'
+
+    alias -- :!='sudo systemctl'
+    alias -- :r!=':! daemon-reload && () {
+        :! restart "$1"
+        :! status "$1"
+    }'
+    alias -- :s!=':! status'
+    alias -- :t!=':! stop'
+    alias -- :e!=':! enable'
+    alias -- :ee!=':! reenable'
+    alias -- :d!=':! disable'
+    alias -- :l!=':! list-unit-files'
+    alias -- :p!=':! list-dependencies'
+    alias -- :j!='journalctl'
+    alias -- :jf!=':j! -f'
+    alias -- :ju!=':j! -u'
+    alias -- :jfu!=':j! -f -u'
+    alias -- :y!='() {
+        systemctl --user status "$(
+            systemd-run --user "$@" 2>&1 | grep -Po "Running as unit: \\K.*"
+        )"
+    }'
+
+    alias -- :c!=':! cat'
+
+    alias -- ::='systemctl --user'
+    alias -- :r=':: daemon-reload && () {
+        :: restart "$1"
+        :: status "$1"
+    }'
+    alias -- :s=':: status'
+    alias -- :t=':: stop'
+    alias -- :e=':: enable'
+    alias -- :ee=':: reenable'
+    alias -- :d=':: disable'
+    alias -- :l=':: list-unit-files'
+    alias -- :p=':: list-dependencies'
+    alias -- :j='journalctl --user'
+    alias -- :jf=':j -f'
+    alias -- :ju=':j -u'
+    alias -- :jfu=':j -f -u'
+    alias -- :c=':: cat'
+
+    alias -- +x='chmod-alias'
+
+    alias /=':ag'
+    alias /g='AG_ARGS=--go :ag'
+    alias /rb='AG_ARGS=--rb :ag'
+    alias f='() { find -iname "*$1*" "${@:2}" }'
+
+    alias ipa='ip a'
+
+    alias vw='(){:vim-which "${@}"}'
+
+    alias dt='cd $DOTFILES && git status -s'
+    alias de='cd $DOTFILES/.deadfiles && git status -s'
+    alias se='cd ~/.secrets && carcosa -Lc | sort'
+
+    alias pp='sudo pacman -S'
+    alias pp!='yes | sudo pacman --force --noconfirm -S'
+    alias ppy='sudo pacman -Sy'
+    alias ppyu='sudo pacman -Syu'
+    alias ppr='sudo pacman -R'
+    alias pq='pacman -Q'
+    alias pqo='pacman -Qo'
+    alias pql='pacman -Ql'
+    alias pqs='pacman -Qs'
+    alias pqi='pacman -Qi'
+    alias ppu='sudo pacman -U'
+    alias pps='pacman -Ss'
+    alias po='pkgfile'
+    alias ppo='() { pp "$(po "$1")" }'
+    alias ppyu='sudo pacman -Syu'
+    alias ppyuz='ppyu --ignore linux,zfs-linux,zfs-utils-linux,spl-linux,spl-utils-linux'
+
+    alias zgu='zgen update && zr'
+
+    alias psx=':ps-grep'
+
+    #alias goi='go install'
+    #alias gob='go-fast-build'
+    #alias gog='go get'
+    #alias gogu='gog -u'
+
+    alias 1='watch -n1'
+    alias wt=':watcher:guess'
+
+    alias vrc='vim ~/.vimrc'
+    alias zrc='vim ~/.zshrc'
+    alias zr='source ~/.zshrc'
+    alias snip='() {
+        cd ~/.vim/bundle/snippets
+        if [[ "$1" ]]; then
+            vim $1.snippets
+        else
+            vim
+        fi
+    }'
+
+    alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent \
+        | head -n1)"'
+
+    alias ck='() { mkdir -p $1 && cd $1 }'
+
+    alias di!="cd $DOTFILES && git-smart-pull && ./bootstrap"
+    alias du!="di! $DOTFILES_PROFILE"
+    alias di="cd $DOTFILES && ./dotfiles install"
+
+    alias pkg='yaourt --noconfirm -S'
+
+    alias godoc='godoc-less'
+
+    alias man='man-search'
+
+    alias m=':sources:clone github.com:seletskiy'
+    alias k=':sources:clone github.com:kovetskiy'
+    alias r=':sources:clone github.com:reconquest'
+
+    alias mgp=':sources:move-to-gopath'
+
+    alias gc='git clone'
+    alias gh=':sources:clone github.com:'
+    alias gl=':sources:clone gitlab.com:'
+
+    alias xc=':orgalorg:command'
+
+    alias -- '+'=':pipe:tar:send'
+    alias -- '-'=':pipe:tar:receive'
+
+    alias ua='find -maxdepth 1 -mindepth 1 -type d |
+        cut -b3- |
+        while read -n dir; do
+            ( cd $dir; [ -d .git ] && git pull --rebase |& prefix "{$dir} "; )
+        done'
+
+    alias 8='ping 8.8.8.8'
+
+    alias -g -- '#cc'='| xclip -i'
+    alias -g -- '#j'='| jq -C .'
+    alias -g -- '#!'='# -v'
+    alias -g -- '#+'='| paste -sd+ | bc'
+
+    alias kub='skube'
+    alias kaf='kub apply -f'
+    alias kdf='kub delete -f'
+    alias kc='kub create'
+    alias kcn='kc namespace'
+    alias kcs='kc secret'
+    alias kdp='kub delete pods'
+    alias kbb='kub run -i --tty --image alpine:edge busybox-$RANDOM --restart=Never --rm'
+    alias kg='kub get'
+    alias kgm='kg namespaces'
+    alias kgn='kg nodes'
+    alias kgd='kg deployments'
+    alias kgp='kg pods'
+    alias kgp!='kgp --all-namespaces'
+    alias kgs='kg svc'
+    alias kgi='kg ing'
+    alias kd='kub delete'
+    alias kp='() { kgp "${@:2}" -o name | cut -f2- -d/ | grep -F ${1}; }'
+    alias kl='kub logs'
+    alias klf='() { kl "${@}" -f --tail=10 }'
+    alias ke='kub exec'
+    alias kei='() { ke "$@" -it }'
+    alias ksh='() { ke "$@" -it -- sh -i }'
+    alias kcu='kub config use-context'
+    alias kff='kub port-forward'
+    alias ks='kub describe'
+    alias ksp='ks pod'
+    alias kss='ks svc'
+    alias ksi='ks ing'
+    alias mks='minikube start --cpus 1 --memory 1024'
+    alias mks!='minikube stop'
+    alias mke='eval $(minikube docker-env)'
+    alias ked='kub edit'
+    alias ktn='kub top nodes'
+    alias ktp='kub top pods'
+
+    alias pk='pkill -f'
+
+    alias x=':context:command magalix'
+    alias mk=':context:command minikube'
+
+    alias re='() { while :; do eval "$@"; done; }'
+
+    alias rtorrent=':rtorrent'
+
+    alias cci='circleci-cli --token-file ~/.config/circleci-cli/token'
+
+    alias ssh!='rf ~/.ssh/connections/* && ssh'
+    alias ssha='() {
+        eval "$(ssh-agent -s)"
+        ssh-add
+        ssh -A "$@"
+    }'
+
+    alias len='() { echo -n "$*" | wc -c }'
+
+    alias td='todoist --color'
+
+    alias gb='gcloud builds'
+    alias gbs='gb list'
+    alias gbl='gb log --stream'
+
+    alias wifi!='wifi !'
+
+    hash-aliases:install
+
+    context-aliases:match is_inside_git_repo
+        alias d='git diff'
+        alias w='git diff --cached'
+        alias a='git-smart-add'
+        alias s='git status -s'
+        alias o="git log --graph --all \
+            --format='format:%C(yellow)%h %Cblue%>(12)%ad%Cred%d %Creset%s' \
+            --date=relative"
+        alias c='git-smart-commit --amend'
+        alias p='git-smart-push seletskiy'
+        alias t='() { c "$@" && p ; }'
+        alias t!='() { c "$@" && p! ; }'
+        alias k='git-smart-checkout'
+        alias j='k master'
+        alias j!='j && rst!'
+        alias ju='j && u'
+        alias ku=':git:checkout-and-update'
+        alias r='git-smart-remote'
+        alias e=':git:rebase-interactive'
+        alias b='git branch'
+        alias bm='git branch -m'
+        alias bd!=':git:branch:delete'
+        alias h='git reset HEAD'
+        alias i='git add -p'
+        alias ii=':git:commit:interactive'
+        alias M='git mv'
+        alias R='git rm'
+        alias y='git show'
+        alias ys='y --stat'
+        alias q='git submodule update --init --recursive'
+        alias n='git checkout -b'
+        alias r='u && p'
+        alias G='cd-pkgbuild'
+        alias S='git stash -u && git stash drop'
+        alias R!='git rm -f'
+        alias a!='git-smart-commit -a --amend'
+        alias c!='git-smart-commit --amend'
+        alias p!='git-smart-push seletskiy +`git symbolic-ref --short -q HEAD`'
+        alias u='git-smart-pull --rebase'
+        alias g='k pkgbuild'
+        alias gm='g && m'
+        alias gmp='gm && pu'
+        alias rs='git-smart-remote show'
+        alias ru='git-smart-remote set-url'
+        alias kn='git checkout -b'
+        alias kj='git checkout -B'
+        alias rso='git-smart-remote show origin'
+        alias st='git stash'
+        alias stp='st show -p'
+        alias fk='hub fork'
+        alias pr='hub pull-request'
+        alias lk='github-browse'
+        alias cln!='git clean -ffdx'
+        alias cln='cln! -n'
+        alias rst!='git reset --hard'
+
+        alias lk='github:browse'
+        alias mm='git-merge-with-rebase'
+        alias me='git-remote-add-me'
+
+        alias prr='p && pr'
+
+        alias au='git log --format=%aN | sort -u'
+        alias fpr='() { git fetch origin pull/$1/head:pr-$1 && git checkout pr-$1 }'
+
+        alias nox='() {
+            git status -s \
+                | awk "\$1 == \"??\" { print \$2 }" \
+                | xargs -I{} sh -c "test -x {} && rm {}"
+        }'
+
+        #alias gg='() { git grep $1 $(git rev-list --all) -- ${@:2} }'
+
+    context-aliases:match "test -e PKGBUILD"
+        alias g='go-makepkg-enhanced'
+        alias m='makepkg -f'
+        alias mu='m && ppu'
+
+        alias aur='push-to-aur'
+
+        alias mb=':makepkg:branch'
+
+    context-aliases:match "test -e Makefile"
+        alias m='make -j8'
+        alias mt='make test'
+
+    context-aliases:match "is_inside_git_repo && is_git_repo_dirty"
+        alias c='git-smart-commit'
+
+    context-aliases:match "is_inside_git_repo && \
+            ! { git log 2>/dev/null | grep -qm1 . }"
+        alias c='git add . && git commit -m "initial commit"'
+
+    context-aliases:match "is_inside_git_repo && is_rebase_in_progress"
+        alias m='git checkout --ours'
+        alias t='git checkout --theirs'
+        alias c='git rebase --continue'
+        alias b='git rebase --abort'
+
+    context-aliases:match '[ "$(pwd)" = ~/.secrets ]'
+        alias u='carcosa -Sn'
+
+    context-aliases:match 'is_inside_git_repo && [ -f .git/MERGE_MSG ]'
+        alias m=':vim-merge'
+
+    context-aliases:match '[[ "$PWD" =~ ~/go/ ]]'
+        alias got='go test -failfast'
+        alias gob='go build'
+        alias gtb='go test -run none -cpuprofile cpu.prof -bench'
+        alias gtp='go tool pprof -nodecount 999 -png cpu.prof >| cpu.prof.png && \
+            feh --scroll-step 100 cpu.prof.png'
+        alias gtb!='() { gtb "${@}" && gtp; }'
+        alias gtt='go tool pprof cpu.prof'
+
+    context-aliases:match '[[ "$PWD" =~ ~/go/.*/properlord ]]'
+        alias -- -gcp='gcloud --project proper-base'
+        alias -- -gb='-gcp builds'
+        alias -- -gl='() {
+            if [[ "$1" ]]; then
+                -gb log --stream "$1"
+            else
+                -gb list
+            fi
+        }'
+
+        alias -- -gld='gb log --stream $(-gl # @dev #h 1 #f 1)'
+        alias -- -c='grpcurl -protoset deploy/api_descriptor.pb'
+        alias -- -cl='() {
+            -c -plaintext \
+                -d "$(jo "${@:2}")" \
+                ${token:+-H} \
+                ${token:+"Authorization: Bearer $token"} \
+                localhost:8000 properlord.proto.$1 
+        }'
+
+        alias -- -cd='() {
+            -c -H "x-api-key: $(carcosa -Gc api-keys/api.dev.properlord.proper.chat)" \
+                -d "$(jo "${@:2}")" \
+                api.dev.properlord.proper.chat:443 properlord.proto.$1
+        }'
+
+    context-aliases:commit
+}
+
+# functions
+{
+    :sed-replace:interactive() {
+        if [[ "$#" -lt 2 ]]; then
+            echo 'usage: sed-replace <from> <to> [<file>...]'
+
+            return 1
+        fi
+
+        if [[ "$#" -lt 3 ]]; then
+            :sed-replace:interactive "$1" "$2" **/*
+
+            return
+        fi
+
+        sed-replace "${@}" '!'
+
+        printf "\n"
+        printf "%.0s=" {1..10}
+        printf "\nDo you want to replace? [y/N] "
+
+        read -r agree
+
+        if grep -qP "[nN]|^$" <<< "$agree"; then
+            return
+        fi
+
+        sed-replace "${@}"
+    }
+
+    :carcosa:new-password() {
+        pwgen 10 1 \
+            | xclip -f \
+            | :carcosa:add-password "$1"
+    }
+
+    :carcosa:add-password() {
+        cd ~/.secrets
+
+        carcosa -Ac "passwords/$1"
+    }
+
+    adb-push-music() {
+        local dir=$1
+
+        adb push $dir /storage/sdcard1/Music/
+        adb shell am broadcast -a android.intent.action.MEDIA_MOUNTED \
+            -d file:///storage/sdcard1/
+    }
+
+    :watcher:guess() {
+        local timeout=""
+        local patterns=()
+        local message=()
+        local options=()
+        while [ "${1:---}" != "--" ]; do
+            if grep -qPx '\d+' <<< "$1"; then
+                timeout="$1"
+                shift
+                continue
+            fi
+
+            if grep -qPx '\w+\.\w+' <<< "$1"; then
+                patterns+=("$1")
+                message+=("$1")
+                shift
+                continue
+            fi
+
+            if grep -qPx '\w+' <<< "$1"; then
+                patterns+=("\.$1$")
+                message+=("$1")
+                shift
+                continue
+            fi
+
+            if grep -qP '^[./]$' <<< "$1"; then
+                patterns=(".")
+                message+=("current directory")
+                shift
+                continue
+            fi
+
+            if grep -qP '^-' <<< "$1"; then
+                options+=("$1")
+                shift
+                break
+            fi
+
+            break
+        done
+
+        if [ "${1:-}" = "--" ]; then
+            shift
+        fi
+
+        local command=""
+
+        if find -maxdepth 1 -name '*.go' | grep -q "."; then
+            command=("rebirth")
+        fi
+
+        if find -maxdepth 1 -name '*_test.go' | grep -q "."; then
+            command=("go" "test" "-failfast")
+        fi
+
+        if run_tests=$(find . ./tests -maxdepth 1 -name 'run_tests*' 2>&-); then
+            if [[ "$run_tests" ]]; then
+                command=("$run_tests")
+            fi
+        fi
+
+        if [[ -e Makefile ]] && grep -qP '^test:' Makefile; then
+            command=("make" "test")
+        fi
+
+        if [ -z "${options[*]}" -a "${*:-}" ]; then
+            command=("${@}")
+        fi
+
+        if [ "${options[*]}" -a "${*:-}" ]; then
+            options+=("${@}")
+        fi
+
+        if [ -z "${patterns[*]}" ]; then
+            patterns=("\.go$" "\.sh$" "\.py$" "\.amber$" "\.css$" "\.js$")
+            message=("go" "sh" "py" "amber" "css" "js")
+        fi
+
+        command+=("${options[@]}")
+
+        regexp="${(j:|:)patterns[@]}"
+
+        printf "## watching %s files -> %s%s\n" \
+            "${(j:, :)message[*]}" "${command[*]}" \
+            "${timeout:+ (with ${timeout}s timeout)}"
+
+        watcher -e close_write -t 0.1 \
+            ${timeout:+-w$timeout} "$regexp" -- "${command[@]}"
+    }
+
+    smart-ssh-tmux() {
+        (
+            smart-ssh-tmux:cleanup() {
+                if [ "$TMUX" ]; then
+                    tmux set status off
+                    tmux rename-window ""
+                fi
+            }
+
+            trap "smart-ssh-tmux:cleanup && exit 1" INT
+
+            local format
+            if [ "$TMUX" ]; then
+                if [ "$(background)" = "dark" ]; then
+                    format="#[underscore bold bg=colour17 fg=colour226]"
+                else
+                    format="#[underscore bold bg=colour229 fg=colour196]"
+                fi
+
+                local tmux_status="$format φ $SSH_ADDRESS #[default bg=default] "
+
+                tmux set status-left "$tmux_status"
+                tmux set status-left-length "${#tmux_status}"
+                tmux set status on
+
+                tmux rename-window "ssh [$SSH_ADDRESS]"
+            fi
+
+            smart-ssh "${@}"
+
+            smart-ssh-tmux:cleanup
+        )
+    }
+
+    dotfiles-bootstrap() {
+        local url=$1
+        if [ -z "$1" ]; then
+            url=$(xclip -o)
+        fi
+
+        if grep -qP "^https?:" <<< "$url"; then
+            local line="-        $url"
+            $DOTFILES/bootstrap $DOTFILES_PROFILE <<< "$line"
+            if [ $? -eq 0 ]; then
+                if ! grep -qFx -- "$line" $DOTFILES/profiles.txt; then
+                    echo "$line" >> $DOTFILES/profiles.txt
+                fi
+                return 1
+            fi
+        else
+            grep "${@}" $DOTFILES/profiles.txt \
+                | $DOTFILES/bootstrap $DOTFILES_PROFILE
+
+        fi
+    }
+
+    dotfiles-bootstrap-aur() {
+        shift
+        dotfiles-bootstrap https://aur.archlinux.org/packages/$1
+    }
+
+    dotfiles:migrate-to-deadfiles() {
+        local subject="$1"
+        shift
+
+        if [[ ! "$*" ]]; then
+            echo 'files argument required' >&2
+            return 1
+        fi
+
+        (
+            local dotfiles=$DOTFILES
+            local deadfiles=$DOTFILES/.deadfiles
+
+            cd $dotfiles
+            git stash
+            git pull --rebase origin master
+
+            cd $deadfiles
+            git stash
+            git pull --rebase origin master
+
+            for file in $@; do
+                install -DT $dotfiles/$file $deadfiles/$file
+                rm -r $dotfiles/$file
+            done
+
+            cd $deadfiles
+            git add .
+            git commit -m "$subject migrated from seletskiy/dotfiles"
+            git push origin master
+            git stash pop
+
+            cd $dotfiles
+            git add .
+            git commit -m "$subject migrated to deadcrew/deadfiles"
+            git push origin master
+            git stash pop
+        )
+    }
+
+
+    godoc-less() {
+        \godoc -ex "${@}" | less -SX
+    }
+
+    man-search() {
+        if [[ ! -t 1 ]]; then
+            command man "$@"
+            return
+        fi
+
+        if grep -qoP '^\d+$' <<< "$1"; then
+            MANSECT=$1 man-search $2 ${@:3}
+            return
+        fi
+
+        if ! command man -w "$1" 2>/dev/null >/dev/null; then
+            return 1
+        fi
+
+        if [ $# -gt 1 ]; then
+            case "$2" in
+                # common search mode
+                /*)
+                    command vim -u ~/.vimrc-economy \
+                        +"set noignorecase" +"Man $1" +only +"/${2:1}"
+                    return
+                    ;;
+                # search for flags description
+                -*)
+                    command vim -u ~/.vimrc-economy \
+                        +"set noignorecase" +"Man $1" +only +"/^\\s\\+\\zs${2}"
+                    return
+                    ;;
+                # search for subcommand definition
+                .*)
+                    command vim -u ~/.vimrc-economy \
+                        +"set noignorecase" \
+                        +"Man $1" \
+                        +only \
+                        +"/\\n\\n^[ ]\\{5,\\}\\zs${2:1}\\ze\( \|$\)"
+                    return
+                    ;;
+                @)
+                    command man "$1" \
+                        | grep -xP '(\S+( |$))+' \
+                        | grep -vPi 'name|description|synopsis|author'
+                    return
+                    ;;
+                # search for section
+                @*)
+                    command vim -u ~/.vimrc-economy \
+                        +"set noignorecase" \
+                        +"Man $1" \
+                        +only \
+                        +"/^\(\\S\+.*\|\)\\zs${2:1:u}\\w*\\ze"
+                    return
+                    ;;
+                *)
+                    man-search "$1-$2" ${@:3}
+
+                    return
+                    ;;
+            esac
+        fi
+
+        command vim -u ~/.vimrc-economy +"Man $MANSECT ${@}" +only
+    }
+
+    prepend_sudo() {
+        if grep -q '^sudo ' <<< "$BUFFER"; then
+            CURSOR=$(($CURSOR-5))
+            BUFFER=${BUFFER:5}
+            return
+        fi
+
+        if [ "$BUFFER" ]; then
+            BUFFER="sudo "$BUFFER
+        else
+            BUFFER="sudo "$(fc -ln -1)
+        fi
+        CURSOR=$(($CURSOR+5))
+    }
+
+    noop() {
+        # nothing
+    }
+
+    chmod-alias() {
+        if [ $# -eq 0 ]; then
+            chmod +x $(fc -ln -1 | awk '{print $1}')
+        else
+            chmod +x "${@}"
+        fi
+    }
+
+    leap-back() {
+        local dir=$(dirs -p | tail -n+2 | pick)
+        if [ "$dir" ]; then
+            eval cd "$dir"
+        fi
+
+        for func in "${precmd_functions[@]}"; do
+            "$func"
+        done
+
+        zle reset-prompt
+    }
+
+    :sources:clone() {
+        local who=$1
+        local reponame="$2" ; shift
+        local clone_path="${${2:-${${who##*/}%:}/$reponame}//://}"
+
+        if [ -z "$1" ]; then
+            return
+        fi
+
+        git clone $who/$reponame ~/sources/$clone_path
+        if [[ "$?" != "0" ]]; then
+            return 1
+        fi
+
+        cd ~/sources/$clone_path
+
+        local site=$(
+            git remote show origin -n \
+                | awk '/Fetch URL/ { print $3 }' \
+                | grep -Po '[^/:]+[^/:]' \
+                | head -n1
+        )
+
+        if find -name '*.go' | grep -qm 1 . || grep -q 'go-' <<< "$reponame"
+        then
+            :sources:move-to-gopath "." "$site"
+        fi
+    }
+
+    :sources:move-to-gopath() {
+        local directory=${1:-.}
+        local site=${2:-github.com}
+        local remote=${3:-origin}
+
+        directory=$(readlink -f .)
+        cd $directory
+
+        local repo_path=$(
+            git remote show $remote -n \
+                | awk '/Fetch URL/{print $3}' \
+                | cut -f2 -d:
+        )
+
+        local target_path=$GOPATH/src/$site/$repo_path
+
+        mkdir -p $(dirname $target_path)
+
+        mv $directory $target_path
+
+        cd $target_path
+    }
+
+    github:browse() {
+        local file="$1"
+        local line="${2:+#L$2}"
+
+        local type=commit
+        if [ "$file" ]; then
+            type=blob
+        fi
+
+        hub browse -u -- $type/$(git rev-parse --short HEAD)/$file$line \
+            2>/dev/null
+    }
+
+    git-merge-with-rebase() {
+        local branch=$(git rev-parse --abbrev-ref HEAD)
+        if git rebase "${@}"; then
+            git checkout $1
+            git merge --no-ff "$branch" "${@}"
+        fi
+    }
+
+    _git-merge-with-rebase() {
+        service="git-merge" _git "${@}"
+    }
+
+    git-remote-add-me() {
+        if [ "$1" ]; then
+            local repo="gh:seletskiy/$1"; shift
+        else
+            local repo=$(
+                git remote show origin -n \
+                    | awk '/Fetch URL/{print $3}'
+            )
+            repo=$(sed -res'#(.*)/([^/]+)/([^/]+)$#\1/seletskiy/\3#' <<< $repo)
+        fi
+
+        git remote add seletskiy "$repo" "${@}"
+    }
+
+    :git:rebase-interactive() {
+        if grep -Pqx '\d+' <<< "$1"; then
+            git rebase -i HEAD~$1 ${@:2}
+        else
+            git rebase -i "${@}"
+        fi
+    }
+
+    _:git:rebase-interactive() {
+        service="git-rebase" _git "${@}"
+    }
+
+    :git:checkout-and-update() {
+        git checkout "${@}" && git-smart-pull --rebase
+    }
+
+    _:git:checkout-and-update() {
+        service="git-checkout" _git "${@}"
+    }
+
+    push-to-aur() {
+        local package_name="${1:-$(basename $(git rev-parse --show-toplevel))}"
+        local package_name=${package_name%*-pkgbuild}
+        local package_name=${package_name}-git
+
+        git push ssh://aur@aur.archlinux.org/$package_name pkgbuild:master
+    }
+
+    :makepkg:branch() {
+        local branch="$1"
+
+        sed -r \
+            '/source/,/md5sums/ {
+                s/(.git)(#.+)?($|"|\))/\1#branch='$branch'\3/
+            }' \
+            -i PKGBUILD
+
+        makepkg -f
+    }
+
+
+    :vim-merge() {
+        vim -o $(git status -s | grep "^UU " | awk '{print $2}')
+    }
+
+    orgalorg:upload() {
+        local hosts=$1
+        local root=$2
+
+        shift 2
+
+        hosts=("${${(s/,/)hosts}[@]//#/-o}")
+
+        orgalorg "${hosts[@]}" -x -y -e -r "$root" -U "$@"
+    }
+
+    orgalorg:upload:run() {
+        local command=$1
+        local hosts=$2
+        local root=$3
+
+        shift 3
+
+        hosts=("${${(s/,/)hosts}[@]//#/-o}")
+
+        orgalorg "${hosts[@]}" -x -y -e -r "$root" -n "$command" -S "$@"
+    }
+
+
+    :orgalorg:command() {
+        local hosts=()
+
+        while [[ "${1:---}" != "--" ]]; do
+            hosts+=("$1")
+
+            shift
+        done
+
+        shift
+
+        local flags=("${hosts[@]//#/-o}")
+
+        :orgalorg "${flags[@]}" -pxy -C "$@"
+    }
+
+    :orgalorg() {
+        orgalorg -u "$SSH_USERNAME" "$@"
+    }
+
+    :go:compile-and-run() {
+        local pwd="$(pwd)"
+        local name="$(basename "$pwd")"
+        local binary="$pwd/$name"
+
+        if grep -q "$GOPATH" <<< "$pwd"; then
+            if ! go-fast-build; then
+                return 1
+            fi
+        fi
+
+        if stat "$binary" &>/dev/null; then
+            "$binary" "$@"
+        else
+            echo "nothing to launch" >&2
+            return 1
+        fi
+    }
+
+    :ag() {
+        ag $AG_ARGS -f --hidden --silent -- "${(j:.*?:)@}"
+    }
+
+    :ps-grep() {
+        if [[ "${*}" ]]; then
+            ps axfu | grep "${@}"
+        else
+            ps axfu | less
+        fi
+    }
+
+    :git:commit:interactive() {
+        local message
+        while git add -p; do
+            if git diff --cached --quiet; then
+                highlight bold fg red
+                printf ':: no changes detected\n'
+                return 0
+            fi
+
+            highlight bold fg yellow
+            printf ':: following changes will be commited\n'
+            highlight reset
+
+            git diff --cached
+
+            printf '\n'
+
+            message=$(grep -Po '^([^:]+:) ' <<< "$message")
+
+            local prompt=$(
+                printf "%s%s: %s" \
+                    "$(highlight bold fg blue)" \
+                    "Commit message [empty to amend HEAD]" \
+                    "$(highlight reset)"
+            )
+
+            read "message?$prompt"
+
+            if [[ "$message" ]]; then
+                git commit -m "$message"
+            else
+                git commit --amend -C HEAD
+            fi
+
+            printf '\n'
+        done
+    }
+
+    :git:branch:delete() {
+        git branch -D "${@}"
+        git push origin ":${^@}"
+    }
+
+    _:git:branch:delete() {
+        service="git-branch" _git -D "${@}"
+    }
+
+    :pipe() {
+        local pipe="/tmp/zsh.pipe"
+
+        if [[ -t 0 ]]; then
+            cat "$pipe"
+        else
+            if [[ ! -p "$pipe" ]]; then
+                mkfifo "$pipe"
+            fi
+            cat > "$pipe"
+            rm "$pipe"
+        fi
+    }
+
+    :pipe:tar:send() {
+        tar c "${@:-.}" | :pipe
+    }
+
+    :pipe:tar:receive() {
+        :pipe | tar x
+    }
+
+    :kubectl:file() {
+        local command=$1
+        shift
+
+        kubectl $command "-f${^@}"
+    }
+
+    :context:command() {
+        CONTEXT=$1 context-aliases:on-precmd
+
+        shift
+
+        eval "${(q)@}"
+    }
+
+    _autocd() {
+        if [[ "${BUFFER:0:1}" == " " ]]; then
+            CURRENT=$((CURRENT + 1))
+            _cd
+        else
+            _command_names
+        fi
+    }
+
+    :rtorrent() {
+        sudo iptables -t nat -A OUTPUT -p tcp -m tcp --dport 80 -d 195.82.146.120/30 -j DNAT --to-destination 163.172.167.207:3128
+
+        command rtorrent "$@"
+
+        sudo iptables -t nat -D OUTPUT -p tcp -m tcp --dport 80 -d 195.82.146.120/30 -j DNAT
+    }
+
+    :vim-which() {
+        vim $(which $1)
+    }
+}
 
 if ! :is-interactive; then
     zle -R

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for i in {710..713}; do
+    tmux-bypass "$(
+        printf '\33]%d;%s\007' $i "$(
+            printf "$(
+                cat ~/.Xresources \
+                    | grep -i 'urxvt.font' \
+                    | cut -d' ' -f2- \
+                    | sed -re 's/(size)=([0-9.]+)/\1=%.1f/'
+                )" \
+                $1
+            )"
+    )"
+done

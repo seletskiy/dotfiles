@@ -1,5 +1,0 @@
-username = "{{JIRA_USERNAME}}"
-password = "{{JIRA_PASSWORD}}"
-jira_api_url = "{{JIRA_URL}}/rest/api/2"
-project_name = "DEVOPS"
-filter_id = 16047

@@ -1,0 +1,11 @@
+URxvt.font: xft:Iosevka:size=10.3:hinting=true
+URxvt.italicFont: xft:Iosevka:size=10.3:style=Italic:hinting=true
+URxvt.boldFont: xft:Iosevka:size=10.3:style=Bold:hinting=true
+URxvt.boldItalicFont: xft:Iosevka:size=10.3:style=Bold Italic:hinting=true
+URxvt.scrollBar: false
+URxvt.iso14755: false
+URxvt.internalBorder: 0
+URxvt.safe-paste.command: vim-safe-paste
+URxvt.perl-ext-common: vim-insert,fifo
+URxvt.keysym.Mod4-C-f: perl:fifo:start
+URxvt.fifo.file: /tmp/urxvt.fifo

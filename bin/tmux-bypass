@@ -1,0 +1,3 @@
+#!/bin/sh
+
+printf '\ePtmux;\e%s\e\\' "$*"

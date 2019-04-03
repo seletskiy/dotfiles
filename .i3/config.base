@@ -42,15 +42,15 @@ bindsym Ctrl+Shift+End move right
 bindsym $mod+g split h
 
 # split in vertical orientation
-bindsym $mod+t split v
+bindsym $mod+Ctrl+g split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+Ctrl+s layout stacking
+#bindsym $mod+Ctrl+s layout stacking
 #bindsym $mod+w layout tabbed
-bindsym $mod+Ctrl+e layout toggle split
+#bindsym $mod+Ctrl+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -87,7 +87,7 @@ bindcode $mod+Shift+39 exec i3-move-container s
 bindcode $mod+Shift+40 exec i3-move-container d
 
 # reload the configuration file
-bindsym $mod+Shift+r reload
+#bindsym $mod+Shift+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym Mod1+Shift+Ctrl+r restart
 
@@ -97,7 +97,7 @@ bindsym $mod+minus [con_mark="quick_1"] focus
 bindsym $mod+Shift+equal mark quick_2
 bindsym $mod+equal [con_mark="quick_2"] focus
 
-bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
+#bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
 
 for_window [class="google-chrome"] border none
 for_window [instance="^screenkey$"] floating enable

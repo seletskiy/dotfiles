@@ -1,5 +1,8 @@
 super + Return
-    konsole -e 'tmux new'
+    urxvt -e tmux new
+
+super + ctrl + Return
+    open-at-cwd urxvt -e tmux new
 
 super + r
     modal-run
@@ -7,20 +10,14 @@ super + r
 shift + Delete
     kill-focus
 
+super + F4
+    sound-switch
+
 super + F2
     ;volume down
 
 super + F3
     ;volume up
-
-super + F5
-    mplayer-control pt_step -1
-
-super + F6
-    mplayer-control pause
-
-super + F7
-    mplayer-control pt_step 1
 
 super + F8
     external-monitor
@@ -28,23 +25,26 @@ super + F8
 super + F9
     reconfig-kbd
 
+super + F10
+    vpn-toggle
+
 super + y
     translator
 
-super + asciitilde
-    kuake --focus --height 75
+super + t
+    bookmarks
+
+super + Tab
+    ;journal
 
 super + grave
-    kuake --terminal --bottom
+    ;kuake --terminal --bottom
 
 super + x
-    carcosa-ui
+    sh -c 'carcosa-ui ~/.secrets/*'
 
 super + shift + x
-    carcosa-ui login-password
-
-super + b
-    google
+    sh -c 'carcosa-ui --mode=login-password --prefix=passwords/ ~/.secrets/*'
 
 super + Execute
     environment-info
@@ -55,14 +55,11 @@ super + F11
 super + F12
     sudo brightness up
 
-super + Insert
-    upwork-suspend
-
-super + shift + Insert
-    upwork-switch
-
-Print
+super + backslash
     screenshot deepin
 
-super + ctrl + Insert
+super + Delete
+    upwork-suspend
+
+super + ctrl + Delete
     jidle-toggle

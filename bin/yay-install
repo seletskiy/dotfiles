@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -euo pipefail
+
+:main() {
+    server=${1}
+
+    if [[ ! "$server" ]]; then
+        echo "usage: $0 <server>"
+        exit 1
+    fi
+
+    :log "enabling wheel sudo group"
+    ssh $server -- "sed -ri 's/# (%wheel.*NOPASSWD.*)/\1/' /etc/sudoers"
+
+    :log "creating makepkg user"
+    ssh $server -- "useradd -d /tmp -G wheel -r -M -s /sbin/nologin makepkg"
+
+    :log "installing dependencies"
+    ssh $server -- "pacman --noconfirm -S go git gcc make"
+
+    :log "cloning yay"
+    ssh $server -- "git clone https://aur.archlinux.org/yay.git"
+
+    :log "installing yay"
+    ssh $server -- 'cd /tmp && sudo -u makepkg -si'
+}
+
+:log() {
+    echo :: "${@}"
+}
+
+:main "${@}"

@@ -1,1 +1,1 @@
-/home/s.seletskiy/sources/dotfiles/.vimrc-economy
+/home/operator/.vimrc-economy

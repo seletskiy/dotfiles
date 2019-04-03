@@ -12,7 +12,7 @@
         "$(TZ=UTC :date "UTC")" \
     )" "${text[@]}")
 
-    local loadavg=$(cut -f1 -d' ' /proc/loadavg)
+    #local loadavg=$(cut -f1 -d' ' /proc/loadavg)
     local temperature=$(
         sensors -u \
             | grep -oP 'temp\d+_input: \K\w+' \
@@ -25,12 +25,28 @@
         urgency=critical
     fi
 
-    local memory=$(free -mt | awk '/Total/ { print $4 }')
+    local memory=$(
+        printf "%1.1f" \
+            $(bc <<< "scale=1; $(free -mt | awk '/Total/ { print $4 }') / 1024")
+    )
+
+    local upwork=$(ps -C upwork -o s=)
+    if [[ "$upwork" ]]; then
+        upwork=" | $(
+            grep -qF T <<< "$upwork" && echo "■" || echo "▶"
+        )"
+    fi
+
+    if (( $(bc <<< "$memory < 0.4") )); then
+        memory=$(:urgency "critical" "${memory}G")
+    else
+        memory=${memory}G
+    fi
 
     text=("$(:template \
-        "TEMP" \
-        $(:urgency "$urgency" "${temperature}C") \
-        "| <b>LA</b> $loadavg <b>RAM</b> ${memory}MiB"
+        "STAT" \
+        $(:urgency "$urgency" "${temperature}°C") \
+        "| ${memory}$upwork"
     )" "${text[@]}")
 
     local acpi=$(acpi -b)
@@ -61,12 +77,11 @@
 
     local ssid=$(iw dev | grep -Po 'ssid \K.*')
 
-    :notify:send "$urgency" "WIFI" "${ssid:-NONE}"
-
     text=("$(:template \
         "WIFI" \
         ${ssid:-NONE}
     )" "${text[@]}")
+
 
     :notify:send "${text[@]}"
 
@@ -75,6 +90,8 @@
     if ! ping=$(ping8); then
         urgency=critical
     fi
+
+
 
     text=("$(:template \
         "PING" \
@@ -119,7 +136,7 @@
 
 :notify:send() {
     local IFS=$'\n'
-    notify-replace "environment-info" "environment" "$*"
+    notify-replace "environment-info" "" "$*"
 }
 
 :main "$@"

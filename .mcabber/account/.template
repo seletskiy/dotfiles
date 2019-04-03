@@ -1,3 +1,0 @@
-set jid = {{pass:jabber/private/*#}}
-set password = {{pass:jabber/private/*}}
-set server = {{JABBER_PRIVATE_SERVER}}

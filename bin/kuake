@@ -1,8 +1,9 @@
 #!/bin/bash
 
-[ -n "$_LOCK" ] || _LOCK=x exec flock -n $0 $0 "$@"
-
+set -x
 set -euo pipefail
+
+TMUX_SOCKET=${TMUX_SOCKET:-}
 
 :usage() {
     cat <<CODE
@@ -26,6 +27,7 @@ Options:
     --opacity     Set kuake opacity, default: 1.
     --class       Specify kuake window class name, default: kuake.
     --exec        Exec command in spawned kuake terminal.
+    --direct      Execute command directly without tmux.
     -h --help     Show this screen.
 CODE
 }
@@ -40,6 +42,7 @@ CODE
     local _opacity=1
     local _classname=kuake
     local _exec=
+    local _direct=false
 
     while [[ $# -ne 0 ]]; do
         case "$1" in
@@ -100,6 +103,10 @@ CODE
                 shift
                 ;;
 
+            --direct)
+                _direct=true
+                ;;
+
             -h | --help)
                 :usage
                 exit 0
@@ -124,7 +131,7 @@ CODE
     )
 
     if [[ "$window_id" ]]; then
-        :window-toggle "$window_id"
+        :window-toggle $_classname
 
         if :is-another-screen $window_geometry; then
             :window-kuakize $window_id $_opacity $window_geometry
@@ -134,19 +141,18 @@ CODE
     fi
 
     if $_terminal; then
-        :spawn-terminal $_classname "$_exec" $window_geometry
+        :spawn-terminal $_classname "$_exec" "$_direct" $window_geometry
 
         while [[ ! "$window_id" ]]; do
             local window_id=$(:window-find $_classname)
         done
     else
         local window_id=$(:window-get-active)
-
-        :window-set-classname $_classname $window_id
+        :window-set-classname $_classname
     fi
 
-    :window-hide   "$window_id"
-    :window-toggle "$window_id"
+    :window-hide   $_classname
+    :window-toggle $_classname
 
     :window-kuakize $window_id $_opacity $window_geometry
 }
@@ -201,26 +207,44 @@ CODE
 :spawn-terminal() {
     local name="$1"
     local command=$2
-    local window_x="$3"
-    local window_y="$4"
-    local window_width="$5"
-    local window_height="$6"
+    local direct=$3
+    local window_x="$4"
+    local window_y="$5"
+    local window_width="$6"
+    local window_height="$7"
 
+    # prevents blinking at startup
+    # font size (8x12) is hardcoded, no way to know font width without complex
+    # python code
     window_x=$((window_x - 1))
     window_y=$((window_y - 1))
+    window_width=$((window_width / 8))
+    window_height=$((window_height / 12 + 1))
 
     local geometry="${window_width}x${window_height}+${window_x}+${window_y}"
 
-    if ! tmux has-session -t $name; then
-        i3-msg -q "exec tmux new-session -d -s $name"
+    if ! :tmux has-session -t $name; then
+        :tmux new-session -d -s $name
     fi
 
-    i3-msg -q "exec konsole --geometry $geometry -title $name -e \
-        sh -c \"xdotool getactivewindow set_window --classname $name && \
-            exec tmux attach-session -t $name\""
+    if "$direct"; then
+        i3-msg -q "exec urxvt -geometry $geometry -name $name -title $name -e \
+            $command"
+    else
+        i3-msg -q "exec urxvt -geometry $geometry -name $name -title $name -e \
+            tmux ${TMUX_SOCKET:+-L $TMUX_SOCKET} attach-session -t $name"
 
-    if [[ "$command" ]]; then
-        tmux send -t "$name" "$command"$'\n'
+        if [[ "$command" ]]; then
+            :tmux send -t "$name" "$command"$'\n'
+        fi
+    fi
+}
+
+:tmux() {
+    if [[ "$TMUX_SOCKET" ]]; then
+        tmux -L $TMUX_SOCKET "${@}"
+    else
+        tmux "${@}"
     fi
 }
 
@@ -230,27 +254,26 @@ CODE
 
 :window-set-classname() {
     local classname="$1"
-    local window_id="$2"
 
-    xdotool set_window --classname "$classname" "$window_id"
+    xdotool getactivewindow set_window --classname "$classname"
 }
 
 :window-hide() {
     local window_name="$1"
 
-    i3-msg -q "[id=\"$window_name\"] move scratchpad"
+    i3-msg -q '[instance="^'$window_name'$"] move scratchpad'
 }
 
 :window-find() {
     local window_name="$1"
 
-    xdotool search --classname "^$window_name$" | head -n1
+    xdotool search --classname "$window_name" | head -n1
 }
 
 :window-toggle() {
     local window_name="$1"
 
-    i3-msg -q "[id=\"$window_name\"] scratchpad show"
+    i3-msg -q '[instance="^'$window_name'$"] scratchpad show'
 }
 
 :window-kuakize() {
@@ -271,17 +294,13 @@ CODE
 }
 
 :is-another-screen() {
-    local window_x="$1"
-    local window_y="$2"
-    local window_width="$3"
-    local window_height="$4"
-    local window_screen="$5"
+    local window_geometry="$*"
 
     local cache_path="/tmp/kuake.$window_id"
-    local cache_screen=$(cat $cache_path 2>/dev/null)
+    local cache=$(cat $cache_path 2>/dev/null)
 
-    if [[ "$cache_screen" != "$window_screen" ]]; then
-        echo -n "$window_screen" > "$cache_path"
+    if [[ "$cache" != "$window_geometry" ]]; then
+        echo -n "$window_geometry" > "$cache_path"
         return 0
     fi
 

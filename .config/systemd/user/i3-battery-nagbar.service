@@ -5,7 +5,7 @@ After=graphical.target
 Before=display-manager.target
 
 [Service]
-ExecStart=/usr/bin/i3-battery-nagbar
+ExecStart=/usr/bin/i3-battery-nagbar --message 'Battery charge reached critical level: {{.percentage}}%' --interval 60s
 
 [Install]
 WantedBy=display-manager.target

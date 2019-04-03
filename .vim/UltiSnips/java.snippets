@@ -5,7 +5,7 @@ if ($1) {
 endsnippet
 
 snippet p
-Log.v("!!! `!p snip.rv=path+":"+str(vim.current.window.cursor[0])`", String.format("%s", $1));
+System.err.printf("!!! `!p snip.rv=path+":"+str(vim.current.window.cursor[0])` %s\n", $1);
 endsnippet
 
 snippet t "try"

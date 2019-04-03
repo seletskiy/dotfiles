@@ -86,11 +86,18 @@ set -euo pipefail
     printf "%s" "$up_script"   > "$up"
     printf "%s" "$down_script" > "$down"
 
-    { cat $config; printf "auth-user-pass .vpn/account\n"; } \
-        | sudo openvpn --config /dev/stdin --script-security 2 \
+    {
+        cat $config
+        printf "auth-user-pass .vpn/account\n"
+        printf "ping 3\n"
+        printf "ping-restart 3\n"
+    } | sudo openvpn --config /dev/stdin --script-security 2 \
             --up   "/bin/sh $up"   \
             --down "/bin/sh $down" \
+            --inactive 30 \
             ${socks_flag[@]}
+    #{ cat $config; printf "auth-user-pass .vpn/account\n"; } \
+    #    | sudo openvpn --config /dev/stdin --script-security 2
 }
 
 :cleanup() {

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+pa-switch-sink
+sink=$(pactl-get-default-sink)
+
+if [[ "${#sink}" -gt 25 ]]; then
+    sink=$(cut -b-25 <<< "$sink")…
+fi
+
+notify-replace sound-switch "" "<b>SINK »</b> $sink"

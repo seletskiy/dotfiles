@@ -66,3 +66,7 @@
 [filter:good]
     category = "good"
     background = "#00ff00"
+
+[ignore]
+appname = "Deepin Screenshot"
+format = ""

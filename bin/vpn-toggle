@@ -1,0 +1,11 @@
+#!/bin/bash
+
+service=vpn@dead.archi:udp
+
+if systemctl --user is-active $service >&-; then
+    systemctl --user stop $service
+    notify-send 'VPN' '<b>VPN</b>  » DISABLED'
+else
+    systemctl --user start $service
+    notify-send 'VPN' '<b>VPN</b>  » ENABLED'
+fi

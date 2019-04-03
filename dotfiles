@@ -59,7 +59,9 @@ def main(action, profile)
         end
 
         if source_type
-            self.send(:"#{action}_#{source_type}", file_name, target_name)
+            if File.exists?(file_name)
+              self.send(:"#{action}_#{source_type}", file_name, target_name)
+            end
         end
     end
 

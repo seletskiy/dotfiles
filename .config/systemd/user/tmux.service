@@ -4,8 +4,7 @@ Before=multiplexer.target
 
 [Service]
 Type=forking
-;ExecStart=/usr/bin/tmux new -ds __systemd sh
-ExecStart=/usr/bin/tmux start-server
+ExecStart=/usr/bin/tmux new -ds - sh -c 'exec sleep inf'
 ExecStop=/usr/bin/tmux kill-server
 Restart=always
 

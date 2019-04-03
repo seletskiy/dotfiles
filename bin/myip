@@ -5,7 +5,7 @@ if ! ip l | grep -v LOOPBACK | grep -q UP; then
     exit
 fi
 
-output=$(curl -s https://www.speedtest.net/speedtest-config.php | \
+output=$(curl -s -m 5 https://www.speedtest.net/speedtest-config.php | \
     xml2 | \
     grep -F '/settings/client' | \
     grep -Po '@(ip|isp)=\K.*' | \

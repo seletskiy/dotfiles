@@ -1,0 +1,79 @@
+#!/bin/bash
+
+:find() {
+    find -maxdepth 1 -type $1 -regextype posix-extended -regex "\\./$2"
+}
+
+:mv() {
+    xargs -n1 -I{} mv -v --backup=numbered {} $@
+}
+
+:rm() {
+    xargs -n1 -I{} rm -v {}
+}
+
+mkdir -p work
+mkdir -p images/{gifs,screenshots,gimp,other}
+mkdir -p notes
+mkdir -p docs
+mkdir -p trash
+
+:find f '[0-9]{4}-[0-9]{2}-[0-9]{2}-\w+.png$' | :mv images/screenshots
+:find f '.*\.gif$' | :mv images/gifs
+:find f '.*\.xcf$' | :mv images/gimp
+:find f '.*\.(png|jpg)$' | :mv images/gimp
+:find f 'feh_.*_filelist' | :rm
+:find f 'feh_.*_filelist' | :rm
+:find f 'feh_.*_filelist' | :rm
+:find f '[^.]+$' | :mv notes
+
+:find f '.*' | :mv trash
+
+:find d '[^.].*$' \
+    | grep -Fv \
+        -e ./work \
+        -e ./images \
+        -e ./notes \
+        -e ./docs \
+        -e ./trash \
+        -e ./sources \
+        -e ./go \
+        -e ./bin \
+        -e ./downloads \
+        -e ./me \
+    | :mv trash
+
+:find d '\..*$' \
+    | grep -Fv \
+        -e ./.cups \
+        -e ./.factorio \
+        -e ./.cache \
+        -e ./.gimp \
+        -e ./.docker \
+        -e ./.electrum \
+        -e ./.android \
+        -e ./.aws \
+        -e ./.vpn \
+        -e ./.mozilla \
+        -e ./.vim \
+        -e ./.certs \
+        -e ./.i3 \
+        -e ./.secrets \
+        -e ./.zsh \
+        -e ./.Upwork \
+        -e ./.icons \
+        -e ./.config \
+        -e ./.wine \
+        -e ./.gnupg \
+        -e ./.dotfiles \
+        -e ./.ssh \
+        -e ./.zgen \
+        -e ./.m2 \
+        -e ./.local \
+        -e ./.pki \
+        -e ./.calc_history \
+        -e ./.bash_history \
+        -e ./.lesshst \
+        -e ./.sbt \
+        -e ./.kube \
+    | :mv trash

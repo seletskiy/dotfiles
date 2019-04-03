@@ -1,5 +1,3 @@
 #!/bin/bash
 
-PROFILE=default
-
-exec firefox -P "${PROFILE}" "$@"
+exec firefox "$@"

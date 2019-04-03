@@ -10,6 +10,8 @@ Environment=TERMINAL=urxvt
 Environment=EDITOR=vim
 Environment=MODAL_PATH=%h/bin/.dmenu
 Environment=GOPATH=%h/go
+Environment=RUBYPATH=/opt/ruby/2.5.0/bin
+Environment=GEM_HOME=/opt/ruby/2.5.0/gems
 Environment=PATH=%h/.dotfiles/bin:%h/.deadfiles/bin:%h/.jewfiles/bin:%h/go/bin:/usr/bin:/opt/atlassian/plugin-sdk/bin:%h/.gem/ruby/2.5.0/bin
 EnvironmentFile=/home/%u/.config/dotfiles.profile
 ExecStart=/usr/bin/systemctl --user import-environment

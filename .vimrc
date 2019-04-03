@@ -28,8 +28,6 @@ Plug 'tmhedberg/matchit'
 Plug 'scrooloose/nerdcommenter'
     nmap <Leader>l <Leader>cl
 
-Plug 'kien/rainbow_parentheses.vim'
-
 Plug 'wojtekmach/vim-rename'
 
 Plug 'vim-scripts/repeat.vim'
@@ -52,23 +50,23 @@ Plug 'vim-scripts/surround.vim'
     vmap " S"i
     vnoremap g" "
 
-    imap <C-S> <C-\><C-O>:normal va"S)<CR>
+    "imap <C-S> <C-\><C-O>:normal va"S)<CR>
 
     noremap <Leader>f dt(ds)
 
-    augroup surround_bash
-        au!
-        au FileType sh map <silent> <C-O> :normal viWS"<CR>
-        au FileType sh map <silent> <C-]> :normal viWS)i$<CR>
-    augroup END
+    "augroup surround_bash
+    "    au!
+    "    au FileType sh map <silent> <C-O> :normal viWS"<CR>
+    "    au FileType sh map <silent> <C-]> :normal viWS)i$<CR>
+    "augroup END
 
 Plug 'seletskiy/nginx-vim-syntax'
 
 Plug 'junegunn/fzf', {'do': './install --all'}
-Plug 'junegunn/fzf.vim'
+Plug 'kovetskiy/fzf.vim'
     let g:fzf_prefer_tmux = 1
     au FileType * let g:fzf#vim#default_layout  = {'bottom': '10%'}
-    let $FZF_DEFAULT_COMMAND = 'ctrlp-search'
+    let $FZF_DEFAULT_COMMAND = 'prols'
     func! _ctrlp()
         exec 'FZF'
     endfunc!
@@ -142,6 +140,7 @@ Plug 'ctrlpvim/ctrlp.vim'
     command! -nargs=* Grep call _grep(<q-args>)
 
     nnoremap <C-E> :Grep<CR>
+    nnoremap <C-T> :Grep <C-R><C-W><CR>
 
 Plug 'itchyny/lightline.vim'
 let g:lightline = {
@@ -158,6 +157,7 @@ let g:lightline = {
 "Plug 'seletskiy/vim-autosurround'
 
 Plug 'SirVer/ultisnips'
+    let g:UltiSnipsExpandTrigger = '<Tab>'
     let g:UltiSnipsJumpForwardTrigger = '<C-J>'
     let g:UltiSnipsJumpBackwardTrigger = '<C-K>'
 
@@ -194,41 +194,56 @@ Plug 'SirVer/ultisnips'
                     \ _snippets_get_filetype() .  ".snippets"
     endfunc!
 
-    nnoremap <C-S><C-D> :call _snippets_open_dotfiles()<CR>
-    nnoremap <C-S><C-S> :call _snippets_open_reconquest()<CR>
-    vnoremap <C-S> y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
+    "nnoremap <C-S><C-D> :call _snippets_open_dotfiles()<CR>
+    "nnoremap <C-S><C-S> :call _snippets_open_reconquest()<CR>
+    "vnoremap <C-S> y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
 
     augroup ultisnips_pyflakes
         au!
         au BufEnter,BufWinEnter *.snippets let g:pymode_lint = 0
         au BufEnter,BufWinEnter *.py let g:pymode_lint = 1
-    augroup END
+    augroup end
 
-Plug 'Shougo/deoplete.nvim'
-Plug 'zchee/deoplete-jedi'
-Plug 'fishbullet/deoplete-ruby'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-   let g:deoplete#enable_at_startup = 1
+"Plug 'Shougo/deoplete.nvim'
+"Plug 'zchee/deoplete-jedi'
+"Plug 'fishbullet/deoplete-ruby'
+"Plug 'roxma/nvim-yarp'
+"Plug 'roxma/vim-hug-neovim-rpc'
+"Plug 'zchee/deoplete-go', { 'do': 'make'}
+"   let g:deoplete#enable_at_startup = 1
 
-    func! _setup_deoplete()
-       call deoplete#custom#source(
-           \ '_', 'min_pattern_length', 1)
+"    func! _setup_deoplete()
+"       call deoplete#custom#source(
+"           \ '_', 'min_pattern_length', 1)
 
-        call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
-        call deoplete#custom#source('_', 'sorters', [])
+"        call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+"        call deoplete#custom#source('_', 'sorters', [])
 
-       " unlimited candidate length
-        call deoplete#custom#source('_', 'max_kind_width', 0)
-        call deoplete#custom#source('_', 'max_menu_width', 0)
-        call deoplete#custom#source('_', 'max_abbr_width', 0)
-   endfunc!
+"       " unlimited candidate length
+"        call deoplete#custom#source('_', 'max_kind_width', 0)
+"        call deoplete#custom#source('_', 'max_menu_width', 0)
+"        call deoplete#custom#source('_', 'max_abbr_width', 0)
+"   endfunc!
 
-   augroup _setup_deoplete
-       au!
-       au VimEnter * call _setup_deoplete()
-   augroup end
+"   augroup _setup_deoplete
+"       au!
+"       au VimEnter * call _setup_deoplete()
+"   augroup end
+
+"Plug 'maralla/completor.vim'
+"   let g:completor_gocode_binary = $HOME . '/go/bin/gocode'
+"   let g:completor_disable_ultisnips = 1
+
+Plug 'Valloric/YouCompleteMe'
+    let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
+    let g:ycm_allow_changing_updatetime = 0
+    let g:ycm_confirm_extra_conf = 1
+    let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/.ycm_extra_conf.py'
+    let g:ycm_collect_identifiers_from_comments_and_strings = 1
+    let g:ycm_collect_identifiers_from_tags_files = 1
+    let g:ycm_use_ultisnips_completer = 0
+    let g:ycm_complete_in_comments = 1
+    let g:ycm_show_diagnostics_ui = 0
 
 Plug 'kovetskiy/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
@@ -268,11 +283,8 @@ Plug 'kovetskiy/vim-go', {'for': 'go'}
         au FileType go nmap <silent><buffer> gk :call go#def#Jump('split')<CR>
 
         au FileType go nmap <silent><buffer> <Leader>, :w<CR>:call synta#go#build()<CR>
-        au FileType go nmap <silent><buffer> <Leader>' :call synta#go#build()<CR>
         au FileType go imap <silent><buffer> <Leader>, <ESC>:w<CR>:call synta#go#build()<CR>
-        au FileType go nmap <silent><buffer> <Leader>l :GoLint .<CR>
-        au FileType go nmap <silent><buffer> <Leader>t :GoTest<CR>
-    augroup END
+    augroup end
 
 Plug 'vim-ruby/vim-ruby'
 Plug 'ruby-formatter/rufo-vim'
@@ -307,9 +319,6 @@ Plug 'justinmk/vim-sneak'
 
     au ColorScheme * hi Sneak ctermfg=226
 
-Plug 'kovetskiy/vim-plugvim-utils'
-    au BufRead .vimrc nnoremap <buffer> <Leader>r :call NewPlugFromClipboard()<CR>
-
 Plug 'seletskiy/vim-nunu'
 
 Plug 'hynek/vim-python-pep8-indent'
@@ -329,6 +338,7 @@ Plug 'kovetskiy/vim-ski'
 Plug 'FooSoft/vim-argwrap'
 
 Plug 'kovetskiy/synta'
+   let g:synta_use_go_fast_build = 0
 
 Plug 'kovetskiy/vim-hacks'
 
@@ -357,8 +367,10 @@ Plug 'w0rp/ale'
     let g:ale_enabled = 0
 
     let g:ale_fixers = {
-    \   'go': [function("synta#ale#goimports#Fix")],
+    \   'go': [function("synta#ale#goimports#Fix"), function("synta#ale#goinstall#Fix")],
     \   'ruby': [function('ale#fixers#rufo#Fix')],
+    \   'scala': [function('ale#fixers#scalafmt#Fix')],
+    \   'java': [function('ale#fixers#google_java_format#Fix')],
     \}
     let g:ale_linters = {
     \   'go': ['gobuild'],
@@ -366,12 +378,14 @@ Plug 'w0rp/ale'
     let g:ale_fix_on_save = 1
     " au operations BufRead,BufNewFile *.go
 
-Plug 'mg979/vim-visual-multi', {'branch': 'test'}
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+    let g:VM_use_TextYankPost = 0
     let g:VM_leader = "\\"
+    let g:VM_default_mappings = 0
     let g:VM_no_meta_mappings = 1
-    let g:VM_maps = {
-    \ 'Select All': '<C-A>',
-    \ }
+    "let g:VM_maps = {
+    "\ 'Select All': '<C-A>',
+    "\ }
 
     fun! VM_before_auto()
         call MacroBefore()
@@ -399,12 +413,24 @@ Plug 'mg979/vim-visual-multi', {'branch': 'test'}
         map ; <Plug>Sneak_;
     endfunction!
 
+Plug 'pangloss/vim-javascript'
+
+Plug 'pinkplus/vim-soy'
+
+Plug 'jceb/vim-orgmode'
+
+Plug 'tpope/vim-speeddating'
+
+Plug 'gabrielelana/vim-markdown'
+    let g:markdown_enable_spell_checking = 0
+    let g:markdown_enable_mappings = 0
+
 augroup end
 
 call plug#end()
 
-sign define GitGutterDummy text=.
-exec "sign place 9999 line=9999 name=GitGutterDummy buffer=" . bufnr('')
+"sign define GitGutterDummy text=.
+"exec "sign place 9999 line=9999 name=GitGutterDummy buffer=" . bufnr('')
 
 "au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 au VimEnter * au! run_after_plug_end
@@ -423,7 +449,7 @@ set tags=./.tags;/
 set title
 set encoding=utf-8
 set printencoding=cp1251
-set timeoutlen=180
+set timeoutlen=3000
 set wildmenu
 set undofile
 set undodir=$HOME/.vim/runtime/undo
@@ -455,6 +481,7 @@ set nofoldenable
 set noequalalways
 set winminheight=0
 set shortmess+=sAIc
+set viminfofile=$HOME/.vim/viminfo
 
 set backup
 
@@ -474,17 +501,13 @@ cmap <C-H> <C-W>
 
 imap <C-T> <C-R>=strpart(search("[)}\"'`\\]>]", "c"), -1, 0)<CR><Right>
 
-imap <C-Y> u<TAB>
-
 map <Leader>` :tabnew ~/.vimrc<CR>
 
 noremap <Leader>v V`]
 
-nmap <silent> <Leader>; :w<CR>
-nmap <silent> <Leader>q :q<CR>
-nmap <silent> <Leader>Q :qa!<CR>
-imap <silent> <Leader>; <C-\><C-O>:w<CR>
-nmap <silent> <Leader>e :e!<CR>
+nmap <silent> <C-S> :w<CR>
+nmap <silent> <C-Q> :q<CR>
+imap <silent> <C-S> <C-\><C-O>:w<CR>
 nmap <silent> <Leader>p "*p
 
 map <Leader>3 :b #<CR>
@@ -500,6 +523,7 @@ nnoremap <silent> @; :ArgWrap<CR>
 inoremap <silent> @; <C-\><C-O>:ArgWrap<CR>
 
 inoremap <C-J> <nop>
+snoremap <C-J> <nop>
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
@@ -537,13 +561,33 @@ inoremap <expr> <C-O> pumvisible()
             \ ? (feedkeys("\<C-N>") ? '' : '')
             \ : (feedkeys("\<C-O>", 'n') ? '' : '')
 
-nnoremap <C-H> :%s/\v
-vnoremap <C-H> :s/\v
+nnoremap <C-H> :<C-R>=StartVisualReplace('%s/\v')<CR>
+vnoremap <C-H> :<C-R>=StartVisualReplace('s/\v')<CR>
 
-augroup unite_setting
+func! StartVisualReplace(line)
+    let b:visual_replace = 1
+
+    cmap <C-A><C-W> \w+
+    cmap <C-X><C-W> <><Left>
+
+    return a:line
+endfunc
+
+func! StopVisualReplace()
+    if get(b:, 'visual_replace', 0)
+        cunmap <C-A><C-W>
+        cunmap <C-X><C-W>
+    endif
+
+    let b:visual_replace = 0
+endfunc
+
+augroup visual_replace
     au!
-    au FileType unite call s:unite_my_settings()
+    au CmdlineEnter * call StopVisualReplace()
 augroup end
+
+nmap <C-L> V<C-H>
 
 augroup erlang_indent
     au!
@@ -556,28 +600,26 @@ augroup dir_autocreate
     au BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
 augroup end
 
-augroup pkgbuild
+augroup ft
     au!
-
+    au BufEnter *.test.sh set ft=test.sh
+    au BufEnter * let g:argwrap_tail_comma = 0
+    au BufEnter *.amber set ft=pug
+    "au FileType *.chart setl ft=chart
     au BufRead,BufNewFile PKGBUILD set ft=sh.pkgbuild
-augroup end
 
-augroup ft_customization
-    au!
     au FileType sh setl iskeyword+=-,:
     au FileType sql set ft=mysql
-    au BufEnter *.test.sh set ft=test.sh
     au FileType snippets setl ft+=.python
-    au BufEnter * let g:argwrap_tail_comma = 0
     au FileType c,cpp setl noet
-    au BufEnter *.amber set ft=pug
     au FileType yaml setl ts=2 sts=2 sw=2
-    au FileType *.chart setl ft=chart
     au FileType ruby setl et ts=2 sts=2 sw=2
-augroup end
+    au FileType java setl et ts=2 sts=2 sw=2
+    au FileType org set noshowmode noruler laststatus=0 noshowcmd nornu nonu
+    au FileType org au CursorHold * silent! update
+    au FileType org au CursorHoldI * silent! update
+    au FileType org setl foldenable
 
-augroup go_src
-    au!
     au FileType go setl noexpandtab
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
     "au FileType go nmap <buffer> <Leader>r <Plug>(go-run)
@@ -609,41 +651,12 @@ augroup quickfix
     au FileType qf set wrap
 augroup end
 
-augroup rainbow
-    au!
-    au BufEnter * RainbowParenthesesActivate
-    au Syntax * RainbowParenthesesLoadRound
-    au Syntax * RainbowParenthesesLoadBraces
-augroup end
-
-augroup confluence
-    au!
-    au BufRead /tmp/vimperator-confluence* set ft=html.confluence | call HtmlBeautify()
-
-    " trim empty <p><br/></p> from document
-    au BufRead /tmp/vimperator-confluence* map <buffer> <Leader>t :%s/\v[\ \t\n]+\<p\>([\ \t\n]+\<br\>)?[\ \t\n]+\<\/p\>/<CR>
-
-    " ugly hack to trim all inter-tags whitespaces
-    au BufWritePre /tmp/vimperator-confluence* let b:_trim_pattern = '\v\>[\ \t\n]+\<' |
-        \ if search(b:_trim_pattern, 'wn') |
-            \ let b:_trim_successfull = 1 |
-            \ let b:_trim_cursor = [line('.'), col('.')] |
-            \ exe "normal i\<C-G>u\<ESC>" |
-            \ exe "%s/" . b:_trim_pattern . "/></" |
-        \ else |
-            \ let b:_trim_successfull = 0 |
-        \ endif
-    au BufWritePost /tmp/vimperator-confluence* if b:_trim_successfull |
-        \ silent! undo |
-        \ call cursor(b:_trim_cursor[0], b:_trim_cursor[1]) |
-        \ endif
-augroup end
-
-augroup flowtime
-    au!
-
-    au BufRead $HOME/sources/slides-*/*.html set ft=html.flowtime
-augroup end
+"augroup rainbow
+"    au!
+"    au BufEnter * RainbowParenthesesActivate
+"    au Syntax * RainbowParenthesesLoadRound
+"    au Syntax * RainbowParenthesesLoadBraces
+"augroup end
 
 augroup winfixheight
     au!
@@ -727,31 +740,26 @@ fun! g:ApplySyntaxForDiffComments()
     set nolist
 endfun
 
-func! DiffApplyTop()
-    let start = line('.')
-    call search(">>>>>>", "cs")
-    let end = line('.')
-    execute start.",".end "delete"
-    call search("<<<<<", "bcs")
-    execute "delete"
-    nohlsearch
+func! ConflictFind()
+    call search("\=\=\=\=\=\=", "e")
+endfunc
+
+func! ConflictApplyBottom()
+    execute search("<<<<<", "bn") . ",." . "d"
+    execute search(">>>>>>", "n") . "d"
+    call ConflictFind()
 endfunc!
 
-func! DiffApplyBottom()
-    let start = line('.')
-    call search("<<<<<", "bcs")
-    let end = line('.')
-    execute start.",".end "delete"
-    call search(">>>>>", "bcs")
-    execute "delete"
-    nohlsearch
+func! ConflictApplyTop()
+    execute ".," . search(">>>>>>", "n") . "d"
+    execute search("<<<<<", "bn") . "d"
+    call ConflictFind()
 endfunc!
 
 func! DiffEnable()
-    nmap <buffer> <C-F><C-D> :Grep '\=\=\=\=\=\=\='<CR><CR>
-    nmap <buffer> rr :/=====<CR>zz:noh<CR>
-    nmap <buffer> rk :call DiffApplyTop()<CR>rr
-    nmap <buffer> rj :call DiffApplyBottom()<CR>rr
+    nmap <buffer> rr :call ConflictFind()<CR>
+    nmap <buffer> rk :call ConflictApplyTop()<CR>
+    nmap <buffer> rj :call ConflictApplyBottom()<CR>
 endfunc!
 
 augroup diff_mode
@@ -762,3 +770,14 @@ augroup end
 command!
     \ Diff
     \ call DiffEnable()
+
+func! _get_github_link()
+    silent call system("github-link " . expand('%:p') . " " . line('.'))
+endfunc!
+
+nnoremap <Leader>g :call _get_github_link()<CR>
+
+augroup undo
+    au!
+    au CursorHoldI * call feedkeys("\<C-G>u")
+augroup end

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+date -d "$*" +"%T %d/%m/%y %a" \
+    | tr '[[:lower:]]' '[[:upper:]]'
+

@@ -1,0 +1,1 @@
+kuake --right --class notes --terminal --height 100 --width 20 --exec "sh -c 'stty -ixon && vim notes/journal.org'" --direct
