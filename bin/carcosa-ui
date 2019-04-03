@@ -1,0 +1,3 @@
+#!/bin/bash
+
+~/.deadfiles/bin/carcosa-ui --prefix=passwords/ ~/.secrets/* "$@"

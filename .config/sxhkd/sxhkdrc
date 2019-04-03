@@ -41,10 +41,10 @@ super + grave
     ;kuake --terminal --bottom
 
 super + x
-    sh -c 'carcosa-ui ~/.secrets/*'
+    carcosa-ui
 
 super + shift + x
-    sh -c 'carcosa-ui --mode=login-password --prefix=passwords/ ~/.secrets/*'
+    carcosa-ui --mode=login-password
 
 super + Execute
     environment-info
