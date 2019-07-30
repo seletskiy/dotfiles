@@ -5,7 +5,7 @@ Requires=background.target
 
 [Service]
 WorkingDirectory=%h/.i3
-ExecStart=/usr/bin/sh -c 'exec cat config.base config.${BACKGROUND} > config'
+ExecStart=/usr/bin/sh -c 'exec i3-config'
 ExecStart=/usr/bin/systemctl --user --no-block reload i3.service
 Type=oneshot
 RemainAfterExit=yes

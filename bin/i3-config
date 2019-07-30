@@ -1,0 +1,23 @@
+#!/bin/bash
+
+profile=$(autorandr --detected | head -n1 | cut -d- -f1)
+
+echo :: loading ~/.i3/config.base >&2
+config="$(cat ~/.i3/config.base)"
+
+if [[ -f ~/.i3/config.${profile} ]]; then
+    echo ":: loading ~/.i3/config.${profile}" >&2
+    config="${config}"$'\n'"$(cat ~/.i3/config.${profile})"
+fi
+
+if [[ -f ~/.i3/config.${BACKGROUND} ]]; then
+    echo ":: loading ~/.i3/config.${BACKGROUND}" >&2
+    config="${config}"$'\n'"$(cat ~/.i3/config.${BACKGROUND})"
+fi
+
+nagbar="# MANAGED BY i3-config DO NOT EDIT MANUALLY"
+config="$nagbar
+$config
+$nagbar"
+
+echo "$config" > ~/.i3/config

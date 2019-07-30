@@ -1,2 +1,2 @@
 ACTION=="change", SUBSYSTEM=="drm", ENV{ID_PATH}=="pci-0000:00:02.0", \
-    RUN+="/usr/bin/su operator -pc 'DISPLAY=:0 ~/.deadfiles/bin/external-monitor'"
+    RUN+="/usr/bin/su operator -pc 'DISPLAY=:0 autorandr --change'"

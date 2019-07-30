@@ -4,7 +4,7 @@ Requires=graphical.target
 After=display-manager.target
 
 [Service]
-ExecStart=/bin/env sh -c 'exec %h/bin/keynav-doppelganger daemonize'
+ExecStart=/bin/env sh -c 'exec keynav-doppelganger daemonize'
 Type=forking
 Environment=KEYNAV_PIDFILE=%t/keynav.pid
 PIDFile=%t/keynav.pid

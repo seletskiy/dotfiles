@@ -1,7 +1,7 @@
 super + Return
     urxvt -e tmux new
 
-super + ctrl + Return
+super + control + Return
     open-at-cwd urxvt -e tmux new
 
 super + r
@@ -20,7 +20,7 @@ super + F3
     ;volume up
 
 super + F8
-    external-monitor
+    autorandr --change
 
 super + F9
     reconfig-kbd
@@ -33,6 +33,9 @@ super + y
 
 super + t
     bookmarks
+
+shift + super + t
+    bookmarks add
 
 super + Tab
     ;journal
@@ -61,5 +64,8 @@ super + backslash
 super + Delete
     upwork-suspend
 
-super + ctrl + Delete
+super + control + Delete
     jidle-toggle
+
+super + ctrl + z
+    i3-frame

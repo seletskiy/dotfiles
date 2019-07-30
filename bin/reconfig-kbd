@@ -19,7 +19,11 @@ sudo pkill shift-shift
 
 sudo -bE shift-shift -match "razer|USB KB|USB-HID|keyboard" -first CAPSLOCK -scan-once 2>/dev/null
 
-xset r rate 110 130
+if [[ $(lsusb -v  2>&- | grep -c 'bInterfaceProtocol.*Keyboard') == 2 ]]; then
+    xset r rate 110 130
+else
+    xset r rate 130 130
+fi
 
 setxkbmap \
     -keycodes \
@@ -31,14 +35,13 @@ setxkbmap \
         "hjkl"`                   # map mod3+hjkl to arrow keys`\
         "hjkl(caret)"`            # mod3+u-]: home/end/insert/delete/pgup/pkdown`\
         "hjkl(fast-enter)"`       # mod3+m -> enter`\
-        "capslock(swapescape)"`   # use capslock as esc`\
         "altwin(swap_lalt_lwin)"`   # swap alt and win`\
         "hjkl(fast-numpad)"`      # 1234qwerdf -> 1234567890`\
-        "rshift-ralt"`            # swap rshift and ralt`\
         "ctrl-shift-caps"`        # remap ctrl/shift/caps` \
+        "rshift-ralt"`            # swap rshift and ralt`\
         "esc-to-execute"`     # esc to lock screen`\
         "fast-copy-paste"`    # alt+c -> ctrl+c, alt+v -> shift+ins`\
-        "compose(menu)"`    # enable compose key`\
+        "multi-key"`    # enable compose key`\
         | sed 's/ /+/g') \
     -compat \
         "allow-control-leds+complete+fast-copy-paste+hjkl" \

@@ -1,8 +1,0 @@
-Section "Device"
-	Identifier  "radeon"
-	Driver      "radeon"
-	BusID       "PCI:1:0:0"
-	Option	"SWcursor"              "off"
-	Option	"EnablePageFlip"        "on"
-	Option	"AccelMethod"           "glamor"
-EndSection

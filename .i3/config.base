@@ -18,7 +18,7 @@ set $mod Mod4
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:Iosevka 11
+font pango:Iosevka 7
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -39,7 +39,7 @@ bindsym Ctrl+Shift+Next move down
 bindsym Ctrl+Shift+End move right
 
 # split in horizontal orientation
-bindsym $mod+g split h
+bindsym $mod+Ctrl+t split h
 
 # split in vertical orientation
 bindsym $mod+Ctrl+g split v
@@ -86,11 +86,6 @@ bindcode $mod+Shift+38 exec i3-move-container a
 bindcode $mod+Shift+39 exec i3-move-container s
 bindcode $mod+Shift+40 exec i3-move-container d
 
-# reload the configuration file
-#bindsym $mod+Shift+r reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym Mod1+Shift+Ctrl+r restart
-
 bindsym $mod+Shift+minus mark quick_1
 bindsym $mod+minus [con_mark="quick_1"] focus
 
@@ -105,10 +100,11 @@ for_window [class="fontforge"] floating enable
 for_window [title="^kuake_"] floating enable
 for_window [title="^ffplay_gif_player"] floating enable
 for_window [title="QUIK"] floating enable
+for_window [title="Slack Call Minipanel"] kill
 
 floating_minimum_size 70 x 15
 
-hide_edge_borders smart
+hide_edge_borders both
 
 new_window 1pixel
 
@@ -148,3 +144,6 @@ mode "resize" {
 }
 
 bindsym $mod+z mode "resize"
+
+gaps inner 2
+#smart_gaps on

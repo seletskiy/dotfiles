@@ -1,0 +1,21 @@
+#!/bin/bash
+
+active_monitor=0
+horizontal=${1:-0}
+
+set -- $(
+    xrandr --listactivemonitors \
+        | grep -P "^\s+${active_monitor}:" \
+        | awk '{ print $3 }' \
+        | grep -Po '\d+(?=/)'
+)
+
+width=$1
+height=$2
+
+set -x
+i3-msg "gaps left  current set $(calc "$width/8+$horizontal")"
+i3-msg "gaps right current set $(calc "$width/8-$horizontal")"
+set +x
+
+i3-msg "gaps vertical current set $(calc $height/8)"

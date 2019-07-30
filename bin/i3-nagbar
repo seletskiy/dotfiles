@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec /usr/bin/i3-nagbar -f "pango:Iosevka Bold 12" "${@}"
+exec /usr/bin/i3-nagbar -f "pango:Iosevka Bold 7" "${@}"

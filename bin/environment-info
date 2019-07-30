@@ -3,6 +3,8 @@
 [ -n "$_LOCK" ] || _LOCK=x exec flock -n $0 $0 "$@"
 
 :main() {
+    bar='<span foreground="#335cf4">|</span>'
+
     text=()
 
     text=("$(:template \
@@ -27,12 +29,12 @@
 
     local memory=$(
         printf "%1.1f" \
-            $(bc <<< "scale=1; $(free -mt | awk '/Total/ { print $4 }') / 1024")
+            $(bc <<< "scale=1; $(free -mt | awk '/Mem/ { print $4 }') / 1024")
     )
 
     local upwork=$(ps -C upwork -o s=)
     if [[ "$upwork" ]]; then
-        upwork=" | $(
+        upwork=" $bar $(
             grep -qF T <<< "$upwork" && echo "■" || echo "▶"
         )"
     fi
@@ -43,20 +45,13 @@
         memory=${memory}G
     fi
 
-    text=("$(:template \
-        "STAT" \
-        $(:urgency "$urgency" "${temperature}°C") \
-        "| ${memory}$upwork"
-    )" "${text[@]}")
-
     local acpi=$(acpi -b)
     local battery=$(
-        cut -d' ' -f4,5 <<< "$acpi" \
-            | tr -d , \
-            | awk '{print $2" "$1}'
+        cut -d: -f2- <<< "$acpi" \
+            | cut -d, -f2
 
     )
-    if grep -qiF "full" <<< "$acpi"; then
+    if grep -qiP "full|100%" <<< "$acpi"; then
         battery="FULL"
     fi
 
@@ -71,8 +66,10 @@
     fi
 
     text=("$(:template \
-        "BTRY" \
-        $(:urgency "$urgency" "${battery} ${charging}")
+        "STAT" \
+        $(:urgency "$urgency" "${battery} ${charging}") \
+        "$bar $(:urgency "$urgency" "${temperature}°C")" \
+        "$bar ${memory}$upwork"
     )" "${text[@]}")
 
     local ssid=$(iw dev | grep -Po 'ssid \K.*')

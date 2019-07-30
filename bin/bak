@@ -1,0 +1,25 @@
+#!/bin/bash
+
+### bak — rename given <path> to <path>.bak back and forth
+###
+### Usage:
+###   bak <path>
+
+:usage() {
+    sed -rn 's/^### ?//;T;p' "$0"
+    exit 1
+}
+
+:main() {
+    if [[ ! "$*" ]]; then
+        :usage
+    fi
+
+    if [[ -e "$1.bak" ]]; then
+        mv "$1.bak" "$1"
+    else
+        mv "$1" "$1.bak"
+    fi
+}
+
+:main "$@"

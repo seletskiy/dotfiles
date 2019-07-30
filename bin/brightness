@@ -1,11 +1,15 @@
 #!/bin/bash
 
-device=/sys/class/backlight/intel_backlight
+device=/sys/class/backlight/*
+max=$(cat $device/max_brightness)
 current=$(cat $device/brightness)
-step=${2:-500}
+step=${2:-$((max / 20))}
 
-if [ $current -le 10 ]; then
+if [ $(( 100 * current / max )) -le 10 ]; then
     step=$((step / 10))
+    if [[ "$step" -eq 0 ]]; then
+        step=1
+    fi
 fi
 
 if [ $# -eq 0 ]; then

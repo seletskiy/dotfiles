@@ -35,12 +35,14 @@ Plug 'vim-scripts/repeat.vim'
 Plug 'reconquest/vim-colorscheme'
     let g:colors_name = "reconquest"
 
-    au ColorScheme * hi MatchParen ctermfg=226 ctermbg=none cterm=bold
+    au ColorScheme * hi MatchParen ctermfg=214 ctermbg=none cterm=bold
     au ColorScheme * hi Search cterm=bold ctermfg=16 ctermbg=226
     au ColorScheme * hi IncSearch cterm=none ctermfg=15 ctermbg=92
     au ColorScheme * hi Cursor cterm=bold ctermfg=16 ctermbg=226
     au ColorScheme * hi DiffChange ctermbg=162 ctermfg=15 cterm=bold
     au ColorScheme * hi Error ctermbg=1 ctermfg=16 cterm=bold
+    au ColorScheme * hi ColorColumn ctermbg=233
+    au ColorScheme * hi CursorLineNr ctermbg=20 ctermfg=255
 
 
 Plug 'vim-scripts/surround.vim'
@@ -63,34 +65,45 @@ Plug 'vim-scripts/surround.vim'
 Plug 'seletskiy/nginx-vim-syntax'
 
 Plug 'junegunn/fzf', {'do': './install --all'}
-Plug 'kovetskiy/fzf.vim'
+Plug 'junegunn/fzf.vim'
     let g:fzf_prefer_tmux = 1
-    au FileType * let g:fzf#vim#default_layout  = {'bottom': '10%'}
-    let $FZF_DEFAULT_COMMAND = 'prols'
-    func! _ctrlp()
-        exec 'FZF'
+    let g:fzf_layout = { 'right': '~80%' }
+
+    func! _select_file()
+        "call _snippets_stop()
+        call fzf#run(fzf#wrap({'source': 'prols', 'options': '--sort --no-exact'}))
     endfunc!
+
+    func! _select_buffer()
+        "call _snippets_stop()
+        call fzf#vim#buffers({'options': '--sort --no-exact'})
+    endfunc!
+
+    "nnoremap <C-G> :call _select_buffer()<CR>
+    map <silent> <C-P> :call _select_file()<CR>
+
+Plug 'rhysd/git-messenger.vim'
 
 Plug 'nixprime/cpsm', {'do': 'PY3=OFF ./install.sh' }
-Plug 'ctrlpvim/ctrlp.vim'
-    func! _ctrlp_buffer_add_augroup()
-        augroup _ctrlp_buffer_bufenter
-            au!
-            au BufEnter * exe "wincmd" "_" |
-                        \ call _ctrlp_buffer_remove_augroup()
-        augroup end
-    endfunc!
+"Plug 'ctrlpvim/ctrlp.vim'
+"    func! _ctrlp_buffer_add_augroup()
+"        augroup _ctrlp_buffer_bufenter
+"            au!
+"            au BufEnter * exe "wincmd" "_" |
+"                        \ call _ctrlp_buffer_remove_augroup()
+"        augroup end
+"    endfunc!
 
-    func! _ctrlp_buffer_remove_augroup()
-        augroup _ctrlp_buffer_bufenter
-            au!
-        augroup end
-    endfunc!
+"    func! _ctrlp_buffer_remove_augroup()
+"        augroup _ctrlp_buffer_bufenter
+"            au!
+"        augroup end
+"    endfunc!
 
-    func! _ctrlp_buffer()
-        CtrlPBuffer
-        call _ctrlp_buffer_add_augroup()
-    endfunc!
+"    func! _ctrlp_buffer()
+"        CtrlPBuffer
+"        call _ctrlp_buffer_add_augroup()
+"    endfunc!
 
     "func! _ctrlp()
     "    CtrlP
@@ -98,21 +111,21 @@ Plug 'ctrlpvim/ctrlp.vim'
 
     "nnoremap <C-B> :call _ctrlp_buffer()<CR>
 
-    let g:ctrlp_working_path_mode='ra'
-    let g:ctrlp_user_command = 'ctrlp-search %s'
-    let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:50'
-    let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+    "let g:ctrlp_working_path_mode='ra'
+    "let g:ctrlp_user_command = 'ctrlp-search %s'
+    "let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:50'
+    "let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
     "let g:ctrlp_max_depth = 10
 
-    let g:ctrlp_clear_cache_on_exit = 1
-    let g:ctrlp_use_caching = 0
-    let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp.vim'
+    "let g:ctrlp_clear_cache_on_exit = 1
+    "let g:ctrlp_use_caching = 0
+    "let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp.vim'
 
-    hi! def link CtrlPMatch Search
+    "hi! def link CtrlPMatch Search
 
-    let g:ctrlp_map = '<nop>'
-    map <silent> <C-P> :call _ctrlp()<CR>
+    "let g:ctrlp_map = '<nop>'
+    "map <silent> <C-P> :call _ctrlp()<CR>
 
     let g:grep_last_query = ""
 
@@ -120,7 +133,7 @@ Plug 'ctrlpvim/ctrlp.vim'
         let g:grep_last_query = a:query
 
         let @/ = a:query
-        call fzf#vim#ag(a:query, {'options': '--delimiter : --nth 4..'})
+        call fzf#vim#ag(a:query, {'down': 1, 'options': '--delimiter : --nth 4..'})
     endfunc!
 
     func! _grep_word()
@@ -139,7 +152,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 
     command! -nargs=* Grep call _grep(<q-args>)
 
-    nnoremap <C-E> :Grep<CR>
+    nnoremap <silent> <C-E> :Grep<CR>
     nnoremap <C-T> :Grep <C-R><C-W><CR>
 
 Plug 'itchyny/lightline.vim'
@@ -154,7 +167,7 @@ let g:lightline = {
       \ }
       \ }
 
-"Plug 'seletskiy/vim-autosurround'
+Plug 'seletskiy/vim-autosurround'
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsExpandTrigger = '<Tab>'
@@ -234,6 +247,8 @@ Plug 'SirVer/ultisnips'
 "   let g:completor_gocode_binary = $HOME . '/go/bin/gocode'
 "   let g:completor_disable_ultisnips = 1
 
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+
 Plug 'Valloric/YouCompleteMe'
     let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
     let g:ycm_allow_changing_updatetime = 0
@@ -245,7 +260,7 @@ Plug 'Valloric/YouCompleteMe'
     let g:ycm_complete_in_comments = 1
     let g:ycm_show_diagnostics_ui = 0
 
-Plug 'kovetskiy/vim-go', {'for': 'go'}
+Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
     let g:go_snippet_engine = "skip"
     let g:go_fmt_autosave = 0
@@ -255,7 +270,7 @@ Plug 'kovetskiy/vim-go', {'for': 'go'}
     let g:go_highlight_methods = 1
     let g:go_template_autocreate = 0
     let g:go_def_mapping_enabled = 0
-    let g:go_def_mode = 'godef'
+    let g:go_def_mode = 'gopls'
     let g:go_list_type = "quickfix"
 
     func! _goto_prev_func()
@@ -276,14 +291,12 @@ Plug 'kovetskiy/vim-go', {'for': 'go'}
     augroup vim_go_custom
         au!
         au FileType go nmap <buffer> <Leader>h :GoDoc<CR>
-        au FileType go let w:go_stack = 'fix that shit'
-        au FileType go let w:go_stack_level = 'fix that shit'
         au FileType go nmap <silent><buffer> gd :GoDef<CR>
-        au FileType go nmap <silent><buffer> gl :call go#def#Jump('vsplit')<CR>
-        au FileType go nmap <silent><buffer> gk :call go#def#Jump('split')<CR>
+        au FileType go nmap <silent><buffer> gl :call go#def#Jump('vsplit', 0)<CR>
+        au FileType go nmap <silent><buffer> gk :call go#def#Jump('split', 0)<CR>
 
-        au FileType go nmap <silent><buffer> <Leader>, :w<CR>:call synta#go#build()<CR>
-        au FileType go imap <silent><buffer> <Leader>, <ESC>:w<CR>:call synta#go#build()<CR>
+        au FileType go nmap <silent><buffer> <C-Y> :w<CR>:call synta#go#build()<CR>
+        au FileType go imap <silent><buffer> <C-Y> <ESC>:w<CR>:call synta#go#build()<CR>
     augroup end
 
 Plug 'vim-ruby/vim-ruby'
@@ -319,8 +332,6 @@ Plug 'justinmk/vim-sneak'
 
     au ColorScheme * hi Sneak ctermfg=226
 
-Plug 'seletskiy/vim-nunu'
-
 Plug 'hynek/vim-python-pep8-indent'
 
 Plug 'vim-utils/vim-man'
@@ -333,7 +344,7 @@ Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 Plug 'deadcrew/deadfiles'
 
 Plug 'kovetskiy/vim-ski'
-    let g:skeletons_dir=$HOME . '/.deadfiles/.vim/skeletons/'
+    let g:skeletons_dir=$HOME . '/.vim/skeletons/'
 
 Plug 'FooSoft/vim-argwrap'
 
@@ -343,16 +354,6 @@ Plug 'kovetskiy/synta'
 Plug 'kovetskiy/vim-hacks'
 
 Plug 'tpope/vim-abolish'
-
-Plug 'airblade/vim-gitgutter'
-    let s:nbsp=" "
-    let g:gitgutter_sign_removed='-'
-    let g:gitgutter_sign_modified=s:nbsp . '±'
-    let g:gitgutter_sign_modified_removed='-±'
-    let g:gitgutter_sign_column_always=1
-    let g:gitgutter_enabled = 0
-
-    "au CursorHold * GitGutterEnable
 
 Plug 'digitaltoad/vim-pug'
 
@@ -371,12 +372,17 @@ Plug 'w0rp/ale'
     \   'ruby': [function('ale#fixers#rufo#Fix')],
     \   'scala': [function('ale#fixers#scalafmt#Fix')],
     \   'java': [function('ale#fixers#google_java_format#Fix')],
+    \   'proto': [function('ale#fixers#clangformat#Fix')],
     \}
     let g:ale_linters = {
     \   'go': ['gobuild'],
     \}
+    let g:ale_go_langserver_executable = 'gopls'
     let g:ale_fix_on_save = 1
-    " au operations BufRead,BufNewFile *.go
+    augroup ale_protobuf
+        au!
+        au BufEnter *.proto let g:ale_c_clangformat_options='-style=file -assume-filename=' . expand('%:t')
+    augroup end
 
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     let g:VM_use_TextYankPost = 0
@@ -421,9 +427,9 @@ Plug 'jceb/vim-orgmode'
 
 Plug 'tpope/vim-speeddating'
 
-Plug 'gabrielelana/vim-markdown'
-    let g:markdown_enable_spell_checking = 0
-    let g:markdown_enable_mappings = 0
+"Plug 'gabrielelana/vim-markdown'
+"    let g:markdown_enable_spell_checking = 0
+"    "let g:markdown_enable_mappings = 0
 
 augroup end
 
@@ -456,6 +462,7 @@ set undodir=$HOME/.vim/runtime/undo
 set directory=$HOME/.vim/runtime/tmp
 set backupdir=$HOME/.vim/runtime/backup
 set ttyfast
+set number
 set relativenumber
 set hlsearch
 set incsearch
@@ -482,13 +489,11 @@ set noequalalways
 set winminheight=0
 set shortmess+=sAIc
 set viminfofile=$HOME/.vim/viminfo
+"set signcolumn=yes
 
 set backup
 
-" autocomplete list numbers
-" autoinsert comment Leader
-" do not wrap line after oneletter word
-set formatoptions=qrn1tol
+set formatoptions=crq1jp
 
 set list
 set lcs=trail:·,space:┈,tab:\┈\┈ " <- trailing space here
@@ -518,9 +523,9 @@ nnoremap <Leader><Leader>i :PlugInstall<CR>
 
 
 map <silent> <Leader>l <Plug>NERDCommenterToggle
-vnoremap <silent> @; $%
-nnoremap <silent> @; :ArgWrap<CR>
-inoremap <silent> @; <C-\><C-O>:ArgWrap<CR>
+vnoremap <silent> <C-G> $%
+nnoremap <silent> <C-G> :ArgWrap<CR>
+inoremap <silent> <C-G> <C-\><C-O>:ArgWrap<CR>
 
 inoremap <C-J> <nop>
 snoremap <C-J> <nop>
@@ -615,10 +620,12 @@ augroup ft
     au FileType yaml setl ts=2 sts=2 sw=2
     au FileType ruby setl et ts=2 sts=2 sw=2
     au FileType java setl et ts=2 sts=2 sw=2
+    au FileType proto setl et ts=2 sts=2 sw=2
     au FileType org set noshowmode noruler laststatus=0 noshowcmd nornu nonu
     au FileType org au CursorHold * silent! update
     au FileType org au CursorHoldI * silent! update
     au FileType org setl foldenable
+    au FileType *standup setl ft=standup
 
     au FileType go setl noexpandtab
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
@@ -779,5 +786,5 @@ nnoremap <Leader>g :call _get_github_link()<CR>
 
 augroup undo
     au!
-    au CursorHoldI * call feedkeys("\<C-G>u")
+    au CursorHoldI * call feedkeys("\<C-G>u", "n")
 augroup end

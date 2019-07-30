@@ -1,0 +1,20 @@
+#!/bin/bash
+
+log_file=~/notes/log
+
+if [[ ! "$*" ]]; then
+    exec cat "$log_file"
+fi
+
+date=$(date -I)
+
+touch "$log_file"
+
+last=$(cut -b-${#date} < $log_file | awk NF | tail -n1)
+
+prefix=$date
+if [[ "$prefix" == "$last" ]]; then
+    prefix=$(printf " %.0s" $(seq 1 ${#date}))
+fi
+
+exec printf "%s %s\n" "$prefix" "$*" >> $log_file
