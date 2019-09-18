@@ -1,7 +1,7 @@
 [Unit]
 Description=Start X on :%i
 Before=graphical.target
-Requires=x:socket@.service
+Before=x:socket@.service
 
 [Service]
 Environment=DISPLAY=:%i

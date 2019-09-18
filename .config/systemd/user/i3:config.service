@@ -1,14 +1,15 @@
 [Unit]
 Description=i3 Config Manager
-After=background.target
-Requires=background.target
+After=i3.service
+Requires=i3.service
+;Wants=background.target
 
 [Service]
 WorkingDirectory=%h/.i3
-ExecStart=/usr/bin/sh -c 'exec i3-config'
-ExecStart=/usr/bin/systemctl --user --no-block reload i3.service
+ExecStart=/bin/env i3-config
+ExecStart=/bin/env i3-frame
 Type=oneshot
 RemainAfterExit=yes
 
 [Install]
-WantedBy=i3.service
+WantedBy=display-manager.target

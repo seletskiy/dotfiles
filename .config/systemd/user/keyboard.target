@@ -1,0 +1,8 @@
+[Unit]
+Description=Fully Configured Keyboard
+
+[Install]
+WantedBy=workplace.target
+Also=keyboard.service
+Also=sxhkd.service
+Also=keynav.service

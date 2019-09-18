@@ -21,3 +21,5 @@ $config
 $nagbar"
 
 echo "$config" > ~/.i3/config
+
+systemctl --user reload i3

@@ -1,0 +1,9 @@
+[Unit]
+Description=i3 Socket
+Before=display-manager.target
+
+[Socket]
+ListenStream=/tmp/i3-ipc.sock
+
+[Install]
+WantedBy=sockets.target

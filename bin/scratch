@@ -1,0 +1,3 @@
+#!/bin/bash
+
+vim ~/go/src/github.com/seletskiy/limbo/scratch/$(date +%F+%T)/${1:-main.go}

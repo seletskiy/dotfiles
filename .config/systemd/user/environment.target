@@ -2,4 +2,4 @@
 Description=User Environment Online
 
 [Install]
-RequiredBy=workplace.target
+Also=environment.service

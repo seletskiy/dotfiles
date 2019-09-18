@@ -1,6 +1,7 @@
 [Unit]
 Description=Set X Root Background To '%i'
-Before=display-manager.target
+Requires=graphical.target
+PartOf=background@.service
 
 [Service]
 ExecStart=/usr/bin/sh -c 'case "%i" in \
@@ -12,5 +13,5 @@ Type=oneshot
 RemainAfterExit=yes
 
 [Install]
-WantedBy=display-manager.target
-DefaultInstance=light
+RequiredBy=background@.service
+DefaultInstance=dark

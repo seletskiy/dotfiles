@@ -5,10 +5,8 @@ After=graphical.target
 
 [Install]
 WantedBy=workplace.target
+Also=graphical.target
 Also=i3.service
-Also=xautolock@.service
-Also=xrdb.service
-Also=xset:fp.service xset:dpms@.service
-Also=keyboard.service
-Also=keynav.service
+Also=background.target
+Also=monitors.service
 Also=xclipboard-synchronizer.service

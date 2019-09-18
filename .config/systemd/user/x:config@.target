@@ -1,0 +1,10 @@
+[Unit]
+Description=X Server Additional Configuration
+Requires=graphical.target
+After=graphical.target
+
+[Install]
+WantedBy=workplace.target
+Also=xrdb.service
+Also=xset:dpms@.service
+DefaultInstance=0

@@ -328,6 +328,8 @@ fi
         compdef systemctl-command-and-status=systemctl
         compdef _git-merge-with-rebase git-merge-with-rebase
         compdef man-search=man
+        compdef mark=cat
+        compdef exa=ls
         compdef :vim-which=which
         compdef _:git:rebase-interactive :git:rebase-interactive
         compdef _:git:checkout-and-update :git:checkout-and-update
@@ -380,8 +382,11 @@ fi
     hijack:transform '^(\S+)(\s.*)!$' \
         'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-    hijack:transform '^[c]!? |^/[g]? |^@ ' \
+    hijack:transform '^[c]!? |^/[g]? |^@ |^=' \
         'sed -r s"/([\\$<>{}&\\\"([!?)''#^*;|])/\\\\\1/g"'
+
+    hijack:transform '^=' \
+        'sed -r s"/^=(\S)/calc \1/g"'
 
     hijack:transform '^c\\!' \
         'sed -re "s/^c\\\\! /c! /"'
@@ -418,7 +423,8 @@ fi
     alias vi='vim'
 
     alias ls='ls --color=auto'
-    alias l='ls --group-directories-first --time-style=long-iso -tAlh'
+    alias l='exa -la -snew --color-scale'
+    alias lt='l -T --level=2'
 
     alias rf='rm -rf'
 
@@ -440,6 +446,12 @@ fi
 
     alias re='rebirth'
     alias rg='() { rebirth gorun "$@" }'
+
+    :unzip() {
+        unzip "$1" -d "$(basename "$1" .zip)"
+    }
+
+    alias -s zip=':unzip'
 
     alias -- :!='sudo systemctl'
     alias -- :r!=':! daemon-reload && () {
@@ -586,7 +598,9 @@ fi
 
     alias xi='xclip -i'
     alias xo='xclip -o'
-    alias -g -- '#cc'='| xclip -i'
+    alias xip='() { readlink -f "$@" | xi }'
+
+    alias -g -- '#i'='| xclip -i'
     alias -g -- '#j'='| () { [ -t 1 ] && local flag="-C"; jq $flag "${@:-.}" # }'
     alias -g -- '#!'='# -v'
     alias -g -- '#+'='| paste -sd+ | bc'
@@ -634,7 +648,7 @@ fi
     alias x=':context:command magalix'
     alias mk=':context:command minikube'
 
-    alias do='() { while :; do eval "$@"; done; }'
+    alias run='() { while :; do eval "$@"; done; }'
 
     alias rtorrent=':rtorrent'
 
@@ -657,12 +671,6 @@ fi
 
     alias wifi!='wifi !'
 
-    alias url='() {
-        printf "%s" "$*" | \
-            curl -Gso /dev/null -w "%{url_effective}" --data-urlencode @- "" \
-            | cut -c3-
-    }'
-
     alias tx='() {
         local session="$(
             tmux ls -F "#{session_attached} #{session_name}" \
@@ -681,6 +689,8 @@ fi
     alias POST='http POST'
     alias PUT='http PUT'
     alias DELETE='http DELETE'
+
+    alias standup='() { vim "$@" && xi "$@" } work/standups/$(date +%F+%T)/standup'
 
     hash-aliases:install
 
@@ -809,9 +819,6 @@ fi
         alias gtb!='() { gtb "${@}" && gtp; }'
         alias gtt='go tool pprof cpu.prof'
         alias x='gorun'
-
-    context-aliases:match '[[ "$PWD" =~ ~/go/.*/properlord ]]'
-        source ~/go/src/properlord/.zshrc
 
     context-aliases:commit
 }

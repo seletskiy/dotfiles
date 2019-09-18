@@ -1,16 +1,16 @@
 [Unit]
 Description=Set Background In Apps To '%i'
+After=environment.target
+Wants=environment.target
 Before=background.target
-After=graphical.target
 
 [Service]
 ExecStart=/usr/bin/systemctl --user set-environment BACKGROUND=%i
-ExecStart=/usr/bin/systemctl --user --no-block restart x:background@%i.service
-ExecStart=/usr/bin/systemctl --user --no-block restart background.target
-ExecStart=/usr/bin/systemctl --user --no-block reload  environment.service
+ExecStart=/usr/bin/systemctl --user --no-block reload environment.service
 Type=oneshot
 RemainAfterExit=yes
 
 [Install]
 RequiredBy=background.target
-DefaultInstance=light
+DefaultInstance=dark
+Also=environment.target

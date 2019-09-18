@@ -167,7 +167,7 @@ let g:lightline = {
       \ }
       \ }
 
-Plug 'seletskiy/vim-autosurround'
+"Plug 'seletskiy/vim-autosurround'
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsExpandTrigger = '<Tab>'
@@ -247,9 +247,8 @@ Plug 'SirVer/ultisnips'
 "   let g:completor_gocode_binary = $HOME . '/go/bin/gocode'
 "   let g:completor_disable_ultisnips = 1
 
-"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-
-Plug 'Valloric/YouCompleteMe'
+Plug 'zxqfl/tabnine-vim', {'for': ['go', 'javascript', 'vim']}
+"Plug 'Valloric/YouCompleteMe'
     let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
     let g:ycm_allow_changing_updatetime = 0
     let g:ycm_confirm_extra_conf = 1
@@ -362,9 +361,6 @@ Plug 'kovetskiy/vim-autoresize'
 Plug 'nathanielc/vim-tickscript'
 
 Plug 'w0rp/ale'
-    func! _ale_gotags()
-
-    endfunc!
     let g:ale_enabled = 0
 
     let g:ale_fixers = {
@@ -382,6 +378,13 @@ Plug 'w0rp/ale'
     augroup ale_protobuf
         au!
         au BufEnter *.proto let g:ale_c_clangformat_options='-style=file -assume-filename=' . expand('%:t')
+    augroup end
+
+    augroup _java_codestyle
+        au!
+        au BufRead,BufNewFile *.java
+            \ call ale#Set('google_java_format_options',
+            \ '--skip-removing-unused-imports --skip-sorting-imports')
     augroup end
 
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -430,6 +433,27 @@ Plug 'tpope/vim-speeddating'
 "Plug 'gabrielelana/vim-markdown'
 "    let g:markdown_enable_spell_checking = 0
 "    "let g:markdown_enable_mappings = 0
+
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}, 'for': ['java']}
+
+Plug 'tpope/vim-dispatch'
+    func! _setup_java()
+        setlocal errorformat=[ERROR]\ %f:[%l\\,%v]\ %m
+        setlocal signcolumn=yes
+    endfunc!
+
+    augroup _java_bindings
+        au!
+        au FileType java call _setup_java()
+        au FileType java let b:dispatch = 'make'
+        au FileType java nmap <silent><buffer> <C-M> :JavaImportOrganize<CR>
+        au FileType java nmap <silent><buffer> gd :JavaDocSearch<CR>
+        au FileType java nmap <silent><buffer> ; :cn<CR>
+        au FileType java nmap <silent><buffer> <Leader>; :cN<CR>
+    augroup end
+
+Plug 'eclim/eclim'
+    let g:EclimSignLevel = 'off'
 
 augroup end
 
@@ -489,7 +513,6 @@ set noequalalways
 set winminheight=0
 set shortmess+=sAIc
 set viminfofile=$HOME/.vim/viminfo
-"set signcolumn=yes
 
 set backup
 
@@ -621,11 +644,10 @@ augroup ft
     au FileType ruby setl et ts=2 sts=2 sw=2
     au FileType java setl et ts=2 sts=2 sw=2
     au FileType proto setl et ts=2 sts=2 sw=2
-    au FileType org set noshowmode noruler laststatus=0 noshowcmd nornu nonu
-    au FileType org au CursorHold * silent! update
-    au FileType org au CursorHoldI * silent! update
-    au FileType org setl foldenable
-    au FileType *standup setl ft=standup
+    "au FileType org set noshowmode noruler laststatus=0 noshowcmd nornu nonu
+    "au FileType org au CursorHold * silent! update
+    "au FileType org au CursorHoldI * silent! update
+    "au FileType org setl foldenable
 
     au FileType go setl noexpandtab
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
@@ -641,6 +663,7 @@ augroup ft
     "au FileType go inoremap <buffer> <C-Q><C-D> <C-\><C-O>:normal! A,<CR>
     "au FileType go nnoremap <buffer> gd :GoDef<CR>
     au BufRead,BufNewFile *.slide setfiletype present
+    au BufRead,BufNewFile *standup setfiletype standup
 augroup end
 
 augroup vimrc
@@ -788,3 +811,8 @@ augroup undo
     au!
     au CursorHoldI * call feedkeys("\<C-G>u", "n")
 augroup end
+
+
+
+py import px
+py for full_name, name in px.libs().items(): exec("import " + full_name)

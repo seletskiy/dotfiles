@@ -2,6 +2,7 @@
 Description=Keynav Doppelganger
 Requires=graphical.target
 After=display-manager.target
+Before=keyboard.target
 
 [Service]
 ExecStart=/bin/env sh -c 'exec keynav-doppelganger daemonize'
@@ -11,4 +12,4 @@ PIDFile=%t/keynav.pid
 Restart=always
 
 [Install]
-WantedBy=display-manager.target
+WantedBy=keyboard.target

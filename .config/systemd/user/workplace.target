@@ -2,11 +2,12 @@
 Description=Fully Configured Workplace
 AllowIsolate=yes
 DefaultDependencies=no
+After=display-manager.target keyboard.target
+Requires=display-manager.target
 
 [Install]
-WantedBy=basic.target
-Also=graphical.target
+WantedBy=default.target
 Also=display-manager.target
-Also=environment.service
-Also=background.target
-Also=multiplexer.target
+Also=keyboard.target
+Also=dunst.service
+Also=volumectl.service

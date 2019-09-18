@@ -1,11 +1,10 @@
 #!/bin/bash
 
 env \
-    WINEPREFIX="/home/operator/.wine" \
+    WINEARCH=win32 \
+    WINEPREFIX="/home/operator/win32" \
     LC_ALL="ru_RU.utf8" \
-    WINEDEBUG="+odbc32" \
-    LIB_ODBC_DRIVER_MANAGER="/usr/lib32/libodbc.so" \
     wine \
         C:\\windows\\command\\start.exe \
             /Unix \
-            /home/operator/.wine/dosdevices/c:/users/Public/Desktop/QUIK*.lnk
+            /home/operator/win32/dosdevices/c:/users/Public/Desktop/QUIK*.lnk

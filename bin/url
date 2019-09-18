@@ -1,0 +1,5 @@
+#!/bin/bash
+
+printf "%s" "$*" | \
+    curl -Gso /dev/null -w "%{url_effective}" --data-urlencode @- "" \
+    | cut -c3-

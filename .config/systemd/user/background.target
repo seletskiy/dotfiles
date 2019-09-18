@@ -2,6 +2,5 @@
 Description=X Background Configured
 
 [Install]
-WantedBy=workplace.target
-RequiredBy=display-manager.target
+WantedBy=display-manager.target
 Also=background@.service

@@ -1,0 +1,3 @@
+ACTION=="bind", SUBSYSTEM=="usb", ENV{ID_MODEL}=="*Keyboard*", \
+    RUN+="/usr/bin/runuser - operator \
+        .dotfiles/bin/udev:systemctl-user restart keyboard"

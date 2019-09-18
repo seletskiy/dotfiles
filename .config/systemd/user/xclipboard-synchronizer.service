@@ -2,10 +2,9 @@
 Description=Synchronize various X clipboard buffers for sane result
 Requires=graphical.target
 After=graphical.target
-Before=display-manager.target
 
 [Service]
 ExecStart=/bin/xcsyncd
 
 [Install]
-WantedBy=display-manager.target
+WantedBy=workplace.target

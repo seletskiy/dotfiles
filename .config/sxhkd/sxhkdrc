@@ -10,23 +10,26 @@ super + r
 shift + Delete
     kill-focus
 
-super + F4
-    sound-switch
-
 super + F2
     ;volume down
 
 super + F3
     ;volume up
 
+super + F4
+    sound-switch
+
+super + F5
+    vpn-toggle
+
 super + F8
-    autorandr --change
+    systemctl --user restart monitors
 
 super + F9
-    reconfig-kbd
+    systemctl --user restart keyboard
 
-super + F10
-    vpn-toggle
+super + F6
+    i3-frame
 
 super + y
     translator
@@ -34,11 +37,8 @@ super + y
 super + t
     bookmarks
 
-shift + super + t
+super + control + t
     bookmarks add
-
-super + Tab
-    ;journal
 
 super + grave
     ;kuake --terminal --bottom
@@ -46,7 +46,7 @@ super + grave
 super + x
     carcosa-ui
 
-super + shift + x
+super + control + x
     carcosa-ui --mode=login-password
 
 super + Execute
@@ -63,9 +63,3 @@ super + backslash
 
 super + Delete
     upwork-suspend
-
-super + control + Delete
-    jidle-toggle
-
-super + ctrl + z
-    i3-frame

@@ -1,13 +1,15 @@
 [Unit]
 Description=X Server Socket Ready /tmp/.X11-unix/X%i
 Before=graphical.target
-PartOf=x@%i.service
+BindsTo=x@.service
 
 [Service]
-ExecStart=/usr/bin/sh -c 'while [ ! -e /tmp/.X11-unix/X%i ]; do sleep 0.5; done'
-ExeStopPost=/usr/bin/rm /tmp/.X11-unix/X%i
+ExecStartPre=/usr/bin/sh -c 'while [ ! -e /tmp/.X11-unix/X%i ]; do sleep 0.5; done'
+ExecStart=/usr/bin/true
+ExecStopPost=/usr/bin/rm /tmp/.X11-unix/X%i
 Type=oneshot
 RemainAfterExit=yes
 
 [Install]
 RequiredBy=graphical.target
+DefaultInstance=0

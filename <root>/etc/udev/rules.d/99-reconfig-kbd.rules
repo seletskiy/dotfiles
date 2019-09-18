@@ -1,2 +1,0 @@
-ACTION=="bind", SUBSYSTEM=="usb", ENV{ID_MODEL}=="*Keyboard*", \
-    RUN+="/usr/bin/su operator -pc '~/.dotfiles/bin/reconfig-kbd'"

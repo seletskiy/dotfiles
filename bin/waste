@@ -12,7 +12,7 @@
     xargs -n1 -I{} rm -v {}
 }
 
-mkdir -p work
+mkdir -p work/{,my}
 mkdir -p images/{gifs,screenshots,gimp,other}
 mkdir -p notes
 mkdir -p docs
@@ -75,4 +75,6 @@ mkdir -p trash
         -e ./.bash_history \
         -e ./.lesshst \
         -e ./.kube \
+        -e ./.eclipse \
+        -e ./.eclim
     | :mv trash

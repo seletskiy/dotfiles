@@ -1,8 +1,9 @@
 [Unit]
 Description=Simple X Hotkey Daemon
 Documentation=man:sxhkd(1)
-Requires=graphical.target
-After=display-manager.target
+Requires=graphical.target keyboard.service
+After=graphical.target keyboard.service
+Before=keyboard.target
 
 [Service]
 ExecStart=/usr/bin/sxhkd
@@ -10,4 +11,4 @@ ExecReload=/usr/bin/kill -SIGUSR1 $MAINPID
 KillMode=process
 
 [Install]
-WantedBy=display-manager.target
+WantedBy=keyboard.target

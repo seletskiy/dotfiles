@@ -1,0 +1,14 @@
+[Unit]
+Description=Configure Monitors
+Requires=i3.socket graphical.target
+After=i3.socket graphical.target
+
+[Service]
+ExecStart=/bin/env autorandr --change
+ExecStart=/usr/bin/systemctl --user --no-block restart i3:config.service
+ExecStart=/usr/bin/systemctl --user --no-block restart dunst.service
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=display-manager.target

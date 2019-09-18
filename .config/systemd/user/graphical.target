@@ -4,5 +4,4 @@ Requires=environment.target
 After=environment.target
 
 [Install]
-WantedBy=workplace.target
-Also=x@.service
+Also=x@.service x:config@.target

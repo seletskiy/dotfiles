@@ -2,5 +2,4 @@
 Description=Terminal Multiplexer
 
 [Install]
-WantedBy=workplace.target
 Also=tmux.service

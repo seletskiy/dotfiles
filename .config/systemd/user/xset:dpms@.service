@@ -1,7 +1,7 @@
 [Unit]
 Description=Configure X screen off timeout
 Requires=graphical.target
-After=display-manager.target
+After=graphical.target
 
 [Service]
 ExecStart=/usr/bin/xset s %i
@@ -10,5 +10,5 @@ Type=oneshot
 RemainAfterExit=yes
 
 [Install]
-WantedBy=display-manager.target
+WantedBy=x:config@.target
 DefaultInstance=1600

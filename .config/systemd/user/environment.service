@@ -1,5 +1,6 @@
 [Unit]
 Description=User environment variables
+DefaultDependencies=no
 After=mutliplexer.target
 Wants=multiplexer.target
 Before=environment.target
@@ -12,10 +13,10 @@ Environment=MODAL_PATH=%h/bin/.dmenu
 Environment=GOPATH=%h/go
 Environment=RUBYPATH=/opt/ruby/2.5.0/bin
 Environment=GEM_HOME=/opt/ruby/2.5.0/gems
-Environment=PATH=%h/.dotfiles/bin:%h/.deadfiles/bin:%h/go/bin:/usr/bin:/opt/atlassian/plugin-sdk/bin:%h/.gem/ruby/2.5.0/bin
+Environment=PATH=%h/.dotfiles/bin:%h/.deadfiles/bin:%h/go/bin:/usr/bin:/opt/atlassian/plugin-sdk/bin:%h/.gem/ruby/2.5.0/bin:/opt/android-sdk/platform-tools/
 EnvironmentFile=/home/%u/.config/dotfiles.profile
 ExecStart=/usr/bin/systemctl --user import-environment
-ExecReload=/usr/bin/sh -c 'set -x; env -0 | sed -z "s/=/\\\\x0/" | xargs -0 -n2 \
+ExecReload=/usr/bin/sh -c 'env -0 | sed -z "s/=/\\\\x0/" | xargs -0 -n2 \
     tmux set-environment -g ; \
     tmux set -g update-environment "$(echo $(env -0 | grep -zo "^\\w+"))"'
 Type=oneshot
@@ -23,4 +24,4 @@ RemainAfterExit=yes
 
 [Install]
 RequiredBy=environment.target
-Also=environment.target
+Also=environment.target multiplexer.target

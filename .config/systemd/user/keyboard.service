@@ -2,12 +2,12 @@
 Description=Configure X keyboard
 Requires=graphical.target
 After=graphical.target
-Before=display-manager.target
+Before=keyboard.target
 
 [Service]
-ExecStart=/bin/env reconfig-kbd
-Type=oneshot
+Type=forking
+ExecStart=/bin/env configure-keyboard
 RemainAfterExit=yes
 
 [Install]
-WantedBy=display-manager.target
+WantedBy=keyboard.target
