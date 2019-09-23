@@ -85,48 +85,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'rhysd/git-messenger.vim'
 
 Plug 'nixprime/cpsm', {'do': 'PY3=OFF ./install.sh' }
-"Plug 'ctrlpvim/ctrlp.vim'
-"    func! _ctrlp_buffer_add_augroup()
-"        augroup _ctrlp_buffer_bufenter
-"            au!
-"            au BufEnter * exe "wincmd" "_" |
-"                        \ call _ctrlp_buffer_remove_augroup()
-"        augroup end
-"    endfunc!
-
-"    func! _ctrlp_buffer_remove_augroup()
-"        augroup _ctrlp_buffer_bufenter
-"            au!
-"        augroup end
-"    endfunc!
-
-"    func! _ctrlp_buffer()
-"        CtrlPBuffer
-"        call _ctrlp_buffer_add_augroup()
-"    endfunc!
-
-    "func! _ctrlp()
-    "    CtrlP
-    "endfunc!
-
-    "nnoremap <C-B> :call _ctrlp_buffer()<CR>
-
-    "let g:ctrlp_working_path_mode='ra'
-    "let g:ctrlp_user_command = 'ctrlp-search %s'
-    "let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:50'
-    "let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
-
-    "let g:ctrlp_max_depth = 10
-
-    "let g:ctrlp_clear_cache_on_exit = 1
-    "let g:ctrlp_use_caching = 0
-    "let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp.vim'
-
-    "hi! def link CtrlPMatch Search
-
-    "let g:ctrlp_map = '<nop>'
-    "map <silent> <C-P> :call _ctrlp()<CR>
-
     let g:grep_last_query = ""
 
     func! _grep(query)
@@ -170,7 +128,7 @@ let g:lightline = {
 "Plug 'seletskiy/vim-autosurround'
 
 Plug 'SirVer/ultisnips'
-    let g:UltiSnipsExpandTrigger = '<Tab>'
+    let g:UltiSnipsExpandTrigger = '<nop>'
     let g:UltiSnipsJumpForwardTrigger = '<C-J>'
     let g:UltiSnipsJumpBackwardTrigger = '<C-K>'
 
@@ -207,57 +165,11 @@ Plug 'SirVer/ultisnips'
                     \ _snippets_get_filetype() .  ".snippets"
     endfunc!
 
-    "nnoremap <C-S><C-D> :call _snippets_open_dotfiles()<CR>
-    "nnoremap <C-S><C-S> :call _snippets_open_reconquest()<CR>
-    "vnoremap <C-S> y:UltiSnipsEdit<CR>Go<CR>snippet HERE<CR>endsnippet<ESC>k]p?HERE<CR>zzciw
-
     augroup ultisnips_pyflakes
         au!
         au BufEnter,BufWinEnter *.snippets let g:pymode_lint = 0
         au BufEnter,BufWinEnter *.py let g:pymode_lint = 1
     augroup end
-
-"Plug 'Shougo/deoplete.nvim'
-"Plug 'zchee/deoplete-jedi'
-"Plug 'fishbullet/deoplete-ruby'
-"Plug 'roxma/nvim-yarp'
-"Plug 'roxma/vim-hug-neovim-rpc'
-"Plug 'zchee/deoplete-go', { 'do': 'make'}
-"   let g:deoplete#enable_at_startup = 1
-
-"    func! _setup_deoplete()
-"       call deoplete#custom#source(
-"           \ '_', 'min_pattern_length', 1)
-
-"        call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
-"        call deoplete#custom#source('_', 'sorters', [])
-
-"       " unlimited candidate length
-"        call deoplete#custom#source('_', 'max_kind_width', 0)
-"        call deoplete#custom#source('_', 'max_menu_width', 0)
-"        call deoplete#custom#source('_', 'max_abbr_width', 0)
-"   endfunc!
-
-"   augroup _setup_deoplete
-"       au!
-"       au VimEnter * call _setup_deoplete()
-"   augroup end
-
-"Plug 'maralla/completor.vim'
-"   let g:completor_gocode_binary = $HOME . '/go/bin/gocode'
-"   let g:completor_disable_ultisnips = 1
-
-Plug 'zxqfl/tabnine-vim', {'for': ['go', 'javascript', 'vim']}
-"Plug 'Valloric/YouCompleteMe'
-    let g:ycm_key_list_select_completion = ['<C-N>', '<Down>']
-    let g:ycm_allow_changing_updatetime = 0
-    let g:ycm_confirm_extra_conf = 1
-    let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/.ycm_extra_conf.py'
-    let g:ycm_collect_identifiers_from_comments_and_strings = 1
-    let g:ycm_collect_identifiers_from_tags_files = 1
-    let g:ycm_use_ultisnips_completer = 0
-    let g:ycm_complete_in_comments = 1
-    let g:ycm_show_diagnostics_ui = 0
 
 Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
@@ -269,7 +181,9 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_highlight_methods = 1
     let g:go_template_autocreate = 0
     let g:go_def_mapping_enabled = 0
-    let g:go_def_mode = 'gopls'
+    let g:go_def_mode = 'godef'
+    let g:go_lsp_did_open = 0
+
     let g:go_list_type = "quickfix"
 
     func! _goto_prev_func()
@@ -283,9 +197,6 @@ Plug 'fatih/vim-go', {'for': 'go'}
         nohlsearch
         normal zt
     endfunc!
-
-    "au operations FileType go nmap <buffer><silent> <C-Q> :call _goto_prev_func()<CR>
-    "au operations FileType go nmap <buffer><silent> <C-A> :call _goto_next_func()<CR>
 
     augroup vim_go_custom
         au!
@@ -337,8 +248,15 @@ Plug 'vim-utils/vim-man'
 
 Plug 'kovetskiy/vim-bash'
 
-Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
-    vnoremap <C-T> :Tabularize /
+"Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
+"    vnoremap <C-T> :Tabularize /
+
+Plug 'junegunn/vim-easy-align'
+    " Start interactive EasyAlign in visual mode (e.g. vipga)
+    xmap ga <Plug>(EasyAlign)
+
+    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+    nmap ga <Plug>(EasyAlign)
 
 Plug 'deadcrew/deadfiles'
 
@@ -430,16 +348,30 @@ Plug 'jceb/vim-orgmode'
 
 Plug 'tpope/vim-speeddating'
 
-"Plug 'gabrielelana/vim-markdown'
-"    let g:markdown_enable_spell_checking = 0
-"    "let g:markdown_enable_mappings = 0
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+    func! _expand_snippet()
+        call UltiSnips#ExpandSnippet()
 
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}, 'for': ['java']}
+        if g:ulti_expand_res == 0
+            let col = col('.') - 1
+            if !col || getline('.')[col - 1]  =~# '\s'
+                return "\<tab>"
+            else
+                call coc#refresh()
+            end
+        end
+
+        return ""
+    endfunc
+
+    inoremap <silent><expr> <TAB>
+          \ (pumvisible() && !empty(v:completed_item)) ?
+          \ coc#_select_confirm() :
+          \ "\<c-r>=_expand_snippet()<cr>"
 
 Plug 'tpope/vim-dispatch'
     func! _setup_java()
         setlocal errorformat=[ERROR]\ %f:[%l\\,%v]\ %m
-        setlocal signcolumn=yes
     endfunc!
 
     augroup _java_bindings
@@ -459,13 +391,10 @@ augroup end
 
 call plug#end()
 
-"sign define GitGutterDummy text=.
-"exec "sign place 9999 line=9999 name=GitGutterDummy buffer=" . bufnr('')
-
-"au VimEnter * doautocmd User _VimrcRunAfterPlugEnd
 au VimEnter * au! run_after_plug_end
 
-syntax on
+au FileType go au! vim-go
+au FileType go au! vim-go-buffer
 
 filetype plugin on
 filetype indent on
@@ -513,13 +442,14 @@ set noequalalways
 set winminheight=0
 set shortmess+=sAIc
 set viminfofile=$HOME/.vim/viminfo
+set signcolumn=number
 
 set backup
 
 set formatoptions=crq1jp
 
 set list
-set lcs=trail:·,space:┈,tab:\┈\┈ " <- trailing space here
+set lcs=trail:·,tab:\┈\┈ " <- trailing space here
 set fcs=vert:│
 
 let html_no_rendering=1
@@ -811,8 +741,6 @@ augroup undo
     au!
     au CursorHoldI * call feedkeys("\<C-G>u", "n")
 augroup end
-
-
 
 py import px
 py for full_name, name in px.libs().items(): exec("import " + full_name)
