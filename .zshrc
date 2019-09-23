@@ -155,7 +155,7 @@ zmodload zsh/zprof
             zle -N :favor
             bindkey '^N' :favor
             :favor() {
-                local favor_dir="$(favor 2>/dev/null)"
+                local favor_dir="$(favor)"
                 if [[ ! "$favor_dir" ]]; then
                     return
                 fi
@@ -514,7 +514,7 @@ fi
     alias pp!='yes | sudo pacman --force --noconfirm -S'
     alias ppy='sudo pacman -Sy'
     alias ppyu='sudo pacman -Syu'
-    alias ppr='sudo pacman -R'
+    alias ppr='sudo pacman -R <<< "y"'
     alias pq='pacman -Q'
     alias pqo='pacman -Qo'
     alias pql='pacman -Ql'
@@ -604,6 +604,8 @@ fi
     alias -g -- '#j'='| () { [ -t 1 ] && local flag="-C"; jq $flag "${@:-.}" # }'
     alias -g -- '#!'='# -v'
     alias -g -- '#+'='| paste -sd+ | bc'
+    alias -g -- '#:1'='#f 1'
+    alias -g -- '#~'='| () { awk "\$$1 == ${(qqq)${(@)*:2}}" }'
 
     alias kub='skube'
     alias kaf='kub apply -f'
@@ -1093,19 +1095,19 @@ fi
             case "$2" in
                 # common search mode
                 /*)
-                    command vim -u ~/.vimrc-economy \
+                    command vim \
                         +"set noignorecase" +"Man $1" +only +"silent! /${2:1}"
                     return
                     ;;
                 # search for flags description
                 -*)
-                    command vim -u ~/.vimrc-economy \
+                    command vim \
                         +"set noignorecase" +"Man $1" +only +"silent! /^\\s\\+\\zs${2}"
                     return
                     ;;
                 # search for subcommand definition
                 .*)
-                    command vim -u ~/.vimrc-economy \
+                    command vim \
                         +"set noignorecase" \
                         +"Man $1" \
                         +only \
@@ -1120,7 +1122,7 @@ fi
                     ;;
                 # search for section
                 @*)
-                    command vim -u ~/.vimrc-economy \
+                    command vim \
                         +"set noignorecase" \
                         +"Man $1" \
                         +only \
@@ -1135,7 +1137,7 @@ fi
             esac
         fi
 
-        command vim -u ~/.vimrc-economy +"Man $MANSECT ${@}" +only
+        command vim +"Man $MANSECT ${@}" +only
     }
 
     prepend_sudo() {
@@ -1453,8 +1455,8 @@ fi
     :pipe:tar() {
         if [[ "$*" ]]; then
             printf "%s\n" "$@" \
-                | xargs -n1 readlink -f \
-                | xargs -n1 printf "cp -vr %q .\n"\
+                | xargs -d'\n' -n1 readlink -f \
+                | xargs -d'\n' -n1 printf "cp -vr %q .\n" \
                 | :pipe
         else
             :pipe | xargs -d'\n' -n1 sh -c
