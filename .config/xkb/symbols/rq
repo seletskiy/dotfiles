@@ -1,0 +1,5 @@
+partial alphanumeric_keys
+xkb_symbols "rq" {
+    key <AC03> { [         h,          H ] };
+    key <AC06> { [         d,          D ] };
+};

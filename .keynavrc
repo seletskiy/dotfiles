@@ -7,20 +7,23 @@ semicolon sh "keynav-doppelganger 'start,grid 4x4'"
 q cell-select 2
 a cell-select 3
 z cell-select 4
+
 2 cell-select 5
 w cell-select 6
 s cell-select 7
 x cell-select 8
+
 3 cell-select 9
 e cell-select 10
-d cell-select 11
+h cell-select 11
 c cell-select 12
+
 4 cell-select 13
 r cell-select 14
 f cell-select 15
 v cell-select 16
 
-h move-left,warp
+d move-left,warp
 j move-down,warp
 k move-up,warp
 l move-right,warp

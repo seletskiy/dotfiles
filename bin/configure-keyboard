@@ -24,24 +24,40 @@ else
     xset r rate 130 110
 fi
 
+# QWERTY
+#  q w e r t y u i o p
+#    a s d f g h j k l
+#      z x c v b n m
+
+# RQ
+#  q w e r t y u i o p
+#    a s h f g d j k l
+#      z x c v b n m
+
+symbols=(
+    "pc+us+ru:2"             # common layout settings
+    "level3(lwin_switch)"    # use win as lvl3 modifier
+    "mod4-lvl3"              # use lvl3 as mod4
+    "hjkl"                   # map mod3+hjkl to arrow keys
+    "hjkl(caret)"            # mod3+u-]: home/end/insert/delete/pgup/pkdown
+    "hjkl(fast-enter)"       # mod3+m -> enter
+    "altwin(swap_lalt_lwin)" # swap alt and win
+    "hjkl(fast-numpad)"      # 1234qwerdf -> 1234567890
+    "ctrl-shift-caps"        # remap ctrl/shift/caps
+    "rshift-ralt"            # swap rshift and ralt
+    "esc-to-execute"         # esc to lock screen
+    "fast-copy-paste"        # alt+c -> ctrl+c, alt+v -> shift+ins
+    "multi-key"              # enable compose key
+    "rq"                     # reconquest layout (incremental)
+)
+
 setxkbmap \
+    -I ~/.config/xkb/ \
     -keycodes \
         "evdev+aliases(qwerty)+hjkl" \
-    -symbols $(echo \
-        "pc+us+ru:2"`             # common layout settings`\
-        "level3(lwin_switch)"`    # use win as lvl3 modifier`\
-        "mod4-lvl3"`              # use lvl3 as mod4`\
-        "hjkl"`                   # map mod3+hjkl to arrow keys`\
-        "hjkl(caret)"`            # mod3+u-]: home/end/insert/delete/pgup/pkdown`\
-        "hjkl(fast-enter)"`       # mod3+m -> enter`\
-        "altwin(swap_lalt_lwin)"`   # swap alt and win`\
-        "hjkl(fast-numpad)"`      # 1234qwerdf -> 1234567890`\
-        "ctrl-shift-caps"`        # remap ctrl/shift/caps` \
-        "rshift-ralt"`            # swap rshift and ralt`\
-        "esc-to-execute"`     # esc to lock screen`\
-        "fast-copy-paste"`    # alt+c -> ctrl+c, alt+v -> shift+ins`\
-        "multi-key"`    # enable compose key`\
-        | sed 's/ /+/g') \
+    -symbols $(
+        printf "%s\n" "${symbols[@]}" | paste -sd+
+    ) \
     -compat \
         "allow-control-leds+complete+fast-copy-paste+hjkl" \
     -print | (
