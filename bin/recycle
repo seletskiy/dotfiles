@@ -26,9 +26,7 @@ mkdir -p trash
 :find f '[0-9]{4}-[0-9]{2}-[0-9]{2}-\w+.png$' | :mv images/screenshots
 :find f '.*\.gif$' | :mv images/gifs
 :find f '.*\.xcf$' | :mv images/gimp
-:find f '.*\.(png|jpg)$' | :mv images/gimp
-:find f 'feh_.*_filelist' | :rm
-:find f 'feh_.*_filelist' | :rm
+:find f '.*\.(png|jpg)$' | :mv images/other
 :find f 'feh_.*_filelist' | :rm
 :find f '[^.]+$' | :mv notes
 
@@ -82,4 +80,6 @@ mkdir -p trash
         -e .kube \
         -e .eclipse \
         -e .eclim \
+        -e .npm \
+        -e .grip \
     | :mv trash
