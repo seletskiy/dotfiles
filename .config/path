@@ -1,0 +1,8 @@
+~/.dotfiles/bin
+~/.deadfiles/bin
+~/go/bin
+~/.gem/ruby/2.5.0/bin
+/usr/bin
+/opt/atlassian/plugin-sdk/bin
+/opt/android-sdk/platform-tools
+/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin
