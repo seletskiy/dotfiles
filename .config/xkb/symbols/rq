@@ -5,5 +5,8 @@ xkb_symbols "rq" {
     key <AD02> { [ d, D ] }; // W
 
     key <AD04> { [ w, W ] }; // R
-    key <AD06> { [ r, R ] }; // Y
+    key <AD06> { [ k, K ] }; // Y
+
+    key <AC08> { [ e, E ] }; // K
+    key <AD03> { [ r, R ] }; // E
 };

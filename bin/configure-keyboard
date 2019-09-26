@@ -18,8 +18,8 @@ fi
 #      z x c v b n m
 
 # RQ
-#  q w e r t y u i o p
-#    a s h f g d j k l
+#  q d r w t k u i o p
+#    a s h f g y j e l
 #      z x c v b n m
 
 keycodes=(
