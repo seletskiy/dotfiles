@@ -42,7 +42,10 @@ Plug 'reconquest/vim-colorscheme'
     au ColorScheme * hi DiffChange ctermbg=162 ctermfg=15 cterm=bold
     au ColorScheme * hi Error ctermbg=1 ctermfg=16 cterm=bold
     au ColorScheme * hi ColorColumn ctermbg=233
-    au ColorScheme * hi CursorLineNr ctermbg=20 ctermfg=255
+    au ColorScheme * hi GitDeleted ctermfg=88
+    au ColorScheme * hi GitAdded ctermfg=22
+    au ColorScheme * hi GitModified ctermfg=238
+    au ColorScheme * hi CocErrorSign ctermfg=196
 
 
 Plug 'vim-scripts/surround.vim'
@@ -182,7 +185,6 @@ Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_template_autocreate = 0
     let g:go_def_mapping_enabled = 0
     let g:go_def_mode = 'godef'
-    let g:go_lsp_did_open = 0
 
     let g:go_list_type = "quickfix"
 
@@ -350,24 +352,30 @@ Plug 'tpope/vim-speeddating'
 
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
     func! _expand_snippet()
+        let g:_expand_snippet = 1
         call UltiSnips#ExpandSnippet()
+        let g:_expand_snippet = 0
 
         if g:ulti_expand_res == 0
-            let col = col('.') - 1
-            if !col || getline('.')[col - 1]  =~# '\s'
-                return "\<tab>"
+            if pumvisible() && !empty(v:completed_item)
+                return coc#_select_confirm()
             else
                 call coc#refresh()
+                let col = col('.') - 1
+                if !col || getline('.')[col - 1]  =~# '\s'
+                    return "\<tab>"
+                end
             end
+        else
+            call coc#refresh()
+            return ""
         end
 
-        return ""
+        return "\<c-n>"
     endfunc
 
-    inoremap <silent><expr> <TAB>
-          \ (pumvisible() && !empty(v:completed_item)) ?
-          \ coc#_select_confirm() :
-          \ "\<c-r>=_expand_snippet()<cr>"
+    inoremap <silent> <Tab> <c-r>=_expand_snippet()<cr>
+    xnoremap <silent> <Tab> <Esc>:call UltiSnips#SaveLastVisualSelection()<cr>gvs
 
 Plug 'tpope/vim-dispatch'
     func! _setup_java()
@@ -442,7 +450,7 @@ set noequalalways
 set winminheight=0
 set shortmess+=sAIc
 set viminfofile=$HOME/.vim/viminfo
-set signcolumn=number
+set signcolumn=yes
 
 set backup
 
