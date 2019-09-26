@@ -9,7 +9,7 @@ a cell-select 3
 z cell-select 4
 
 2 cell-select 5
-w cell-select 6
+d cell-select 6
 s cell-select 7
 x cell-select 8
 
@@ -19,11 +19,11 @@ h cell-select 11
 c cell-select 12
 
 4 cell-select 13
-r cell-select 14
+w cell-select 14
 f cell-select 15
 v cell-select 16
 
-d move-left,warp
+y move-left,warp
 j move-down,warp
 k move-up,warp
 l move-right,warp
@@ -45,8 +45,6 @@ Return warp,quit
 Escape end
 
 Tab grid 4x4,cursorzoom 320 200
-
-y grid 1x1,cursorzoom 9 9,warp,click 1,end
 
 n warp,click 4
 m warp,click 5

@@ -454,6 +454,9 @@ set fcs=vert:│
 
 let html_no_rendering=1
 
+nnoremap y h
+nnoremap h y
+
 " Ctrl+Backspace in cmd line
 cmap <C-H> <C-W>
 

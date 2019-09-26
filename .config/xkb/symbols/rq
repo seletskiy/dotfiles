@@ -1,5 +1,9 @@
 partial alphanumeric_keys
 xkb_symbols "rq" {
-    key <AC03> { [         h,          H ] };
-    key <AC06> { [         d,          D ] };
+    key <AC03> { [ h, H ] }; // D
+    key <AC06> { [ y, Y ] }; // H
+    key <AD02> { [ d, D ] }; // W
+
+    key <AD04> { [ w, W ] }; // R
+    key <AD06> { [ r, R ] }; // Y
 };

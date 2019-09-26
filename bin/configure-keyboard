@@ -1,17 +1,5 @@
 #!/bin/bash
 
-if [ "$1" = "-d" ]; then
-    dry=1
-else
-    dry=
-fi
-
-if [ "$1" = "-v" ]; then
-    verbose=1
-else
-    verbose=
-fi
-
 export XAUTHORITY=/home/operator/.Xauthority
 export DISPLAY=${DISPLAY:-:0}
 
@@ -34,6 +22,12 @@ fi
 #    a s h f g d j k l
 #      z x c v b n m
 
+keycodes=(
+    "evdev"
+    "aliases(qwerty)"
+    "hjkl"
+)
+
 symbols=(
     "pc+us+ru:2"             # common layout settings
     "level3(lwin_switch)"    # use win as lvl3 modifier
@@ -51,23 +45,20 @@ symbols=(
     "rq"                     # reconquest layout (incremental)
 )
 
-setxkbmap \
-    -I ~/.config/xkb/ \
-    -keycodes \
-        "evdev+aliases(qwerty)+hjkl" \
-    -symbols $(
-        printf "%s\n" "${symbols[@]}" | paste -sd+
-    ) \
-    -compat \
-        "allow-control-leds+complete+fast-copy-paste+hjkl" \
-    -print | (
-        if [[ "$dry" ]]; then
-            xkbcomp -xkb - -
-        else
-            if [ "$verbose" ]; then
-                xkbcomp - $DISPLAY
-            else
-                xkbcomp - $DISPLAY &>/dev/null
-            fi
-        fi
-    )
+compat=(
+    "complete"
+    "allow-control-leds"
+    "fast-copy-paste"
+    "hjkl"
+)
+
+printf 'xkb_keymap {
+    xkb_keycodes { include "%s"       };
+    xkb_types    { include "complete" };
+    xkb_compat   { include "%s"       };
+    xkb_symbols  { include "%s"       };
+};' \
+    "$(printf "%s\n" "${keycodes[@]}" | paste -sd+)" \
+    "$(printf "%s\n" "${compat[@]}"   | paste -sd+)" \
+    "$(printf "%s\n" "${symbols[@]}"  | paste -sd+)" \
+    | xkbcomp -I$HOME/.config/xkb - $DISPLAY &>/dev/null
