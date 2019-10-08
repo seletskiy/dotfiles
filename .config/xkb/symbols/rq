@@ -1,12 +1,23 @@
 partial alphanumeric_keys
-xkb_symbols "rq" {
-    key <AC03> { [ h, H ] }; // D
-    key <AC06> { [ y, Y ] }; // H
-    key <AD02> { [ d, D ] }; // W
+xkb_symbols "abc" {
+                                   // QWERTY
+    key <AC03> { [ h, H, h, H ] }; // D
+    key <AC06> { [ y, Y, y, Y ] }; // H
+    key <AD02> { [ d, D, d, D ] }; // W
 
-    key <AD04> { [ w, W ] }; // R
-    key <AD06> { [ k, K ] }; // Y
+    key <AD04> { [ w, W, w, W ] }; // R
+    key <AD06> { [ j, J, j, J ] }; // Y
 
-    key <AC08> { [ e, E ] }; // K
-    key <AD03> { [ r, R ] }; // E
+    key <AC07> { [ n, N, n, N ] }; // J
+    key <AC08> { [ e, E, e, E ] }; // K
+    key <AD03> { [ r, R, r, R ] }; // E
+
+    key <AB06> { [ k, K, k, K ] }; // N
+};
+
+xkb_symbols "hjkl" {
+    key <AC06> { [ y, Y, KP_Left,  KP_Left  ] }; // H
+    key <AC07> { [ n, N, KP_Down,  KP_Down  ] }; // J
+    key <AC08> { [ e, E, KP_Up,    KP_Up    ] }; // K
+    key <AC09> { [ l, L, KP_Right, KP_Right ] }; // L
 };

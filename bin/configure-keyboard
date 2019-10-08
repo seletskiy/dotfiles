@@ -18,9 +18,9 @@ fi
 #      z x c v b n m
 
 # RQ
-#  q d r w t k u i o p
-#    a s h f g y j e l
-#      z x c v b n m
+#  q d r w t j u i o p
+#    a s h f g y n e l
+#      z x c v b k m
 
 keycodes=(
     "evdev"
@@ -32,7 +32,6 @@ symbols=(
     "pc+us+ru:2"             # common layout settings
     "level3(lwin_switch)"    # use win as lvl3 modifier
     "mod4-lvl3"              # use lvl3 as mod4
-    "hjkl"                   # map mod3+hjkl to arrow keys
     "hjkl(caret)"            # mod3+u-]: home/end/insert/delete/pgup/pkdown
     "hjkl(fast-enter)"       # mod3+m -> enter
     "altwin(swap_lalt_lwin)" # swap alt and win
@@ -42,7 +41,8 @@ symbols=(
     "esc-to-execute"         # esc to lock screen
     "fast-copy-paste"        # alt+c -> ctrl+c, alt+v -> shift+ins
     "multi-key"              # enable compose key
-    "rq"                     # reconquest layout (incremental)
+    "rq(abc)"                # reconquest layout (incremental)
+    "rq(hjkl)"               # map QWERTY HJKL to arrows
 )
 
 compat=(
