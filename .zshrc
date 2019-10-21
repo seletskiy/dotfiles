@@ -1096,19 +1096,19 @@ fi
             case "$2" in
                 # common search mode
                 /*)
-                    command vim \
+                    command nvim \
                         +"set noignorecase" +"Man $1" +only +"silent! /${2:1}"
                     return
                     ;;
                 # search for flags description
                 -*)
-                    command vim \
+                    command nvim \
                         +"set noignorecase" +"Man $1" +only +"silent! /^\\s\\+\\zs${2}"
                     return
                     ;;
                 # search for subcommand definition
                 .*)
-                    command vim \
+                    command nvim \
                         +"set noignorecase" \
                         +"Man $1" \
                         +only \
@@ -1123,7 +1123,7 @@ fi
                     ;;
                 # search for section
                 @*)
-                    command vim \
+                    command nvim \
                         +"set noignorecase" \
                         +"Man $1" \
                         +only \
@@ -1138,7 +1138,7 @@ fi
             esac
         fi
 
-        command vim +"Man $MANSECT ${@}" +only
+        command nvim +"Man $MANSECT ${@}" +only
     }
 
     prepend_sudo() {
