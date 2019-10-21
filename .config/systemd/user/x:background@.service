@@ -1,6 +1,7 @@
 [Unit]
 Description=Set X Root Background To '%i'
 Requires=graphical.target
+After=graphical.target
 PartOf=background@.service
 
 [Service]
