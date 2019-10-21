@@ -69,8 +69,8 @@ Plug 'seletskiy/nginx-vim-syntax'
 
 Plug 'junegunn/fzf', {'do': './install --all'}
 Plug 'junegunn/fzf.vim'
-    let g:fzf_prefer_tmux = 1
-    let g:fzf_layout = { 'right': '~80%' }
+    let g:fzf_prefer_tmux = 0
+    let g:fzf_layout = { 'right': '~40%' }
 
     func! _select_file()
         "call _snippets_stop()
@@ -94,7 +94,7 @@ Plug 'nixprime/cpsm', {'do': 'PY3=OFF ./install.sh' }
         let g:grep_last_query = a:query
 
         let @/ = a:query
-        call fzf#vim#ag(a:query, {'down': 1, 'options': '--delimiter : --nth 4..'})
+        call fzf#vim#ag(a:query, {'down': 10, 'options': '--delimiter : --nth 4..'})
     endfunc!
 
     func! _grep_word()
@@ -113,7 +113,7 @@ Plug 'nixprime/cpsm', {'do': 'PY3=OFF ./install.sh' }
 
     command! -nargs=* Grep call _grep(<q-args>)
 
-    nnoremap <silent> <C-E> :Grep<CR>
+    nnoremap <silent> <C-K> :Grep<CR>
     nnoremap <C-T> :Grep <C-R><C-W><CR>
 
 Plug 'itchyny/lightline.vim'
@@ -131,7 +131,7 @@ let g:lightline = {
 "Plug 'seletskiy/vim-autosurround'
 
 Plug 'SirVer/ultisnips'
-    let g:UltiSnipsExpandTrigger = '<nop>'
+    let g:UltiSnipsExpandTrigger = '<nul>'
     let g:UltiSnipsJumpForwardTrigger = '<C-J>'
     let g:UltiSnipsJumpBackwardTrigger = '<C-K>'
 
@@ -246,12 +246,7 @@ Plug 'justinmk/vim-sneak'
 
 Plug 'hynek/vim-python-pep8-indent'
 
-Plug 'vim-utils/vim-man'
-
 Plug 'kovetskiy/vim-bash'
-
-"Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
-"    vnoremap <C-T> :Tabularize /
 
 Plug 'junegunn/vim-easy-align'
     " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -289,6 +284,8 @@ Plug 'w0rp/ale'
     \   'scala': [function('ale#fixers#scalafmt#Fix')],
     \   'java': [function('ale#fixers#google_java_format#Fix')],
     \   'proto': [function('ale#fixers#clangformat#Fix')],
+    \   'c': [function('ale#fixers#clangformat#Fix')],
+    \   'cpp': [function('ale#fixers#clangformat#Fix')],
     \}
     let g:ale_linters = {
     \   'go': ['gobuild'],
@@ -307,40 +304,40 @@ Plug 'w0rp/ale'
             \ '--skip-removing-unused-imports --skip-sorting-imports')
     augroup end
 
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-    let g:VM_use_TextYankPost = 0
-    let g:VM_leader = "\\"
-    let g:VM_default_mappings = 0
-    let g:VM_no_meta_mappings = 1
-    "let g:VM_maps = {
-    "\ 'Select All': '<C-A>',
-    "\ }
+"Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+"    let g:VM_use_TextYankPost = 0
+"    let g:VM_leader = "\\"
+"    let g:VM_default_mappings = 0
+"    let g:VM_no_meta_mappings = 1
+"    "let g:VM_maps = {
+"    "\ 'Select All': '<C-A>',
+"    "\ }
 
-    fun! VM_before_auto()
-        call MacroBefore()
-    endfun
+"    fun! VM_before_auto()
+"        call MacroBefore()
+"    endfun
 
-    fun! VM_after_auto()
-        call MacroAfter()
-    endfun
+"    fun! VM_after_auto()
+"        call MacroAfter()
+"    endfun
 
-    function! MacroBefore(...)
-        unmap f
-        unmap F
-        unmap t
-        unmap T
-        unmap ,
-        unmap ;
-    endfunction!
+"    function! MacroBefore(...)
+"        unmap f
+"        unmap F
+"        unmap t
+"        unmap T
+"        unmap ,
+"        unmap ;
+"    endfunction!
 
-    function! MacroAfter(...)
-        map f <Plug>Sneak_f
-        map F <Plug>Sneak_F
-        map t <Plug>Sneak_t
-        map T <Plug>Sneak_T
-        map , <Plug>Sneak_,
-        map ; <Plug>Sneak_;
-    endfunction!
+"    function! MacroAfter(...)
+"        map f <Plug>Sneak_f
+"        map F <Plug>Sneak_F
+"        map t <Plug>Sneak_t
+"        map T <Plug>Sneak_T
+"        map , <Plug>Sneak_,
+"        map ; <Plug>Sneak_;
+"    endfunction!
 
 Plug 'pangloss/vim-javascript'
 
@@ -386,7 +383,7 @@ Plug 'tpope/vim-dispatch'
         au!
         au FileType java call _setup_java()
         au FileType java let b:dispatch = 'make'
-        au FileType java nmap <silent><buffer> <C-M> :JavaImportOrganize<CR>
+        au FileType java nmap <silent><buffer> <C-M> :CocCommand java.action.organizeImports<CR>
         au FileType java nmap <silent><buffer> gd :JavaDocSearch<CR>
         au FileType java nmap <silent><buffer> ; :cn<CR>
         au FileType java nmap <silent><buffer> <Leader>; :cN<CR>
@@ -449,24 +446,20 @@ set nofoldenable
 set noequalalways
 set winminheight=0
 set shortmess+=sAIc
-set viminfofile=$HOME/.vim/viminfo
+if !has('nvim')
+    set viminfofile=$HOME/.vim/viminfo
+endif
 set signcolumn=yes
 
 set backup
 
-set formatoptions=crq1jp
+set formatoptions=crq1j
 
 set list
 set lcs=trail:·,tab:\┈\┈ " <- trailing space here
 set fcs=vert:│
 
 let html_no_rendering=1
-
-nnoremap y h
-nnoremap h y
-
-nnoremap e k
-nnoremap k e
 
 " Ctrl+Backspace in cmd line
 cmap <C-H> <C-W>
@@ -498,8 +491,8 @@ inoremap <C-J> <nop>
 snoremap <C-J> <nop>
 
 nnoremap <C-H> <C-W>h
-nnoremap <C-J> <C-W>j
-nnoremap <C-K> <C-W>k
+nnoremap <C-N> <C-W>j
+nnoremap <C-E> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-_> <C-W>_
 nnoremap <C-^> <C-W>20+
@@ -517,7 +510,6 @@ vmap <expr> @ feedkeys(':norm @' . nr2char(getchar()) . "\<CR>")
 vmap <silent> > >gv
 vmap <silent> < <gv
 
-inoremap jj <ESC>
 nnoremap j gj
 nnoremap k gk
 
@@ -525,7 +517,7 @@ inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 
 cnoremap <C-A> <Home>
-cnoremap <C-E> <End>
+cnoremap <C-K> <End>
 
 noremap <expr> <Leader>s feedkeys(":sp " . expand('%:h') . "/")
 
@@ -570,6 +562,10 @@ augroup end
 augroup dir_autocreate
     au!
     au BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
+augroup end
+
+augroup terminal
+    au TermOpen * setl nonu nornu signcolumn=no
 augroup end
 
 augroup ft
