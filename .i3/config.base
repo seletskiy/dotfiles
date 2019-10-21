@@ -65,26 +65,26 @@ bindsym $mod+Ctrl+space focus mode_toggle
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+q workspace q
-bindsym $mod+w workspace w
-bindsym $mod+e workspace e
-bindsym $mod+a workspace a
-bindsym $mod+s workspace s
-bindsym $mod+d workspace d
+bindsym $mod+1 workspace a-1
+bindsym $mod+2 workspace a-2
+bindsym $mod+3 workspace a-3
+bindsym $mod+q workspace b-1
+bindsym $mod+d workspace b-2
+bindsym $mod+r workspace b-3
+bindsym $mod+a workspace c-1
+bindsym $mod+s workspace c-2
+bindsym $mod+h workspace c-3
 
 # move focused container to workspace
-bindcode $mod+Shift+10 exec i3-move-container 1
-bindcode $mod+Shift+11 exec i3-move-container 2
-bindcode $mod+Shift+12 exec i3-move-container 3
-bindcode $mod+Shift+24 exec i3-move-container q
-bindcode $mod+Shift+25 exec i3-move-container w
-bindcode $mod+Shift+26 exec i3-move-container e
-bindcode $mod+Shift+38 exec i3-move-container a
-bindcode $mod+Shift+39 exec i3-move-container s
-bindcode $mod+Shift+40 exec i3-move-container d
+bindcode $mod+Shift+10 exec i3-move-container a-1
+bindcode $mod+Shift+11 exec i3-move-container a-2
+bindcode $mod+Shift+12 exec i3-move-container a-3
+bindcode $mod+Shift+24 exec i3-move-container b-1
+bindcode $mod+Shift+25 exec i3-move-container b-2
+bindcode $mod+Shift+26 exec i3-move-container b-3
+bindcode $mod+Shift+38 exec i3-move-container c-1
+bindcode $mod+Shift+39 exec i3-move-container c-2
+bindcode $mod+Shift+40 exec i3-move-container c-3
 
 bindsym $mod+Shift+minus mark quick_1
 bindsym $mod+minus [con_mark="quick_1"] focus
@@ -102,6 +102,7 @@ for_window [title="^ffplay_gif_player"] floating enable
 for_window [title="Slack Call Minipanel"] kill
 for_window [instance="info.exe"] move position center
 for_window [instance="info.exe" title="QUIK: messages window"] floating enable, kill
+for_window [title="^Android Emulator - "] floating enable
 no_focus [instance="info.exe" title="QUIK: messages window"]
 
 floating_minimum_size 70 x 15

@@ -1,13 +1,13 @@
 set $left DP-3
 set $right DP-0
 
-workspace 1 output $left
-workspace 2 output $left
-workspace q output $left
-workspace w output $left
-workspace a output $left
-workspace s output $left
+workspace a-1 output $left
+workspace a-2 output $left
+workspace b-1 output $left
+workspace b-2 output $left
+workspace c-1 output $left
+workspace c-2 output $left
 
-workspace 3 output $right
-workspace e output $right
-workspace d output $right
+workspace a-3 output $right
+workspace b-3 output $right
+workspace c-3 output $right
