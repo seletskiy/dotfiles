@@ -1,13 +1,11 @@
 [Unit]
-Description=Simple X Hotkey Daemon
-Documentation=man:sxhkd(1)
+Description=xbindkeys hotkey daemon
 Requires=graphical.target keyboard.service
 After=graphical.target keyboard.service
 Before=keyboard.target
 
 [Service]
-ExecStart=/usr/bin/sxhkd
-ExecReload=/usr/bin/kill -SIGUSR1 $MAINPID
+ExecStart=/usr/bin/xbindkeys -n
 KillMode=process
 
 [Install]

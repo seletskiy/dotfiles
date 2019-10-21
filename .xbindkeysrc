@@ -1,0 +1,50 @@
+"urxvt -e tmux new"
+    Mod4 + Return
+
+"open-at-cwd urxvt -e tmux new"
+    Control+Mod4 + Return
+
+"modal-run"
+    Mod4 + w
+
+"volume down"
+    Mod4 + F2
+
+"volume up"
+    Mod4 + F3
+
+"sound-switch"
+    Mod4 + F4
+
+"systemctl --user restart monitors"
+    Mod4 + F8
+
+"translator"
+    Mod4 + k
+
+"bookmarks"
+    Mod4 + t
+
+"bookmarks add"
+    Control+Mod4 + t
+
+"kuake --terminal --bottom"
+    Mod4 + grave
+
+"carcosa-ui"
+    Mod4 + x
+
+"carcosa-ui --mode=login-password"
+    Control+Mod4 + x
+
+"environment-info"
+    Mod4 + Execute
+
+"sudo brightness down"
+    Mod4 + F11
+
+"sudo brightness up"
+    Mod4 + F12
+
+"screenshot deepin"
+    Mod4 + backslash
