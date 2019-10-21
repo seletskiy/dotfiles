@@ -14,7 +14,7 @@ s cell-select 7
 x cell-select 8
 
 3 cell-select 9
-e cell-select 10
+r cell-select 10
 h cell-select 11
 c cell-select 12
 
@@ -24,8 +24,8 @@ f cell-select 15
 v cell-select 16
 
 y move-left,warp
-j move-down,warp
-k move-up,warp
+n move-down,warp
+e move-up,warp
 l move-right,warp
 
 u cut-left
@@ -46,5 +46,5 @@ Escape end
 
 Tab grid 4x4,cursorzoom 320 200
 
-n warp,click 4
+k warp,click 4
 m warp,click 5
