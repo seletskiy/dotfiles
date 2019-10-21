@@ -421,6 +421,7 @@ fi
 
     alias v='vim'
     alias vi='vim'
+    alias vim='nvim'
 
     alias ls='ls --color=auto'
     alias l='exa -la -snew --color-scale'
@@ -605,7 +606,7 @@ fi
     alias -g -- '#!'='# -v'
     alias -g -- '#+'='| paste -sd+ | bc'
     alias -g -- '#:1'='#f 1'
-    alias -g -- '#~'='| () { awk "\$$1 == ${(qqq)${(@)*:2}}" }'
+    alias -g -- '#~'='| () { awk "\$$1 ~ ${(qqq)${(@)*:2}}" }'
 
     alias kub='skube'
     alias kaf='kub apply -f'
