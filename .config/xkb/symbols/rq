@@ -15,9 +15,25 @@ xkb_symbols "abc" {
     key <AB06> { [ k, K, k, K ] }; // N
 };
 
+partial alphanumeric_keys
 xkb_symbols "hjkl" {
-    key <AC06> { [ y, Y, KP_Left,  KP_Left  ] }; // H
-    key <AC07> { [ n, N, KP_Down,  KP_Down  ] }; // J
-    key <AC08> { [ e, E, KP_Up,    KP_Up    ] }; // K
-    key <AC09> { [ l, L, KP_Right, KP_Right ] }; // L
+    key <AC06> { // H
+        symbols[Group1] = [ y, Y, KP_Left,  KP_Left  ],
+        symbols[Group2] = [ Cyrillic_er, Cyrillic_ER, KP_Left, KP_Left ]
+    };
+
+    key <AC07> { // J
+        symbols[Group1] = [ n, N, KP_Down,  KP_Down ],
+        symbols[Group2] = [ Cyrillic_o, Cyrillic_O, KP_Down, KP_Down ]
+    };
+
+    key <AC08> { // K
+        symbols[Group1] = [ e, E, KP_Up,    KP_Up ],
+        symbols[Group2] = [ Cyrillic_el, Cyrillic_EL, KP_Up, KP_Up ]
+    };
+
+    key <AC09> { // L
+        symbols[Group1] = [ l, L, KP_Right, KP_Right ],
+        symbols[Group2] = [ Cyrillic_de, Cyrillic_DE, KP_Right, KP_Right ]
+    };
 };
