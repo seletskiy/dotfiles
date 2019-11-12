@@ -1,0 +1,1 @@
+#!/usr/bin/scrap /opt/android-sdk/emulator/emulator @$1 -no-boot-anim -netdelay none -no-snapshot -wipe-data -skin $2 #.
