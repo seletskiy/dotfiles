@@ -1,0 +1,5 @@
+#!/bin/bash
+
+curl -s "https://apteka.ru/search/?q=$(url "$*")&order=products%2Cmaterials" \
+    | pup '.item_name a[itemprop="name"] json{}' \
+    | jq -r '.[]|"\(.text)\thttps://apteka.ru\(.href)"'
