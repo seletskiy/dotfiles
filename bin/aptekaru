@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# https://unix.stackexchange.com/questions/136510/process-substitution-with-tee-and-paste
+# :C
+
+-in()  { { "${@:2}"; echo; } >&$1; }
+-out() { sed '/^$/q' <&$1; }
+
+exec {a}<> <(:)
+exec {b}<> <(:)
+exec {c}<> <(:)
+
 curl -s "https://apteka.ru/search/?q=$(url "$*")&order=products%2Cmaterials" \
-    | pup '.item_name a[itemprop="name"] json{}' \
-    | jq -r '.[]|"\(.text)\thttps://apteka.ru\(.href)"'
+    | tee >/dev/null \
+        >(-in $a pup 'span[itemprop="price"] text{}') \
+        >(-in $b pup '.item_name a[itemprop="name"] text{}') \
+        >(-in $c pup '.item_name a[itemprop="name"] attr{href}') \
+    | paste <(-out $a) <(-out $b) <(-out $c | sed 's#^#https://apteka.ru#') \
+    | column -t -s$'\t'
