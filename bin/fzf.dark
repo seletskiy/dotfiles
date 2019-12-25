@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# fzf.vim passes --color argument overriding any custom colorscheme
+args=()
+while [[ "$1" ]]; do
+    case "$1" in
+        --color) shift 2;;
+        *)       args+=("$1"); shift;;
+    esac
+done
+
+exec /bin/fzf \
+    --color=$(
+        printf "%s\n"     \
+            "fg:250"      \
+            "bg:234"      \
+            "bg+:17"      \
+            "fg+:255"     \
+            "hl:226"      \
+            "hl+:226"     \
+            "info:240"    \
+            "spinner:46"  \
+            "prompt:250"  \
+            "pointer:226" \
+            "marker:1"    \
+            "gutter:234"  \
+        | paste -sd,
+    ) "${args[@]}"

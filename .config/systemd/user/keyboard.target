@@ -4,5 +4,5 @@ Description=Fully Configured Keyboard
 [Install]
 WantedBy=workplace.target
 Also=keyboard.service
-Also=sxhkd.service
+Also=xbindkeys.service
 Also=keynav.service

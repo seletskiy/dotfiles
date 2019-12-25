@@ -32,20 +32,8 @@ Plug 'wojtekmach/vim-rename'
 
 Plug 'vim-scripts/repeat.vim'
 
-Plug 'reconquest/vim-colorscheme'
-    let g:colors_name = "reconquest"
-
-    au ColorScheme * hi MatchParen ctermfg=214 ctermbg=none cterm=bold
-    au ColorScheme * hi Search cterm=bold ctermfg=16 ctermbg=226
-    au ColorScheme * hi IncSearch cterm=none ctermfg=15 ctermbg=92
-    au ColorScheme * hi Cursor cterm=bold ctermfg=16 ctermbg=226
-    au ColorScheme * hi DiffChange ctermbg=162 ctermfg=15 cterm=bold
-    au ColorScheme * hi Error ctermbg=1 ctermfg=16 cterm=bold
-    au ColorScheme * hi ColorColumn ctermbg=233
-    au ColorScheme * hi GitDeleted ctermfg=88
-    au ColorScheme * hi GitAdded ctermfg=22
-    au ColorScheme * hi GitModified ctermfg=238
-    au ColorScheme * hi CocErrorSign ctermfg=196
+Plug 'seletskiy/vim-colorscheme-serenity'
+    let g:colors_name = "serenity"
 
 
 Plug 'vim-scripts/surround.vim'
@@ -136,8 +124,8 @@ Plug 'SirVer/ultisnips'
     let g:UltiSnipsJumpBackwardTrigger = '<C-K>'
 
     let g:UltiSnipsSnippetDirectories = [
-    \ $HOME.'/.vim/bundle/snippets',
-    \ $HOME.'/.vim/UltiSnips'
+        \ $HOME.'/.vim/bundle/snippets',
+        \ $HOME.'/.vim/UltiSnips'
     \ ]
 
     let g:UltiSnipsEnableSnipMate = 0
@@ -203,7 +191,7 @@ Plug 'fatih/vim-go', {'for': 'go'}
     augroup vim_go_custom
         au!
         au FileType go nmap <buffer> <Leader>h :GoDoc<CR>
-        au FileType go nmap <silent><buffer> gd :GoDef<CR>
+        "au FileType go nmap <silent><buffer> gd :GoDef<CR>
         au FileType go nmap <silent><buffer> gl :call go#def#Jump('vsplit', 0)<CR>
         au FileType go nmap <silent><buffer> gk :call go#def#Jump('split', 0)<CR>
 
@@ -374,6 +362,15 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
     inoremap <silent> <Tab> <c-r>=_expand_snippet()<cr>
     xnoremap <silent> <Tab> <Esc>:call UltiSnips#SaveLastVisualSelection()<cr>gvs
 
+    nmap <silent> gd <Plug>(coc-definition)
+
+"Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'josa42/coc-go', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'neoclide/coc-vetur', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'neoclide/coc-git', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'fannheyward/coc-xml', {'do': 'yarn install --frozen-lockfile'}
+
 Plug 'tpope/vim-dispatch'
     func! _setup_java()
         setlocal errorformat=[ERROR]\ %f:[%l\\,%v]\ %m
@@ -384,13 +381,16 @@ Plug 'tpope/vim-dispatch'
         au FileType java call _setup_java()
         au FileType java let b:dispatch = 'make'
         au FileType java nmap <silent><buffer> <C-M> :CocCommand java.action.organizeImports<CR>
-        au FileType java nmap <silent><buffer> gd :JavaDocSearch<CR>
+        "au FileType java nmap <silent><buffer> gd :JavaDocSearch<CR>
         au FileType java nmap <silent><buffer> ; :cn<CR>
         au FileType java nmap <silent><buffer> <Leader>; :cN<CR>
     augroup end
 
-Plug 'eclim/eclim'
-    let g:EclimSignLevel = 'off'
+"Plug 'eclim/eclim'
+"    let g:EclimSignLevel = 'off'
+
+Plug 'digitaltoad/vim-pug'
+Plug 'cakebaker/scss-syntax.vim'
 
 augroup end
 
@@ -410,6 +410,7 @@ set rtp^=~/.vim
 
 set tags=./.tags;/
 
+set clipboard=unnamed
 set title
 set encoding=utf-8
 set printencoding=cp1251
@@ -456,7 +457,7 @@ set backup
 set formatoptions=crq1j
 
 set list
-set lcs=trail:·,tab:\┈\┈ " <- trailing space here
+set lcs=trail:·,tab:\ \ " <- trailing space here
 set fcs=vert:│
 
 let html_no_rendering=1
@@ -568,6 +569,30 @@ augroup terminal
     au TermOpen * setl nonu nornu signcolumn=no
 augroup end
 
+func! _syn_vue_extend_pug()
+    unlet b:current_syntax
+    syn include @vuePug syntax/pug.vim
+    syn region  vuePugTemplate start=+<template lang="pug">+ keepend end=+</template>+me=s-1 contains=@vuePug,htmlScriptTag,@htmlPreproc
+endfunc
+
+func! _syn_vue_extend_scss()
+    unlet b:current_syntax
+    syn include @vueScss syntax/scss.vim
+    syn region  vueScssTemplate start=+<style lang="scss">+ keepend end=+</style>+me=s-1 contains=@vueScss,htmlScriptTag,@htmlPreproc
+endfunc
+
+func! _syn_vue_extend_ts()
+    unlet b:current_syntax
+    syn include @vueTs syntax/typescript.vim
+    syn region  vueTsTemplate start=+<script lang="ts">+ keepend end=+</script>+me=s-1 contains=@vueTs,htmlScriptTag,@htmlPreproc
+endfunc
+
+func! _syn_vue_extend()
+    call _syn_vue_extend_pug()
+    call _syn_vue_extend_scss()
+    call _syn_vue_extend_ts()
+endfunc
+
 augroup ft
     au!
     au BufEnter *.test.sh set ft=test.sh
@@ -604,6 +629,7 @@ augroup ft
     "au FileType go nnoremap <buffer> gd :GoDef<CR>
     au BufRead,BufNewFile *.slide setfiletype present
     au BufRead,BufNewFile *standup setfiletype standup
+    au FileType vue call _syn_vue_extend()
 augroup end
 
 augroup vimrc
@@ -751,6 +777,30 @@ augroup undo
     au!
     au CursorHoldI * call feedkeys("\<C-G>u", "n")
 augroup end
+
+func! _split_set_content()
+    let l:dirname = expand('%:h')
+    let l:ext = expand('%:e')
+    return l:dirname . '/.' . l:ext
+endfunc!
+
+func! _split_move_cursor()
+    let l:ext = expand('%:e')
+    call setcmdpos(len(getcmdline()) - len(expand(l:ext)))
+    return ""
+endfunc!
+
+nnoremap <Leader>w :e <C-R>=_split_set_content()<CR><C-R>=_split_move_cursor()<CR>
+nnoremap <Leader>x :vsp <C-R>=_split_set_content()<CR><C-R>=_split_move_cursor()<CR>
+nnoremap <Leader>t :sp <C-R>=_split_set_content()<CR><C-R>=_split_move_cursor()<CR>
+
+nmap <leader>z :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
 
 py import px
 py for full_name, name in px.libs().items(): exec("import " + full_name)

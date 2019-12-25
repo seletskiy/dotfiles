@@ -25,7 +25,7 @@ def main(action, profile)
     placeholder_base = 'xxx'
     `git ls-files`.split("\n").each() do |file_name|
         target_dir = File.expand_path('~') + '/'
-        if file_name.start_with?('<root>/')
+        if file_name.start_with?('_/')
             target_dir = '/'
         end
 
@@ -59,9 +59,7 @@ def main(action, profile)
         end
 
         if source_type
-            if File.exists?(file_name)
-              self.send(:"#{action}_#{source_type}", file_name, target_name)
-            end
+          self.send(:"#{action}_#{source_type}", file_name, target_name)
         end
     end
 
@@ -80,8 +78,8 @@ def ensure_dir(file_name, sudo)
 end
 
 def remove_rootfs_prefix(source)
-    if source.start_with?('/<root>')
-        return source[7..-1], true
+    if source.start_with?('/_')
+        return source[2..-1], true
     else
         return source, false
     end
@@ -91,7 +89,7 @@ def install_file(source, destination)
     destination, rootfs = remove_rootfs_prefix(destination)
 
     # if source is actually a submodule (indistinguishable in git ls-files)
-    if File.exist?(source + "/.git")
+    if File.exist?(".git/modules/" + source)
         if File.exist?(destination)
             if File.realpath(source) == File.realpath(destination)
                 return
@@ -99,8 +97,14 @@ def install_file(source, destination)
         end
     end
 
-    if File.exist?(destination) && FileUtils.identical?(source, destination)
+    if File.exist?(destination)
+      if !rootfs && File.ftype(destination) == "link"
         return
+      end
+
+      if FileUtils.identical?(source, destination)
+        return
+      end
     end
 
     ensure_dir(destination, rootfs)

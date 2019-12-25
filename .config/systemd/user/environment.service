@@ -15,8 +15,15 @@ Environment=RUBYPATH=/opt/ruby/2.5.0/bin
 Environment=GEM_HOME=/opt/ruby/2.5.0/gems
 EnvironmentFile=%h/.config/dotfiles.profile
 ExecStart=/usr/bin/systemctl --user import-environment
-ExecStart=/usr/bin/sh -c '/usr/bin/systemctl --user set-environment "PATH=$(\
-    /usr/bin/paste < %h/.config/path -sd: | /usr/bin/sed -re"s#~#%h#g")"'
+ExecStart=/usr/bin/sh -c '\
+    /usr/bin/systemctl --user set-environment "PATH=$(\
+        /usr/bin/paste < %h/.config/path -sd: | /usr/bin/sed -re"s#~#%h#g")"'
+ExecStart=/usr/bin/sh -c '\
+    /usr/bin/systemctl --user set-environment "LS_COLORS=$(\
+        /usr/bin/paste < %h/.config/ls_colors -sd:)"'
+ExecStart=/usr/bin/sh -c '\
+    /usr/bin/systemctl --user set-environment "EXA_COLORS=$(\
+        /usr/bin/paste < %h/.config/exa_colors -sd:)"'
 ExecReload=/usr/bin/sh -c 'env -0 | sed -z "s/=/\\\\x0/" | xargs -0 -n2 \
     tmux set-environment -g ; \
     tmux set -g update-environment "$(echo $(env -0 | grep -zo "^\\w+"))"'

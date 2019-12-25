@@ -101,7 +101,7 @@ zmodload zsh/zprof
         if ! type zgen >/dev/null 2>&1; then
             if [[ ! -d $ZGEN_DIR/tarjoilija/zgen ]]; then
                 git clone https://github.com/tarjoilija/zgen.git \
-                    "~/.zgen/tarjoilija/zgen"
+                    $ZGEN_DIR/tarjoilija/zgen
             fi
 
             source $ZGEN_DIR/tarjoilija/zgen/zgen.zsh
@@ -145,6 +145,7 @@ zmodload zsh/zprof
             unsetopt global_rcs
             unsetopt menu_complete
             setopt prompt_sp
+            unsetopt interactive_comments
         }
 
         #{
@@ -209,8 +210,6 @@ zmodload zsh/zprof
     }
 
     {
-        FAST_HIGHLIGHT_CUSTOM_HIGHLIGHTERS+=(:hijack:highlight)
-
         ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(forward-char)
         ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(end-of-line)
     }
@@ -254,8 +253,20 @@ zmodload zsh/zprof
             zgen load kovetskiy/zsh-quotes
             zgen load zsh-users/zsh-history-substring-search
 
+            unsetopt interactive_comments
+
             zgen load zdharma/fast-syntax-highlighting
             zgen load zsh-users/zsh-autosuggestions && _zsh_autosuggest_start
+
+            functions[hijack:_zsh_highlight]=$functions[_zsh_highlight]
+
+            zstyle 'hijack:highlighting' bg=16,fg=255
+
+            _zsh_highlight() {
+                if ! :hijack:highlight; then
+                    hijack:_zsh_highlight
+                fi
+            }
 
             :bindkeys
         fi
@@ -272,29 +283,68 @@ if :is-interactive; then
 
         prompt lambda17
 
-        zstyle lambda17:00-banner bg "2"
-        zstyle lambda17:05-sign text ""
-        zstyle lambda17:20-git left "┉"
-        zstyle lambda17:01-git-stash text "⚑"
-        zstyle lambda17:01-git-stash fg "1"
-        zstyle lambda17:01-git-behind fg "0"
-        zstyle lambda17:01-git-ahead fg "0"
-        zstyle lambda17::terminal bg "234"
+        zstyle "lambda17:00-banner" bg "2"
+        zstyle "lambda17:05-sign" text "111"
+        zstyle "lambda17:01-git-stash" text "⚑"
+        zstyle "lambda17:01-git-stash" fg "1"
+        zstyle "lambda17:01-git-behind" fg "0"
+        zstyle "lambda17:01-git-ahead" fg "0"
+        zstyle "lambda17::terminal" bg "234"
+        zstyle "lambda17:00-main" fg 241
+        zstyle "lambda17:01-dir-writable" text "♦"
+        zstyle "lambda17:26-git-dirty" text "∙"
+
+        zstyle -d "lambda17:00-main" bg
+
+        zstyle -d "lambda17>00-tty>00-root>00-main>00-status>00-banner" 05-sign
+        zstyle -d "lambda17>00-tty>00-root>00-main>00-status" 00-banner
+        zstyle -d "lambda17>00-tty>00-root>00-main>00-status" 09-arrow
+        zstyle -d "lambda17>00-tty>00-root>00-main>20-git"
+        zstyle -d "lambda17>00-tty>00-root>00-main>90-command"
+
+        zstyle "lambda17>00-tty>00-root>00-main>00-status" \
+            20-flags lambda17:panel
+
+        zstyle "lambda17:10-dir" omit-empty true
+        zstyle "lambda17:10-dir" fg 250
+        zstyle "lambda17:10-dir" left " "
+        zstyle "lambda17:10-dir" right " "
+        #zstyle -d "lambda17:00-main" transform
+
+        zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
+            26-git-dirty lambda17:text
+        zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
+            01-dir-writable lambda17:text
+        zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
+            99-arrow-ok lambda17:text
+        zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
+            99-arrow-fail lambda17:text
+        zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
+            25-head lambda17:git-head
+
+        zstyle "lambda17:20-flags" min-width 2
+
+        zstyle "lambda17:99-arrow-ok" text "❱"
+        zstyle "lambda17:99-arrow-ok" when '[[ $_lambda17_exit_code -eq 0 ]]'
+        zstyle "lambda17:99-arrow-ok" fg 240
+
+        zstyle "lambda17:99-arrow-fail" text "❱"
+        zstyle "lambda17:99-arrow-fail" when '[[ $_lambda17_exit_code -ne 0 ]]'
+        zstyle "lambda17:99-arrow-fail" fg "red"
+
+        zstyle "lambda17:25-head" fg-detached "220"
 
         zstyle "lambda17:00-main::conceal:override" ribbon "❱"
 
-        zstyle "lambda17:00-main::conceal:override" format \
-            '%B%T%k %f%k$(sed -re "s/.$/& /" <<< "${${${${${${PWD#$HOME}:-~}##*/}:-/}/\\~/}}")%B%F{236}${padding}%b%F{240}❱%f %f'
-    }
+        zstyle -d "lambda17:00-main::conceal" weak
 
-    # term
-    {
-        if [ "$BACKGROUND" ]; then
-            eval `dircolors ~/.dircolors.$BACKGROUND`
-            if [ "$TMUX" ]; then
-                export TERM=screen-256color
-            fi
-        fi
+        zstyle "lambda17:00-main::conceal:override" format \
+            '%B%k%f%k${${${PWD#$HOME}##*/}:+ ${${PWD#$HOME}##*/}} %B%F{236}${padding}%b%F{240}❱%f '
+
+        zstyle "lambda17:00-main::conceal:override" right \
+            '%F{220}%T%f'
+
+        #zstyle "lambda17:15-pwd" text "$pwd"
     }
 
     # ctrl-q
@@ -424,7 +474,7 @@ fi
     alias vim='nvim'
 
     alias ls='ls --color=auto'
-    alias l='exa -la -snew --color-scale'
+    alias l='exa -la -snew' # --color-scale'
     alias lt='l -T --level=2'
 
     alias rf='rm -rf'
@@ -440,7 +490,7 @@ fi
     alias '%'=':sed-replace:interactive'
     alias '%j'='() { :sed-replace:interactive "$1" "$2" **/*.java; }'
 
-    alias u='exec usb-shell'
+    alias u='usb-shell'
 
     alias cnp=':carcosa:new-password'
     alias cap=':carcosa:add-password'
@@ -523,8 +573,9 @@ fi
     alias pqi='pacman -Qi'
     alias ppu='sudo pacman -U'
     alias pps='pacman -Ss'
-    alias po='pkgfile'
-    alias ppo='() { pp "$(po "$1")" }'
+    alias pf='pacman -F'
+    #alias po='pkgfile'
+    #alias ppo='() { pp "$(po "$1")" }'
     alias ppyu='sudo pacman -Syu'
     alias ppyuz='ppyu --ignore linux,zfs-linux,zfs-utils-linux,spl-linux,spl-utils-linux'
 
