@@ -12,7 +12,7 @@ done
 exec /bin/fzf \
     --color=$(
         printf "%s\n"     \
-            "fg:250"      \
+            "fg:240"      \
             "bg:234"      \
             "bg+:17"      \
             "fg+:255"     \

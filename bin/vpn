@@ -37,8 +37,8 @@ set -euo pipefail
         socks_flag=(--socks-proxy 127.0.0.1 "$socks")
     fi
 
-    local up_script="resolvconf -a \$1 <<< 'nameserver 8.8.8.8'"
-    local down_script="resolvconf -d \$1"
+    local up_script=""
+    local down_script=""
 
     if [[ "$socks" ]]; then
         up_script+="

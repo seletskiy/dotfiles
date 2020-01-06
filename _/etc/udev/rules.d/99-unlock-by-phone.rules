@@ -1,2 +1,0 @@
-ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_SERIAL_SHORT}=="TA8900CK0A", RUN+="/usr/bin/su operator -lc 'DISPLAY=:0 xautolock -locknow'"
-ACTION=="add", SUBSYSTEM=="usb", ENV{ID_SERIAL_SHORT}=="TA8900CK0A", RUN+="/usr/bin/killall slock", RUN+="/usr/bin/xset dpms standby"

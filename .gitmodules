@@ -6,3 +6,6 @@
 	path = .deadfiles
 	url = https://github.com/deadcrew/deadfiles
 	branch = master
+[submodule ".jewfiles"]
+	path = .jewfiles
+	url = git@bitbucket.org:kovetskiy/jewfiles.git

@@ -1,1 +1,1 @@
-#!/usr/bin/scrap efibootmgr # windows #:1 #- '\d+' #x sudo efibootmgr -n && reboot
+#!/usr/bin/scrap efibootmgr # windows #:1 #- '\d+' #x sudo efibootmgr -n && systemctl hibernate

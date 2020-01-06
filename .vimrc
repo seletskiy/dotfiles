@@ -58,7 +58,7 @@ Plug 'seletskiy/nginx-vim-syntax'
 Plug 'junegunn/fzf', {'do': './install --all'}
 Plug 'junegunn/fzf.vim'
     let g:fzf_prefer_tmux = 0
-    let g:fzf_layout = { 'right': '~40%' }
+    let g:fzf_layout = { 'down': '~40%' }
 
     func! _select_file()
         "call _snippets_stop()
@@ -120,8 +120,8 @@ let g:lightline = {
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsExpandTrigger = '<nul>'
-    let g:UltiSnipsJumpForwardTrigger = '<C-J>'
-    let g:UltiSnipsJumpBackwardTrigger = '<C-K>'
+    let g:UltiSnipsJumpForwardTrigger = '<C-F>'
+    let g:UltiSnipsJumpBackwardTrigger = '<C-G>'
 
     let g:UltiSnipsSnippetDirectories = [
         \ $HOME.'/.vim/bundle/snippets',
@@ -161,6 +161,9 @@ Plug 'SirVer/ultisnips'
         au BufEnter,BufWinEnter *.snippets let g:pymode_lint = 0
         au BufEnter,BufWinEnter *.py let g:pymode_lint = 1
     augroup end
+
+    nnoremap <C-C><C-D> :call _snippets_open_dotfiles()<CR>
+    nnoremap <C-C><C-S> :call _snippets_open_reconquest()<CR>
 
 Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
@@ -246,7 +249,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'deadcrew/deadfiles'
 
 Plug 'kovetskiy/vim-ski'
-    let g:skeletons_dir=$HOME . '/.vim/skeletons/'
+    let g:skeletons_dir=$HOME . '/.deadfiles/.vim/skeletons/'
 
 Plug 'FooSoft/vim-argwrap'
 
@@ -287,9 +290,14 @@ Plug 'w0rp/ale'
 
     augroup _java_codestyle
         au!
+        au BufRead,BufNewFile *.java setlocal ts=2 sts=2 sw=2 expandtab
         au BufRead,BufNewFile *.java
-            \ call ale#Set('google_java_format_options',
+            \ call ale#Set('java_google_java_format_executable',
+            \ 'palantir-java-format')
+        au BufRead,BufNewFile *.java
+            \ call ale#Set('java_google_java_format_options',
             \ '--skip-removing-unused-imports --skip-sorting-imports')
+
     augroup end
 
 "Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -392,6 +400,10 @@ Plug 'tpope/vim-dispatch'
 Plug 'digitaltoad/vim-pug'
 Plug 'cakebaker/scss-syntax.vim'
 
+"Plug 'liuchengxu/vim-clap', { 'do': function('clap#helper#build_all') }
+
+Plug 'terryma/vim-expand-region'
+
 augroup end
 
 call plug#end()
@@ -488,8 +500,8 @@ vnoremap <silent> <C-G> $%
 nnoremap <silent> <C-G> :ArgWrap<CR>
 inoremap <silent> <C-G> <C-\><C-O>:ArgWrap<CR>
 
-inoremap <C-J> <nop>
-snoremap <C-J> <nop>
+"iunmap <C-D> <nop>
+"sunmap <C-D> <nop>
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-N> <C-W>j
@@ -519,8 +531,6 @@ nnoremap <F1> <ESC>
 
 cnoremap <C-A> <Home>
 cnoremap <C-K> <End>
-
-noremap <expr> <Leader>s feedkeys(":sp " . expand('%:h') . "/")
 
 inoremap <expr> <C-O> pumvisible()
             \ ? (feedkeys("\<C-N>") ? '' : '')

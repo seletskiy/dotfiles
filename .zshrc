@@ -88,13 +88,9 @@ zmodload zsh/zprof
 {
     {
         if ! :is-interactive; then
-            compinit() {
-                :
-            }
-
-            compdef() {
-                :
-            }
+            compinit() { : }
+            compdef()  { : }
+            stty()     { : }
         fi
 
         # unless, zsh will crash with core dumped
@@ -236,6 +232,7 @@ zmodload zsh/zprof
         zgen load seletskiy/zsh-context-aliases
         zgen load seletskiy/zsh-git-smart-commands
         zgen load seletskiy/zsh-hash-aliases
+        zgen load deadcrew/deadfiles
 
         #zgen load seletskiy/zsh-uber-ssh
 
@@ -244,23 +241,25 @@ zmodload zsh/zprof
                 eval "$(sed -r -e 's/\+s//' -e '/bindkey/d' /usr/share/fzf/key-bindings.zsh)"
             }
 
-            zgen load deadcrew/deadfiles
             zgen load seletskiy/zsh-hijack
             zgen load kovetskiy/zsh-alias-search
             zgen load seletskiy/zsh-ash-completion
             zgen load seletskiy/zsh-smart-kill-word
             zgen load kovetskiy/zsh-add-params
             zgen load kovetskiy/zsh-quotes
-            zgen load zsh-users/zsh-history-substring-search
 
             unsetopt interactive_comments
 
             zgen load zdharma/fast-syntax-highlighting
+
+            zgen load zsh-users/zsh-history-substring-search
+            HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=""
+
             zgen load zsh-users/zsh-autosuggestions && _zsh_autosuggest_start
 
             functions[hijack:_zsh_highlight]=$functions[_zsh_highlight]
 
-            zstyle 'hijack:highlighting' bg=16,fg=255
+            zstyle 'hijack:highlighting' style 'bg=16,fg=255'
 
             _zsh_highlight() {
                 if ! :hijack:highlight; then
@@ -304,11 +303,11 @@ if :is-interactive; then
 
         zstyle "lambda17>00-tty>00-root>00-main>00-status" \
             20-flags lambda17:panel
+        zstyle "lambda17>00-tty>00-root>00-main" \
+            10-arrow lambda17:panel
 
         zstyle "lambda17:10-dir" omit-empty true
         zstyle "lambda17:10-dir" fg 250
-        zstyle "lambda17:10-dir" left " "
-        zstyle "lambda17:10-dir" right " "
         #zstyle -d "lambda17:00-main" transform
 
         zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
@@ -316,13 +315,11 @@ if :is-interactive; then
         zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
             01-dir-writable lambda17:text
         zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
-            99-arrow-ok lambda17:text
-        zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
-            99-arrow-fail lambda17:text
-        zstyle "lambda17>00-tty>00-root>00-main>00-status>20-flags" \
             25-head lambda17:git-head
-
-        zstyle "lambda17:20-flags" min-width 2
+        zstyle "lambda17>00-tty>00-root>00-main>10-arrow" \
+            99-arrow-ok lambda17:text
+        zstyle "lambda17>00-tty>00-root>00-main>10-arrow" \
+            99-arrow-fail lambda17:text
 
         zstyle "lambda17:99-arrow-ok" text "❱"
         zstyle "lambda17:99-arrow-ok" when '[[ $_lambda17_exit_code -eq 0 ]]'
@@ -334,17 +331,18 @@ if :is-interactive; then
 
         zstyle "lambda17:25-head" fg-detached "220"
 
-        zstyle "lambda17:00-main::conceal:override" ribbon "❱"
+        zstyle "lambda17:00-main::conceal:override" ribbon " "
 
         zstyle -d "lambda17:00-main::conceal" weak
 
         zstyle "lambda17:00-main::conceal:override" format \
-            '%B%k%f%k${${${PWD#$HOME}##*/}:+ ${${PWD#$HOME}##*/}} %B%F{236}${padding}%b%F{240}❱%f '
+            '%B%K{0}%f${${${PWD#$HOME}##*/}:+╸${${PWD#$HOME}##*/}} %B%F{236}${padding}%b%k%F{0}%f '
 
+        zstyle "lambda17:00-main::conceal:override" right-justify false
         zstyle "lambda17:00-main::conceal:override" right \
-            '%F{220}%T%f'
+            ' %F{240}╍ %F{220}%T%f'
 
-        #zstyle "lambda17:15-pwd" text "$pwd"
+        zstyle "lambda17:15-pwd" text '${${${PWD#$HOME}##*/}:+╸${${PWD#$HOME}##*/}} '
     }
 
     # ctrl-q
@@ -432,8 +430,11 @@ fi
     hijack:transform '^(\S+)(\s.*)!$' \
         'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-    hijack:transform '^[c]!? |^/[g]? |^@ |^=' \
+    hijack:transform '^[c]!? |^@ |^=' \
         'sed -r s"/([\\$<>{}&\\\"([!?)''#^*;|])/\\\\\1/g"'
+
+    hijack:transform '^/[g]? ' \
+        'sed -r s"/([\\$<>{}&\\\"([?)''^*;|])/\\\\\0/g"'
 
     hijack:transform '^=' \
         'sed -r s"/^=(\S)/calc \1/g"'
@@ -471,7 +472,6 @@ fi
 
     alias v='vim'
     alias vi='vim'
-    alias vim='nvim'
 
     alias ls='ls --color=auto'
     alias l='exa -la -snew' # --color-scale'

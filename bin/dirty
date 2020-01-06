@@ -1,0 +1,8 @@
+#!/bin/bash
+
+:gitmon() {
+    gitmon -c ~/.config/gitmon.conf -d ~/.cache/gitmon "$@"
+}
+
+:gitmon -A &>/dev/null
+:gitmon -L | awk '$3 ~ /dirty/ { print $1 }'

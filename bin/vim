@@ -1,3 +1,21 @@
 #!/bin/bash
 
-exec nvim "${@}"
+shopt -s extglob
+
+args=()
+
+for arg in "$@"; do
+    case "$arg" in
+        # for opening file:line:column format which is provided
+        # by `tmux-autocomplete` for `ag` output
+        *:+([0-9]):+([0-9])?(:)*)
+            arg=$(sed -re 's/^(.*):([0-9]+):([0-9]+)(:.*)?/\1\t\2,\3/' <<< "$arg")
+            args+=("$(cut -f1 <<< "$arg")" "+call cursor($(cut -f2 <<< "$arg"))")
+            ;;
+        *)
+            args+=("$arg")
+            ;;
+    esac
+done
+
+exec nvim "${args[@]}"
