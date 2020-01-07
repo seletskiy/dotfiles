@@ -1,7 +1,7 @@
-"urxvt -e tmux new"
+"terminal"
     Mod4 + Return
 
-"open-at-cwd urxvt -e tmux new"
+"open-at-cwd terminal"
     Control+Mod4 + Return
 
 "modal-run"

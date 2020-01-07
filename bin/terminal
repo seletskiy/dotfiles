@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -euo pipefail
+
+session=terminal-$(pwgen -0A 10 1)
+
+tmux new -s "$session" -d "${@}"
+
+urxvt -e tmux \
+    wait-for -S "$session" \; \
+    attach -t "$session" &
+
+tmux wait-for "$session"
+
+echo "$session"
