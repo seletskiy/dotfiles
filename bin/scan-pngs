@@ -1,0 +1,22 @@
+#!/bin/bash
+
+count=${1:-1}
+
+device=$(
+    scanimage -f "%t"$'\t'"%d%n" \
+    | awk -F$'\t' '$1 == "multi-function peripheral" { print $2 }'
+)
+
+mkdir -p ~/images/scans && cd ~/images/scans
+date=$(timestamp)
+
+echo ":: scanning $count images ($device)"
+
+scanimage -d xerox_mfp:libusb:001:021 \
+    --format=png \
+    --mode=Lineart \
+    --resolution=300 \
+    --batch-count=$count \
+    --batch=$date.%d.png \
+    --batch-prompt \
+    --batch-print
