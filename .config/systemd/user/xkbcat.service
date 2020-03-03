@@ -1,0 +1,11 @@
+[Unit]
+Description=xbkcat keylogger
+Requires=graphical.target keyboard.service
+After=graphical.target keyboard.service
+Before=keyboard.target
+
+[Service]
+ExecStart=sh -c '~/sources/github.com/anko/xkbcat/xkbcat >> ~/notes/xkbcat'
+
+[Install]
+WantedBy=keyboard.target
