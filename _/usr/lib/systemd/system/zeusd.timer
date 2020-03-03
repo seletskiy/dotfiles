@@ -1,0 +1,8 @@
+[Unit]
+Description=zeusd timer: run nightly backups
+
+[Timer]
+OnCalendar=*-*-* 4:00:00
+
+[Install]
+WantedBy=timers.target
