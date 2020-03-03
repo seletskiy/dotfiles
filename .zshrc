@@ -262,6 +262,12 @@ zmodload zsh/zprof
             zstyle 'hijack:highlighting' style 'bg=16,fg=255'
 
             _zsh_highlight() {
+                # XXX: disable re-highlight on finish since it doesn't play well with lambda17 conceal
+                # TODO: understand how to make re-highlight on zle-line-finish play well with lambda17
+                if [[ $WIDGET == zle-line-finish ]]; then
+                    return
+                fi
+
                 if ! :hijack:highlight; then
                     hijack:_zsh_highlight
                 fi
@@ -336,7 +342,15 @@ if :is-interactive; then
         zstyle -d "lambda17:00-main::conceal" weak
 
         zstyle "lambda17:00-main::conceal:override" format \
-            '%B%K{0}%f${${${PWD#$HOME}##*/}:+╸${${PWD#$HOME}##*/}} %B%F{236}${padding}%b%k%F{0}%f '
+            '%B%K{$_lambda17_badge_color}%f${${${PWD#$HOME}##*/}:+╸${${PWD#$HOME}##*/}} %B%F{236}${padding}%b%k%F{$_lambda17_badge_color}%f '
+
+        _lambda17_badge_color=125
+        preexec() {
+            _lambda17_badge_color=$((
+                ($_lambda17_badge_color == 125) * 164 +
+                ($_lambda17_badge_color == 164) * 125
+            ))
+        }
 
         zstyle "lambda17:00-main::conceal:override" right-justify false
         zstyle "lambda17:00-main::conceal:override" right \
@@ -430,11 +444,11 @@ fi
     hijack:transform '^(\S+)(\s.*)!$' \
         'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-    hijack:transform '^[c]!? |^@ |^=' \
+    hijack:transform '^[c]!? |^@ |^=|^\+\+ ' \
         'sed -r s"/([\\$<>{}&\\\"([!?)''#^*;|])/\\\\\1/g"'
 
-    hijack:transform '^/[g]? ' \
-        'sed -r s"/([\\$<>{}&\\\"([?)''^*;|])/\\\\\0/g"'
+    hijack:transform '^/[0-9]* ' \
+        'sed -r -e "s/^\/([0-9]+)/\/ -C \1/" -e "s/([\\$<>{}&\\\"([?)''^*;|])/\\\\\0/g"'
 
     hijack:transform '^=' \
         'sed -r s"/^=(\S)/calc \1/g"'
@@ -474,7 +488,7 @@ fi
     alias vi='vim'
 
     alias ls='ls --color=auto'
-    alias l='exa -la -snew' # --color-scale'
+    alias l='exa -la -snew' # --color-scale --grid'
     alias lt='l -T --level=2'
 
     alias rf='rm -rf'
@@ -496,7 +510,10 @@ fi
     alias cap=':carcosa:add-password'
 
     alias re='rebirth'
-    alias rg='() { rebirth gorun "$@" }'
+    alias rg='rebirth gorun'
+    alias !='() {
+        zshi "while :; do $(fc -ln -2 -2); done;"
+    }'
 
     :unzip() {
         unzip "$1" -d "$(basename "$1" .zip)"
@@ -549,8 +566,8 @@ fi
     alias -- +x='chmod-alias'
 
     alias /=':ag'
-    alias /g='AG_ARGS=--go :ag'
-    alias /rb='AG_ARGS=--rb :ag'
+    #alias /g='AG_ARGS=--go :ag'
+    #alias /rb='AG_ARGS=--rb :ag'
     alias f='() { find -iname "*$1*" "${@:2}" }'
 
     alias ipa='ip a'
@@ -635,10 +652,11 @@ fi
 
     alias -- '-'=':pipe:tar'
 
-    alias -- '+'=':todoist'
-    alias -- '+.'='todoist close'
-    alias -- '+w'='TODOIST_PROJECT=work +'
-    alias -- '++'='todoist sync'
+    alias -- '+?'=':todoist list'
+    alias -- '+.'=':todoist close'
+    alias -- '+!'=':todoist sync'
+    alias -- '+#'='() { :todoist add -p 4 "$*" }'
+    alias -- '++'='() { :todoist add -N stack -p 4 "$*" }'
 
     alias ua='find -maxdepth 1 -mindepth 1 -type d |
         cut -b3- |
@@ -650,7 +668,7 @@ fi
 
     alias xi='xclip -i'
     alias xo='xclip -o'
-    alias xip='() { readlink -f "$@" | xi }'
+    alias xip='() { readlink -nf "$@" | xi }'
 
     alias -g -- '#i'='| xclip -i'
     alias -g -- '#j'='| () { [ -t 1 ] && local flag="-C"; jq $flag "${@:-.}" # }'
@@ -702,8 +720,6 @@ fi
     alias x=':context:command magalix'
     alias mk=':context:command minikube'
 
-    alias run='() { while :; do eval "$@"; done; }'
-
     alias rtorrent=':rtorrent'
 
     alias cci='circleci-cli --token-file ~/.config/circleci-cli/token'
@@ -717,8 +733,6 @@ fi
 
     alias len='() { echo -n "$*" | wc -c }'
 
-    alias td='todoist --color'
-
     alias gb='gcloud builds'
     alias gbs='gb list'
     alias gbl='gb log --stream'
@@ -728,6 +742,7 @@ fi
     alias tx='() {
         local session="$(
             tmux ls -F "#{session_attached} #{session_name}" \
+                | awk "\$2 != \"-\"" \
                 | awk "\$1 == 0 { print \$2 }" \
                 | head -n1
         )"
@@ -739,10 +754,18 @@ fi
         fi
     }'
 
-    alias GET='http GET'
-    alias POST='http POST'
-    alias PUT='http PUT'
-    alias DELETE='http DELETE'
+    alias txk!='() {
+        tmux ls #! attached #:1 #td : #x tmux kill-session -t
+    }'
+
+    :http() {
+        http --follow "${@}"
+    }
+
+    alias GET=':http GET'
+    alias POST=':http POST'
+    alias PUT=':http PUT'
+    alias DELETE=':http DELETE'
 
     alias standup='() { vim "$@" && xi "$@" } work/standups/$(date +%F+%T)/standup'
 
@@ -765,9 +788,8 @@ fi
         alias t!='() { xargs -n1 <<< "$@" git tag -f && p -f "$@" }'
         alias k='git-smart-checkout --recurse-submodules'
         alias j='k master'
-        alias j!='j && rst!'
-        alias ju='j && u'
-        alias jur='j && ur'
+        alias j!='j && u'
+        alias j!!='j && ur'
         alias ku=':git:checkout-and-update'
         alias r='git-smart-remote'
         alias e=':git:rebase-interactive'
@@ -778,7 +800,7 @@ fi
         alias i='git add -p'
         alias ii=':git:commit:interactive'
         alias v='git mv'
-        alias r!='git rm -rf'
+        alias x!='git rm -rf'
         alias y='git show'
         alias ys='y --stat'
         alias q='git submodule update --init --recursive'
@@ -806,12 +828,10 @@ fi
         alias cln!='git clean -ffdx'
         alias cln='cln! -n'
         alias rst!='git reset --hard'
-
-        alias lk='github:browse'
         alias mm='git-merge-with-rebase'
         alias me='git-remote-add-me'
 
-        alias pr!='pr -p'
+        alias pr!='p && pr'
 
         alias au='git log --format=%aN | sort -u'
         alias fpr='() { git fetch origin pull/$1/head:pr-$1 && git checkout pr-$1 }'
@@ -845,11 +865,14 @@ fi
         alias m='make -j8'
         alias mt='make test'
 
+    context-aliases:match "test -e Taskfile.yml"
+        alias m='task'
+
     context-aliases:match "is_inside_git_repo && is_git_repo_dirty"
         alias c='git-smart-commit'
 
-    context-aliases:match "is_inside_git_repo && \
-            ! { git log 2>/dev/null | grep -qm1 . }"
+    context-aliases:match "is_inside_git_repo &&
+            \! git rev-parse HEAD &> /dev/null"
         alias c='git add . && git commit -m "initial commit"'
 
     context-aliases:match "is_inside_git_repo && is_rebase_in_progress"
@@ -1432,7 +1455,8 @@ fi
     }
 
     :ag() {
-        ag $AG_ARGS -f --hidden --silent -- "${(j:.*?:)@}"
+        zparseopts -D -E -- C:=context
+        ag $AG_ARGS -f --hidden --silent $context -- "${(j:.*?:)@}"
     }
 
     :ps-grep() {
@@ -1531,11 +1555,7 @@ fi
     }
 
     :todoist() {
-        if [[ "$*" ]]; then
-            todoist add ${TODOIST_PROJECT:+--project=$TODOIST_PROJECT} "$@"
-        else
-            todoist list ${TODOIST_PROJECT:+--filter="#$TODOIST_PROJECT"}
-        fi
+        todoist --color "$@"
     }
 
     _autocd() {
