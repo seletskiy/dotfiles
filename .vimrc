@@ -28,6 +28,8 @@ Plug 'tmhedberg/matchit'
 Plug 'scrooloose/nerdcommenter'
     nmap <Leader>l <Leader>cl
 
+    au FileType pug setlocal comments=://-,:// commentstring=//-\ %s
+
 Plug 'wojtekmach/vim-rename'
 
 Plug 'vim-scripts/repeat.vim'
@@ -62,7 +64,10 @@ Plug 'junegunn/fzf.vim'
 
     func! _select_file()
         "call _snippets_stop()
-        call fzf#run(fzf#wrap({'source': 'prols', 'options': '--sort --no-exact'}))
+        call fzf#run(fzf#wrap({
+            \ 'source': 'prols',
+            \ 'options': '--sort --no-exact --tiebreak=index --tac'
+            \ }))
     endfunc!
 
     func! _select_buffer()
@@ -225,15 +230,16 @@ Plug 'reconquest/snippets'
 Plug 'justinmk/vim-sneak'
     let g:sneak#streak = 1
 
-    nmap gs <Plug>Sneak_S
-    vmap gs <Plug>Sneak_S
-
+    nmap S <Plug>Sneak_S
+    vmap S <Plug>Sneak_S
+    nmap s <Plug>Sneak_s
+    vmap s <Plug>Sneak_s
     nmap f <Plug>Sneak_f
     vmap f <Plug>Sneak_f
     nmap F <Plug>Sneak_F
     vmap F <Plug>Sneak_F
 
-    au ColorScheme * hi Sneak ctermfg=226
+augroup sneak_colorscheme  " Re-init on :colorscheme change at runtime. #108
 
 Plug 'hynek/vim-python-pep8-indent'
 
@@ -249,7 +255,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'deadcrew/deadfiles'
 
 Plug 'kovetskiy/vim-ski'
-    let g:skeletons_dir=$HOME . '/.deadfiles/.vim/skeletons/'
+    let g:skeletons_dir=$HOME . '/.vim/bundle/snippets/skeletons/'
 
 Plug 'FooSoft/vim-argwrap'
 
@@ -269,6 +275,24 @@ Plug 'nathanielc/vim-tickscript'
 Plug 'w0rp/ale'
     let g:ale_enabled = 0
 
+    function! s:ale_gts_fixer(buffer) abort
+        let l:options = ale#Var(a:buffer, 'typescript_gts_options')
+        let l:executable = ale#Var(a:buffer, 'typescript_gts_executable')
+
+
+        if !executable(l:executable)
+            return 0
+        endif
+
+        return {
+        \   'command': ale#Escape(l:executable)
+        \       . ' ' . (empty(l:options) ? '' : ' ' . l:options)
+        \       . ' %t',
+        \   'read_temporary_file': 1,
+        \}
+
+    endfunction
+
     let g:ale_fixers = {
     \   'go': [function("synta#ale#goimports#Fix"), function("synta#ale#goinstall#Fix")],
     \   'ruby': [function('ale#fixers#rufo#Fix')],
@@ -277,9 +301,14 @@ Plug 'w0rp/ale'
     \   'proto': [function('ale#fixers#clangformat#Fix')],
     \   'c': [function('ale#fixers#clangformat#Fix')],
     \   'cpp': [function('ale#fixers#clangformat#Fix')],
+    \   'typescript': [function('s:ale_gts_fixer')],
+    \   'vue': [function('ale#fixers#prettier#Fix')],
+    \   'pug': [function('ale#fixers#prettier#Fix')],
+    \   'scss': [function('ale#fixers#prettier#Fix')],
     \}
     let g:ale_linters = {
     \   'go': ['gobuild'],
+    \   'typescript': ['npx gts check'],
     \}
     let g:ale_go_langserver_executable = 'gopls'
     let g:ale_fix_on_save = 1
@@ -297,6 +326,12 @@ Plug 'w0rp/ale'
         au BufRead,BufNewFile *.java
             \ call ale#Set('java_google_java_format_options',
             \ '--skip-removing-unused-imports --skip-sorting-imports')
+        au BufRead,BufNewFile *.ts
+            \ call ale#Set('typescript_gts_executable',
+            \ 'npx')
+        au BufRead,BufNewFile *.ts
+            \ call ale#Set('typescript_gts_options',
+            \ 'gts fix')
 
     augroup end
 
@@ -345,23 +380,23 @@ Plug 'tpope/vim-speeddating'
 
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
     func! _expand_snippet()
-        let g:_expand_snippet = 1
-        call UltiSnips#ExpandSnippet()
-        let g:_expand_snippet = 0
+        if pumvisible() && !empty(v:completed_item)
+            return coc#_select_confirm()
+        else
+            let g:_expand_snippet = 1
+            call UltiSnips#ExpandSnippet()
+            let g:_expand_snippet = 0
 
-        if g:ulti_expand_res == 0
-            if pumvisible() && !empty(v:completed_item)
-                return coc#_select_confirm()
-            else
+            if g:ulti_expand_res == 0
                 call coc#refresh()
                 let col = col('.') - 1
                 if !col || getline('.')[col - 1]  =~# '\s'
                     return "\<tab>"
                 end
+            else
+                call coc#refresh()
+                return ""
             end
-        else
-            call coc#refresh()
-            return ""
         end
 
         return "\<c-n>"
@@ -371,6 +406,24 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
     xnoremap <silent> <Tab> <Esc>:call UltiSnips#SaveLastVisualSelection()<cr>gvs
 
     nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+    func! _coc_timer_hold()
+        if exists('b:_coc_timer_moved') && b:_coc_timer_moved == 1
+            call CocActionAsync('showSignatureHelp')
+            let b:_coc_timer_moved = 0
+        endif
+    endfunc!
+
+    func! _coc_timer_moved()
+        let b:_coc_timer_moved = 1
+    endfunc!
+
+    autocmd CursorHold  * call _coc_timer_hold()
+    autocmd CursorHoldI  * call _coc_timer_hold()
+    autocmd CursorMoved * call _coc_timer_moved()
+    autocmd CursorMovedI * call _coc_timer_moved()
 
 "Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 "Plug 'josa42/coc-go', {'do': 'yarn install --frozen-lockfile'}
@@ -378,6 +431,9 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 "Plug 'neoclide/coc-vetur', {'do': 'yarn install --frozen-lockfile'}
 "Plug 'neoclide/coc-git', {'do': 'yarn install --frozen-lockfile'}
 "Plug 'fannheyward/coc-xml', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-git', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tslint-plugin', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tabnine', {'do': 'yarn install --frozen-lockfile'}
 
 Plug 'tpope/vim-dispatch'
     func! _setup_java()
@@ -404,6 +460,11 @@ Plug 'cakebaker/scss-syntax.vim'
 
 Plug 'terryma/vim-expand-region'
 
+Plug 'Yggdroot/indentLine'
+    let g:indentLine_char_list = [' ', '⠄1', '⡂', '⡇', '⡜', '⢕', '⡷', '⢷', '⣿']
+    let g:indentLine_color_term = 237
+    let g:indentLine_enabled = 0
+
 augroup end
 
 call plug#end()
@@ -412,6 +473,11 @@ au VimEnter * au! run_after_plug_end
 
 au FileType go au! vim-go
 au FileType go au! vim-go-buffer
+
+call sneak#util#strlen('trigger autoload')
+au! sneak_colorscheme
+
+colorscheme serenity
 
 filetype plugin on
 filetype indent on
@@ -422,7 +488,7 @@ set rtp^=~/.vim
 
 set tags=./.tags;/
 
-set clipboard=unnamed
+set clipboard=unnamedplus
 set title
 set encoding=utf-8
 set printencoding=cp1251
@@ -510,6 +576,18 @@ nnoremap <C-L> <C-W>l
 nnoremap <C-_> <C-W>_
 nnoremap <C-^> <C-W>20+
 
+nnoremap c "_c
+nnoremap x "_x
+nnoremap d "_d
+nnoremap D "_D
+vnoremap d "_d
+
+nnoremap <leader>c c
+nnoremap <leader>x x
+nnoremap <leader>d d
+nnoremap <leader>D D
+vnoremap <leader>d d
+
 vnoremap $ g_
 
 noremap > >>
@@ -536,31 +614,8 @@ inoremap <expr> <C-O> pumvisible()
             \ ? (feedkeys("\<C-N>") ? '' : '')
             \ : (feedkeys("\<C-O>", 'n') ? '' : '')
 
-nnoremap <C-H> :<C-R>=StartVisualReplace('%s/\v')<CR>
-vnoremap <C-H> :<C-R>=StartVisualReplace('s/\v')<CR>
-
-func! StartVisualReplace(line)
-    let b:visual_replace = 1
-
-    cmap <C-A><C-W> \w+
-    cmap <C-X><C-W> <><Left>
-
-    return a:line
-endfunc
-
-func! StopVisualReplace()
-    if get(b:, 'visual_replace', 0)
-        cunmap <C-A><C-W>
-        cunmap <C-X><C-W>
-    endif
-
-    let b:visual_replace = 0
-endfunc
-
-augroup visual_replace
-    au!
-    au CmdlineEnter * call StopVisualReplace()
-augroup end
+nnoremap <C-H> :%s/\v
+vnoremap <C-H> :s/\v
 
 nmap <C-L> V<C-H>
 
@@ -575,9 +630,11 @@ augroup dir_autocreate
     au BufWritePre * if !isdirectory(expand('%:h')) | call mkdir(expand('%:h'),'p') | endif
 augroup end
 
-augroup terminal
-    au TermOpen * setl nonu nornu signcolumn=no
-augroup end
+if has('nvim')
+    augroup terminal
+        au TermOpen * setl nonu nornu signcolumn=no
+    augroup end
+endif
 
 func! _syn_vue_extend_pug()
     unlet b:current_syntax
@@ -615,10 +672,11 @@ augroup ft
     au FileType sql set ft=mysql
     au FileType snippets setl ft+=.python
     au FileType c,cpp setl noet
-    au FileType yaml setl ts=2 sts=2 sw=2
+    au FileType yaml,json setl ts=2 sts=2 sw=2
     au FileType ruby setl et ts=2 sts=2 sw=2
     au FileType java setl et ts=2 sts=2 sw=2
     au FileType proto setl et ts=2 sts=2 sw=2
+    au FileType pug,typescript,scss setl et ts=2 sts=2 sw=2
     "au FileType org set noshowmode noruler laststatus=0 noshowcmd nornu nonu
     "au FileType org au CursorHold * silent! update
     "au FileType org au CursorHoldI * silent! update
@@ -640,6 +698,8 @@ augroup ft
     au BufRead,BufNewFile *.slide setfiletype present
     au BufRead,BufNewFile *standup setfiletype standup
     au FileType vue call _syn_vue_extend()
+    au FileType * let g:indentLine_enabled = 0
+    au FileType pug let g:indentLine_enabled = 1
 augroup end
 
 augroup vimrc
@@ -786,7 +846,53 @@ nnoremap <Leader>g :call _get_github_link()<CR>
 augroup undo
     au!
     au CursorHoldI * call feedkeys("\<C-G>u", "n")
+augroup endo
+
+func _sudo_tee()
+    w !sudo tee % > /dev/null
+    e!
+endfunc
+
+augroup no_readonly_warning
+    au!
+    au FileChangedRO * set noreadonly
+        \ | nmap <silent> <C-S> :call _sudo_tee()<CR>
+        \ | imap <silent> <C-S> <C-\><C-O>:call _sudo_tee()<CR>
 augroup end
+
+nmap / /\v
+
+let s:_search_mappings_applied = 0
+
+func! _search_mappings_apply()
+    if s:_search_mappings_applied != 0
+        return
+    endif
+
+    if v:event['cmdtype'] == '/' || getcmdline() =~ "^\\v('\\<,'\\>|\\%)?s\\W"
+        cmap <C-W> \w+
+        cmap <C-O> .*
+
+        let s:_search_mappings_applied = 1
+    endif
+endfun
+
+func! _search_mappings_clear()
+    if s:_search_mappings_applied != 0
+        cunmap <C-W>
+        cunmap <C-O>
+
+        let s:_search_mappings_applied = 0
+    endif
+endfun
+
+if has('nvim')
+    augroup search_mappings
+        au!
+        au CmdlineEnter,CmdlineChanged * call _search_mappings_apply()
+        au CmdlineLeave * call _search_mappings_clear()
+    augroup end
+endif
 
 func! _split_set_content()
     let l:dirname = expand('%:h')
@@ -811,6 +917,9 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
+
+inoremap <expr> <DOWN>  pumvisible() ? "\<C-N>" : "\<DOWN>"
+inoremap <expr> <UP>    pumvisible() ? "\<C-P>" : "\<UP>"
 
 py import px
 py for full_name, name in px.libs().items(): exec("import " + full_name)
