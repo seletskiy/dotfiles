@@ -1,0 +1,6 @@
+{
+  "storage-driver": "zfs",
+  "storage-opts": [
+      "zfs.fsname=z/docker"
+  ]
+}
