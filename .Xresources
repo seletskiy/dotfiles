@@ -5,7 +5,8 @@ URxvt.boldItalicFont: xft:Iosevka:size=7:style=Bold Italic:hinting=true
 URxvt.scrollBar: false
 URxvt.iso14755: false
 URxvt.internalBorder: 0
-URxvt.safe-paste.command: vim-safe-paste
-URxvt.perl-ext-common: vim-insert,fifo
-URxvt.keysym.Mod4-C-f: perl:fifo:start
 URxvt.fifo.file: /tmp/urxvt.fifo
+URxvt.keysym.C-S-Insert: perl:clipboard:copy
+URxvt.keysym.S-Insert: perl:clipboard:paste
+URxvt.clipboard.copycmd:  clipboard-copy
+URxvt.perl-ext-common: clipboard

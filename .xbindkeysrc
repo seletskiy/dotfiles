@@ -7,10 +7,10 @@
 "modal-run"
     Mod4 + w
 
-"volume down"
+"with-lock volume down"
     Mod4 + F2
 
-"volume up"
+"with-lock volume up"
     Mod4 + F3
 
 "sound-switch"
@@ -22,13 +22,7 @@
 "translator"
     Mod4 + k
 
-"bookmarks"
-    Mod4 + t
-
-"bookmarks add"
-    Control+Mod4 + t
-
-"kuake --terminal --bottom"
+"with-lock kuake --terminal --bottom"
     Mod4 + grave
 
 "carcosa-ui"
@@ -40,11 +34,26 @@
 "environment-info"
     Mod4 + Execute
 
-"sudo brightness down"
+"sudo with-lock brightness down"
     Mod4 + F11
 
-"sudo brightness up"
+"sudo with-lock brightness up"
     Mod4 + F12
 
 "screenshot deepin"
     Mod4 + backslash
+
+"bookmarks"
+    Mod4 + b
+
+"bookmarks add"
+    Control+Mod4 + b
+
+"bookmarks auto"
+    Control+Shift+Mod4 + b
+
+"wg-toggle mars"
+    Mod4 + F5
+
+"clipboard-copy-primary"
+    Control+Shift + Insert
