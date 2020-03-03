@@ -1,10 +1,10 @@
 #!/bin/bash
+    #WINEARCH=win32 \
+    #WINEPREFIX="/home/operator/.win32" \
 
 env \
-    WINEARCH=win32 \
-    WINEPREFIX="/home/operator/win32" \
-    LC_ALL="ru_RU.utf8" \
+    LC_ALL="ru_RU.UTF-8" \
     wine \
         C:\\windows\\command\\start.exe \
             /Unix \
-            /home/operator/win32/dosdevices/c:/users/Public/Desktop/QUIK*.lnk
+            /home/operator/.wine/dosdevices/c:/users/Public/Desktop/QUIK*.lnk

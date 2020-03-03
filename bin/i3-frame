@@ -8,6 +8,11 @@ fi
 active_monitor=0
 horizontal=${1:-0}
 
+if [[ "$horizontal" == "off" ]]; then
+    i3-msg "gaps outer all set 0"
+    exit 1
+fi
+
 set -- $(
     xrandr --listactivemonitors \
         | grep -P "^\s+${active_monitor}:" \

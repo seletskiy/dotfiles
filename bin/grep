@@ -1,13 +1,15 @@
 #!/bin/bash
 
-if [[ "$BACKGROUND" == "light" ]]; then
+set -euo pipefail
+
+if [[ "${BACKGROUND:-dark}" == "light" ]]; then
     export GREP_COLORS="mt=48;5;230"
 else
     export GREP_COLORS="mt=48;5;17;01;38;5;226"
 fi
 
-if [ -t 0 ]; then
+#if [[ -t 0 || -p /dev/stdin ]]; then
     /bin/grep --color=auto "${@}"
-else
-    sed -ure 's/\x1b\[[0-9;]*m//g' | /bin/grep --color=auto "${@}"
-fi
+#else
+#    sed -ure 's/\x1b\[[0-9;]*m//g' | /bin/grep --color=auto "${@}"
+#fi

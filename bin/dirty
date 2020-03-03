@@ -1,8 +1,9 @@
 #!/bin/bash
 
-:gitmon() {
-    gitmon -c ~/.config/gitmon.conf -d ~/.cache/gitmon "$@"
-}
+lsgs -Rd \
+    ~/.dotfiles
 
-:gitmon -A &>/dev/null
-:gitmon -L | awk '$3 ~ /dirty/ { print $1 }'
+lsgs -Rd --max-depth=3 \
+    ~/.vim/bundle \
+    ~/.zsh/.zgen \
+    ~/go/src/ \

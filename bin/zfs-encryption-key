@@ -1,0 +1,3 @@
+#!/bin/bash
+
+carcosa -p ~/.secrets/my -cG zfs/$1

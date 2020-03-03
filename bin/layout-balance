@@ -1,0 +1,86 @@
+#!/bin/bash
+
+layout=(
+  "1 2 3 4 |"
+  "q d r w t | j u i o p [ ]"
+    "a s h f g | y n e l ; '"
+      "z x c v | b k m , . /"
+)
+
+stats=$(cat $1 \
+    | sed -r \
+        -e "s/semicolon/;/" \
+        -e "s/apostrophe/'/" \
+        -e "s/comma/,/" \
+        -e "s/period/./" \
+        -e 's/slash/\//' \
+        -e "s/bracketleft/["/ \
+        -e "s/bracketright/]/" \
+    | grep -P '^.$' \
+    | grep -Pv '[567890]' \
+    | sort \
+    | uniq -c)
+
+declare -A keys=()
+
+total=0
+
+while read count key; do
+    keys[$key]=$count
+    (( total += count ))
+done <<< "$stats"
+
+top=$(tr -d '|' <<< ${layout[1]})
+home=$(tr -d '|' <<< ${layout[2]})
+bottom=$(tr -d '|' <<< ${layout[3]})
+
+left=$(printf "%s\n" "${layout[@]}" | sed -re 's/^(.*)\|(.*)/\1/')
+right=$(printf "%s\n" "${layout[@]}" | sed -re 's/^(.*)\|(.*)/\2/')
+
+printf "Layout stats:\n"
+
+row_index=0
+for row in "${layout[@]}"; do
+    printf "  %.0s" $(seq 0 $row_index)
+
+    for key in $row; do
+        if [[ "$key" == "|" ]]; then
+            continue
+        fi
+
+        printf "%s   " "$key"
+    done
+
+    printf "\n"
+    printf "  %.0s" $(seq 0 $row_index)
+
+    for key in $row; do
+        if [[ "$key" == "|" ]]; then
+            continue
+        fi
+
+        printf "%-3s " $(( 100 * ${keys[$key]} / $total ))%
+    done
+
+    printf "\n"
+
+    (( row_index++ ))
+done
+
+:count() {
+    local count=0
+    for key in $1; do
+        (( count += ${keys[$key]} ))
+    done
+
+    printf "%d" $(( 100 * $count / $total ))
+}
+
+printf "\n"
+printf "Left hand: %d%%\n" $(:count "$left")
+printf "Right hand: %d%%\n" $(:count "$right")
+
+printf "\n"
+printf "Top row: %d%%\n" $(:count "$top")
+printf "Home row: %d%%\n" $(:count "$home")
+printf "Bottom row: %d%%\n" $(:count "$bottom")

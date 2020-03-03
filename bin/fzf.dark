@@ -11,18 +11,18 @@ done
 
 exec /bin/fzf \
     --color=$(
-        printf "%s\n"     \
-            "fg:240"      \
-            "bg:234"      \
-            "bg+:17"      \
-            "fg+:255"     \
-            "hl:226"      \
-            "hl+:226"     \
-            "info:240"    \
-            "spinner:46"  \
-            "prompt:250"  \
-            "pointer:226" \
-            "marker:1"    \
-            "gutter:234"  \
+        printf "%s:%d\n" \
+             fg      240 \
+             bg      234 \
+             bg+     17  \
+             fg+     255 \
+             hl      226 \
+             hl+     226 \
+             info    240 \
+             spinner 46  \
+             prompt  250 \
+             pointer 226 \
+             marker  1   \
+             gutter  234 \
         | paste -sd,
     ) "${args[@]}"
