@@ -1,14 +1,13 @@
 {
     "suggest.noselect": true,
     "suggest.enablePreselect":false,
-    "diagnostic.errorSign": "\\ E",
-    "diagnostic.warningSign": "\\ W",
+
+    "diagnostic.errorSign": "\\ ‼",
+    "diagnostic.warningSign": "\\ ∴",
     "diagnostic.infoSign": "\\ ∙",
-    "java.home": "/usr/lib/jvm/java-8-openjdk/",
-    "java.import.gradle.enabled": false,
-    "xml.validation.schema": false,
-    "xml.validation.noGrammar": "ignore",
+
     "javascript.suggestionActions.enabled": false,
+
     "git.topRemovedSign.text": "\\ ▔",
     "git.topRemovedSign.hlGroup": "GitDeleted",
     "git.removedSign.text": "\\ ▁",
@@ -19,6 +18,16 @@
     "git.changedSign.hlGroup": "GitModified",
     "git.changeRemovedSign.text": "\\ ┊",
     "git.changeRemovedSign.hlGroup": "GitModified",
+
+    "java.home": "/usr/lib/jvm/java-8-openjdk/",
+    "java.import.gradle.enabled": false,
+    "java.trace.server": "verbose",
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "java.errors.incompleteClasspath.severity": "ignore",
+
+    "vetur.trace.server": "verbose",
+    "vetur.completion.scaffoldSnippetSources.vetur": "⋁",
+
     "languageserver": {
         "bash": {
             "command": "bash-language-server",
@@ -37,9 +46,4 @@
             }
         }
     },
-    "java.trace.server": "verbose",
-    "java.configuration.updateBuildConfiguration": "disabled",
-    "java.errors.incompleteClasspath.severity": "ignore",
-
-    "vetur.completion.scaffoldSnippetSources.vetur": "⋁"
 }
