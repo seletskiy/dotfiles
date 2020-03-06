@@ -42,8 +42,7 @@ Plug 'vim-scripts/surround.vim'
     vmap ( S)i
     vmap ) S)%a
 
-    vmap " S"i
-    vnoremap g" "
+    vnoremap <leader>" S"i
 
     "imap <C-S> <C-\><C-O>:normal va"S)<CR>
 
@@ -557,17 +556,10 @@ nmap <silent> <Leader>p "*p
 map <Leader>3 :b #<CR>
 map <Leader>c :cd %:h<CR>
 
-nnoremap <Leader><Leader>u :PlugUpdate<CR>
-nnoremap <Leader><Leader>i :PlugInstall<CR>
-
-
 map <silent> <Leader>l <Plug>NERDCommenterToggle
 vnoremap <silent> <C-G> $%
 nnoremap <silent> <C-G> :ArgWrap<CR>
 inoremap <silent> <C-G> <C-\><C-O>:ArgWrap<CR>
-
-"iunmap <C-D> <nop>
-"sunmap <C-D> <nop>
 
 nnoremap <C-H> <C-W>h
 nnoremap <C-N> <C-W>j
@@ -575,18 +567,6 @@ nnoremap <C-E> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-_> <C-W>_
 nnoremap <C-^> <C-W>20+
-
-nnoremap c "_c
-nnoremap x "_x
-nnoremap d "_d
-nnoremap D "_D
-vnoremap d "_d
-
-nnoremap <leader>c c
-nnoremap <leader>x x
-nnoremap <leader>d d
-nnoremap <leader>D D
-vnoremap <leader>d d
 
 vnoremap $ g_
 
