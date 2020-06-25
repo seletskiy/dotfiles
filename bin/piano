@@ -1,0 +1,313 @@
+#!/bin/bash
+
+### piano — enable midi synthesizer and two output streams:
+###  1) low latency output,
+###  2) output with mic mixed in.
+###
+### Usage:
+###   piano <card-name> [<fluidsynth-args>...] <soundfont-file>
+###
+###   - <card-name> is case-insensitive and may be a partial match.
+###   - some useful <fluidsynth-args>:
+###     * --gain 0-10  sets default gain
+###     * --chorus     turn chorus on
+###     * --reverb     turn reverb on
+###
+### Example:
+###   piano us-2x2 --gain 1 --chorus --reverb /opt/soundfonts/essential-keys.sf2
+
+set -euo pipefail
+
+###############################################################################
+
+_defer=()
+
+:defer() {
+    _defer=("$*" "${_defer[@]}")
+}
+
+:defer:run() {
+    for cmd in "${_defer[@]}"; do
+        $cmd || true
+    done
+
+    _defer=()
+}
+
+trap :defer:run EXIT INT ERR
+
+###############################################################################
+
+:aconnect:port-by-pid() {
+    local -n _aconnect_port_by_pid__out=$1
+
+    local pid=$2
+
+    _aconnect_port_by_pid__out=$(
+        aconnect -o |
+            grep pid=$pid |
+            grep -Po 'client \K\d+'
+    )
+}
+
+:aconnect:port-by-card-id() {
+    local -n _aconnect_port_by_card_id__out=$1
+
+    local card=$2
+
+    _aconnect_port_by_card_id__out=$(
+        aconnect -o |
+            grep card=$card |
+            grep -Po 'client \K\d+'
+    )
+}
+
+:aconnect:by-pid() {
+    local midi_port_in=$1
+    local pid=$2
+
+    local midi_port_out
+
+    while ! :aconnect:port-by-pid midi_port_out $pid; do
+        sleep 0.1
+    done
+
+    aconnect $midi_port_in:0 $midi_port_out:0
+}
+
+:fluidsynth() {
+    local -n _fluidsynth_sink_input_id=$1
+
+    local midi_port_in=$2
+    local shell_port=$3
+    local sound_font=$4
+
+    shift 4
+
+    fluidsynth \
+        --server \
+        --no-shell \
+        --quiet \
+        --disable-lash \
+        -o shell.port=$shell_port \
+        -a pulseaudio \
+        -m alsa_seq \
+        -r 44100 \
+        "$@" 2>/dev/null &
+
+    fluidsynth_pid=$!
+
+    :defer kill $fluidsynth_pid
+
+    :aconnect:by-pid $midi_port_in $fluidsynth_pid
+
+    :pulse:sink-input:by-pid _fluidsynth_sink_input_id $fluidsynth_pid
+}
+
+:pulse:module:by-card-name() {
+    local -n _pulse_module_by_card_name__id=$1
+    local -n _pulse_module_by_card_name__name=$2
+    local -n _pulse_module_by_card_name__args=$3
+
+    local term=$4
+
+    local IFS=$'\t'
+    read \
+        _pulse_module_by_card_name__id \
+        _pulse_module_by_card_name__name \
+        _pulse_module_by_card_name__args \
+        <<<$(
+            pactl list short modules |
+                grep -iP "name=\\S*$term" |
+                head -n1
+        )
+}
+
+:pulse:module:args:get() {
+    local -n _pulse_module_args_get__out=$1
+
+    local name=$2
+
+    shift 2
+    local args="$@"
+
+    _pulse_module_args_get__out=$(
+        grep -Po "$name=\\K\\S+" <<<"$args" |
+            tr -d '"'
+    )
+}
+
+:pulse:module:args:set() {
+    local -n _pulse_module_args_set__out=$1
+
+    local name=$2
+    local value=$3
+
+    shift 3
+
+    _pulse_module_args_set__out="$(sed -re "s/$name=[^ ]+/ /g" <<<"$@")"
+    _pulse_module_args_set__out+=" $name=$value"
+}
+
+:pulse:module:load:low-latency() {
+    local -n _pulse_module_load_low_latency__id=$1
+
+    local name=$2
+    local args=$3
+
+    :pulse:module:args:set args tsched no "$args"
+    :pulse:module:args:set args fixed_latency_range no "$args"
+    :pulse:module:args:set args fragments 2 "$args"
+    :pulse:module:args:set args fragment_size 125 "$args"
+
+    :pulse:module:load _pulse_module_load_low_latency__id $name $args
+}
+
+:pulse:module:load() {
+    local -n _pulse_module_load__id=$1
+
+    local name=$2
+
+    shift 2
+    local args=("$@")
+
+    _pulse_module_load__id=$(pactl load-module $name "${args[@]}")
+}
+
+:pulse:module:unload() {
+    pactl unload-module $1
+}
+
+:pulse:sink:by-name() {
+    local -n _pulse_sink_by_name__id=$1
+
+    _pulse_sink_by_name__id=$(
+        pactl list short sinks |
+            awk -v "name=$1" '$2 == name { print $1 }'
+    )
+}
+
+:pulse:sink-input:by-pid() {
+    local -n _pulse_sink_by_pid__id=$1
+
+    local pid=$2
+
+    _pulse_sink_by_pid__id=$(
+        pactl list sink-inputs |
+            bmo \
+                -b '/^Sink/' '/^$/' \
+                -v pid 'if (/application.process.id/) { return $3 }' \
+                -v sink 'if (/^Sink/) { return $3 }' \
+                -f 'pid " " sink' |
+            tr -d '"#' |
+            awk -v "pid=$pid" '$1 == pid { print $2 }'
+    )
+}
+
+:pulse:sink:latency:by-module-id() {
+    local -n _pulse_sink_latency_by_module_id=$1
+    shift
+
+    _pulse_sink_latency_by_module_id=$(
+        pactl list sinks |
+            sed -n '/Owner Module: '$1'/,/^$/p' |
+            grep -Po 'Latency: \K\d+'
+    )
+}
+
+:info() {
+    echo :: "$@"
+}
+
+:usage() {
+    sed -rn 's/^###( |$)//;T;p' "$0"
+    exit 1
+}
+
+:main() {
+    if [[ ! "$*" ]]; then
+        :usage
+    fi
+
+    local term=$1
+
+    local card_module_id
+    local card_module_name
+    local card_module_args
+
+    :pulse:module:by-card-name \
+        card_module_id \
+        card_module_name \
+        card_module_args \
+        "$term"
+
+    local card_name
+    :pulse:module:args:get card_name card_name "$card_module_args"
+
+    :info using card: $card_name
+
+    local card_sink_name=${card_name/alsa_card/alsa_output}.analog-stereo
+    local card_source_name=${card_name/alsa_card/alsa_input}.analog-stereo
+
+    local sink_id
+    :pulse:sink:by-name sink_id "$card_sink_name"
+
+    local module_id
+
+    :info initializing combined piano+mic sink
+    :pulse:module:load module_id module-null-sink \
+        "sink_name=piano_mic" \
+        "sink_properties=\"device.description='Piano+Mic Output'\""
+    :defer :pulse:module:unload $module_id
+
+    :info unloading card module
+    :pulse:module:unload $card_module_id
+    :defer :pulse:module:load _ $card_module_name "$card_module_args"
+
+    :info loading card in low latency mode
+    :pulse:module:load:low-latency card_module_id \
+        $card_module_name "$card_module_args"
+    :defer :pulse:module:unload $card_module_id
+
+    :info routing mic to piano+mic sink
+    :pulse:module:load module_id module-loopback \
+        "latency_msec=1" \
+        "rate=44100" \
+        "source=$card_source_name" \
+        "sink=piano_mic" \
+        "sink_input_properties=\"media.name='Mic Route'\""
+    :defer :pulse:module:unload $module_id
+
+    local card_id
+    :pulse:module:args:get card_id device_id $card_module_args
+
+    local midi_port_card
+    :aconnect:port-by-card-id midi_port_card $card_id
+
+    local fluidsynth_sink_input
+
+    :info starting primary midi synthesizer: card output route
+    :fluidsynth fluidsynth_sink_input $midi_port_card 9800 "$@"
+    pactl move-sink-input $fluidsynth_sink_input $card_sink_name
+
+    :info starting secondary midi synthesizer: piano+mic route
+    :fluidsynth fluidsynth_sink_input $midi_port_card 9801 "$@"
+    pactl move-sink-input $fluidsynth_sink_input piano_mic
+
+    :info switching default sink and sources
+    pactl set-default-source piano_mic.monitor
+    pactl set-default-sink $card_sink_name
+
+    :info ready
+
+    local latency
+
+    while
+        :pulse:sink:latency:by-module-id latency $card_module_id &&
+            :info latency: $latency usec
+    do
+        sleep 10
+    done
+}
+
+:main "$@"
