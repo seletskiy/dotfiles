@@ -3,23 +3,23 @@
 filename="$HOME/images/screenshots/$(date +%F-%T | tr : T).png"
 
 if [ "$1" == "border" ]; then
-    maim --nokeyboard -s $filename && \
+    maim --nokeyboard -s $filename &&
         notify-send "screenshot" "SCRN » ${filename##*/}<br/>       + border"
     mogrify -bordercolor black -border 1x1 $filename
 elif [ "$1" == "delayed" ]; then
-    maim --nokeyboard -d5.0 -s $filename && \
+    maim --nokeyboard -d5.0 -s $filename &&
         notify-send "screenshot" "SCRN » ${filename##*/}"
 elif [ "$1" == "select" ]; then
     slop --nokeyboard -b 3 -c 1.0,0.5,0.45,0.8
 elif [ "$1" == "public" ]; then
     notify-send "screenshot" "SCRN » START"
     maim -d0.2 -u --nokeyboard -s $filename &&
-        imgurbash2 $filename \
-            | awk '{print $1}' \
-            | xclip -i &&
+        imgurbash2 $filename |
+        awk '{print $1}' |
+            xclip -i &&
         notify-send "screenshot" "SCRN » IMGUR"
 elif [ "$1" == "deepin" ]; then
-    deepin-screenshot -n -s "$filename"
+    deepin-screen-recorder -n -s "$filename"
 else
     maim --nokeyboard -s $filename -d 0.1 &&
         notify-send "screenshot" "SCRN » ${filename##*/}"

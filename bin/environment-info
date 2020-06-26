@@ -7,78 +7,80 @@
 
     text=()
 
-    text=("$(:template \
-        "TIME" \
-        "$(:date "LOC" && echo -n '      ')" \
-        "$(TZ=America/Los_Angeles :date "PST" && echo -n '      ')" \
-        "$(TZ=UTC :date "UTC")" \
+    text=("$(
+        :template \
+            "TIME" \
+            "$(:date "LOC" && echo -n '      ')" \
+            "$(TZ=America/Los_Angeles :date "PST" && echo -n '      ')" \
+            "$(TZ=UTC :date "UTC")"
     )" "${text[@]}")
 
     #local loadavg=$(cut -f1 -d' ' /proc/loadavg)
     local temperature=$(
-        sensors -u \
-            | grep -oP 'temp\d+_input: \K\w+' \
-            | sort -rn \
-            | head -n1
+        sensors -u |
+            grep -oP 'temp\d+_input: \K\w+' |
+            sort -rn |
+            head -n1
     )
 
     local urgency=normal
-    if (( $temperature > 80 )); then
+    if (($temperature > 80)); then
         urgency=critical
     fi
 
     local memory=$(
         printf "%1.1f" \
-            $(bc <<< "scale=1; $(free -mt | awk '/Mem/ { print $4 }') / 1024")
+            $(bc <<<"scale=1; $(free -mt | awk '/Mem/ { print $4 }') / 1024")
     )
 
     local upwork=$(ps -C upwork -o s=)
     if [[ "$upwork" ]]; then
         upwork=" $bar $(
-            grep -qF T <<< "$upwork" && echo "■" || echo "▶"
+            grep -qF T <<<"$upwork" && echo "■" || echo "▶"
         )"
     fi
 
-    if (( $(bc <<< "$memory < 0.4") )); then
+    if (($(bc <<<"$memory < 0.4"))); then
         memory=$(:urgency "critical" "${memory}G")
     else
         memory=${memory}G
     fi
 
-    local acpi=$(acpi -b)
+    local acpi=$(acpi -b | grep -v unavailable)
     local battery=$(
-        cut -d: -f2- <<< "$acpi" \
-            | cut -d, -f2
+        cut -d: -f2- <<<"$acpi" |
+            cut -d, -f2
 
     )
-    if grep -qiP "full|100%" <<< "$acpi"; then
+    if grep -qiP "full|100%" <<<"$acpi"; then
         battery="FULL"
     fi
 
     local charging="↑"
-    if grep -qi "discharging" <<< "$acpi"; then
+    if grep -qi "discharging" <<<"$acpi"; then
         charging="↓"
     fi
 
     local urgency=normal
-    if grep -qP '\W(1\d|\d)%' <<< "$battery"; then
+    if grep -qP '\W(1\d|\d)%' <<<"$battery"; then
         urgency=critical
     fi
 
-    text=("$(:template \
-        "STAT" \
-        $(:urgency "$urgency" "${battery} ${charging}") \
-        "$bar $(:urgency "$urgency" "${temperature}°C")" \
-        "$bar ${memory}$upwork"
+    text=("$(
+        :template \
+            "STAT" \
+            $(:urgency "$urgency" "${battery} ${charging}") \
+            "$bar $(:urgency "$urgency" "${temperature}°C")" \
+            "$bar ${memory}$upwork"
     )" "${text[@]}")
 
     local ssid=$(iw dev | grep -Po 'ssid \K.*')
 
-    text=("$(:template \
-        "WIFI" \
-        ${ssid:-NONE}
+    text=("$(
+        :template \
+            "WIFI" \
+            ${ssid:-NONE}
     )" "${text[@]}")
-
 
     :notify:send "${text[@]}"
 
@@ -88,11 +90,10 @@
         urgency=critical
     fi
 
-
-
-    text=("$(:template \
-        "PING" \
-        $(:urgency "$urgency" "$ping")
+    text=("$(
+        :template \
+            "PING" \
+            $(:urgency "$urgency" "$ping")
     )" "${text[@]}")
 
     :notify:send "${text[@]}"
@@ -104,17 +105,18 @@
         urgency=critical
     fi
 
-    text=("$(:template \
-        "INET" \
-        $(:urgency "$urgency" "$(myip)")
+    text=("$(
+        :template \
+            "INET" \
+            $(:urgency "$urgency" "$(myip)")
     )" "${text[@]}")
 
     :notify:send "${text[@]}"
 }
 
 :date() {
-    date +"[$1] %T %d/%m/%y %a" \
-        | tr '[[:lower:]]' '[[:upper:]]'
+    date +"[$1] %T %d/%m/%y %a" |
+        tr '[[:lower:]]' '[[:upper:]]'
 }
 
 :template() {

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-exec 2>/tmp/xxx
-
 exec tmux-autocomplete \
     --regexp-candidate '\w+://[^ ]+' \
     --no-prefix \

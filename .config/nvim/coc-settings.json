@@ -24,9 +24,15 @@
     "java.trace.server": "verbose",
     "java.configuration.updateBuildConfiguration": "disabled",
     "java.errors.incompleteClasspath.severity": "ignore",
+    "java.import.callback": "px#java#import#callback",
 
     "vetur.trace.server": "verbose",
     "vetur.completion.scaffoldSnippetSources.vetur": "⋁",
+
+    "coc.preferences.hoverTarget": "preview",
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    "javascript.preferences.importModuleSpecifier": "non-relative",
 
     "languageserver": {
         "bash": {

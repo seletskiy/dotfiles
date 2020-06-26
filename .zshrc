@@ -273,6 +273,12 @@ zmodload zsh/zprof
                 fi
             }
 
+            # AWS
+            {
+                autoload bashcompinit && bashcompinit
+                complete -C /usr/share/aws-cli/v2/*/bin/aws_completer aws
+            }
+
             :bindkeys
         fi
     }
@@ -354,7 +360,7 @@ if :is-interactive; then
 
         zstyle "lambda17:00-main::conceal:override" right-justify false
         zstyle "lambda17:00-main::conceal:override" right \
-            ' %F{240}╍ %F{220}%T%f'
+            ' %F{240}%k╍ %F{220}%T%f'
 
         zstyle "lambda17:15-pwd" text '${${${PWD#$HOME}##*/}:+╸${${PWD#$HOME}##*/}} '
     }
@@ -444,11 +450,12 @@ fi
     hijack:transform '^(\S+)(\s.*)!$' \
         'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-    hijack:transform '^[c]!? |^@ |^=|^\+\+ ' \
-        'sed -r s"/([\\$<>{}&\\\"([!?)''#^*;|])/\\\\\1/g"'
+    hijack:transform '^c#?!? |^@ |^=|^\+\+ ' \
+        'sed -r "s/([\\$<>{}&\\\"([!?)''#^*;|])/\\\\\1/g" \
+            | sed -r ''s/^c\\#/c#/'''
 
-    hijack:transform '^/[0-9]* ' \
-        'sed -r -e "s/^\/([0-9]+)/\/ -C \1/" -e "s/([\\$<>{}&\\\"([?)''^*;|])/\\\\\0/g"'
+    #hijack:transform '^/[0-9]* ' \
+    #    'sed -r -e "s/^\/([0-9]+)/\/ -C \1/" -e "s/([\\$<>{}&\\\"([?)''^*;|])/\\\\\0/g"'
 
     hijack:transform '^=' \
         'sed -r s"/^=(\S)/calc \1/g"'
@@ -512,7 +519,47 @@ fi
     alias re='rebirth'
     alias rg='rebirth gorun'
     alias !='() {
-        zshi "while :; do $(fc -ln -2 -2); done;"
+        zshi ''() { while eval "$(fc -ln -2 -2)"; do (( $1 > 0 )) && (( i += 1 )) && (( i >= $1 )) && exit; done; }'' "${1:-0}"
+    }'
+
+    alias ji='() {
+        if [ "$1" ]; then
+            batrak -L "$1"
+        else
+            jils
+        fi
+    }'
+
+    alias 'ji?'='ji $(jid)'
+
+    alias ji-='batrak -LKws'
+
+    alias jils='() {
+        batrak -Lw -q "${1:-status not in (''Done'', ''In Review'', ''Postponed'') and assignee = s.seletskiy or status in (''Backlog'', ''To Do'') and assignee is null}" -o "priority"
+    }'
+    alias jir='jils "status = ''In Review''"'
+    alias jid='() {
+        batrak -Lwm -q "status = ''${1:-In Progress}''" -o "priority" #h 1 #:1
+    }'
+    alias jimove='() {
+        [ "$2" ] || set -- "$1" "$(jid)" && batrak -M "$2" "$1"
+    }'
+    alias jido='() {
+        [ "$1" ] || set -- $(jid "To Do")
+        batrak -A "$1"
+        jimove 21 "$1"
+        echo ---
+        batrak -L "$1"
+    }'
+    alias jidone='jimove 31'
+    alias jidone!='jimove 41'
+    alias jio='() {
+        [ "$1" ] || set -- $(jid)
+        browser https://jira.reconquest.io/browse/$1
+    }'
+    alias jic='() {
+        [ "$1" ] || set -- $(jid)
+        batrak -C "$1"
     }'
 
     :unzip() {
@@ -565,7 +612,7 @@ fi
 
     alias -- +x='chmod-alias'
 
-    alias /=':ag'
+    alias /='AG_ARGS=--no-color :ag'
     #alias /g='AG_ARGS=--go :ag'
     #alias /rb='AG_ARGS=--rb :ag'
     alias f='() { find -iname "*$1*" "${@:2}" }'
@@ -627,6 +674,7 @@ fi
         | head -n1)"'
 
     alias ck='() { mkdir -p $1 && cd $1 }'
+    alias ct='() { cd $(mktemp -d) }'
 
     alias di!="cd $DOTFILES && git-smart-pull && ./bootstrap"
     alias du!="di! $DOTFILES_PROFILE"
@@ -666,16 +714,17 @@ fi
 
     alias 8='ping 8.8.8.8'
 
-    alias xi='xclip -i'
-    alias xo='xclip -o'
+    alias xi='xclip -selection clipboard -i'
+    alias xo='xclip -selection clipboard -o'
     alias xip='() { readlink -nf "$@" | xi }'
 
-    alias -g -- '#i'='| xclip -i'
+    alias -g -- '#i'='| xclip -selection clipboard -i'
     alias -g -- '#j'='| () { [ -t 1 ] && local flag="-C"; jq $flag "${@:-.}" # }'
     alias -g -- '#!'='# -v'
     alias -g -- '#+'='| paste -sd+ | bc'
     alias -g -- '#:1'='#f 1'
     alias -g -- '#~'='| () { awk "\$$1 ~ ${(qqq)${(@)*:2}}" }'
+    alias -g -- '#t'='| tail -n'
 
     alias kub='skube'
     alias kaf='kub apply -f'
@@ -758,6 +807,8 @@ fi
         tmux ls #! attached #:1 #td : #x tmux kill-session -t
     }'
 
+    alias nocolor='sed -re ''s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g'''
+
     :http() {
         http --follow "${@}"
     }
@@ -782,7 +833,8 @@ fi
             | sed -re 's/([^/ ])(HEAD)/\\1\x1b[48;5;53;38;5;15;1m \\2 \x1b[0;31m/' \
             | sed -re 's/ ago //' \
             | less -RSX"
-        alias c='git-smart-commit --amend'
+        alias c='git-smart-commit --verbose --amend'
+        alias 'c#'='() { c $([ ! "$*" ] && echo --edit) "$(jid): $*" }'
         alias p='git-smart-push seletskiy'
         alias t='() { git tag -f "$@" }'
         alias t!='() { xargs -n1 <<< "$@" git tag -f && p -f "$@" }'
@@ -822,6 +874,7 @@ fi
         alias rso='git-smart-remote show origin'
         alias st='git stash'
         alias stp='st show -p'
+        alias stp!='st pop'
         alias fk='hub fork'
         alias pr='hub pull-request'
         alias lk='github-browse'
@@ -976,6 +1029,13 @@ fi
                 continue
             fi
 
+            if grep -qP '^\./.+' <<< "$1"; then
+                patterns+=("$1")
+                message+=("$1")
+                shift
+                continue
+            fi
+
             if grep -qP '^[./]$' <<< "$1"; then
                 patterns=(".")
                 message+=("current directory")
@@ -1025,8 +1085,8 @@ fi
         fi
 
         if [ -z "${patterns[*]}" ]; then
-            patterns=("\.go$" "\.sh$" "\.py$" "\.amber$" "\.css$" "\.js$")
-            message=("go" "sh" "py" "amber" "css" "js")
+            patterns=("\.go$" "\.sh$" "\.py$" "\.amber$" "\.s?css$" "\.js$")
+            message=("go" "sh" "py" "amber" "(s)css" "js")
         fi
 
         command+=("${options[@]}")
@@ -1041,7 +1101,7 @@ fi
             "${(j:, :)message[*]}" "${command[*]}" \
             "${timeout:+ (with ${timeout}s timeout)}"
 
-        watcher -e close_write -t 0.1 \
+        watcher -e close_write -t 0.5 \
             ${timeout:+-w$timeout} "$regexp" -- zshi "${command[@]}"
     }
 
@@ -1455,8 +1515,8 @@ fi
     }
 
     :ag() {
-        zparseopts -D -E -- C:=context
-        ag $AG_ARGS -f --hidden --silent $context -- "${(j:.*?:)@}"
+        zparseopts -D -E -- C:=context A:=after B:=before
+        ag $AG_ARGS -f --hidden --silent $context $after $before -- "${(j:.*?:)@}"
     }
 
     :ps-grep() {
@@ -1471,35 +1531,37 @@ fi
         local message
         while git add -p "${@}"; do
             if git diff --cached --quiet; then
-                highlight bold fg red
+                #highlight bold fg red
                 printf ':: no changes detected\n'
                 return 0
             fi
 
-            highlight bold fg yellow
-            printf ':: following changes will be commited\n'
-            highlight reset
+            #highlight bold fg yellow
+            #printf ':: following changes will be commited\n'
+            #highlight reset
 
-            git diff --cached
+            #git diff --cached
 
-            printf '\n'
+            #printf '\n'
 
-            message=$(grep -Po '^([^:]+:) ' <<< "$message")
+            #message=$(grep -Po '^([^:]+:) ' <<< "$message")
 
-            local prompt=$(
-                printf "%s%s: %s" \
-                    "$(highlight bold fg blue)" \
-                    "Commit message [empty to amend HEAD]" \
-                    "$(highlight reset)"
-            )
+            #local prompt=$(
+            #    printf "%s%s: %s" \
+            #        "$(highlight bold fg blue)" \
+            #        "Commit message [empty to amend HEAD]" \
+            #        "$(highlight reset)"
+            #)
 
-            read "message?$prompt"
+            #read "message?$prompt"
 
-            if [[ "$message" ]]; then
-                git commit -m "$message"
-            else
-                git commit --amend -C HEAD
-            fi
+            git commit
+
+            #if [[ "$message" ]]; then
+            #    git commit -m "$message"
+            #else
+            #    git commit --amend -C HEAD
+            #fi
 
             printf '\n'
         done

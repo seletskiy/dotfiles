@@ -58,6 +58,8 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+Ctrl+space focus mode_toggle
 
+bindsym $mod+minus sticky toggle
+
 # focus the parent container
 #bindsym $mod+a focus parent
 
@@ -86,11 +88,11 @@ bindcode $mod+Shift+38 exec i3-move-container c-1
 bindcode $mod+Shift+39 exec i3-move-container c-2
 bindcode $mod+Shift+40 exec i3-move-container c-3
 
-bindsym $mod+Shift+minus mark quick_1
-bindsym $mod+minus [con_mark="quick_1"] focus
+#bindsym $mod+Shift+minus mark quick_1
+#bindsym $mod+minus [con_mark="quick_1"] focus
 
-bindsym $mod+Shift+equal mark quick_2
-bindsym $mod+equal [con_mark="quick_2"] focus
+#bindsym $mod+Shift+equal mark quick_2
+#bindsym $mod+equal [con_mark="quick_2"] focus
 
 #bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
 
@@ -103,6 +105,7 @@ for_window [title="Slack Call Minipanel"] kill
 for_window [instance="info.exe"] move position center
 for_window [instance="info.exe" title="QUIK: messages window"] floating enable, kill
 for_window [title="^Android Emulator - "] floating enable
+for_window [class="zoom"] floating enable
 no_focus [instance="info.exe" title="QUIK: messages window"]
 
 floating_minimum_size 70 x 15

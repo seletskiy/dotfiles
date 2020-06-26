@@ -28,15 +28,15 @@
 [commit]
     gpgsign = true
 
-[url "git+ssh://bitbucket.org/"]
+[url "ssh://bitbucket.org/"]
     insteadOf = https://bitbucket.org/
 
-[url "git+ssh://github.com/"]
+[url "ssh://git@github.com/"]
     insteadOf = https://github.com/
     insteadOf = https://git::@github.com/
     insteadOf = github:
 
-[url "git+ssh://gitlab.com/"]
+[url "git@gitlab.com:"]
     insteadOf = https://gitlab.com/
 
 [http "https://gopkg.in"]

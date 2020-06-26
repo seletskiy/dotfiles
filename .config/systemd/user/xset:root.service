@@ -1,0 +1,12 @@
+[Unit]
+Description=Configure X Root
+Requires=graphical.target
+After=display-manager.target
+
+[Service]
+ExecStart=/usr/bin/hsetroot
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=display-manager.target

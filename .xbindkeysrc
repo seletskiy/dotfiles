@@ -57,3 +57,6 @@
 
 "clipboard-copy-primary"
     Control+Shift + Insert
+
+"journal"
+    Mod4 + g

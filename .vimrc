@@ -61,12 +61,16 @@ Plug 'junegunn/fzf.vim'
     let g:fzf_prefer_tmux = 0
     let g:fzf_layout = { 'down': '~40%' }
 
-    func! _select_file()
-        "call _snippets_stop()
+    func! _select_file(...)
+        let dir = ""
+        if a:0 > 0
+            let dir = a:1
+        endif
+
         call fzf#run(fzf#wrap({
-            \ 'source': 'prols',
-            \ 'options': '--sort --no-exact --tiebreak=index --tac'
-            \ }))
+            \ 'source': 'prols ' . dir,
+            \ 'options': '--sort --no-exact --tiebreak=index'
+        \ }))
     endfunc!
 
     func! _select_buffer()
@@ -74,8 +78,13 @@ Plug 'junegunn/fzf.vim'
         call fzf#vim#buffers({'options': '--sort --no-exact'})
     endfunc!
 
+    func! _select_file_cwd()
+        call _select_file(expand('%:h'))
+    endfunc!
+
     "nnoremap <C-G> :call _select_buffer()<CR>
     map <silent> <C-P> :call _select_file()<CR>
+    map <silent> <C-G><C-P> :call _select_file_cwd()<CR>
 
 Plug 'rhysd/git-messenger.vim'
 
@@ -171,6 +180,7 @@ Plug 'SirVer/ultisnips'
 
 Plug 'fatih/vim-go', {'for': 'go'}
     let g:go_fmt_command = "goimports"
+    let g:go_rename_command = 'gopls'
     let g:go_snippet_engine = "skip"
     let g:go_fmt_autosave = 0
     let g:go_fmt_fail_silently = 1
@@ -258,14 +268,14 @@ Plug 'kovetskiy/vim-ski'
 
 Plug 'FooSoft/vim-argwrap'
 
+Plug 'kovetskiy/vim-hacks'
+
 Plug 'kovetskiy/synta'
    let g:synta_use_go_fast_build = 0
 
-Plug 'kovetskiy/vim-hacks'
-
 Plug 'tpope/vim-abolish'
 
-Plug 'digitaltoad/vim-pug'
+Plug 'seletskiy/vim-pug'
 
 Plug 'kovetskiy/vim-autoresize'
 
@@ -277,7 +287,6 @@ Plug 'w0rp/ale'
     function! s:ale_gts_fixer(buffer) abort
         let l:options = ale#Var(a:buffer, 'typescript_gts_options')
         let l:executable = ale#Var(a:buffer, 'typescript_gts_executable')
-
 
         if !executable(l:executable)
             return 0
@@ -304,6 +313,9 @@ Plug 'w0rp/ale'
     \   'vue': [function('ale#fixers#prettier#Fix')],
     \   'pug': [function('ale#fixers#prettier#Fix')],
     \   'scss': [function('ale#fixers#prettier#Fix')],
+    \   'javascript': [function('ale#fixers#prettier#Fix')],
+    \   'sh':   ['shfmt'],
+    \   'bash': ['shfmt'],
     \}
     let g:ale_linters = {
     \   'go': ['gobuild'],
@@ -331,7 +343,11 @@ Plug 'w0rp/ale'
         au BufRead,BufNewFile *.ts
             \ call ale#Set('typescript_gts_options',
             \ 'gts fix')
+    augroup end
 
+    augroup typescript_bindings
+        au!
+        au FileType typescript nmap <silent><buffer> <C-M> :call coc#rpc#request('runCommand', ['tsserver.organizeImports'])<CR>
     augroup end
 
 "Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -407,22 +423,25 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
     nmap <silent> gd <Plug>(coc-definition)
     nmap <silent> [g <Plug>(coc-diagnostic-prev)
     nmap <silent> ]g <Plug>(coc-diagnostic-next)
+    nmap <silent> <expr> <C-Y> CocActionAsync('showSignatureHelp')
+    nmap <silent> K :call CocActionAsync('doHover')<CR>
 
-    func! _coc_timer_hold()
-        if exists('b:_coc_timer_moved') && b:_coc_timer_moved == 1
-            call CocActionAsync('showSignatureHelp')
-            let b:_coc_timer_moved = 0
-        endif
-    endfunc!
 
-    func! _coc_timer_moved()
-        let b:_coc_timer_moved = 1
-    endfunc!
+    "func! _coc_timer_hold()
+    "    if exists('b:_coc_timer_moved') && b:_coc_timer_moved == 1
+    "        call CocActionAsync('showSignatureHelp')
+    "        let b:_coc_timer_moved = 0
+    "    endif
+    "endfunc!
 
-    autocmd CursorHold  * call _coc_timer_hold()
-    autocmd CursorHoldI  * call _coc_timer_hold()
-    autocmd CursorMoved * call _coc_timer_moved()
-    autocmd CursorMovedI * call _coc_timer_moved()
+    "func! _coc_timer_moved()
+    "    let b:_coc_timer_moved = 1
+    "endfunc!
+
+    "autocmd CursorHold * call _coc_timer_hold()
+    "autocmd CursorHoldI  * call _coc_timer_hold()
+    "autocmd CursorMoved * call _coc_timer_moved()
+    "autocmd CursorMovedI * call _coc_timer_moved()
 
 "Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 "Plug 'josa42/coc-go', {'do': 'yarn install --frozen-lockfile'}
@@ -463,6 +482,8 @@ Plug 'Yggdroot/indentLine'
     let g:indentLine_char_list = [' ', '⠄1', '⡂', '⡇', '⡜', '⢕', '⡷', '⢷', '⣿']
     let g:indentLine_color_term = 237
     let g:indentLine_enabled = 0
+
+Plug 'leafgarland/typescript-vim'
 
 augroup end
 
@@ -656,11 +677,12 @@ augroup ft
     au FileType ruby setl et ts=2 sts=2 sw=2
     au FileType java setl et ts=2 sts=2 sw=2
     au FileType proto setl et ts=2 sts=2 sw=2
-    au FileType pug,typescript,scss setl et ts=2 sts=2 sw=2
-    "au FileType org set noshowmode noruler laststatus=0 noshowcmd nornu nonu
-    "au FileType org au CursorHold * silent! update
-    "au FileType org au CursorHoldI * silent! update
+    au FileType pug,typescript,scss,javascript setl et ts=2 sts=2 sw=2
+    au FileType org set noshowmode noruler laststatus=0 noshowcmd nornu nonu
+    au FileType org au CursorHold * silent! update
+    au FileType org au CursorHoldI * silent! update
     "au FileType org setl foldenable
+    au FileType org let b:over80=0
 
     au FileType go setl noexpandtab
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
@@ -804,8 +826,8 @@ endfunc!
 
 func! DiffEnable()
     nmap <buffer> rr :call ConflictFind()<CR>
-    nmap <buffer> rk :call ConflictApplyTop()<CR>
-    nmap <buffer> rj :call ConflictApplyBottom()<CR>
+    nmap <buffer> r<Up> :call ConflictApplyTop()<CR>
+    nmap <buffer> r<Down> :call ConflictApplyBottom()<CR>
 endfunc!
 
 augroup diff_mode

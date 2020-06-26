@@ -6,6 +6,9 @@ After=graphical.target
 PartOf=display-manager.target
 
 [Service]
+Environment=XDG_SESSION_TYPE=x11
+Environment=GDK_BACKEND=x11
+;ExecStart=/usr/bin/gnome-session
 ExecStart=/usr/bin/i3
 ExecReload=/usr/bin/i3-msg reload
 

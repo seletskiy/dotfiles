@@ -9,8 +9,12 @@ for arg in "$@"; do
         # for opening file:line:column format which is provided
         # by `tmux-autocomplete` for `ag` output
         *:+([0-9]):+([0-9])?(:)*)
-            arg=$(sed -re 's/^(.*):([0-9]+):([0-9]+)(:.*)?/\1\t\2,\3/' <<< "$arg")
-            args+=("$(cut -f1 <<< "$arg")" "+call cursor($(cut -f2 <<< "$arg"))")
+            data=$(sed -re 's/^(.*):([0-9]+):([0-9]+)(:.*)?/\1\t\2,\3/' <<< "$arg")
+            if [[ -e "$(cut -f1 <<< "$data")" ]]; then
+                args+=("$(cut -f1 <<< "$data")" "+call cursor($(cut -f2 <<< "$data"))")
+            else
+                args+=("$arg")
+            fi
             ;;
         *)
             args+=("$arg")
