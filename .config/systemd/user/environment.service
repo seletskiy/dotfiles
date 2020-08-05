@@ -13,6 +13,7 @@ Environment=MODAL_PATH=%h/bin/.dmenu
 Environment=GOPATH=%h/go
 Environment=RUBYPATH=/opt/ruby/2.5.0/bin
 Environment=GEM_HOME=/opt/ruby/2.5.0/gems
+Environment=GTK_IM_MODULE=xim
 EnvironmentFile=%h/.config/dotfiles.profile
 ExecStart=/usr/bin/systemctl --user import-environment
 ExecStart=/usr/bin/sh -c '\
