@@ -26,3 +26,4 @@ else
 fi
 
 ln -sf "$filename" "$HOME/screenshot.png"
+xclip -selection clipboard -t image/png <"$HOME/screenshot.png"
