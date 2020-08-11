@@ -10,17 +10,17 @@
     text=("$(
         :template \
             "TIME" \
-            "$(:date "LOC" && echo -n '      ')" \
-            "$(TZ=America/Los_Angeles :date "PST" && echo -n '      ')" \
-            "$(TZ=UTC :date "UTC")"
+            "LOC $bar <b>$(:date && echo -n '      ')</b>" \
+            "PST $bar $(TZ=America/Los_Angeles :date && echo -n '      ')" \
+            "UTC $bar $(TZ=UTC :date)"
     )" "${text[@]}")
 
     #local loadavg=$(cut -f1 -d' ' /proc/loadavg)
     local temperature=$(
-        sensors -u |
-            grep -oP 'temp\d+_input: \K\w+' |
-            sort -rn |
-            head -n1
+        sensors -u \
+            | grep -oP 'temp\d+_input: \K\w+' \
+            | sort -rn \
+            | head -n1
     )
 
     local urgency=normal
@@ -48,8 +48,8 @@
 
     local acpi=$(acpi -b | grep -v unavailable)
     local battery=$(
-        cut -d: -f2- <<<"$acpi" |
-            cut -d, -f2
+        cut -d: -f2- <<<"$acpi" \
+            | cut -d, -f2
 
     )
     if grep -qiP "full|100%" <<<"$acpi"; then
@@ -84,6 +84,25 @@
 
     :notify:send "${text[@]}"
 
+    local battery
+    local bluetooth=()
+    while read -r mac name; do
+        battery=$(bluetooth-battery "$mac" 2>/dev/null)
+        if [[ "$battery" ]]; then
+            urgency=normal
+            if ((battery < 20)); then
+                urgency=critical
+            fi
+            bluetooth+=("$name $bar $(:urgency "$urgency" "$battery%")")
+        else
+            bluetooth+=("$name")
+        fi
+    done <<<"$(bluetooth-device)"
+
+    if [[ "$bluetooth" ]]; then
+        text=("$(:template "  BT" "${bluetooth[@]}")" "${text[@]}")
+    fi
+
     local ping
     local urgency=normal
     if ! ping=$(ping8); then
@@ -115,8 +134,8 @@
 }
 
 :date() {
-    date +"[$1] %T %d/%m/%y %a" |
-        tr '[[:lower:]]' '[[:upper:]]'
+    date +"%T %d/%m/%y %a" \
+        | tr '[[:lower:]]' '[[:upper:]]'
 }
 
 :template() {
