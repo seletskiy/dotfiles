@@ -22,7 +22,7 @@
 "translator"
     Mod4 + k
 
-"with-lock kuake --terminal --bottom"
+"with-lock kuake --terminal --bottom --bg-color '#000f03'"
     Mod4 + grave
 
 "carcosa-ui"
