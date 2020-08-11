@@ -69,7 +69,7 @@ Plug 'junegunn/fzf.vim'
 
         call fzf#run(fzf#wrap({
             \ 'source': 'prols ' . dir,
-            \ 'options': '--sort --no-exact --tiebreak=index'
+            \ 'options': '--sort --no-exact --tiebreak=index --tac'
         \ }))
     endfunc!
 
@@ -118,6 +118,7 @@ Plug 'nixprime/cpsm', {'do': 'PY3=OFF ./install.sh' }
     nnoremap <C-T> :Grep <C-R><C-W><CR>
 
 Plug 'itchyny/lightline.vim'
+
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'enable': {
@@ -143,7 +144,7 @@ Plug 'SirVer/ultisnips'
 
     let g:UltiSnipsEnableSnipMate = 0
     let g:UltiSnipsEditSplit = "horizontal"
-    let g:UltiSnipsUsePythonVersion = 2
+    let g:UltiSnipsUsePythonVersion = 3
 
     func! _snippets_get_filetype()
         let l:dot = strridx(&filetype, ".")
@@ -209,8 +210,8 @@ Plug 'fatih/vim-go', {'for': 'go'}
         au!
         au FileType go nmap <buffer> <Leader>h :GoDoc<CR>
         "au FileType go nmap <silent><buffer> gd :GoDef<CR>
-        au FileType go nmap <silent><buffer> gl :call go#def#Jump('vsplit', 0)<CR>
-        au FileType go nmap <silent><buffer> gk :call go#def#Jump('split', 0)<CR>
+        "au FileType go nmap <silent><buffer> gl :call go#def#Jump('vsplit', 0)<CR>
+        "au FileType go nmap <silent><buffer> gk :call go#def#Jump('split', 0)<CR>
 
         au FileType go nmap <silent><buffer> <C-Y> :w<CR>:call synta#go#build()<CR>
         au FileType go imap <silent><buffer> <C-Y> <ESC>:w<CR>:call synta#go#build()<CR>
@@ -277,7 +278,7 @@ Plug 'tpope/vim-abolish'
 
 Plug 'seletskiy/vim-pug'
 
-Plug 'kovetskiy/vim-autoresize'
+"Plug 'kovetskiy/vim-autoresize'
 
 Plug 'nathanielc/vim-tickscript'
 
@@ -314,13 +315,12 @@ Plug 'w0rp/ale'
     \   'pug': [function('ale#fixers#prettier#Fix')],
     \   'scss': [function('ale#fixers#prettier#Fix')],
     \   'javascript': [function('ale#fixers#prettier#Fix')],
-    \   'sh':   ['shfmt'],
-    \   'bash': ['shfmt'],
     \}
     let g:ale_linters = {
     \   'go': ['gobuild'],
     \   'typescript': ['npx gts check'],
     \}
+    let g:ale_sh_shfmt_options = '-bn -i 4'
     let g:ale_go_langserver_executable = 'gopls'
     let g:ale_fix_on_save = 1
     augroup ale_protobuf
@@ -393,7 +393,7 @@ Plug 'jceb/vim-orgmode'
 
 Plug 'tpope/vim-speeddating'
 
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'kovetskiy/coc.nvim', {'do': { -> coc#util#install()}}
     func! _expand_snippet()
         if pumvisible() && !empty(v:completed_item)
             return coc#_select_confirm()
@@ -421,11 +421,22 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
     xnoremap <silent> <Tab> <Esc>:call UltiSnips#SaveLastVisualSelection()<cr>gvs
 
     nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gl :call CocActionAsync('jumpDefinition', 'vsplit')<CR>
+    nmap <silent> gk :call CocActionAsync('jumpDefinition', 'split')<CR>
     nmap <silent> [g <Plug>(coc-diagnostic-prev)
     nmap <silent> ]g <Plug>(coc-diagnostic-next)
     nmap <silent> <expr> <C-Y> CocActionAsync('showSignatureHelp')
     nmap <silent> K :call CocActionAsync('doHover')<CR>
 
+    func! _coc_restart()
+        redir @x
+        silent execute "CocRestart"
+        redir end
+        call system("rm -rf ~/.config/coc/extensions/coc-java-data/jdt_ws_*")
+        echom "[coc] restarted"
+    endfunc!
+
+    nmap <silent> <C-C><C-C>  :call _coc_restart()<CR>
 
     "func! _coc_timer_hold()
     "    if exists('b:_coc_timer_moved') && b:_coc_timer_moved == 1
@@ -484,6 +495,45 @@ Plug 'Yggdroot/indentLine'
     let g:indentLine_enabled = 0
 
 Plug 'leafgarland/typescript-vim'
+
+Plug 'wellle/context.vim'
+    "let g:context_presenter = 'preview'
+    let g:context_add_mappings = 0
+    let g:context_add_autocmds = 0
+    let g:context_border_char = '─'
+
+    let g:_context_disable_skip = 0
+
+    func! _context_disable()
+        if g:_context_disable_skip == 1
+            let g:_context_disable_skip = 0
+            return
+        end
+
+        ContextDisable
+    endfunc
+
+    func! _context_enable()
+        let g:_context_disable_skip = 1
+        ContextEnable
+        ContextUpdate
+        ContextPeek
+    endfunc
+
+    autocmd VimEnter     * ContextActivate
+    autocmd BufAdd       * call context#update('BufAdd')
+    autocmd BufEnter     * call context#update('BufEnter')
+    autocmd CursorMoved  * call _context_disable()
+    autocmd VimResized   * call context#update('VimResized')
+    autocmd CursorHold   * call context#update('CursorHold')
+    autocmd User GitGutter call context#update('GitGutter')
+
+    "autocmd VimEnter * ContextActivate
+    "nnoremap <silent> <expr> <C-B> context#util#map('<C-B>')
+    nnoremap <silent> <C-F> <C-F>:call _context_enable()<cr>
+    nnoremap <silent> zz zz:call _context_enable()<cr>
+
+Plug 'wellle/visual-split.vim'
 
 augroup end
 
@@ -661,6 +711,23 @@ func! _syn_vue_extend()
     call _syn_vue_extend_ts()
 endfunc
 
+func! _journal_start(socket)
+    set noshowmode noruler laststatus=0 noshowcmd nornu nonu
+    au CursorHold * silent! update
+    au CursorHoldI * silent! update
+    let b:over80 = 0
+    call serverstart(a:socket)
+endfunc
+
+func! _journal_append()
+    py3 << EOF
+if '\n'.join(vim.current.window.buffer[0:2]).strip() != '':
+    vim.command("normal ggO")
+
+vim.command("startinsert")
+EOF
+endfunc
+
 augroup ft
     au!
     au BufEnter *.test.sh set ft=test.sh
@@ -678,11 +745,6 @@ augroup ft
     au FileType java setl et ts=2 sts=2 sw=2
     au FileType proto setl et ts=2 sts=2 sw=2
     au FileType pug,typescript,scss,javascript setl et ts=2 sts=2 sw=2
-    au FileType org set noshowmode noruler laststatus=0 noshowcmd nornu nonu
-    au FileType org au CursorHold * silent! update
-    au FileType org au CursorHoldI * silent! update
-    "au FileType org setl foldenable
-    au FileType org let b:over80=0
 
     au FileType go setl noexpandtab
     au FileType nnoremap <buffer> K <Plug>(go-doc-vertical)
@@ -911,6 +973,7 @@ endfunc!
 nnoremap <Leader>w :e <C-R>=_split_set_content()<CR><C-R>=_split_move_cursor()<CR>
 nnoremap <Leader>x :vsp <C-R>=_split_set_content()<CR><C-R>=_split_move_cursor()<CR>
 nnoremap <Leader>t :sp <C-R>=_split_set_content()<CR><C-R>=_split_move_cursor()<CR>
+noremap <silent> gf :exe ":e ". expand('%:h') . "/" . expand("<cfile>")<cr>
 
 nmap <leader>z :call <SID>SynStack()<CR>
 function! <SID>SynStack()
@@ -923,5 +986,5 @@ endfunc
 inoremap <expr> <DOWN>  pumvisible() ? "\<C-N>" : "\<DOWN>"
 inoremap <expr> <UP>    pumvisible() ? "\<C-P>" : "\<UP>"
 
-py import px
-py for full_name, name in px.libs().items(): exec("import " + full_name)
+py3 import px
+py3 for full_name, name in px.libs().items(): exec("import " + full_name)
