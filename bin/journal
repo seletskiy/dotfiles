@@ -1,1 +1,18 @@
-kuake --right --class notes --terminal --height 100 --width 20 --exec "sh -c 'stty -ixon && vim notes/journal.org'" --direct
+#!/bin/bash
+
+socket=$XDG_RUNTIME_DIR/nvim-journal
+
+kuake --right --class kuake_notes --terminal --height 100 --width 20 --direct --bg-color '#000f03' --exec \
+    "sh -c 'stty -ixon && vim +\"call _journal_start(\\\\\"$socket\\\\\")\" notes/journal.org'"
+
+python <<-PY
+	import neovim
+	import os
+
+	nvim = neovim.attach(
+	    'socket',
+	    path="$socket"
+	)
+
+	nvim.eval('_journal_append()')
+PY
