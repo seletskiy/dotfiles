@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -euo pipefail
+
+case "$1" in
+38:18:4C:D2:C0:65) # Sony Headphones
+    bluetooth-get-battery "$1.10"
+    ;;
+esac
