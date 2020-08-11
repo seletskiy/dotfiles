@@ -1,85 +1,203 @@
 #!/bin/bash
 
-datestamp=$(date +%y-%m-%dT%H:%m:%d)
+### recycle — pattern-based home dir cleanup.
+###
+### Tool uses extended file attributes to store configuration.
+### To enable in ZFS:
+###   zfs set xattr=on <dataset>
+###
+### At least one box should be defined.
+### Box is a directory which stores files which names matches particular
+### patterns. Files which do not match any pattern will be moved to the trash
+### directory.
+###
+### Example:
+###   recycle box add images '\.jpg$'
+###   recycle run # All .jpg files will be moved to images directory,
+###               # all other files will be moved to trash.
+###
+###  Nested directories can be also marked as boxes:
+###   recycle box add images/gif '\.gif$'
+###   recycle box add images/png '\.png$'
+###
+### To avoid some file or directory to be recycled it should be marked with
+### skip sub-command:
+###   recycle skip .zshrc
+###
+### To unset box configuration or skip flag, use reset sub-command:
+###   recycle reset .zshrc images
+###
+### Usage:
+###   recycle [options] [-n|--dry-run] run [<dir>]...
+###   recycle [options] skip <path>...
+###   recycle [options] box list
+###   recycle [options] box add <dir> <pattern>
+###   recycle [options] reset <path>...
+###   recycle --help | -h
+###
+### Options:
+###   --dry-run -n       Do not perform actual recycle. Print what will be done.
+###   --root-dir <path>  Root directory which will be scanned for boxes.
+###                       [default: ~]
+###   --trash <name>     Directory name to use for trash.
+###                       [default: trash]
 
-:find() {
-    find -maxdepth 1 -type "$1" -regextype posix-extended -regex "\\./$2" | \
-        cut -b3-
+set -euo pipefail
+
+source /usr/share/bash/opts/opts.bash
+
+declare -a args
+declare -A opts
+
+opts:parse opts args \
+    --help -h \
+    --dry-run -n \
+    --root-dir: \
+    --trash: \
+    -- "$@"
+
+dry_run="${opts[--dry-run]:-${opts[-n]:-}}"
+root_dir="${opts[--root-dir]:-$HOME}"
+trash="$root_dir/${opts[--trash]:-trash}"
+
+:attr:get() {
+    getfattr -n user.recycle.$1 --only-value "$2" 2>/dev/null
 }
 
-:mv() {
-    xargs -n1 -I{} \
-        sh -c '[ -e "$2/$1" ] && mv -v "$1" "$2/{}+$3" || mv -v "$1" "$2"' -- \
-            {} "$1" "$datestamp"
+:attr:set() {
+    setfattr -n user.recycle.$1 -v "$2" "${@:3}"
 }
 
-:rm() {
-    xargs -n1 -I{} rm -v {}
+:attr:match() {
+    getfattr -m "user.recycle.$1" "${@:2}"
 }
 
-mkdir -p work/{,my}
-mkdir -p images/{gifs,screenshots,gimp,other}
-mkdir -p notes
-mkdir -p docs
-mkdir -p trash
+:attr:reset() {
+    :attr:match '*' "$1" \
+        | grep -vP '^#' \
+        | xargs -n1 -I{} setfattr -x {} "$1"
+}
 
-:find f '[0-9]{4}-[0-9]{2}-[0-9]{2}-\w+.png$' | :mv images/screenshots
-:find f '.*\.gif$' | :mv images/gifs
-:find f '.*\.xcf$' | :mv images/gimp
-:find f '.*\.(png|jpg)$' | :mv images/other
-:find f 'feh_.*_filelist' | :rm
-:find f '[^.]+$' | :mv notes
+:help() {
+    [[ "$*" ]] && echo "error: $*." && echo "--" && echo
 
-:find f '.*' | :mv trash
+    sed -rn 's/^### ?//;T;p' "$0"
+    exit 0
+}
 
-:find d '[^.].*$' \
-    | grep -Fv \
-        -e work \
-        -e images \
-        -e notes \
-        -e docs \
-        -e trash \
-        -e sources \
-        -e go \
-        -e bin \
-        -e downloads \
-        -e me \
-    | :mv trash
+:patterns:read() {
+    while read -rd $'\0' dir; do
+        if pattern=$(:attr:get box.pattern "$dir"); then
+            printf "%s\t%s\n" "$pattern" "$dir"
+        else
+            if :attr:get box "$dir" >/dev/null; then
+                :patterns:read "$dir"
+            fi
+        fi
+    done < <(
+        find "$1/" \
+            -maxdepth 1 -mindepth 1 -type d -print0
+    )
+}
 
-:find d '\..*$' \
-    | grep -Fv \
-        -e .cups \
-        -e .factorio \
-        -e .cache \
-        -e .gimp \
-        -e .docker \
-        -e .electrum \
-        -e .android \
-        -e .aws \
-        -e .vpn \
-        -e .mozilla \
-        -e .vim \
-        -e .certs \
-        -e .i3 \
-        -e .secrets \
-        -e .zsh \
-        -e .Upwork \
-        -e .icons \
-        -e .config \
-        -e .wine \
-        -e .gnupg \
-        -e .dotfiles \
-        -e .ssh \
-        -e .zgen \
-        -e .m2 \
-        -e .local \
-        -e .pki \
-        -e .calc_history \
-        -e .bash_history \
-        -e .lesshst \
-        -e .kube \
-        -e .eclipse \
-        -e .eclim \
-        -e .npm \
-        -e .grip \
-    | :mv trash
+[[ "${opts[--help]:-${opts[-h]:-}}" ]] && :help
+
+:reset() {
+    [[ ! "$*" ]] &&
+        :help "reset command requires at least one path"
+
+    for file in "$@"; do
+        if :attr:reset "$file"; then
+            [[ -d "$file" ]] && while read -rd $'\0' dir; do
+                :reset "$dir"
+            done < <(find "$file/" -mindepth 1 -maxdepth 1 -type d -print0)
+        fi
+    done
+}
+
+:skip() {
+    [[ ! "$*" ]] &&
+        :help "skip command requires at least one path"
+
+    :attr:set skip "true" "$@"
+}
+
+:box() {
+    case "$1" in
+        list) :box:list "${@:2}" ;;
+        add)  :box:add  "${@:2}" ;;
+        *)    :help "unknown box sub-command: $1" ;;
+    esac
+}
+
+:box:list() {
+    :patterns:read "$root_dir" | column -t
+}
+
+:box:add() {
+    [[ ! "${1:-}" || ! "${2:-}" ]] &&
+        :help "box command requires two arguments argument: <dir> <pattern>"
+
+    mkdir -p "$1"
+
+    parent="$(dirname $(realpath --relative-to "$root_dir" "$1"))"
+    while [[ "$parent" != "." ]]; do
+        :attr:set box "true" "$parent"
+        parent="$(dirname "$parent")"
+    done
+
+    :attr:set box.pattern "$2" "$1"
+}
+
+:run() {
+    set -- "${@:-.}"
+
+    :mv() { ${dry_run:+echo} mv -v --backup=numbered "${@:2}" "$1"; }
+    :rm() { ${dry_run:+echo} rm -v "$@"; }
+
+    declare -A patterns=()
+
+    while IFS=$'\t' read -r pattern dir; do
+        patterns[$pattern]="$dir"
+    done < <(:patterns:read "$root_dir")
+
+    if [[ ! "${patterns[*]}" ]]; then
+        :help "no boxes defined"
+    fi
+
+    mkdir -p "$trash"
+    :attr:set skip "true" "$trash"
+
+    while read -rd $'\0' path; do
+        if [[ "$(:attr:match '*' "$path")" ]]; then
+            continue
+        fi
+
+        entry="${path##*/}$([[ -d "$path" ]] && echo / || :)"
+
+        for pattern in "${!patterns[@]}"; do
+            box=${patterns[$pattern]}
+
+            [[ "$entry" =~ $pattern ]] && {
+                :mv $box "$path"
+                continue 2
+            }
+        done
+
+        :mv $trash "$path"
+    done < <(
+        find "${@/%//}" \
+            -mindepth 1 -maxdepth 1 \
+            -type f,d \
+            -print0
+    )
+}
+
+case "${args[1]:-}" in
+    run)   :run   "${args[@]:2}" ;;
+    skip)  :skip  "${args[@]:2}" ;;
+    box)   :box   "${args[@]:2}" ;;
+    reset) :reset "${args[@]:2}" ;;
+    '')    :help "no command specified" ;;
+    *)     :help "unknown command: ${args[1]}" ;;
+esac
