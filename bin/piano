@@ -260,6 +260,13 @@ trap :defer:run EXIT INT ERR
         "sink_properties=\"device.description='Piano+Mic Output'\""
     :defer :pulse:module:unload $module_id
 
+    :info initializing combined output sink
+    :pulse:module:load module_id module-combine-sink \
+        "sink_name=combined_output" \
+        "sink_properties=\"device.description='Combined Output'\"" \
+        "slaves=piano_mic,$card_sink_name"
+    :defer :pulse:module:unload $module_id
+
     :info unloading card module
     :pulse:module:unload $card_module_id
     :defer :pulse:module:load _ $card_module_name "$card_module_args"
