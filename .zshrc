@@ -60,6 +60,7 @@ zmodload zsh/zprof
         'terminal' \
         'directory' \
         'completion'
+    zstyle ':completion:*' rehash true
 
     HISTSIZE=300000
 
@@ -126,8 +127,8 @@ zmodload zsh/zprof
 
     :plugins:post-init() {
         {
-            zstyle ':completion:*' completer _expand _complete
-            zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+            #zstyle ':completion:*' completer _expand _complete
+            #zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
         }
 
         {
@@ -139,7 +140,8 @@ zmodload zsh/zprof
             unsetopt correct
             unsetopt correct_all
             unsetopt global_rcs
-            unsetopt menu_complete
+            #unsetopt menu_complete
+            setopt menu_complete
             setopt prompt_sp
             unsetopt interactive_comments
         }
@@ -243,7 +245,6 @@ zmodload zsh/zprof
 
             zgen load seletskiy/zsh-hijack
             zgen load kovetskiy/zsh-alias-search
-            zgen load seletskiy/zsh-ash-completion
             zgen load seletskiy/zsh-smart-kill-word
             zgen load kovetskiy/zsh-add-params
             zgen load kovetskiy/zsh-quotes
@@ -273,11 +274,11 @@ zmodload zsh/zprof
                 fi
             }
 
-            # AWS
-            {
-                autoload bashcompinit && bashcompinit
-                complete -C /usr/share/aws-cli/v2/*/bin/aws_completer aws
-            }
+            ## AWS
+            #{
+            #    autoload bashcompinit && bashcompinit
+            #    complete -C /usr/share/aws-cli/v2/*/bin/aws_completer aws
+            #}
 
             :bindkeys
         fi
@@ -472,8 +473,8 @@ fi
     hijack:transform '^https://gitlab.com/' \
         'sed -re "s#^https://gitlab.com/([^/]+/[^/]+)#gl \1#"'
 
-    hijack:transform '^https://' \
-        'sed -re "s#^https://#curl -sLO &#"'
+    hijack:transform '^https?://' \
+        'sed -re "s#^https?://#curl -sLO &#"'
 
     hijack:transform '(\s+|=)j`' \
         'sed -r -e "s#(\s+|=)j?\`\*\s*#\1\"\$(jo -a #g" \
@@ -499,8 +500,6 @@ fi
     alias lt='l -T --level=2'
 
     alias rf='rm -rf'
-
-    alias cu='curl -LO'
 
     alias skr='ssh-keygen -R'
 
@@ -535,24 +534,34 @@ fi
     alias ji-='batrak -LKws'
 
     alias jils='() {
-        batrak -Lw -q "${1:-status not in (''Done'', ''In Review'', ''Postponed'') and assignee = s.seletskiy or status in (''Backlog'', ''To Do'') and assignee is null}" -o "priority"
+        batrak -Lw -q "type != ''Checkpoint''
+            and (
+                ${1:-status not in (''Done'', ''In Review'', ''Postponed'')
+                    and assignee = s.seletskiy
+                or
+                status in (''Backlog'', ''To Do'')
+                    and assignee is null}
+            )" -o "assignee,priority"
     }'
     alias jir='jils "status = ''In Review''"'
     alias jid='() {
-        batrak -Lwm -q "status = ''${1:-In Progress}''" -o "priority" #h 1 #:1
+        batrak -Lwm -q "type != ''Checkpoint'' and (status = ''${1:-In Progress}'')" -o "priority" #h 1 #:1
     }'
     alias jimove='() {
-        [ "$2" ] || set -- "$1" "$(jid)" && batrak -M "$2" "$1"
+        [ "$2" ] || set -- "$1" "$(jid)"
+
+        batrak -M "$2" $(batrak -M "$2" | grep -F "$1" | awk ''{print $1}'')
     }'
     alias jido='() {
         [ "$1" ] || set -- $(jid "To Do")
         batrak -A "$1"
-        jimove 21 "$1"
+        batrak -M "$1" | grep -q ''To Do'' && jimove ''To Do'' "$1"
+        jimove ''In Progress'' "$1"
         echo ---
         batrak -L "$1"
     }'
-    alias jidone='jimove 31'
-    alias jidone!='jimove 41'
+    alias jidone='jimove "In Review"'
+    alias jidone!='jimove "Done"'
     alias jio='() {
         [ "$1" ] || set -- $(jid)
         browser https://jira.reconquest.io/browse/$1
@@ -612,7 +621,7 @@ fi
 
     alias -- +x='chmod-alias'
 
-    alias /='AG_ARGS=--no-color :ag'
+    alias /=':ag'
     #alias /g='AG_ARGS=--go :ag'
     #alias /rb='AG_ARGS=--rb :ag'
     alias f='() { find -iname "*$1*" "${@:2}" }'
@@ -726,7 +735,7 @@ fi
     alias -g -- '#~'='| () { awk "\$$1 ~ ${(qqq)${(@)*:2}}" }'
     alias -g -- '#t'='| tail -n'
 
-    alias kub='skube'
+    alias kub='tubectl'
     alias kaf='kub apply -f'
     alias kdf='kub delete -f'
     alias kc='kub create'
@@ -950,6 +959,9 @@ fi
         alias gtt='go tool pprof cpu.prof'
         alias x='gorun'
 
+    context-aliases:match '[[ "$PWD" =~ .*/gitlab.com/reconquest/.* ]]'
+        alias go='GOPRIVATE=gitlab.com/reconquest go'
+
     context-aliases:commit
 }
 
@@ -1008,6 +1020,7 @@ fi
         local patterns=()
         local message=()
         local options=()
+        local exclude=()
         while [ "${1:---}" != "--" ]; do
             if grep -qPx '\d+' <<< "$1"; then
                 timeout="$1"
@@ -1045,6 +1058,12 @@ fi
 
             if grep -qP '^-' <<< "$1"; then
                 options+=("$1")
+                shift
+                break
+            fi
+
+            if grep -qP '^!' <<< "$1"; then
+                exclude+=("${1:1}")
                 shift
                 break
             fi
@@ -1101,8 +1120,9 @@ fi
             "${(j:, :)message[*]}" "${command[*]}" \
             "${timeout:+ (with ${timeout}s timeout)}"
 
-        watcher -e close_write -t 0.5 \
-            ${timeout:+-w$timeout} "$regexp" -- zshi "${command[@]}"
+        watcher -e close_write -t 0.2 \
+            ${timeout:+-w$timeout} ${exclude:+-x$exclude} \
+            "$regexp" -- zshi "${command[@]}"
     }
 
     smart-ssh-tmux() {
@@ -1555,7 +1575,7 @@ fi
 
             #read "message?$prompt"
 
-            git commit
+            git commit -v
 
             #if [[ "$message" ]]; then
             #    git commit -m "$message"
