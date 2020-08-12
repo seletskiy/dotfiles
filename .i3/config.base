@@ -97,9 +97,10 @@ bindcode $mod+Shift+40 exec i3-move-container c-3
 #bindsym $mod+Ctrl+grave [instance="^(?!kuake)"] scratchpad show
 
 for_window [class="google-chrome"] border none
+for_window [title="Diablo II"] border none
 for_window [instance="^screenkey$"] floating enable
 for_window [class="fontforge"] floating enable
-for_window [title="^kuake_"] floating enable
+for_window [title="^kuake_"] floating enable, border none
 for_window [title="^ffplay_gif_player"] floating enable
 for_window [title="Slack Call Minipanel"] kill
 for_window [instance="info.exe"] move position center
