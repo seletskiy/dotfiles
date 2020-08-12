@@ -13,7 +13,6 @@ exec /bin/fzf \
     --color=$(
         printf "%s:%d\n" \
              fg      240 \
-             bg      234 \
              bg+     17  \
              fg+     255 \
              hl      226 \
