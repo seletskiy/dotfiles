@@ -35,12 +35,6 @@
     "javascript.preferences.importModuleSpecifier": "non-relative",
 
     "languageserver": {
-        "bash": {
-            "command": "bash-language-server",
-            "args": ["start"],
-            "filetypes": ["sh", "bash"],
-            "ignoredRootPaths": ["~"]
-        },
         "ccls": {
             "command": "ccls",
             "filetypes": ["c", "cpp", "objc", "objcpp"],

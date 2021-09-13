@@ -310,7 +310,9 @@ Plug 'w0rp/ale'
     \   'proto': [function('ale#fixers#clangformat#Fix')],
     \   'c': [function('ale#fixers#clangformat#Fix')],
     \   'cpp': [function('ale#fixers#clangformat#Fix')],
-    \   'typescript': [function('s:ale_gts_fixer')],
+    \   'typescript': [function('ale#fixers#prettier#Fix')],
+    \   'typescriptreact': [function('ale#fixers#prettier#Fix')],
+    \   'tsx': [function('ale#fixers#prettier#Fix')],
     \   'vue': [function('ale#fixers#prettier#Fix')],
     \   'pug': [function('ale#fixers#prettier#Fix')],
     \   'scss': [function('ale#fixers#prettier#Fix')],
@@ -322,6 +324,7 @@ Plug 'w0rp/ale'
     \}
     let g:ale_sh_shfmt_options = '-bn -i 4'
     let g:ale_go_langserver_executable = 'gopls'
+    let g:ale_go_goimports_executable = 'gofumports'
     let g:ale_fix_on_save = 1
     augroup ale_protobuf
         au!
@@ -337,17 +340,17 @@ Plug 'w0rp/ale'
         au BufRead,BufNewFile *.java
             \ call ale#Set('java_google_java_format_options',
             \ '--skip-removing-unused-imports --skip-sorting-imports')
-        au BufRead,BufNewFile *.ts
+        au BufRead,BufNewFile *.ts,*.tsx
             \ call ale#Set('typescript_gts_executable',
             \ 'npx')
-        au BufRead,BufNewFile *.ts
+        au BufRead,BufNewFile *.ts,*.tsx
             \ call ale#Set('typescript_gts_options',
             \ 'gts fix')
     augroup end
 
     augroup typescript_bindings
         au!
-        au FileType typescript nmap <silent><buffer> <C-M> :call coc#rpc#request('runCommand', ['tsserver.organizeImports'])<CR>
+        au FileType typescript,typescriptreact nmap <silent><buffer> <C-M> :call coc#rpc#request('runCommand', ['tsserver.organizeImports'])<CR>
     augroup end
 
 "Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -425,7 +428,7 @@ Plug 'kovetskiy/coc.nvim', {'do': { -> coc#util#install()}}
     nmap <silent> gk :call CocActionAsync('jumpDefinition', 'split')<CR>
     nmap <silent> [g <Plug>(coc-diagnostic-prev)
     nmap <silent> ]g <Plug>(coc-diagnostic-next)
-    nmap <silent> <expr> <C-Y> CocActionAsync('showSignatureHelp')
+    imap <silent> <C-U> <C-\><C-O>:call CocActionAsync('showSignatureHelp')<CR>
     nmap <silent> K :call CocActionAsync('doHover')<CR>
 
     func! _coc_restart()
@@ -462,7 +465,7 @@ Plug 'kovetskiy/coc.nvim', {'do': { -> coc#util#install()}}
 "Plug 'fannheyward/coc-xml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-git', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-tslint-plugin', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-tabnine', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'neoclide/coc-tabnine', {'do': 'yarn install --frozen-lockfile'}
 
 Plug 'tpope/vim-dispatch'
     func! _setup_java()
@@ -494,7 +497,7 @@ Plug 'Yggdroot/indentLine'
     let g:indentLine_color_term = 237
     let g:indentLine_enabled = 0
 
-Plug 'leafgarland/typescript-vim'
+"Plug 'leafgarland/typescript-vim'
 
 Plug 'wellle/context.vim'
     "let g:context_presenter = 'preview'
@@ -534,6 +537,12 @@ Plug 'wellle/context.vim'
     nnoremap <silent> zz zz:call _context_enable()<cr>
 
 Plug 'wellle/visual-split.vim'
+
+"Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+"Plug 'peitalin/vim-jsx-typescript'
+"Plug 'itchyny/vim-cursorword'
 
 augroup end
 
@@ -772,7 +781,7 @@ augroup vimrc
     au BufWritePost */.Xresources call system('systemctl --user restart xrdb')
     au BufWritePost */.i3.config.* call system('systemctl --user restart i3:config')
 
-    au BufWritePost /*/.vim/*/pythonx/*.py exec printf('py module="%s".rsplit("pythonx/", 2)[-1].rstrip(".py").replace("/", "."); __import__(module); reload(sys.modules[module])',
+    au BufWritePost /*/.vim/*/pythonx/*.py exec printf('py3 module="%s".rsplit("pythonx/", 2)[-1].rstrip(".py").replace("/", "."); import importlib; __import__(module); importlib.reload(sys.modules[module])',
                 \ expand('%:p'))
 augroup end
 
@@ -817,6 +826,11 @@ augroup end
 augroup titlestring
     au!
     au BufEnter * set titlestring=vim\ [%{expand(\"%:~:.:h\")}\ >\ %t%(\ %M%)]
+augroup end
+
+augroup fix_ultisnips
+    au!
+    au BufEnter * py3 import importlib; import UltiSnips.snippet_manager; importlib.reload(UltiSnips.snippet_manager); from UltiSnips.snippet_manager import UltiSnips_Manager
 augroup end
 
 com! BufWipe silent! bufdo! bw | enew!
