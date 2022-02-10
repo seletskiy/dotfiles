@@ -1,0 +1,912 @@
+xkb_symbols "rq-total" {
+	name[group1] = "English (US)";
+	name[group2] = "Russian";
+
+	key <ESC> {
+		type = "RQ_SHIFT+LVL3+LVL5",
+		symbols = [
+			Tab, ISO_Left_Tab,
+			NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+		],
+		actions = [
+			NoAction(), NoAction(),
+            RedirectKey(key = <I215>, clearMods = LevelThree),
+            RedirectKey(key = <I215>, clearMods = LevelThree),
+            RedirectKey(key = <I223>, clearMods = LevelFive),
+            RedirectKey(key = <I223>, clearMods = LevelFive),
+			NoAction(), NoAction()
+        ]
+	};
+
+	key <I215> { [ asciitilde, asciitilde ] };
+	key <I223> { [ Multi_key ] };
+
+	key <AE01> { [ 1, exclam ] };
+	key <AE02> { [ 2, at ] };
+	key <AE03> { [ 3, numbersign ] };
+	key <AE04> { [ 4, dollar ] };
+	key <AE05> { [ 5, percent ] };
+	key <AE06> { [ 6, asciicircum ] };
+	key <AE07> { [ 7, ampersand ] };
+	key <AE08> { [ 8, asterisk ] };
+	key <AE09> { [ 9, parenleft ] };
+	key <AE10> { [ 0, parenright ] };
+	key <AE11> { [ minus, underscore ] };
+	key <AE12> { [ equal, plus ] };
+
+	key <BKSP> { [ BackSpace, BackSpace ] };
+
+	key <AD01> {
+		type = "RQ_SHIFT+LVL5",
+		symbols = [
+            q, Q,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_shorti, Cyrillic_SHORTI,
+            NoSymbol, NoSymbol
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <AE01>, clearMods = LevelFive),
+            RedirectKey(key = <AE01>, clearMods = LevelFive)
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <AE01>, clearMods = LevelFive),
+            RedirectKey(key = <AE01>, clearMods = LevelFive)
+        ]
+	};
+
+	key <AD02> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            d, D,
+            d, D,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_tse, Cyrillic_TSE,
+            Cyrillic_tse, Cyrillic_TSE,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I217>, clearMods = LevelThree),
+            RedirectKey(key = <I217>, clearMods = LevelThree),
+            RedirectKey(key = <AE02>, clearMods = LevelFive),
+            RedirectKey(key = <AE02>, clearMods = LevelFive),
+            NoAction(), NoAction()
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I217>, clearMods = LevelThree),
+            RedirectKey(key = <I217>, clearMods = LevelThree),
+            RedirectKey(key = <AE02>, clearMods = LevelFive),
+            RedirectKey(key = <AE02>, clearMods = LevelFive),
+            NoAction(), NoAction()
+        ]
+	};
+
+    key <I217> { [ comma, less ] };
+
+	key <AD03> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            r, R,
+            r, R,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_u, Cyrillic_U,
+            Cyrillic_u, Cyrillic_U,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I222>, clearMods = LevelThree),
+            RedirectKey(key = <I222>, clearMods = LevelThree),
+            RedirectKey(key = <AE03>, clearMods = LevelFive),
+            RedirectKey(key = <AE03>, clearMods = LevelFive),
+            NoAction(), NoAction(),
+            NoAction(), NoAction()
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I222>, clearMods = LevelThree),
+            RedirectKey(key = <I222>, clearMods = LevelThree),
+            RedirectKey(key = <AE03>, clearMods = LevelFive),
+            RedirectKey(key = <AE03>, clearMods = LevelFive),
+            NoAction(), NoAction(),
+            NoAction(), NoAction()
+        ]
+	};
+
+	key <I222> { [ quotedbl, quotedbl ] };
+
+	key <AD04> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            w, W,
+            w, W,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_ka, Cyrillic_KA,
+            Cyrillic_ka, Cyrillic_KA,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I212>, clearMods = LevelThree),
+            RedirectKey(key = <I212>, clearMods = LevelThree),
+            RedirectKey(key = <AE04>, clearMods = LevelFive),
+            RedirectKey(key = <AE04>, clearMods = LevelFive),
+            RedirectKey(key = <I214>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <I214>, clearMods = LevelThree+LevelFive)
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I212>, clearMods = LevelThree),
+            RedirectKey(key = <I212>, clearMods = LevelThree),
+            RedirectKey(key = <AE04>, clearMods = LevelFive),
+            RedirectKey(key = <AE04>, clearMods = LevelFive),
+            RedirectKey(key = <I214>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <I214>, clearMods = LevelThree+LevelFive)
+        ]
+	};
+
+	key <I212> { [ apostrophe, grave ] };
+	key <I214> { [ grave, dollar ] };
+
+	key <AD05> {
+		type = "RQ_SHIFT+ALT",
+		symbols = [
+            t, T,
+            t, T
+        ],
+		symbols = [
+            Cyrillic_ie, Cyrillic_IE,
+            NoSymbol, NoSymbol
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            NoAction(), NoAction()
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I208>, clearMods = LevelThree),
+            RedirectKey(key = <I208>, clearMods = LevelThree)
+        ]
+	};
+
+	key <I208> { [ Cyrillic_io, Cyrillic_IO ] };
+
+	key <AD06> {
+		type = "RQ_SHIFT",
+		symbols = [ j, J ],
+		symbols = [ Cyrillic_en, Cyrillic_EN ]
+	};
+
+	key <AD07> {
+		type = "RQ_SHIFT+ALT",
+		symbols = [
+            u, U,
+            u, U
+        ],
+		symbols = [
+            Cyrillic_ghe, Cyrillic_GHE,
+            Cyrillic_ghe, Cyrillic_GHE
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <HOME>, clearMods = LevelThree),
+            RedirectKey(key = <HOME>, clearMods = LevelThree)
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <HOME>, clearMods = LevelThree),
+            RedirectKey(key = <HOME>, clearMods = LevelThree)
+        ]
+	};
+
+	key <AD08> {
+		type = "RQ_SHIFT+ALT",
+        symbols = [
+            i, I,
+            i, I
+        ],
+		symbols = [
+            Cyrillic_sha, Cyrillic_SHA,
+            Cyrillic_sha, Cyrillic_SHA
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <PGDN>, clearMods = LevelThree),
+            RedirectKey(key = <PGDN>, clearMods = LevelThree)
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <PGDN>, clearMods = LevelThree),
+            RedirectKey(key = <PGDN>, clearMods = LevelThree)
+        ]
+	};
+
+	key <AD09> {
+		type = "RQ_SHIFT+ALT",
+		symbols = [
+            o, O,
+            o, O
+        ],
+		symbols = [
+            Cyrillic_shcha, Cyrillic_SHCHA,
+            Cyrillic_shcha, Cyrillic_SHCHA
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <PGUP>, clearMods = LevelThree),
+            RedirectKey(key = <PGUP>, clearMods = LevelThree)
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <PGUP>, clearMods = LevelThree),
+            RedirectKey(key = <PGUP>, clearMods = LevelThree)
+        ]
+	};
+
+	key <AD10> {
+		type = "RQ_SHIFT+ALT",
+		symbols = [
+            p, P,
+            p, P
+        ],
+		symbols = [
+            Cyrillic_ze, Cyrillic_ZE,
+            Cyrillic_ze, Cyrillic_ZE
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <END>, clearMods = LevelThree),
+            RedirectKey(key = <END>, clearMods = LevelThree)
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <END>, clearMods = LevelThree),
+            RedirectKey(key = <END>, clearMods = LevelThree)
+        ]
+	};
+
+	key <AD11> { [ bracketleft, braceleft ] };
+
+	key <AD12> {
+		type = "RQ_SHIFT",
+		symbols = [ bracketright, braceright ],
+		symbols = [ Cyrillic_hardsign, Cyrillic_HARDSIGN ]
+	};
+
+	key <RTRN> { [ Return ] };
+	key <LCTL> { [ Shift_L ] };
+
+	key <AC01> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            a, A,
+            a, A,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_ef, Cyrillic_EF,
+            Cyrillic_ef, Cyrillic_EF,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            NoAction(), NoAction(),
+            RedirectKey(key = <AE11>, clearMods = LevelFive),
+            RedirectKey(key = <AE11>, clearMods = LevelFive),
+            NoAction(), NoAction()
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I220>, clearMods = LevelThree),
+            RedirectKey(key = <I220>, clearMods = LevelThree),
+            RedirectKey(key = <AE11>, clearMods = LevelFive),
+            RedirectKey(key = <AE11>, clearMods = LevelFive),
+            NoAction(), NoAction()
+        ]
+	};
+
+	key <AC02> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            s, S,
+            s, S,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_yeru, Cyrillic_YERU,
+            Cyrillic_yeru, Cyrillic_YERU,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I220>, clearMods = LevelThree),
+            RedirectKey(key = <I220>, clearMods = LevelThree),
+            RedirectKey(key = <AE12>, clearMods = LevelFive),
+            RedirectKey(key = <AE12>, clearMods = LevelFive),
+            NoAction(), NoAction()
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I220>, clearMods = LevelThree),
+            RedirectKey(key = <I220>, clearMods = LevelThree),
+            RedirectKey(key = <AE12>, clearMods = LevelFive),
+            RedirectKey(key = <AE12>, clearMods = LevelFive),
+            NoAction(), NoAction()
+        ]
+	};
+
+	key <I220> { [ period, greater ] };
+
+	key <AC03> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            h, H,
+            h, H,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_ve, Cyrillic_VE,
+            Cyrillic_ve, Cyrillic_VE,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I210>, clearMods = LevelThree),
+            RedirectKey(key = <I210>, clearMods = LevelThree),
+            RedirectKey(key = <AE09>, clearMods = LevelFive),
+            RedirectKey(key = <AE09>, clearMods = LevelFive),
+            RedirectKey(key = <AE09>, clearMods = LevelFive),
+            RedirectKey(key = <AE09>, clearMods = LevelFive)
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I210>, clearMods = LevelThree),
+            RedirectKey(key = <I210>, clearMods = LevelThree),
+            RedirectKey(key = <AE09>, clearMods = LevelFive),
+            RedirectKey(key = <AE09>, clearMods = LevelFive),
+            RedirectKey(key = <AE09>, clearMods = LevelFive),
+            RedirectKey(key = <AE09>, clearMods = LevelFive)
+        ]
+	};
+
+	key <I210> { [ bracketleft, braceleft ] };
+
+	key <AC04> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            f, F,
+            f, F,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_a, Cyrillic_A,
+            Cyrillic_a, Cyrillic_A,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I211>, clearMods = LevelThree),
+            RedirectKey(key = <I211>, clearMods = LevelThree),
+            RedirectKey(key = <AE10>, clearMods = LevelFive),
+            RedirectKey(key = <AE10>, clearMods = LevelFive),
+            RedirectKey(key = <AE10>, clearMods = LevelFive),
+            RedirectKey(key = <AE10>, clearMods = LevelFive)
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I211>, clearMods = LevelThree),
+            RedirectKey(key = <I211>, clearMods = LevelThree),
+            RedirectKey(key = <AE10>, clearMods = LevelFive),
+            RedirectKey(key = <AE10>, clearMods = LevelFive),
+            RedirectKey(key = <AE10>, clearMods = LevelFive),
+            RedirectKey(key = <AE10>, clearMods = LevelFive)
+        ]
+	};
+
+	key <I211> { [ bracketright, braceright ] };
+
+	key <AC05> {
+		type = "RQ_SHIFT",
+		symbols = [ g, G, g, G ],
+		symbols = [ Cyrillic_pe, Cyrillic_PE ]
+	};
+
+	key <AC06> {
+		type = "RQ_SHIFT+ALT",
+		symbols = [
+            y, Y,
+            y, Y
+        ],
+		symbols = [
+            Cyrillic_er, Cyrillic_ER,
+            Cyrillic_er, Cyrillic_ER
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <LEFT>, clearMods = LevelThree),
+            RedirectKey(key = <LEFT>, clearMods = LevelThree)
+        ],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <LEFT>, clearMods = LevelThree),
+            RedirectKey(key = <LEFT>, clearMods = LevelThree)
+        ]
+	};
+
+	key <AC07> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            n, N,
+            n, N,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_o, Cyrillic_O,
+            Cyrillic_o, Cyrillic_O,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <DOWN>, clearMods = LevelThree),
+            RedirectKey(key = <DOWN>, clearMods = LevelThree),
+            RedirectKey(key = <AE06>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <AE06>, clearMods = LevelThree+LevelFive)
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <DOWN>, clearMods = LevelThree),
+            RedirectKey(key = <DOWN>, clearMods = LevelThree),
+            RedirectKey(key = <AE06>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <AE06>, clearMods = LevelThree+LevelFive)
+        ]
+	};
+
+	key <AC08> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            e, E,
+            e, E,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_el, Cyrillic_EL,
+            Cyrillic_el, Cyrillic_EL,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <UP>, clearMods = LevelThree),
+            RedirectKey(key = <UP>, clearMods = LevelThree),
+            RedirectKey(key = <AE07>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <AE07>, clearMods = LevelThree+LevelFive)
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <UP>, clearMods = LevelThree),
+            RedirectKey(key = <UP>, clearMods = LevelThree),
+            RedirectKey(key = <AE07>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <AE07>, clearMods = LevelThree+LevelFive)
+        ]
+	};
+
+	key <AC09> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            l, L,
+            l, L,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+		symbols = [
+            Cyrillic_de, Cyrillic_DE,
+            Cyrillic_de, Cyrillic_DE,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <RGHT>, clearMods = LevelThree),
+            RedirectKey(key = <RGHT>, clearMods = LevelThree),
+            RedirectKey(key = <AE08>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <AE08>, clearMods = LevelThree+LevelFive)
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <RGHT>, clearMods = LevelThree),
+            RedirectKey(key = <RGHT>, clearMods = LevelThree),
+            RedirectKey(key = <AE08>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <AE08>, clearMods = LevelThree+LevelFive)
+        ]
+	};
+
+	key <AC10> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            semicolon, colon,
+            semicolon, colon,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+		],
+		symbols = [
+            semicolon, colon,
+            semicolon, colon,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+		],
+		actions = [
+            NoAction(), NoAction(),
+            NoAction(), NoAction(),
+            NoAction(), NoAction(),
+            NoAction(), NoAction(),
+            NoAction(), NoAction()
+		],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I219>, clearMods = LevelThree+LevelFive),
+            RedirectKey(key = <I219>, clearMods = LevelThree+LevelFive),
+            NoAction(), NoAction(),
+            NoAction(), NoAction(),
+            NoAction(), NoAction()
+		]
+	};
+
+	key <I219> { [ Cyrillic_zhe, Cyrillic_ZHE ] };
+
+	key <AC11> {
+		type = "RQ_SHIFT",
+		symbols = [ apostrophe, grave ],
+		symbols = [ Cyrillic_e, Cyrillic_E ]
+	};
+
+	key <TLDE> {
+		type = "RQ_SHIFT",
+		symbols = [ grave, asciitilde ]
+	};
+
+	key <LFSH> { [ Escape ] };
+
+	key <BKSL> {
+		symbols = [ backslash, bar ]
+	};
+
+	key <AB01> {
+		type = "RQ_SHIFT",
+		symbols = [ z, Z ],
+		symbols = [ Cyrillic_ya, Cyrillic_YA ]
+	};
+
+	key <AB02> {
+		type = "RQ_SHIFT",
+		symbols = [ x, X ],
+		symbols = [ Cyrillic_che, Cyrillic_CHE ]
+	};
+
+	key <AB03> {
+		type = "RQ_SHIFT+ALT",
+		symbols = [
+            c, C,
+            c, C
+		],
+		symbols = [
+            Cyrillic_es, Cyrillic_ES,
+            Cyrillic_es, Cyrillic_ES
+		],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <INS>, mods = Control+Shift, clearMods = LevelThree),
+            RedirectKey(key = <INS>, mods = Control+Shift, clearMods = LevelThree)
+		],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <INS>, mods = Control+Shift, clearMods = LevelThree),
+            RedirectKey(key = <INS>, mods = Control+Shift, clearMods = LevelThree)
+        ]
+	};
+
+	key <AB04> {
+		type = "RQ_SHIFT+ALT",
+		symbols = [
+            v, V,
+            v, V
+		],
+		symbols = [
+            Cyrillic_em, Cyrillic_EM,
+            Cyrillic_em, Cyrillic_EM
+		],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <INS>, mods = Shift, clearMods = LevelThree),
+            RedirectKey(key = <INS>, mods = Shift, clearMods = LevelThree)
+		],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <INS>, mods = Shift, clearMods = LevelThree),
+            RedirectKey(key = <INS>, mods = Shift, clearMods = LevelThree)
+        ]
+	};
+
+	key <AB05> {
+		type = "RQ_SHIFT+LVL5",
+		symbols = [
+            b, B,
+            b, B
+		],
+		symbols = [
+            Cyrillic_i, Cyrillic_I,
+            Cyrillic_i, Cyrillic_I
+		],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <LEFT>, mods = Alt, clearMods = LevelFive),
+            RedirectKey(key = <LEFT>, mods = Alt, clearMods = LevelFive)
+		],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <LEFT>, mods = Alt, clearMods = LevelFive),
+            RedirectKey(key = <LEFT>, mods = Alt, clearMods = LevelFive)
+        ]
+	};
+
+	key <AB06> {
+		type = "RQ_SHIFT+LVL5",
+		symbols = [
+            k, K,
+            k, K
+		],
+		symbols = [
+            Cyrillic_te, Cyrillic_TE,
+            Cyrillic_te, Cyrillic_TE
+		],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <AE05>, clearMods = LevelFive),
+            RedirectKey(key = <AE05>, clearMods = LevelFive)
+		],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <AE05>, clearMods = LevelFive),
+            RedirectKey(key = <AE05>, clearMods = LevelFive)
+        ]
+	};
+
+	key <AB07> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            m, M,
+            m, M
+		],
+		symbols = [
+            Cyrillic_softsign, Cyrillic_SOFTSIGN,
+            Cyrillic_softsign, Cyrillic_SOFTSIGN
+		],
+		actions = [
+            NoAction(), NoAction(),
+            NoAction(), NoAction(),
+            RedirectKey(key = <I209>, clearMods = LevelFive),
+            RedirectKey(key = <I209>, clearMods = LevelFive),
+            NoAction(), NoAction()
+		],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I221>, clearMods = LevelThree),
+            RedirectKey(key = <I221>, clearMods = LevelThree),
+            RedirectKey(key = <I209>, clearMods = LevelFive),
+            RedirectKey(key = <I209>, clearMods = LevelFive),
+            NoAction(), NoAction()
+		]
+	};
+
+	key <I221> { [ Cyrillic_hardsign, Cyrillic_HARDSIGN ] };
+	key <I209> { [ slash, backslash, NoSymbol, NoSymbol ] };
+
+	key <AB08> {
+		type = "RQ_SHIFT+ALT+LVL5",
+		symbols = [
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+		],
+		symbols = [
+            Cyrillic_be, Cyrillic_BE,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol,
+            NoSymbol, NoSymbol
+		],
+		actions = [
+            NoAction(), NoAction(),
+            NoAction(), NoAction(),
+            RedirectKey(key = <I216>, clearMods = LevelFive),
+            RedirectKey(key = <I216>, clearMods = LevelFive),
+            NoAction(), NoAction()
+		],
+		actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I218>, clearMods = LevelThree),
+            RedirectKey(key = <I218>, clearMods = LevelThree),
+            RedirectKey(key = <I216>, clearMods = LevelFive),
+            RedirectKey(key = <I216>, clearMods = LevelFive),
+            NoAction(), NoAction()
+		]
+	};
+
+	key <I216> { [ question, bar ] };
+
+	key <AB09> { [ ], [ Cyrillic_yu, Cyrillic_YU ] };
+
+	key <I218> { [ Cyrillic_e, Cyrillic_E ] };
+
+	key <AB10> { [ slash, question ] };
+
+	key <LALT> { [ Super_L ] };
+
+	key <SPCE> { [ space ] };
+	key <CAPS> { [ Control_L ] };
+
+	key <FK01> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F1, XF86Switch_VT_1 ]
+	};
+
+	key <FK02> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F2, XF86Switch_VT_2 ]
+	};
+
+	key <FK03> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F3, XF86Switch_VT_3 ]
+	};
+
+	key <FK04> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F4, XF86Switch_VT_4 ]
+	};
+
+	key <FK05> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F5, XF86Switch_VT_5 ]
+	};
+
+	key <FK06> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F6, XF86Switch_VT_6 ]
+	};
+
+	key <FK07> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F7, XF86Switch_VT_7 ]
+	};
+	key <FK08> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F8, XF86Switch_VT_8 ]
+	};
+
+	key <FK09> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F9, XF86Switch_VT_9 ]
+	};
+
+	key <FK10> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F10, XF86Switch_VT_10 ]
+	};
+
+	key <FK11> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F11, XF86Switch_VT_11 ]
+	};
+
+	key <FK12> {
+		type = "RQ_CTRL-ALT",
+		symbols = [ F12, XF86Switch_VT_12 ]
+	};
+
+	key <NMLK> { [ Num_Lock ] };
+	key <SCLK> { [ Scroll_Lock ] };
+
+	key <RCTL> { [ Control_R ] };
+
+	key <PRSC> {
+		type = "RQ_ALT",
+		symbols = [ Print, Sys_Req ]
+	};
+
+	key <HOME> { [ Home ] };
+	key <END> { [ End ] };
+	key <PGUP> { [ Prior ] };
+	key <PGDN> { [ Next ] };
+
+	key <INS> { [ Insert ] };
+
+	key <DELE> {
+        type = "RQ_SHIFT+ALT",
+        symbols = [
+            Delete, Delete,
+            NoSymbol, NoSymbol
+        ],
+        symbols = [
+            Delete, Delete,
+            NoSymbol, NoSymbol
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I213>, clearMods = LevelThree),
+            RedirectKey(key = <I213>, clearMods = LevelThree)
+        ],
+        actions = [
+            NoAction(), NoAction(),
+            RedirectKey(key = <I213>, clearMods = LevelThree),
+            RedirectKey(key = <I213>, clearMods = LevelThree)
+        ]
+    };
+
+	key <I213> { [ Cyrillic_ha, Cyrillic_HA ] };
+
+	key <UP> { [ Up ] };
+	key <LEFT> { [ Left ] };
+	key <RGHT> { [ Right ] };
+	key <DOWN> { [ Down ] };
+
+	key <PAUS> {
+		type = "RQ_CONTROL",
+		symbols = [ Pause, Break ]
+	};
+
+	key <COMP> { [ Menu ] };
+
+	modifier_map Shift { <LCTL> };
+
+	modifier_map Control { <TAB> };
+	key <TAB> { [ Control_L ] };
+
+	modifier_map Control { <RCTL> };
+
+	modifier_map Shift { <RALT> };
+	key <RALT> { [ Shift_R ] };
+
+	modifier_map Mod1 { <LWIN> };
+	key <LWIN> {
+        symbols = [ Hyper_L ],
+        virtualMods = LevelThree
+	};
+
+	modifier_map Mod3 { <RTSH> };
+	key <RTSH> { [ ISO_Level5_Shift ] };
+
+	modifier_map Mod4 { <RWIN> };
+	key <RWIN> { [ Super_R ] };
+
+	modifier_map Mod5 { <MDSW> };
+};

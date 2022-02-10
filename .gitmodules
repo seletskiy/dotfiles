@@ -1,7 +1,3 @@
-[submodule ".config/xkb"]
-	path = .config/xkb
-	url = https://github.com/reconquest/rex
-	branch = master
 [submodule ".deadfiles"]
 	path = .deadfiles
 	url = https://github.com/deadcrew/deadfiles

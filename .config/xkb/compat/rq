@@ -1,0 +1,136 @@
+xkb_compatibility "rq-total" {
+    virtual_modifiers Alt, LevelThree, LAlt, RAlt, RControl, LControl, LevelFive, AltGr, Super;
+
+    interpret.useModMapMods = AnyLevel;
+    interpret.repeat = False;
+    interpret.locking = False;
+
+    interpret Alt_L+AnyOf(all) {
+        virtualModifier = Alt;
+        action = SetMods(modifiers = modMapMods, clearLocks);
+    };
+
+    interpret Alt_R+AnyOf(all) {
+        virtualModifier = Alt;
+        action = SetMods(modifiers = modMapMods, clearLocks);
+    };
+
+    interpret Super_L+AnyOf(all) {
+        virtualModifier = Super;
+        action = SetMods(modifiers = modMapMods, clearLocks);
+    };
+
+    interpret Super_R+AnyOf(all) {
+        virtualModifier = Super;
+        action = SetMods(modifiers = modMapMods, clearLocks);
+    };
+
+    interpret ISO_Level5_Shift+AnyOf(all) {
+        virtualModifier = LevelFive;
+        useModMapMods = level1;
+        action = SetMods(modifiers = LevelFive,clearLocks);
+    };
+
+    interpret Mode_switch+AnyOfOrNone(all) {
+        virtualModifier = AltGr;
+        useModMapMods = level1;
+        action = SetGroup(group = +1);
+    };
+
+    interpret ISO_Level3_Shift+AnyOfOrNone(all) {
+        virtualModifier = LevelThree;
+        action = SetMods(modifiers = LevelThree,clearLocks);
+    };
+
+    interpret Alt_L+AnyOfOrNone(all) {
+        action = SetMods(modifiers = Alt,clearLocks);
+    };
+
+    interpret Alt_R+AnyOfOrNone(all) {
+        action = SetMods(modifiers = Alt,clearLocks);
+    };
+
+    interpret Super_L+AnyOfOrNone(all) {
+        action = SetMods(modifiers = Super,clearLocks);
+    };
+
+    interpret Super_R+AnyOfOrNone(all) {
+        action = SetMods(modifiers = Super,clearLocks);
+    };
+
+    interpret Shift_L+AnyOfOrNone(all) {
+        action = SetMods(modifiers = Shift,clearLocks);
+    };
+
+    interpret XF86Switch_VT_1+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 1,!same);
+    };
+
+    interpret XF86Switch_VT_2+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 2,!same);
+    };
+
+    interpret XF86Switch_VT_3+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 3,!same);
+    };
+
+    interpret XF86Switch_VT_4+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 4,!same);
+    };
+
+    interpret XF86Switch_VT_5+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 5,!same);
+    };
+
+    interpret XF86Switch_VT_6+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 6,!same);
+    };
+
+    interpret XF86Switch_VT_7+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 7,!same);
+    };
+
+    interpret XF86Switch_VT_8+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 8,!same);
+    };
+
+    interpret XF86Switch_VT_9+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 9,!same);
+    };
+
+    interpret XF86Switch_VT_10+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 10,!same);
+    };
+
+    interpret XF86Switch_VT_11+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 11,!same);
+    };
+
+    interpret XF86Switch_VT_12+AnyOfOrNone(all) {
+        repeat = True;
+        action = SwitchScreen(screen = 12,!same);
+    };
+
+    interpret ISO_Level5_Shift+AnyOfOrNone(all) {
+        action = SetMods(modifiers = LevelFive,clearLocks);
+    };
+
+    interpret Any+Exactly(Lock) {
+        action = LockMods(modifiers = Lock);
+    };
+
+    interpret Any+AnyOf(all) {
+        action = SetMods(modifiers = modMapMods,clearLocks);
+    };
+};

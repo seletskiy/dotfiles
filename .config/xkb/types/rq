@@ -1,0 +1,111 @@
+xkb_types "rq" {
+    virtual_modifiers LevelThree, LevelThree, LevelFive;
+
+    type "RQ_SHIFT" {
+        modifiers = Shift;
+        map[None] = Level1;
+        map[Shift] = Level2;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Shift";
+    };
+
+    type "RQ_SHIFT+ALT" {
+        modifiers = Shift+LevelThree;
+        map[None] = Level1;
+        map[Shift] = Level2;
+        map[LevelThree] = Level3;
+        map[Shift+LevelThree] = Level4;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Shift";
+        level_name[Level3] = "LevelThree";
+        level_name[Level4] = "Shift+LevelThree";
+    };
+
+    type "RQ_SHIFT+LVL5" {
+        modifiers = Shift+LevelFive;
+        map[None] = Level1;
+        map[Shift] = Level2;
+        map[LevelFive] = Level3;
+        map[LevelFive+Shift] = Level4;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Shift";
+        level_name[Level3] = "LVL5";
+        level_name[Level4] = "LVL5+Shift";
+    };
+
+    type "RQ_SHIFT+ALT+LVL5" {
+        modifiers = Shift+LevelThree+LevelFive;
+        map[None] = Level1;
+        map[Shift] = Level2;
+        map[LevelThree] = Level3;
+        map[Shift+LevelThree] = Level4;
+        map[LevelFive] = Level5;
+        map[LevelFive+Shift] = Level6;
+        map[LevelFive+LevelThree] = Level7;
+        map[LevelFive+Shift+LevelThree] = Level8;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Shift";
+        level_name[Level3] = "LevelThree";
+        level_name[Level4] = "Shift+LevelThree";
+        level_name[Level5] = "LVL5";
+        level_name[Level6] = "LVL5+Shift";
+        level_name[Level7] = "LVL5+LevelThree";
+        level_name[Level8] = "LVL5+Shift+LevelThree";
+    };
+
+    type "RQ_SHIFT+LVL3" {
+        modifiers = Shift+LevelThree;
+        map[None] = Level1;
+        map[Shift] = Level2;
+        map[LevelThree] = Level3;
+        map[LevelThree+Shift] = Level4;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Shift";
+        level_name[Level3] = "LVL3";
+        level_name[Level4] = "LVL3+Shift";
+    };
+
+    type "RQ_SHIFT+LVL3+LVL5" {
+        modifiers = Shift+LevelThree+LevelFive;
+        map[None] = Level1;
+        map[Shift] = Level2;
+        map[LevelThree] = Level3;
+        map[Shift+LevelThree] = Level4;
+        map[LevelFive] = Level5;
+        map[LevelFive+Shift] = Level6;
+        map[LevelFive+LevelThree] = Level7;
+        map[LevelFive+Shift+LevelThree] = Level8;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Shift";
+        level_name[Level3] = "LevelThree";
+        level_name[Level4] = "Shift+LevelThree";
+        level_name[Level5] = "LVL5";
+        level_name[Level6] = "LVL5+Shift";
+        level_name[Level7] = "LVL5+LevelThree";
+        level_name[Level8] = "LVL5+Shift+LevelThree";
+    };
+
+    type "RQ_CTRL-ALT" {
+        modifiers = Control+LevelThree;
+        map[None] = Level1;
+        map[Control+LevelThree] = Level2;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Control+LevelThree";
+    };
+
+    type "RQ_ALT" {
+        modifiers = LevelThree;
+        map[None] = Level1;
+        map[LevelThree] = Level2;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "LevelThree";
+    };
+
+    type "RQ_CTRL" {
+        modifiers = Control;
+        map[None] = Level1;
+        map[Control] = Level2;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Control";
+    };
+};

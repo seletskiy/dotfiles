@@ -1,0 +1,3 @@
+xkb_keycodes "rq" {
+    <NOOP> = 8;
+};
