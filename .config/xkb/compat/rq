@@ -5,16 +5,6 @@ xkb_compatibility "rq-total" {
     interpret.repeat = False;
     interpret.locking = False;
 
-    interpret Alt_L+AnyOf(all) {
-        virtualModifier = Alt;
-        action = SetMods(modifiers = modMapMods, clearLocks);
-    };
-
-    interpret Alt_R+AnyOf(all) {
-        virtualModifier = Alt;
-        action = SetMods(modifiers = modMapMods, clearLocks);
-    };
-
     interpret Super_L+AnyOf(all) {
         virtualModifier = Super;
         action = SetMods(modifiers = modMapMods, clearLocks);
@@ -43,10 +33,6 @@ xkb_compatibility "rq-total" {
     };
 
     interpret Alt_L+AnyOfOrNone(all) {
-        action = SetMods(modifiers = Alt,clearLocks);
-    };
-
-    interpret Alt_R+AnyOfOrNone(all) {
         action = SetMods(modifiers = Alt,clearLocks);
     };
 

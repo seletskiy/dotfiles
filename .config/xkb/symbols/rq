@@ -769,8 +769,6 @@ xkb_symbols "rq-total" {
 
 	key <AB10> { [ slash, question ] };
 
-	key <LALT> { [ Super_L ] };
-
 	key <SPCE> { [ space ] };
 	key <CAPS> { [ Control_L ] };
 
@@ -886,6 +884,25 @@ xkb_symbols "rq-total" {
 
 	key <COMP> { [ Menu ] };
 
+	modifier_map Mod1 { <RWIN> };
+	key <RWIN> {
+        symbols = [ Alt_L ],
+        virtualMods = Alt
+    };
+
+	modifier_map Mod2 { <LWIN> };
+	key <LWIN> {
+        symbols = [ Hyper_L ],
+        virtualMods = LevelThree
+	};
+
+	modifier_map Mod3 { <RTSH> };
+	key <RTSH> { [ ISO_Level5_Shift ] };
+
+	modifier_map Mod4 { <LALT> };
+	key <LALT> { [ Super_L ] };
+
+	modifier_map Mod5 { <MDSW> };
 	modifier_map Shift { <LCTL> };
 
 	modifier_map Control { <TAB> };
@@ -895,18 +912,4 @@ xkb_symbols "rq-total" {
 
 	modifier_map Shift { <RALT> };
 	key <RALT> { [ Shift_R ] };
-
-	modifier_map Mod1 { <LWIN> };
-	key <LWIN> {
-        symbols = [ Hyper_L ],
-        virtualMods = LevelThree
-	};
-
-	modifier_map Mod3 { <RTSH> };
-	key <RTSH> { [ ISO_Level5_Shift ] };
-
-	modifier_map Mod4 { <RWIN> };
-	key <RWIN> { [ Super_R ] };
-
-	modifier_map Mod5 { <MDSW> };
 };
