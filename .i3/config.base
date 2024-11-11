@@ -27,16 +27,16 @@ floating_modifier $mod
 bindsym $mod+Ctrl+q kill
 
 # change focus
-bindsym Ctrl+Home focus left
-bindsym Ctrl+Prior focus up
-bindsym Ctrl+Next focus down
-bindsym Ctrl+End focus right
+bindsym $mod+u focus left
+bindsym $mod+i focus down
+bindsym $mod+o focus up
+bindsym $mod+p focus right
 
 # move focused window
-bindsym Ctrl+Shift+Home move left
-bindsym Ctrl+Shift+Prior move up
-bindsym Ctrl+Shift+Next move down
-bindsym Ctrl+Shift+End move right
+bindsym $mod+Shift+u move left
+bindsym $mod+Shift+i move down
+bindsym $mod+Shift+o move up
+bindsym $mod+Shift+p move right
 
 # split in horizontal orientation
 bindsym $mod+Ctrl+t split h
@@ -67,29 +67,27 @@ bindsym $mod+minus sticky toggle
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace a-1
-bindsym $mod+2 workspace a-2
-bindsym $mod+3 workspace a-3
-bindsym $mod+q workspace b-1
-bindsym $mod+d workspace b-2
-bindsym $mod+r workspace b-3
-bindsym $mod+a workspace c-1
-bindsym $mod+s workspace c-2
-bindsym $mod+h workspace c-3
+bindsym $mod+q workspace a-1
+bindsym $mod+d workspace a-2
+bindsym $mod+r workspace a-3
+bindsym $mod+a workspace b-1
+bindsym $mod+s workspace b-2
+bindsym $mod+h workspace b-3
+bindsym $mod+z workspace c-1
+bindsym $mod+x workspace c-2
 
 # move focused container to workspace
-bindcode $mod+Shift+10 exec i3-move-container a-1
-bindcode $mod+Shift+11 exec i3-move-container a-2
-bindcode $mod+Shift+12 exec i3-move-container a-3
-bindcode $mod+Shift+24 exec i3-move-container b-1
-bindcode $mod+Shift+25 exec i3-move-container b-2
-bindcode $mod+Shift+26 exec i3-move-container b-3
-bindcode $mod+Shift+38 exec i3-move-container c-1
-bindcode $mod+Shift+39 exec i3-move-container c-2
-bindcode $mod+Shift+40 exec i3-move-container c-3
+bindcode $mod+Shift+24 exec i3-move-container a-1
+bindcode $mod+Shift+25 exec i3-move-container a-2
+bindcode $mod+Shift+26 exec i3-move-container a-3
+bindcode $mod+Shift+38 exec i3-move-container b-1
+bindcode $mod+Shift+39 exec i3-move-container b-2
+bindcode $mod+Shift+40 exec i3-move-container b-3
+bindcode $mod+Shift+52 exec i3-move-container c-1
+bindcode $mod+Shift+53 exec i3-move-container c-2
 
-#bindsym $mod+Shift+minus mark quick_1
-#bindsym $mod+minus [con_mark="quick_1"] focus
+bindsym $mod+Ctrl+1 mark quick_1
+bindsym $mod+1 [con_mark="quick_1"] focus
 
 #bindsym $mod+Shift+equal mark quick_2
 #bindsym $mod+equal [con_mark="quick_2"] focus
@@ -100,18 +98,23 @@ for_window [class="google-chrome"] border none
 for_window [title="Diablo II"] border none
 for_window [instance="^screenkey$"] floating enable
 for_window [class="fontforge"] floating enable
-for_window [title="^kuake_"] floating enable, border none
+for_window [instance="^kuake_"] floating enable, move scratchpad, border pixel 2, scratchpad show
 for_window [title="^ffplay_gif_player"] floating enable
 for_window [title="Slack Call Minipanel"] kill
 for_window [instance="info.exe"] move position center
 for_window [instance="info.exe" title="QUIK: messages window"] floating enable, kill
 for_window [title="^Android Emulator - "] floating enable
 for_window [class="zoom"] floating enable
+for_window [class="matplotlib"] floating enable
+#for_window [class="sun-awt-X11-XDialogPeer"] floating enable
+for_window [class="firefox" window_role="PictureInPicture"] border none
+for_window [class="Unity"] border none
+for_window [class="UnrealEditor" title="(?!Unreal Editor)$"] floating enable, sticky enable
 no_focus [instance="info.exe" title="QUIK: messages window"]
 
-floating_minimum_size 70 x 15
+#floating_minimum_size 10 x 10
 
-hide_edge_borders both
+hide_edge_borders smart_no_gaps
 
 new_window 1pixel
 
@@ -150,7 +153,8 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym $mod+z mode "resize"
+bindsym $mod+t mode "resize"
 
 gaps inner 2
-#smart_gaps on
+gaps outer -4
+smart_gaps on

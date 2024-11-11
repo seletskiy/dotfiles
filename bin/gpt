@@ -1,0 +1,159 @@
+#!/bin/bash
+
+### gpt — access OpenAI GPT features.
+###
+### Usage:
+###  gpt (+<flag>|<prompt>)...
+###    — Prompt GPT.
+###      Any argument except ones that start from "+" would be concatenated into prompt.
+###      Argument starting with "+" would be considered to be a flag (see below).
+###  gpt
+###    — Display this help.
+###
+### Flags:
+###  +in         Read rest of the prompt from stdin.
+###  +raw        Do not apply default system prompt.
+###  +code       Switch to code prompt and extracts codeblock from ``` pair. Assumes +in.
+###  +chat       Chat mode. Assumes +in, + and ++. Reads stdin in format of back-and-forth chat history, where:
+###               - Lines that begin with `<` considered to be user input.
+###               - Lines that begin with `>` considered to be previous GPT output.
+###  +           Outputs input first, then response from GPT. Assumes +in.
+###  +3          Use GPT 3.5-turbo instead of GPT 4.
+###  +4          Use GPT 4o instead of GPT 4.
+###  +1          Use GPT o1 instead of GPT 4.
+###  +t          Use temperature = 0.5.
+###  +tt         Use temperature = 0.75.
+###  +T          Use temperature = 1.
+###  ++<thread>  Read chat history by given thread name. Can be specified multiple times.
+###               ! Appends current prompt and response to the LAST thread specified.
+###  ++          Do not update any specified thread, only read chat history.
+###
+### Env:
+###  CARCOSA_SECRETS  Path to your secrets repo if you use carcosa. Default: `~/.secrets/my`.
+###  CARCOSA_TOKEN    Token to get API key from. Default: `api/beta.openai.com`.
+###  OPENAI_API_KEY   API key if you don't use `carcosa`.
+###  GPT_STORE_DIR    Data dir used for storing state (chat history). Default: `~/.local/gpt`
+
+set -euo pipefail && shopt -s extglob nullglob
+
+:data() { sed -rn -e "s/^$1//;T;p" "$0"; }
+:dep()  { [ "$(which "$1" 2>&-)" ] || { [ "${*:2}" ] && echo "${@:2}" && exit 2; }; }
+:ts()   { date +%FT%T.%3N; }
+
+[ $# -gt 0 ] || { :data '### ?' && exit; }
+
+:dep jo "jo: mandatory dependency is missing."
+:dep jq "jq: mandatory dependency is missing."
+
+declare -r api_key=${OPENAI_API_KEY:-$(
+    :dep carcosa \
+        && carcosa -p ${CARCOSA_SECRETS-~/.secrets/my} -cG ${CARCOSA_TOKEN-api/beta.openai.com})}
+[ "${api_key:?API key must be provided.}" ]
+
+declare -r store=${GPT_STORE_DIR-~/.local/gpt}
+
+[ -d "$store" ] \
+    || { mkdir -p "$store/t" \
+         && :dep zstd && :data '#z64:' | base64 -d | zstd -d | tar -C "$store/t" -x; }
+
+declare -A cmds=()
+declare -a threads=()
+declare -a prompt=()
+
+for word in "$@"; do
+    case "$word" in
+        +++(?)) threads+=("${word:2}") ;;
+        +*)     cmds[$word]=$word      ;;
+        *)      prompt+=("$word")      ;;
+    esac
+done
+
+cmds[++]=${cmds[+chat]-}
+cmds[+]=${cmds[+]-}
+cmds[+in]=${cmds[+in]-}${cmds[+]-}${cmds[+code]-}${cmds[+chat]-}
+
+[ "${cmds[+in]}" ] && input=$(cat)
+
+messages=()
+:msg() { [ $# -lt 2 ] || messages+=("$(jo role="$1" content=@<(printf "%s\n" "${@:2}"))"); }
+
+for thread in ${cmds[+raw]-:concise} ${cmds[+code]+:code} "${threads[@]}"; do
+    while read file; do
+        IFS='@' read _ role <<<$file && :msg $role "$(cat "$file")"
+    done < <(find $store/t/ -type f -wholename "$store/t/$thread/*" | sort)
+done
+
+[ ${#prompt[@]} -eq 0 -a ${#threads[@]} -gt 0 -a -z "${cmds[+in]-}" ] \
+    && <<<${messages[@]} jq -sr '[.[]
+            | (({"user":"<","assistant":">"}[.role] // "?") + " ") as $sig
+            | .content
+            | gsub("(?<_>^|\n)"; ._ + $sig)] | join("\n\n")' \
+        | fmt -sp'> ' | fmt -sp '< ' \
+        | { :dep colordiff && colordiff --difftype=diff || cat; } \
+    && exit
+
+role=system
+
+[ "${cmds[+chat]-}" ] \
+    && message=() \
+    && while IFS=':' read side line; do
+        case "$role$side" in
+            system'?'|user'<'|assistant'>')                          ;;
+            *)    IFS=$'\n' :msg $role "${message[@]}" && message=() ;;&
+            *'?') role=system                                        ;;
+            *'<') role=user                                          ;;
+            *'>') role=assistant                                     ;;
+            *)    continue                                           ;;
+        esac
+        message+=("$line")
+    done < <(sed -re 's/^([<>]) /\1:/g' <<< $input) && :msg $role "${message[@]}"
+
+[ -z "${cmds[+chat]-}" -a "${cmds[+in]-}" ] && \
+    :msg user "$input"
+
+[ ${#prompt[@]} -gt 0 ] && :msg user "${prompt[*]}"
+
+model=${cmds[+1]+o1-preview}
+model=${cmds[+3]+3.5-turbo}
+model=${cmds[+4]+4o}
+model=${model:-4}
+
+temp=${cmds[+t]+0.5}
+temp=${cmds[+tt]+0.75}
+temp=${cmds[+T]+1}
+temp=${temp:-0}
+
+payload=$(jo \
+    messages="$(jo -a "${messages[@]}")" \
+    model=gpt-$model \
+    temperature=$temp)
+
+response=$(curl -s -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $api_key" \
+    --data "$payload" \
+    https://api.openai.com/v1/chat/completions)
+
+answer=$(<<<$response jq -r '.choices[0].message.content // ""')
+[ ! "$answer" ] && { jq <<<$payload && jq <<<$response; } >&2 && exit 1
+
+[ "${cmds[+code]-}" ] && answer=$(<<<$answer awk '_&&/```/{exit}_;/```/{_=1}')
+[ "${cmds[+chat]-}" ] && answer=$(echo && <<<$answer sed -re 's/^/> /g')
+
+[ "${cmds[+]-}" ] && <<<$input cat; <<<$answer cat
+
+[ "${#threads[@]}" -eq 0 -o "${cmds[++]-}" ] || {
+    path="$store/t/${threads[-1]}" && mkdir -p "$path"
+
+    [ "${prompt[*]-}" ] && IFS=$'\n' echo "${prompt[*]}" >"$path/$(:ts)0@user"
+    [ "${input-}"     ] && IFS=$'\n' echo "$input"       >"$path/$(:ts)1@user"
+    [ "${answer[*]-}" ] && IFS=$'\n' echo "${answer[*]}" >"$path/$(:ts)2@assistant"
+}
+
+# Builtin system prompts.
+#z64:KLUv/QSIJQoAllI3HGBtG68qlzdypVDTBAMZcsLd76buhnYgBHAq6Q4xAC4ALwAOs5rGaezHKA7+
+#z64:NRy+BP0V7vOUCfWjI7FMimGWpRLD1qLUwliz0lLsWYw9KgUW8iYIzV1i2zNy7YkS2/m11b3IZtTq
+#z64:+d7phUSBrC8RCEQ2J7TRXevNfMd7h0FlWs1iATGh1nxuDNhfGLk2JMo++BVC7YSej2GLC2VjuL0L
+#z64:hzlsPQtrFMOewEZu7U2QEoURKfqYDYWLdfsZQX123MjmjNzbQ6I0xKF8TrivkHUJjtFfRs0lJEp0
+#z64:rK/gti8nINBIJCBKdUNNtuieFTG3htFWN4afcqsWSv6HBVtOYXm7KrzKawypubp5m8BALhhgAGar
+#z64:JAAXBpTU8SQVd4a5gjnMPDnBwQajmrthGUTzBzTEEhRGG1hZgdQ8XPdOsk7g6qSM8gmTYg==

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 count=${1:-1}
 
 device=$(

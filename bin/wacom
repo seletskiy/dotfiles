@@ -1,0 +1,5 @@
+#!/bin/bash
+
+xsetwacom set 'Wacom Cintiq 16 Pen stylus' MapToOutput HEAD-0
+xsetwacom set 'Wacom Cintiq 16 Pen eraser' MapToOutput HEAD-0
+xsetwacom set 'Wacom Cintiq 16 Pen stylus' Button 3 "key +ctrl z -ctrl"

@@ -30,6 +30,14 @@ while read count key; do
     (( total += count ))
 done <<< "$stats"
 
+printf "Key stats:\n"
+
+for key in ${!keys[@]}; do
+    printf "  %d %s\n" "${keys[$key]}" "$key"
+done | sort -nr
+
+printf "\n"
+
 top=$(tr -d '|' <<< ${layout[1]})
 home=$(tr -d '|' <<< ${layout[2]})
 bottom=$(tr -d '|' <<< ${layout[3]})

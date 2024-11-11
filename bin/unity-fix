@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -euo pipefail
+
+trap "kill $(jobs -p) 2>/dev/null" EXIT
+
+{
+    xprop -spy -root _NET_ACTIVE_WINDOW \
+        | grep --line-buffered -oP '# \K.*' \
+        | xargs -I{} bash -c 'echo {} $(xprop -id {} WM_CLASS _NET_WM_WINDOW_TYPE _NET_WM_USER_TIME_WINDOW I3_FLOATING_WINDOW)' \
+        | grep --line-buffered 'Unity.*TYPE_NORMAL.*not found' \
+        | tee /dev/stderr \
+        | stdbuf -i0 -o0 cut -f1 -d ' ' \
+        | xargs -I{} bash -c "for p in {enable,disable}; do i3-msg '[id={}] floating' \$p >/dev/null; done";
+} &
+
+picom --config /dev/null -f -D 1 --no-fading-openclose &
+
+wait

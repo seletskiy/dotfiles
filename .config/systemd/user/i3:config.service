@@ -7,7 +7,7 @@ Requires=i3.service
 [Service]
 WorkingDirectory=%h/.i3
 ExecStart=/bin/env i3-config
-ExecStart=/bin/env i3-frame
+#ExecStart=/bin/env i3-frame
 Type=oneshot
 RemainAfterExit=yes
 

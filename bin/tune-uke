@@ -1,0 +1,11 @@
+#!/bin/bash
+
+g=$(bc -l <<< "392.00 * 2")
+C=$(bc -l <<< "261.63 * 2")
+E=$(bc -l <<< "329.63 * 2")
+A=$(bc -l <<< "440.00 * 2")
+
+play -n -c1 synth sine $g
+play -n -c1 synth sine $C
+play -n -c1 synth sine $E
+play -n -c1 synth sine $A

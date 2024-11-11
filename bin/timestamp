@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec date +%FT%H:%M:%SZ
+exec date +%FT%H:%M:%S

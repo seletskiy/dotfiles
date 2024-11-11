@@ -1,0 +1,34 @@
+#!/bin/bash
+# Author: e.kovetskiy@gmail.com
+
+bases=$(xrestop -b -m 1 \
+    | grep '<unknown>' -A 1 \
+    | awk '/res_base/ { print $3; }' \
+    | sed 's/^ox/0x/' \
+    | grep -oE '.{8}')
+
+amount=$(wc -l <<< "${bases}")
+echo ":: found ${amount} resource bases with <unknown> identifier" >&2
+
+root=$(xwininfo -root -all)
+for base in ${bases[@]}; do
+    windows=$(awk "/^\s+$base/ { print \$1; }" <<< "$root")
+    if [[ ! "$windows" ]]; then
+        echo ":: [$base] there is no window with such res_base" >&2
+        continue
+    fi
+
+    amount=$(wc -l <<< "$windows")
+    echo ":: [$base] found ${#amount} windows" >&2
+
+    if [[ ${#amount} -eq 1 ]]; then
+        if xkill -id "$windows"; then
+            echo ":: [$base] $windows: killed"
+        else
+            echo ":: [$base] $windows: error"
+        fi
+    else
+        echo ":: [$base] too much windows, skipping" >&2
+        continue
+    fi
+done

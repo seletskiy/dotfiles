@@ -1,7 +1,7 @@
-URxvt.font: xft:Iosevka:pixelsize=14:hinting=true
-URxvt.italicFont: xft:Iosevka:pixelsize=14:style=Italic:hinting=true
-URxvt.boldFont: xft:Iosevka:pixelsize=14:style=Bold:hinting=true
-URxvt.boldItalicFont: xft:Iosevka:pixelsize=14:style=Bold Italic:hinting=true
+URxvt.font: xft:Iosevka Nerd Font:pixelsize=14:hinting=true
+URxvt.italicFont: xft:Iosevka Nerd Font:pixelsize=14:style=Italic:hinting=true
+URxvt.boldFont: xft:Iosevka Nerd Font:pixelsize=14:style=Bold:hinting=true
+URxvt.boldItalicFont: xft:Iosevka Nerd Font:pixelsize=14:style=Bold Italic:hinting=true
 URxvt.scrollBar: false
 URxvt.iso14755: false
 URxvt.internalBorder: 0
@@ -10,3 +10,4 @@ URxvt.keysym.C-S-Insert: perl:clipboard:copy
 URxvt.keysym.S-Insert: perl:clipboard:paste
 URxvt.clipboard.copycmd:  clipboard-copy
 URxvt.perl-ext-common: clipboard
+URxvt.depth: 32

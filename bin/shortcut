@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ ! -f .shortcuts ]]; then
+    if [ -z "${*}" ]; then
+        exec cat
+    else
+        exec "${@}"
+    fi
+fi
+
+exprs_to=()
+exprs_from=()
+while read line; do
+    chunks=(${line//:/ })
+    exprs_to+=("-e" "s|^${chunks[1]}|${chunks[0]}:|")
+    exprs_from+=("-e" "s|^${chunks[0]}:|${chunks[1]}|")
+done <.shortcuts
+
+if [ -z "${*}" ]; then
+    sed "${exprs_from[@]}"
+else
+    "${@}" | sed "${exprs_to[@]}"
+fi

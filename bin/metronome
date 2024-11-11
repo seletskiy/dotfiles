@@ -6,6 +6,7 @@ sound() {
         | zcat -9
 }
 
+stopwatch & trap "kill $!" EXIT ERR QUIT
 play -q <(sound) pad 0 $(bc -l <<< 60/${1:-60}-$(soxi -D <(sound))) repeat -
 
 ##:H4sIAAAAAAACAyVbBVhUWxfd584MnUoptqLY2K0YYCt2oyJ2d2JhYoutGM/C7gQVFVEUC0XsQkGl

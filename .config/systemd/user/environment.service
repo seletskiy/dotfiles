@@ -14,6 +14,7 @@ Environment=GOPATH=%h/go
 Environment=RUBYPATH=/opt/ruby/2.5.0/bin
 Environment=GEM_HOME=/opt/ruby/2.5.0/gems
 Environment=GTK_IM_MODULE=xim
+Environment=FrameworkPathOverride=/etc/mono/4.5
 EnvironmentFile=%h/.config/dotfiles.profile
 ExecStart=/usr/bin/systemctl --user import-environment
 ExecStart=/usr/bin/sh -c '\

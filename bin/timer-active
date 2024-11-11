@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -euo pipefail
+
+ls -1t 2>/dev/null /run/user/$UID/timer/*.active \
+    | xargs -n1 cut -f2 -d "|" \
+    | sed -re 's/(0[dhm] )+|^ //g' \
+    | sed -re 's/\x1B\[[^;]+(;|$)//g'

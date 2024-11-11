@@ -3,9 +3,9 @@
 set -euo pipefail
 
 if [[ "${BACKGROUND:-dark}" == "light" ]]; then
-    export GREP_COLORS="mt=48;5;230"
+    export GREP_COLORS="${GREP_COLORS:-mt=48;5;230}"
 else
-    export GREP_COLORS="mt=48;5;17;01;38;5;226"
+    export GREP_COLORS="${GREP_COLORS:-mt=48;5;17;01;38;5;226}"
 fi
 
 #if [[ -t 0 || -p /dev/stdin ]]; then

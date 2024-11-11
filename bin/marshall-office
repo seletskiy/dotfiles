@@ -1,3 +1,0 @@
-#!/bin/bash
-
-ssh -t 192.168.88.164 'tmux new -d sh -c "youtube-dl -qo - \"\$@\" | mpv --volume=50 --really-quiet --no-video -"' -- "$@"

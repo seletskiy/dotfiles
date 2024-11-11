@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sound() {
+    sed -rn 's/^##://;T;p' "$1" \
+        | base64 -d \
+        | zcat -9
+}
+
+mpv --really-quiet <(sound "$1")

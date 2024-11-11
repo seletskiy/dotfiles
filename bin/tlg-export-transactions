@@ -1,27 +1,72 @@
 #!/bin/bash
 
-function join_by { local IFS="$1"; shift; echo "$*"; }
+### tlg-export-transactions — extract & format securities transactions from tlg log.
+###
+### Usage:
+###   tlg-export-transactions (options|stocks) <tlg-file>
 
-while read line; do
-    [[ ! "$line" ]] && break
+function :join:by { local IFS="$1"; shift; echo "$*"; }
 
-    IFS='|' read _ _ _ ticker _ _ _ date time _ qty _ price _ fee _ <<< "$line"
-    IFS=' ' read root expiration strike right <<< "$ticker"
+function :list:options {
+    while read line; do
+        [[ ! "$line" ]] && break
 
-    [ "$right" == "C" ] && right="CALL"
-    [ "$right" == "P" ] && right="PUT"
+        IFS='|' read _ _ _ ticker _ _ _ date time _ qty _ price _ fee _ <<< "$line"
+        IFS=' ' read root expiration strike right <<< "$ticker"
 
-    columns=(
-        "$root"
-        "${date:0:4}-${date:4:2}-${date:6:2}"
-        "${time:0:5}"
-        "${expiration}"
-        "${strike}"
-        "${right}"
-        "${qty}"
-        "${price}"
-        "${fee}"
-    )
+        [ "$right" == "C" ] && right="CALL"
+        [ "$right" == "P" ] && right="PUT"
 
-    join_by $'\t' "${columns[@]}"
-done < <(sed -nre '/OPTION_TRANSACTIONS/,/^$/p' $1 | tail -n+2)
+        columns=(
+            "$root"
+            "${date:0:4}-${date:4:2}-${date:6:2}"
+            "${time:0:5}"
+            "${expiration}"
+            "${strike}"
+            "${right}"
+            "${qty}"
+            "${price}"
+            "${fee}"
+        )
+
+        :join:by $'\t' "${columns[@]}"
+    done < <(sed -nre '/OPTION_TRANSACTIONS/,/^$/p' $1 | tail -n+2) | sort -k2r
+}
+
+#STK_TRD|1885281326|COP|CONOCOPHILLIPS|NYSE|BUYTOOPEN|O|20210504|11:46:28|USD|100.00|1.00|52.30|5230.00|-0.270257|1.00
+#STK_TRD|1885441701|VLO|VALERO ENERGY CORP|NYSE|BUYTOOPEN|O|20210504|12:24:56|USD|100.00|1.00|78.98|7898.00|-0.270257|1.00
+function :list:stocks {
+    while read line; do
+        [[ ! "$line" ]] && break
+
+        IFS='|' read _ _ ticker _ _ _ _ date time _ qty _ price _ fee _ <<< "$line"
+
+        columns=(
+            "$ticker"
+            "${date:0:4}-${date:4:2}-${date:6:2}"
+            "${time:0:5}"
+            "${qty}"
+            "${price}"
+            "${fee}"
+        )
+
+        :join:by $'\t' "${columns[@]}"
+    done < <(sed -nre '/STOCK_TRANSACTIONS/,/^$/p' $1 | tail -n+2) | sort -k2r
+}
+
+:usage() {
+    sed -rn 's/^###( |$)//;T;p' "$0"
+    exit 1
+}
+
+case "$1" in
+    stocks)
+        :list:stocks "$2"
+        ;;
+    options)
+        :list:options "$2"
+        ;;
+    *)
+        :usage
+        ;;
+esac

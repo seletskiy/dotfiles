@@ -1,0 +1,29 @@
+#!/bin/bash
+
+timer="$1"; shift
+message="$*"
+time=$(timestamp)
+display=/run/user/$UID/timer/$time.active
+
+:log() {
+    echo "$time $(cut -f1 -d'|' "$display")${message:+"# $message"}" \
+        >> ~/.timer.log
+
+    rm $display
+}
+
+:display() {
+    while read -d $'\r' line; do
+        echo "$(sed -re 's/\r|\x1B\[2K//g' <<< "$line")${message:+" # $message"}" > "$display"
+    done
+}
+
+trap :log EXIT
+
+mkdir -p $(dirname $display)
+
+snore "$timer" | \
+    tee >(:display) && {
+        notify-send -u critical "Timer $timer" "$timer ${message:+"# $message"}"
+        bowl &
+    }

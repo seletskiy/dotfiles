@@ -1,0 +1,11 @@
+#!/bin/bash
+
+dir=/var/run/user/$UID/nvim
+
+sock=$(ls -1t $dir/*.sock | head -n1)
+
+if [[ ! "$sock" ]]; then
+    exec vim "$@"
+else
+    exec vim --server "$sock" --remote "$@"
+fi

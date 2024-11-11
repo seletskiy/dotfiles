@@ -2,24 +2,32 @@
 
 shopt -s extglob
 
-args=()
+dir=/var/run/user/$UID/nvim
+file=$(date +%s).sock
 
-for arg in "$@"; do
-    case "$arg" in
-        # for opening file:line:column format which is provided
-        # by `tmux-autocomplete` for `ag` output
-        *:+([0-9]):+([0-9])?(:)*)
-            data=$(sed -re 's/^(.*):([0-9]+):([0-9]+)(:.*)?/\1\t\2,\3/' <<< "$arg")
-            if [[ -e "$(cut -f1 <<< "$data")" ]]; then
-                args+=("$(cut -f1 <<< "$data")" "+call cursor($(cut -f2 <<< "$data"))")
-            else
-                args+=("$arg")
-            fi
-            ;;
-        *)
-            args+=("$arg")
-            ;;
-    esac
-done
+mkdir -p $dir
 
-exec nvim "${args[@]}"
+exec nvim --listen $dir/$file "$@"
+
+# I use alarcritty now and this will not work.
+# args=()
+#
+# for arg in "$@"; do
+#     case "$arg" in
+#         # for opening file:line:column format which is provided
+#         # by `tmux-autocomplete` for `ag` output
+#         *:+([0-9]):+([0-9])?(:)*)
+#             data=$(sed -re 's/^(.*):([0-9]+):([0-9]+)(:.*)?/\1\t\2,\3/' <<< "$arg")
+#             if [[ -e "$(cut -f1 <<< "$data")" ]]; then
+#                 args+=("$(cut -f1 <<< "$data")" "+call cursor($(cut -f2 <<< "$data"))")
+#             else
+#                 args+=("$arg")
+#             fi
+#             ;;
+#         *)
+#             args+=("$arg")
+#             ;;
+#     esac
+# done
+
+# exec nvim

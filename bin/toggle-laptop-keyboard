@@ -1,0 +1,1 @@
+#!/usr/bin/scrap xinput ${1:-enable} $(xinput list # 'AT Translated Set 2 keyboard' #o 'id=\K\d+')

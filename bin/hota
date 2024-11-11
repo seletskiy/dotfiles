@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export WINEARCH=win32
+export WINEPREFIX=/home/operator/.wine32
+cd ~/.wine32/drive_c/Games/Heroes3_HotA/
+wine HD_Launcher.exe &

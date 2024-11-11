@@ -2,11 +2,6 @@
 
 set -euo pipefail
 
-current_pid=$(pgrep -P $(xdotool getwindowfocus getwindowpid) tmux)
+current_pid=$(pgrep -P $(xdotool getwindowfocus getwindowpid))
 
-cwd=$(
-    tmux list-clients -F '#{client_pid} #{pane_current_path}' \
-        | awk "\$1 == $current_pid { print \$2 }"
-)
-
-cd "$cwd" && exec "${@}"
+cd "$(readlink -f /proc/$current_pid/cwd)" && exec "$@"

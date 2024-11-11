@@ -1,14 +1,12 @@
 #!/bin/bash
 
-profile=$(autorandr --detected | head -n1 | cut -d- -f1)
-
 echo :: loading ~/.i3/config.base >&2
 config="$(cat ~/.i3/config.base)"
 
-if [[ -f ~/.i3/config.${profile} ]]; then
-    echo ":: loading ~/.i3/config.${profile}" >&2
-    config="${config}"$'\n'"$(cat ~/.i3/config.${profile})"
+if [[ -f ~/.i3/config.layout ]]; then
+    echo ":: loading ~/.i3/config.layout" >&2
 fi
+    config="${config}"$'\n'"$(cat ~/.i3/config.{layout,workspaces})"
 
 if [[ -f ~/.i3/config.${BACKGROUND} ]]; then
     echo ":: loading ~/.i3/config.${BACKGROUND}" >&2

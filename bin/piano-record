@@ -1,0 +1,5 @@
+#!/bin/bash
+
+timestamp=$(timestamp)
+
+parec -d piano_mic.monitor | oggenc -b 192 -o $(timestamp)_Improv_TwinkleTwinkleLittleStart_RH.ogg --raw -

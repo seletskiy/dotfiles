@@ -1,0 +1,49 @@
+#!/bin/bash
+
+ver=0.2
+
+printf '#%.0s' {1..80}; echo
+printf '. <(sed -n "s/^#std://p" "$0" | basenc -d --z85 | zstd -d) ## STDLIB V%s ######\n' $ver
+pad=0
+while ! { sed -n '/## [8]</,$p' $0 | tail -n+3; printf '#%.0s' $(seq 1 $pad); } \
+    | sed -zr \
+        -e 's/\{\n\s*/{ /g' \
+        -e 's/\n\s*/;/g' \
+        -e 's/; \}/;}/g' \
+        -e 's/\)\s*\{/){/g' \
+        -e 's/;\s+/;/g' \
+    | zstd --ultra -22 \
+    | basenc --z85 -w 75 2>/dev/null;
+do
+    (( pad++ ))
+done | sed -re 's/^/#std:/g'
+printf '#%.0s' {1..80}; echo
+
+exit 0 ## STDLIB CODE BEGINS HERE 8< --------------------------------------------
+
+set -euo pipefail && shopt -s extglob nullglob expand_aliases
+
+alias ':?'='</dev/stdin'
+alias '::'='printf "%s\n"'
+:=() { eval "local -n _$1=$1; _$1=\$2"; }
+:-() { := "$1" "$(:?)"; }
+:/() { [[ "$(:?)" =~ $1 ]] && :: "${BASH_REMATCH[@]:${2:-1}:${3:-${#BASH_REMATCH}}}"; }
+
+:log() { :: "$*" >&2; }
+:hi()  { printf "\033[%dm%s\033[0m" "$1" "${*:2}"; }
+
+:defer()     { defer+=("${defer[@]-:}" "$*"); }
+:defer:run() { eval ':defer:run() { :; }'; for cmd in "${defer[@]}"; do $cmd; done; }
+trap :defer:run INT STOP EXIT ERR
+
+:bg() { "${@:2}" & eval ":bg:$1:wait() { wait $!; }"; :defer kill -11 -$1 $1; }
+
+:io() {
+    eval "exec {${1}_io}<>${2-<(:)}"
+    eval ":$1:io:r() { read -ru \$$1_io && :: \"\$REPLY\"; }"
+    eval ":$1:io:w() { :: \"\$*\" >&\$$1_io; }"
+}
+
+:tr:d()  { local str; :- str; :: "${str%$1}"; }
+:cut:b() { local str; :- str; :: "${str:$1:${2:-${#str}}}"; }
+:cut:f() { local IFS=$1 i=$2 j=${3-}; set -- $(:?); unset IFS; :: "${@:$i:${j:-$#}}"; }

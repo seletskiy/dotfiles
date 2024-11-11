@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -euo pipefail
+
+log_file=~/.timer.log
+
+declare -A totals=()
+
+# 1. no fractional part of a second
+# 2. convert to var assignments
+coproc sed {
+    sed -ur \
+        -e "s/59\\.[0-9]+s/60s/g" \
+        -e "s/\\.[0-9]+s/s/g" \
+        -e "s/([0-9]+)([dhms])/\\2=\\1/g"
+}
+
+:coproc() {
+    local -n fd=$1; shift
+    echo "$*" >&${fd[1]}
+    read -u${fd[0]}
+    echo "$REPLY"
+}
+
+while read timestamp rest; do
+    IFS="T" read date time <<< "$timestamp"
+    IFS="#" read duration _ <<< "$rest"
+
+    eval -- $(:coproc sed "$duration")
+
+    (( totals[$date] += $s + 60 * ($m + 60 * ($h + 24 * $d )) ))
+done < <(grep "#.*$(paste -sd".*" <<< "$@")" "$log_file")
+
+for date in ${!totals[@]}; do
+    s=${totals[$date]}
+    printf '%s %dd %dh %dm %ds\n' \
+        $date \
+        $((s / 86400)) \
+        $((s / 3600)) \
+        $((s % 3600 / 60)) \
+        $((s % 60))
+done | sort -rk1

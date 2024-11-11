@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -f
+
+bpm=${1:-60}
+n_1=${2:-4}
+n_2=${3:-3}
+d=${4:-0.3}
+
+=() { dc -e "2 k $* p"; }
+
+t=$(= $n_1 $n_2 * $d *)
+
+p_1=$(= $t $n_1 / $d -)
+p_2=$(= $t $n_2 / $d -)
+
+n_1=$(= $n_1 1 -)
+n_2=$(= $n_2 1 -)
+
+play -m \
+    "|sox -n -p synth $d sin %1 pad 0 $p_1 remix 1 0 repeat $n_1" \
+    "|sox -n -p synth $d sin %3 pad 0 $p_2 remix 0 1 repeat $n_2" \
+    repeat -

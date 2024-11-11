@@ -1,0 +1,113 @@
+#!/bin/bash
+
+set -euo pipefail
+
+:get-outputs() {
+    xrandr -q --verbose \
+        | grep -v '^Screen' \
+        | bmo \
+            -b '/^\S+ (connected|disconnected)/' '/^\S/' \
+            -v 'output' 'return $1' \
+            -v 'status' 'return $2' \
+            -v 'connection' 'if (/ConnectorType/) { return $2 }' \
+            -v 'preferred' 'if (/\+preferred/) { return $1 }' \
+            -v 'current' 'if (/\*current/) { return $1 }' \
+            -c 'status == "connected"' \
+            -f 'output " " status " " connection " " preferred " " current'
+}
+
+:detect-profile() {
+    profile="panel"
+
+    while read output _ connection preferred current; do
+        if [[ "$connection" == "Panel" ]]; then
+            continue
+        fi
+
+        profile="horizontal"
+
+        if [[ "${prev_resolution:-}" ]]; then
+            if [[ "$prev_resolution" != "$preferred" ]]; then
+                profile="switch"
+            fi
+
+            break
+        else
+            prev_resolution=$preferred
+        fi
+    done < <(:get-outputs)
+
+    echo "$profile"
+}
+
+:reset() {
+    read output _ < <(:get-outputs)
+    xrandr --output "$output" --preferred
+}
+
+config=()
+screens=()
+
+case "$(:detect-profile)" in
+    panel)
+        read output _ _ preferred _ < <(:get-outputs)
+        config+=("--output $output --preferred  --panning $preferred+0+0")
+        screens+=($output)
+        ;;
+
+    switch)
+        while read output _ connection preferred current; do
+            case $connection in
+                Panel)
+                    config+=("--output $output --off")
+                    ;;
+                *)
+                    if [[ "$current" != "0" ]]; then
+                        config+=("--output $output --off")
+                    else
+                        config+=("--output $output --preferred")
+                        screens+=($output)
+                    fi
+                ;;
+            esac
+        done < <(:get-outputs)
+        ;;
+
+    horizontal)
+        offset_x=0
+
+        while read output _ connection preferred current; do
+            case $connection in
+                Panel)
+                    config+=("--output $output --off")
+                    ;;
+                *)
+                    config+=("--output $output --preferred --panning $preferred+$offset_x+0")
+
+                    IFS=x read width height <<< "$preferred"
+
+                    offset_x=$((offset_x + width))
+
+                    if [[ "${prev_output:-}" ]]; then
+                        config+=("--right-of $prev_output")
+                    else
+                        prev_output=$output
+                    fi
+
+                    screens+=($output)
+                ;;
+            esac
+        done < <(:get-outputs)
+        ;;
+esac
+
+:xrandr() {
+    xrandr $*
+}
+
+if ! :xrandr "${config[@]}"; then
+    :reset
+    :xrandr "${config[@]}"
+fi
+
+printf "%s\n" "${screens[@]}"

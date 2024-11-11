@@ -19,6 +19,9 @@
     attributesfile = /home/operator/.gitattributes
     excludesfile = /home/operator/.gitignore
 
+[rebase]
+    instructionFormat = "(%an <%ae>) %s"
+
 [push]
     default = simple
 
@@ -31,13 +34,25 @@
 [url "ssh://bitbucket.org/"]
     insteadOf = https://bitbucket.org/
 
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
-    insteadOf = https://git::@github.com/
-    insteadOf = github:
-
 [url "git@gitlab.com:"]
     insteadOf = https://gitlab.com/
 
 [http "https://gopkg.in"]
     followRedirects = true
+
+[advice]
+	addIgnoredFile = false
+	amWorkDir = false
+	commitBeforeMerge = false
+	detachedHead = false
+	implicitIdentity = false
+	mergeResolution = false
+	pushNonFastForward = false
+	pushNonFFCurrent = false
+	pushNonFFMatching = false
+	pushUpdateRejected = false
+	resolveConflict = false
+	rmHints = false
+	statusHints = false
+	submoduleSummary = false
+	updateSparsePath = false

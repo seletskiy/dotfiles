@@ -1,64 +1,57 @@
 #!/bin/bash
 
+set -x
+
+external_keyboard=$(xinput list --short | grep -i "USB-HID Keyboard")
+
 export XAUTHORITY=/home/operator/.Xauthority
 export DISPLAY=${DISPLAY:-:0}
 
 sudo -E pkill shift-shift
-sudo -E shift-shift -match "razer|USB KB|USB-HID|keyboard" -first CAPSLOCK -scan-once &
+sudo -E shift-shift -match "razer|USB KB|USB-HID|keyboard" -first TAB -second DOT -scan-once &
 
-if [[ $(lsusb -v 2>&- | grep -c 'bInterfaceProtocol.*Keyboard') == 2 ]]; then
+if [[ "$external_keyboard" ]]; then
+    toggle-laptop-keyboard disable
     xset r rate 130 130
+
+    # QWERTY
+    #  q w e r t y u i o p
+    #    a s d f g h j k l
+    #      z x c v b n m
+
+    # RQ
+    #  q d r w t j u i o p
+    #    a s h f g y n e l
+    #      z x c v b k m
+
+    keycodes=(
+        "evdev"
+        "aliases(qwerty)"
+        "rq"
+    )
+
+    symbols=(
+        "rq"
+    )
+
+    compat=(
+        "rq"
+    )
+
+    printf 'xkb_keymap {
+        xkb_keycodes { include "%s"       };
+        xkb_types    { include "complete+rq" };
+        xkb_compat   { include "%s"       };
+        xkb_symbols  { include "%s"       };
+    };' \
+        "$(printf "%s\n" "${keycodes[@]}" | paste -sd+)" \
+        "$(printf "%s\n" "${compat[@]}"   | paste -sd+)" \
+        "$(printf "%s\n" "${symbols[@]}"  | paste -sd+)" \
+        | xkbcomp -w 0 -I$HOME/.config/xkb - $DISPLAY
 else
+    toggle-laptop-keyboard enable
+    setxkbmap -layout us -device 16
     xset r rate 130 110
 fi
 
-# QWERTY
-#  q w e r t y u i o p
-#    a s d f g h j k l
-#      z x c v b n m
-
-# RQ
-#  q d r w t j u i o p
-#    a s h f g y n e l
-#      z x c v b k m
-
-keycodes=(
-    "evdev"
-    "aliases(qwerty)"
-    "hjkl"
-)
-
-symbols=(
-    "pc+us+ru:2"             # common layout settings
-    "level3(lwin_switch)"    # use win as lvl3 modifier
-    "mod4-lvl3"              # use lvl3 as mod4
-    "hjkl(caret)"            # mod3+u-]: home/end/insert/delete/pgup/pkdown
-    "hjkl(fast-enter)"       # mod3+m -> enter
-    "altwin(swap_lalt_lwin)" # swap alt and win
-    "hjkl(fast-numpad)"      # 1234qwerdf -> 1234567890
-    "ctrl-shift-caps"        # remap ctrl/shift/caps
-    "rshift-ralt"            # swap rshift and ralt
-    "esc-to-execute"         # esc to lock screen
-    "fast-copy-paste"        # alt+c -> ctrl+c, alt+v -> shift+ins
-    "multi-key-tilde"        # enable compose key
-    "rq(abc)"                # reconquest layout (incremental)
-    "rq(hjkl)"               # map QWERTY HJKL to arrows
-)
-
-compat=(
-    "complete"
-    "allow-control-leds"
-    "fast-copy-paste"
-    "hjkl"
-)
-
-printf 'xkb_keymap {
-    xkb_keycodes { include "%s"       };
-    xkb_types    { include "complete" };
-    xkb_compat   { include "%s"       };
-    xkb_symbols  { include "%s"       };
-};' \
-    "$(printf "%s\n" "${keycodes[@]}" | paste -sd+)" \
-    "$(printf "%s\n" "${compat[@]}"   | paste -sd+)" \
-    "$(printf "%s\n" "${symbols[@]}"  | paste -sd+)" \
-    | xkbcomp -I$HOME/.config/xkb - $DISPLAY &>/dev/null
+systemctl --user --no-block restart xbindkeys

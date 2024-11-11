@@ -2,8 +2,13 @@
 ~/.deadfiles/bin
 ~/go/bin
 ~/.gem/ruby/2.5.0/bin
+~/.yarn/bin
+~/.local/bin
+~/.npm/pkg/bin
+~/.dotnet/tools
 /usr/bin
 /opt/atlassian/plugin-sdk/bin
 /opt/android-sdk/platform-tools
 /opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin
 /usr/share/aws-cli/v2/2.0.7/bin
+/opt/cuda/bin

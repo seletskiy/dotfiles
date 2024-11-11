@@ -2,14 +2,21 @@
 
 set -euo pipefail
 
-session=terminal-$(pwgen -0A 10 1)
+terminal_args=()
+shell_args=()
 
-tmux new -s "$session" -d "${@}"
+while [[ "$@" ]]; do
+	[[ "$1" == "--" ]] \
+		&& shift && break \
+		|| terminal_args+=("$1") && shift
+done
 
-urxvt -e tmux \
-    wait-for -S "$session" \; \
-    attach -t "$session" &
+while [[ "$@" ]]; do
+	[[ "$1" == "--" ]] \
+		&& break \
+		|| shell_args+=("$1") && shift
+done
 
-tmux wait-for "$session"
-
-echo "$session"
+#exec urxvt
+set -x
+exec alacritty "${terminal_args[@]}"

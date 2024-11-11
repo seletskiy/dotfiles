@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -euo pipefail
+set -x
+
+drive="$1"
+mount_dir="$(mktemp -d)"
+
+sudo mount "$drive" "$mount_dir"
+
+:cleanup() {
+    :cleanup() { :; }
+
+    cd
+    sudo umount "$mount_dir" || true
+    rmdir "$mount_dir"
+}
+
+trap :cleanup EXIT INT ERR
+
+cd "$mount_dir/Windows/System32/config"
+
+echo 'cd \ControlSet001\Services\BTHPORT\Parameters\Keys'
+chntpw -e SYSTEM
+#
+# echo 'cd \ControlSet001\Services\BTHPORT\Parameters\Keys' >& ${COPROC[1]}
+# echo 'ls'  >& ${COPROC[1]}
+#
+# echo 'q' >& ${COPROC[1]}
+# cat <&${COPROC[0]}
+#
+# wait $COPROC_PID

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -x
 set -euo pipefail
 
 TMUX_SOCKET=${TMUX_SOCKET:-}
@@ -238,7 +237,7 @@ CODE
     window_x=$((window_x - 1))
     window_y=$((window_y - 1))
     window_width=$((window_width / 7))
-    window_height=$((window_height / 18 + 1))
+    window_height=$((window_height / 18))
 
     local geometry="${window_width}x${window_height}+${window_x}+${window_y}"
 
@@ -246,17 +245,25 @@ CODE
         :tmux new-session -d -s $name
     fi
 
-    if "$direct"; then
-        i3-msg -q "exec urxvt ${bg_color:+-bg "'"$bg_color"'"} -geometry $geometry -name $name -title $name -e \
-            $command"
-    else
-        i3-msg -q "exec urxvt ${bg_color:+-bg "'"$bg_color"'"} -geometry $geometry -name $name -title $name -e \
-            tmux ${TMUX_SOCKET:+-L $TMUX_SOCKET} attach-session -t $name"
+			#     if "$direct"; then
+			# # FIXME
+			#         i3-msg -q "exec urxvt ${bg_color:+-bg "'"$bg_color"'"} -geometry $geometry -name $name -title $name -e \
+			#             $command"
+			#     else
+        i3-msg -q "exec terminal \
+					${bg_color:+-o "colors.primary.background=\\'$bg_color\\'"} \
+					-o window.position.x=$window_x \
+					-o window.position.y=$window_y \
+					-o window.dimensions.columns=$window_width \
+					-o window.dimensions.lines=$window_height \
+					-o window.class.instance=$name \
+					-o window.title=$name \
+                    ${command:+-e "$command"}"
 
-        if [[ "$command" ]]; then
-            :tmux send -t "$name" "$command"$'\n'
-        fi
-    fi
+    #     if [[ "$command" ]]; then
+    #         :tmux send -t "$name" "$command"$'\n'
+    #     fi
+    # fi
 }
 
 :tmux() {
@@ -280,7 +287,7 @@ CODE
 :window-hide() {
     local window_name="$1"
 
-    i3-msg -q '[instance="^'$window_name'$"] move scratchpad'
+    i3-msg -q '[instance="^'$window_name'"] move scratchpad'
 }
 
 :window-find() {
@@ -292,7 +299,7 @@ CODE
 :window-toggle() {
     local window_name="$1"
 
-    i3-msg -q '[instance="^'$window_name'$"] scratchpad show'
+    i3-msg -q '[instance="^'$window_name'"] scratchpad show'
 }
 
 :window-kuakize() {
@@ -329,7 +336,7 @@ CODE
 __cache_dir=""
 
 :get-cache-dir() {
-    local xrandr=$(xrandr --listactivemonitors | md5sum | cut -f1 -d' ')
+    local xrandr=$(nvidia-xconfig --query-gpu-info | md5sum | cut -f1 -d' ')
     local tag="$_width.$_height.$_vertical.$_horizontal.$xrandr"
     local dir="/var/run/user/$UID/kuake/$tag/"
     mkdir -p "$dir"
@@ -337,7 +344,7 @@ __cache_dir=""
 }
 
 :xscreeninfo() {
-    xscreeninfo
+    xscreeninfo-xlog
 }
 
 :main "${@}"

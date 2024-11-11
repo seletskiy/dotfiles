@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#INSTALL4J_ADD_VM_PARAMS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true"
+exec ~/Jts/1012/tws

@@ -1,0 +1,11 @@
+[Unit]
+Description=/var/lib/docker mount
+
+[Mount]
+What=/home/operator/.data/docker/var-lib-docker.xfs
+Where=/var/lib/docker
+Type=xfs
+Options=defaults
+
+[Install]
+WantedBy=docker.service

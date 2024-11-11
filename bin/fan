@@ -1,0 +1,72 @@
+#!/bin/bash
+
+### fan — set CPU/GPU fan speed.
+###   — Supported only for Acer Predator PT515-51.
+###
+### Usage:
+###   fan [--cpu <0-100>] [--gpuL <0-100>] [--gpuR <0-100>] [<0-100>]
+###     — Set fan speed in % for a specific fan or for all fans.
+###       Unset values would default to auto or to given wildcard speed if it is provided.
+###   fan
+###     — Sets mode to auto.
+###   fan (--monitor | -m)
+###     — Continuously monitor fans speed in % of maximum speed.
+###
+### Options:
+###   --cpu  <%>    …
+###   --gpuL <%>    …
+###   --gpuR <%>    Set speed of CPU/GPU left/GPU right fans
+###   --monitor -m  Print fan speed 0-100% every second.
+
+set -euo pipefail
+
+source /usr/share/bash/opts/opts.bash
+
+# Acer Predator PT515-51
+# Found out empirically by expirementing with `ec_probe dump`.
+val_auto=0x04
+val_manual=0x14
+
+#         MODE TRGT CURR
+reg_cpu=( 0x93 0x94 0x95)
+reg_gpuL=(0x96 0x97 0x98)
+reg_gpuR=(0x9A 0x9B 0x9C)
+
+fans=(cpu gpuL gpuR)
+
+declare -A opts
+declare -a args
+
+opts:parse opts args \
+    -h --help \
+    $(printf -- "--%s: " ${fans[*]}) \
+    --monitor -m \
+    -- "$@"
+
+:opt() { echo ${opts[$1]-${opts[${2-NIL}]-${DEF-}}}; }
+
+:help() { sed -rn -e 's/^### ?//;T;p' "$0" && exit; }
+
+:write() { sudo ec_probe write ${!1?register not set} ${2?value not set}; }
+:read()  { sudo ec_probe read ${!1?register not set}; }
+:curr()  { :read ${1?register not set} | cut -f 1 -d' '; }
+
+:rate:set() { calc "base(16), round(0xFF-${1?rate param must be given: 0-100}/100*0xFF)"; }
+:rate:get() { calc "round((255-$(:curr $1))/255*100)"; }
+
+[[ "$(:opt -h --help)" ]] && :help
+
+[[ "$(:opt -m --monitor)" ]] && while sleep 1; do
+    for fan in ${fans[@]}; do
+        printf "% 3d\n" $(:rate:get reg_${fan}[2])
+    done | paste -sd' '
+done
+
+for fan in ${fans[@]}; do
+    rate=$(DEF=${args[1]-} :opt --$fan)
+
+    [[ "$rate" ]] \
+        && { :write reg_${fan}[0] $val_manual &&
+             :write reg_${fan}[1] $(:rate:set $rate) ; } \
+        || { :write reg_${fan}[0] $val_auto ; }
+done

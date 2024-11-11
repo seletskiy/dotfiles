@@ -14,8 +14,10 @@
 *color7:       #d0cfca
 *color8:       #5d5d5d
 *color9:       #e9605f
-*background:   #1c1c1c
+
+*background:   #0E0410
 *foreground:   #d8d8d8
+
 *cursorColor:  #FFD700
 *cursorColor2: #000000
 

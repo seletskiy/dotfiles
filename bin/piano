@@ -5,7 +5,7 @@
 ###  2) output with mic mixed in.
 ###
 ### Usage:
-###   piano <card-name> [<fluidsynth-args>...] <soundfont-file>
+###   piano --card <card-name> [--preset <preset>] [--record <basename>] -- [<fluidsynth-args>...] <soundfont-file>
 ###
 ###   - <card-name> is case-insensitive and may be a partial match.
 ###   - some useful <fluidsynth-args>:
@@ -14,9 +14,11 @@
 ###     * --reverb     turn reverb on
 ###
 ### Example:
-###   piano us-2x2 --gain 1 --chorus --reverb /opt/soundfonts/essential-keys.sf2
+###   piano --card us-2x2 --gain 1 --chorus --reverb /opt/soundfonts/essential-keys.sf2
 
 set -euo pipefail
+
+source /usr/share/bash/opts/opts.bash
 
 ###############################################################################
 
@@ -27,9 +29,16 @@ _defer=()
 }
 
 :defer:run() {
+    [ ${#_defer[@]} -gt 0 ] &&
+        echo -ne :: performing shutting down routines '[]'
+
     for cmd in "${_defer[@]}"; do
+        echo -ne '\b.]'
         $cmd || true
     done
+
+    [ ${#_defer[@]} -gt 0 ] &&
+        echo ' done'
 
     _defer=()
 }
@@ -75,25 +84,45 @@ trap :defer:run EXIT INT ERR
     aconnect $midi_port_in:0 $midi_port_out:0
 }
 
+:record:ogg() {
+    local device=$1
+    local output=$2
+
+    parec -d "$device" | oggenc -b 192 -o "$output.ogg" --raw - 1>&- 2>&- &
+    :defer kill $!
+}
+
+:record:midi() {
+    local port=$1
+    local output=$2
+
+    arecordmidi -p "$port" "$output.mid" &
+    :defer kill $!
+}
+
 :fluidsynth() {
     local -n _fluidsynth_sink_input_id=$1
 
     local midi_port_in=$2
     local shell_port=$3
-    local sound_font=$4
+    local preset=$4
 
     shift 4
+
+    set -x
 
     fluidsynth \
         --server \
         --no-shell \
-        --quiet \
+        -f <(sleep 3 && echo -e 'fonts\nprog 0 $preset') \
         --disable-lash \
         -o shell.port=$shell_port \
         -a pulseaudio \
         -m alsa_seq \
         -r 44100 \
-        "$@" 2>/dev/null &
+        "$@" & # 1>&- 2>&- &
+
+    set +x
 
     fluidsynth_pid=$!
 
@@ -158,7 +187,7 @@ trap :defer:run EXIT INT ERR
     :pulse:module:args:set args tsched no "$args"
     :pulse:module:args:set args fixed_latency_range no "$args"
     :pulse:module:args:set args fragments 2 "$args"
-    :pulse:module:args:set args fragment_size 125 "$args"
+    :pulse:module:args:set args fragment_size 128 "$args"
 
     :pulse:module:load _pulse_module_load_low_latency__id $name $args
 }
@@ -215,10 +244,6 @@ trap :defer:run EXIT INT ERR
     )
 }
 
-:info() {
-    echo :: "$@"
-}
-
 :usage() {
     sed -rn 's/^###( |$)//;T;p' "$0"
     exit 1
@@ -229,7 +254,25 @@ trap :defer:run EXIT INT ERR
         :usage
     fi
 
-    local term=$1
+    declare -a args
+    declare -A opts
+
+    opts:parse opts args \
+        --help -h \
+        --card: \
+        --preset: \
+        --record: \
+        -- "$@"
+
+    stty -ctlecho || true
+
+    local term=${opts[--card]:-}
+    local preset=${opts[--preset]:-1}
+    local output=${opts[--record]:-}
+
+    if [[ ! "$term" ]]; then
+        :usage
+    fi
 
     local card_module_id
     local card_module_name
@@ -244,7 +287,7 @@ trap :defer:run EXIT INT ERR
     local card_name
     :pulse:module:args:get card_name card_name "$card_module_args"
 
-    :info using card: $card_name
+    echo :: using card: $card_name
 
     local card_sink_name=${card_name/alsa_card/alsa_output}.analog-stereo
     local card_source_name=${card_name/alsa_card/alsa_input}.analog-stereo
@@ -254,29 +297,29 @@ trap :defer:run EXIT INT ERR
 
     local module_id
 
-    :info initializing combined piano+mic sink
+    echo :: initializing combined piano+mic sink
     :pulse:module:load module_id module-null-sink \
         "sink_name=piano_mic" \
         "sink_properties=\"device.description='Piano+Mic Output'\""
     :defer :pulse:module:unload $module_id
 
-    :info initializing combined output sink
+    echo :: initializing combined output sink
     :pulse:module:load module_id module-combine-sink \
         "sink_name=combined_output" \
         "sink_properties=\"device.description='Combined Output'\"" \
         "slaves=piano_mic,$card_sink_name"
     :defer :pulse:module:unload $module_id
 
-    :info unloading card module
+    echo :: unloading card module
     :pulse:module:unload $card_module_id
     :defer :pulse:module:load _ $card_module_name "$card_module_args"
 
-    :info loading card in low latency mode
+    echo :: loading card in low latency mode
     :pulse:module:load:low-latency card_module_id \
         $card_module_name "$card_module_args"
     :defer :pulse:module:unload $card_module_id
 
-    :info routing mic to piano+mic sink
+    echo :: routing mic to piano+mic sink
     :pulse:module:load module_id module-loopback \
         "latency_msec=1" \
         "rate=44100" \
@@ -293,25 +336,33 @@ trap :defer:run EXIT INT ERR
 
     local fluidsynth_sink_input
 
-    :info starting primary midi synthesizer: card output route
-    :fluidsynth fluidsynth_sink_input $midi_port_card 9800 "$@"
+    echo :: starting primary midi synthesizer: card output route
+    :fluidsynth fluidsynth_sink_input $midi_port_card 9800 $preset "${args[@]:1}"
     pactl move-sink-input $fluidsynth_sink_input $card_sink_name
 
-    :info starting secondary midi synthesizer: piano+mic route
-    :fluidsynth fluidsynth_sink_input $midi_port_card 9801 "$@"
+    echo :: starting secondary midi synthesizer: piano+mic route
+    :fluidsynth fluidsynth_sink_input $midi_port_card 9801 $preset "${args[@]:1}"
     pactl move-sink-input $fluidsynth_sink_input piano_mic
 
-    :info switching default sink and sources
+    echo :: switching default sink and sources
     pactl set-default-source piano_mic.monitor
     pactl set-default-sink $card_sink_name
 
-    :info ready
+    if [[ "$output" ]]; then
+        echo :: starting ogg recorder
+        :record:ogg piano_mic.monitor "$output"
+
+        echo :: starting midi recorder
+        :record:midi $midi_port_card:0 "$output"
+    fi
+
+    echo :: ready
 
     local latency
 
     while
         :pulse:sink:latency:by-module-id latency $card_module_id &&
-            :info latency: $latency usec
+            echo -ne :: latency: $latency usec '\r'
     do
         sleep 10
     done

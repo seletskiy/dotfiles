@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export openai_api_key="$(carcosa -p ~/.secrets/my -cG api/beta.openai.com)"
+
+curl --request POST \
+  --url https://api.openai.com/v1/audio/transcriptions \
+  --header "Authorization: Bearer $openai_api_key" \
+  --header 'Content-Type: multipart/form-data' \
+  --form file=@$1 \
+  --form model=whisper-1

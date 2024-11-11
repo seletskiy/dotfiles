@@ -1,36 +1,32 @@
 clear
 
-super+semicolon start,grid 4x4
-semicolon sh "keynav-doppelganger 'start,grid 4x4'"
+super+semicolon start,grid 4x3
+semicolon sh "keynav-doppelganger 'start,grid 4x3,windowzoom'"
 
-1 cell-select 1
-q cell-select 2
-a cell-select 3
-z cell-select 4
+q cell-select 1
+a cell-select 2
+z cell-select 3
 
-2 cell-select 5
-d cell-select 6
-s cell-select 7
-x cell-select 8
+d cell-select 4
+s cell-select 5
+x cell-select 6
 
-3 cell-select 9
-r cell-select 10
-h cell-select 11
-c cell-select 12
+r cell-select 7
+h cell-select 8
+c cell-select 9
 
-4 cell-select 13
-w cell-select 14
-f cell-select 15
-v cell-select 16
+w cell-select 10
+f cell-select 11
+v cell-select 12
 
-y move-left,warp
-n move-down,warp
-e move-up,warp
-l move-right,warp
+y move-left 0.5
+n move-down 0.5
+e move-up 0.5
+l move-right 0.5
 
 u cut-left
-i cut-down
-o cut-up
+i cut-down 0.666
+o cut-up 0.666
 p cut-right
 
 space warp,click 1
@@ -44,7 +40,7 @@ shift+b warp,sh drag 3
 Return warp,quit
 Escape end
 
-Tab grid 4x4,cursorzoom 320 200
+Tab warp,grid 4x3,cursorzoom 320 200
 
 k warp,click 4
 m warp,click 5

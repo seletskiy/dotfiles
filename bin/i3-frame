@@ -1,27 +1,43 @@
 #!/bin/bash
 
-if ! autorandr --current | grep -q 4k; then
+resolution=$(
+    xrandr -q --verbose | grep '\*current' | awk '{ print $1 }' |  head -n1
+)
+
+if [[ "$resolution" != "3840x2160" ]]; then
     i3-msg "gaps outer all set 0"
     exit 0
 fi
 
 active_monitor=0
-horizontal=${1:-0}
+mode=${1:-0}
 
-if [[ "$horizontal" == "off" ]]; then
+if [[ "$mode" == "off" ]]; then
     i3-msg "gaps outer all set 0"
     exit 1
 fi
 
-set -- $(
+if [[ "$mode" == "corner" ]]; then
+    gap="$2"
+    i3-msg "gaps outer    all   set 0"
+    i3-msg "gaps top      all   set $gap"
+    i3-msg "gaps left     all   set $gap"
+    exit 1
+fi
+
+if [[ "$mode" == "center" ]]; then
+    horizontal="${2:-0}"
+
+    set -- $(
     xrandr --listactivemonitors \
         | grep -P "^\s+${active_monitor}:" \
         | awk '{ print $3 }' \
         | grep -Po '\d+(?=/)'
-)
+    )
 
-width=$1
-height=$2
+    width=$1
+    height=$2
 
-i3-msg "gaps outer    all set $(calc "$width/10+$horizontal")"
-i3-msg "gaps vertical all set $(calc $height/10)"
+    i3-msg "gaps outer    all set $(calc "$width/10+$horizontal")"
+    i3-msg "gaps vertical all set $(calc $height/10)"
+fi

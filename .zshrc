@@ -129,9 +129,17 @@ zmodload zsh/zprof
         {
             #zstyle ':completion:*' completer _expand _complete
             #zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+            zstyle ':completion:*' list-colors ''
+            zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
         }
 
         {
+            fpath=( /usr/lib/python3.12/site-packages/argcomplete/bash_completion.d "${fpath[@]}" )
+            autoload bashcompinit
+            bashcompinit
+            source "/usr/lib/python3.12/site-packages/argcomplete/bash_completion.d/_python-argcomplete"
+
+
             fpath=(${ZGEN_COMPLETIONS[@]} $fpath)
         }
 
@@ -248,6 +256,7 @@ zmodload zsh/zprof
             zgen load seletskiy/zsh-smart-kill-word
             zgen load kovetskiy/zsh-add-params
             zgen load kovetskiy/zsh-quotes
+            zgen load seletskiy/zsh-too-long
 
             unsetopt interactive_comments
 
@@ -351,12 +360,15 @@ if :is-interactive; then
         zstyle "lambda17:00-main::conceal:override" format \
             '%B%K{$_lambda17_badge_color}%f${${${PWD#$HOME}##*/}:+╸${${PWD#$HOME}##*/}} %B%F{236}${padding}%b%k%F{$_lambda17_badge_color}%f '
 
-        _lambda17_badge_color=125
+        _lambda17_badge_color_primary="#68217A"
+        _lambda17_badge_color_secondary="#381240"
+        _lambda17_badge_color=$_lambda17_badge_color_primary
         preexec() {
-            _lambda17_badge_color=$((
-                ($_lambda17_badge_color == 125) * 164 +
-                ($_lambda17_badge_color == 164) * 125
-            ))
+            _lambda17_badge_color=$(
+                [[ "$_lambda17_badge_color" == "$_lambda17_badge_color_primary" ]] \
+                    && echo "$_lambda17_badge_color_secondary" \
+                    || echo "$_lambda17_badge_color_primary"
+            )
         }
 
         zstyle "lambda17:00-main::conceal:override" right-justify false
@@ -410,21 +422,18 @@ fi
 :bindkeys() {
     bindkey -e
 
-    bindkey "^[[1~" beginning-of-line
-    bindkey "^A" beginning-of-line
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
     bindkey "^[[3~" delete-char
-    bindkey '^A' beginning-of-line
-    bindkey '^[[4~' end-of-line
-    bindkey '^E' end-of-line
+    bindkey '^[[H' beginning-of-line
+    bindkey '^[[F' end-of-line
     bindkey '^[[Z' reverse-menu-complete
     bindkey '^[d' delete-word
     bindkey '^K' add-params
     bindkey '^O' toggle-quotes
     bindkey '^[d' delete-word
-    bindkey '^[Od' backward-word
-    bindkey '^[Oc' forward-word
+    bindkey '^[[1;5D' backward-word
+    bindkey '^[[1;5C' forward-word
     bindkey '^?' backward-delete-char
     bindkey '^H' backward-delete-char
     bindkey '^W' smart-backward-kill-word
@@ -451,15 +460,19 @@ fi
     hijack:transform '^(\S+)(\s.*)!$' \
         'sed -re "s/(\w+)( .*)!$/\1!\2/"'
 
-    hijack:transform '^c#?!? |^@ |^=|^\+\+ ' \
-        'sed -r "s/([\\$<>{}&\\\"([!?)''#^*;|])/\\\\\1/g" \
-            | sed -r ''s/^c\\#/c#/'''
+    hijack:transform '^c(#?|:\w+|\.)!? |^@ |^\+\+ |^\?' \
+        'sed -r "s/([\\$<>{}&\\\"\`([!?)''#^*;|])/\\\\\1/g" \
+            | sed -r ''s/^c\\#/c#/'' \
+            | sed -r ''s/^\\\?/?/'''
 
     #hijack:transform '^/[0-9]* ' \
     #    'sed -r -e "s/^\/([0-9]+)/\/ -C \1/" -e "s/([\\$<>{}&\\\"([?)''^*;|])/\\\\\0/g"'
 
     hijack:transform '^=' \
-        'sed -r s"/^=(\S)/calc \1/g"'
+        'sed -r ''s/"/\\"/g'''
+
+    hijack:transform '^=' \
+        'sed -r s''/^=(.+)/numbat -e "\1"/g'''
 
     hijack:transform '^c\\!' \
         'sed -re "s/^c\\\\! /c! /"'
@@ -468,10 +481,10 @@ fi
         'sed -re "s/^ /cd /"'
 
     hijack:transform '^https://github.com/' \
-        'sed -re "s#^https://github.com/([^/]+/[^/]+)#gh \1#"'
+        'sed -re "s#^https://github.com/([^/]+/[^/]+)#gch \1#"'
 
     hijack:transform '^https://gitlab.com/' \
-        'sed -re "s#^https://gitlab.com/([^/]+/[^/]+)#gl \1#"'
+        'sed -re "s#^https://gitlab.com/([^/]+/[^/]+)#ghl \1#"'
 
     hijack:transform '^https?://' \
         'sed -re "s#^https?://#curl -sLO &#"'
@@ -480,12 +493,24 @@ fi
         'sed -r -e "s#(\s+|=)j?\`\*\s*#\1\"\$(jo -a #g" \
                 -e "s#(\s+|=)j?\`\s*#\1\"\$(jo #g" \
                 -e "s#\`#)\"#g"'
+
+    hijack:transform '^#' \
+        'sed -r -e "s/^#/:note #/" \
+                -e "s/([\\$<>{}&\\\"([!?)''#^*;|])/\\\\\1/g"'
+
+    hijack:transform '^\^' \
+        'sed -r -e "s/^\^/:timer/" \
+                -e "s/([\\$<>{}&\\\"([!?)''#^*;|])/\\\\\1/g"'
+
+    hijack:transform '\|\s*#' \
+        'sed -r -e "s/\|\\s*#/| :note/"'
 }
 
 :aliases:load() {
     unalias -m '*'
 
-    alias -- @='command log'
+    alias -- '@'='command log'
+    alias -- '?'='gpt'
 
     alias ...='cd ../..'
     alias ....='cd ../../..'
@@ -494,6 +519,7 @@ fi
 
     alias v='vim'
     alias vi='vim'
+    alias vim='vim'
 
     alias ls='ls --color=auto'
     alias l='exa -la -snew' # --color-scale --grid'
@@ -507,8 +533,7 @@ fi
 
     alias -g '//'='; :'
 
-    alias '%'=':sed-replace:interactive'
-    alias '%j'='() { :sed-replace:interactive "$1" "$2" **/*.java; }'
+    alias '/s'=':sed-replace:interactive'
 
     alias u='usb-shell'
 
@@ -517,59 +542,54 @@ fi
 
     alias re='rebirth'
     alias rg='rebirth gorun'
+    #alias !='() {
+    #    zshi ''() { set -x; while eval "$(fc -ln -2 -2)"; do (( $1 > 0 )) && (( i += 1 )) && (( i >= $1 )) && exit; done; }'' "${1:-0}"
+    #}'
     alias !='() {
-        zshi ''() { while eval "$(fc -ln -2 -2)"; do (( $1 > 0 )) && (( i += 1 )) && (( i >= $1 )) && exit; done; }'' "${1:-0}"
+        while eval zshi ${(q)$(fc -ln -2 -2)}; do sleep 1; done
     }'
 
-    alias ji='() {
-        if [ "$1" ]; then
-            batrak -L "$1"
-        else
-            jils
-        fi
+    alias -- 'ji?'='() {
+        jira issue list -a "$(jira me)" --plain --no-headers --columns key,summary --status "In Progress"
     }'
 
-    alias 'ji?'='ji $(jid)'
-
-    alias ji-='batrak -LKws'
-
-    alias jils='() {
-        batrak -Lw -q "type != ''Checkpoint''
-            and (
-                ${1:-status not in (''Done'', ''In Review'', ''Postponed'')
-                    and assignee = s.seletskiy
-                or
-                status in (''Backlog'', ''To Do'')
-                    and assignee is null}
-            )" -o "assignee,priority"
+    alias -- 'ji??'='() {
+        jira issue show "$(jid)"
     }'
-    alias jir='jils "status = ''In Review''"'
-    alias jid='() {
-        batrak -Lwm -q "type != ''Checkpoint'' and (status = ''${1:-In Progress}'')" -o "priority" #h 1 #:1
-    }'
-    alias jimove='() {
-        [ "$2" ] || set -- "$1" "$(jid)"
 
-        batrak -M "$2" $(batrak -M "$2" | grep -F "$1" | awk ''{print $1}'')
+    alias jito='() {
+        jira issue assign "$([ ! "$1" ] && jipi || <<< "$1")" "${@:2}"
     }'
+
+    alias jime='() {
+        jito "$1" "$(jira me)"
+    }'
+
+    alias jip='() {
+        jira sprint list --current --no-headers --order-by rank --reverse --plain --columns "TYPE,KEY,SUMMARY,STATUS,ASSIGNEE" "$@"
+    }'
+
+    alias jidone='() {
+        jimv "$(jid)" "In Review"
+    }'
+
     alias jido='() {
-        [ "$1" ] || set -- $(jid "To Do")
-        batrak -A "$1"
-        batrak -M "$1" | grep -q ''To Do'' && jimove ''To Do'' "$1"
-        jimove ''In Progress'' "$1"
-        echo ---
-        batrak -L "$1"
+        local id="$([ ! "$1" ] && jipi --status "To Do" || <<< "$1")"
+        [ ! "$id" ] && return
+        jime "$id"
+        jimv "$id" "In Progress"
     }'
-    alias jidone='jimove "In Review"'
-    alias jidone!='jimove "Done"'
-    alias jio='() {
-        [ "$1" ] || set -- $(jid)
-        browser https://jira.reconquest.io/browse/$1
+
+    alias jipi='() {
+        jip "$@" | gum filter #h 1 #f 2
     }'
-    alias jic='() {
-        [ "$1" ] || set -- $(jid)
-        batrak -C "$1"
+
+    alias jimv='() {
+        jira issue move "$([ ! "$1" ] && jipi || <<< "$1")" "${@:2}"
     }'
+
+    alias jid='ji? #f 1'
+
 
     :unzip() {
         unzip "$1" -d "$(basename "$1" .zip)"
@@ -624,9 +644,9 @@ fi
     alias /=':ag'
     #alias /g='AG_ARGS=--go :ag'
     #alias /rb='AG_ARGS=--rb :ag'
-    alias f='() { find -iname "*$1*" "${@:2}" }'
+    alias f='() { find -iwholename "*$1*" "${@:2}" }'
 
-    alias ipa='ip a'
+    alias ipa='ip -4 -br -c a'
 
     alias vw='(){ :vim-which "${@}" }'
 
@@ -650,7 +670,7 @@ fi
     #alias po='pkgfile'
     #alias ppo='() { pp "$(po "$1")" }'
     alias ppyu='sudo pacman -Syu'
-    alias ppyuz='ppyu --ignore linux,zfs-linux,zfs-utils-linux,spl-linux,spl-utils-linux'
+    alias ppyuz='ppyu --ignore linux,zfs-linux,zfs-utils,spl-linux,spl-utils,nvidia,nvidia-utils,nvidia-settings,lib32-nvidia-utils,kmod'
 
     alias zgu='zgen update && zr'
 
@@ -664,20 +684,13 @@ fi
     alias 1='watch -n1'
     alias wt=':watcher:guess'
     alias -- --='wt --'
+    alias -- --re='wt -- re'
 
-    alias vrc='vim ~/.vimrc'
+    alias vrc='() { cd ~/.config/nvim && nvim init.lua; }'
     alias ze='exec zsh -i'
     alias zrc='vim ~/.zshrc'
     alias zre='zrc && ze'
     alias zr='source ~/.zshrc'
-    alias snip='() {
-        cd ~/.vim/bundle/snippets
-        if [[ "$1" ]]; then
-            vim $1.snippets
-        else
-            vim
-        fi
-    }'
 
     alias rto='rtorrent "$(ls --color=never -t ~/downloads/*.torrent \
         | head -n1)"'
@@ -691,8 +704,6 @@ fi
 
     alias pkg='yaourt --noconfirm -S'
 
-    alias godoc='godoc-less'
-
     alias man='man-search'
 
     alias m=':sources:clone github.com:seletskiy'
@@ -702,18 +713,12 @@ fi
     alias mgp=':sources:move-to-gopath'
 
     alias gc='git clone'
-    alias gh=':sources:clone github.com:'
-    alias gl=':sources:clone gitlab.com:'
+    alias gch=':sources:clone github.com:'
+    alias gcl=':sources:clone gitlab.com:'
 
     alias xc=':orgalorg:command'
 
     alias -- '-'=':pipe:tar'
-
-    alias -- '+?'=':todoist list'
-    alias -- '+.'=':todoist close'
-    alias -- '+!'=':todoist sync'
-    alias -- '+#'='() { :todoist add -p 4 "$*" }'
-    alias -- '++'='() { :todoist add -N stack -p 4 "$*" }'
 
     alias ua='find -maxdepth 1 -mindepth 1 -type d |
         cut -b3- |
@@ -727,13 +732,31 @@ fi
     alias xo='xclip -selection clipboard -o'
     alias xip='() { readlink -nf "$@" | xi }'
 
+    alias -- '+?'=':todoist list'
+    alias -- '+?w'=':todoist list -f "#work"'
+    alias -- '+.'=':todoist close'
+    alias -- '+!'=':todoist sync'
+    alias -- '++'='() { :todoist quick "$*" }'
+    alias -- '+w'='() { :todoist quick "#work $*" }'
+
+    alias -- '^'=':timer'
+    alias -- ':timer\?'='timer-log'
+
+    hash-aliases:install
+
     alias -g -- '#i'='| xclip -selection clipboard -i'
     alias -g -- '#j'='| () { [ -t 1 ] && local flag="-C"; jq $flag "${@:-.}" # }'
     alias -g -- '#!'='# -v'
     alias -g -- '#+'='| paste -sd+ | bc'
-    alias -g -- '#:1'='#f 1'
-    alias -g -- '#~'='| () { awk "\$$1 ~ ${(qqq)${(@)*:2}}" }'
+    alias -g -- '#:'='columns -x | cut -f'
+    for f in {1..9}; do alias -g -- "#:$f"="#f $f"; done
+    alias -g -- '#u:'='| sort -uk'
+    alias -g -- '#~'='| () { awk "\$$1 $2 ${${(@)*:3}}" }'
     alias -g -- '#t'='| tail -n'
+    alias -g -- '#csv'='| column -s, -t -e'
+    alias -g -- '#tsv'="| column -s$'\t' -t"
+    alias -g -- '#xz'='| () { zshi "while read ${@[0,-2]}; do ${@[-1]}; done"; }'
+    alias -g -- '#su'='#sr #uc #sr -r'
 
     alias kub='tubectl'
     alias kaf='kub apply -f'
@@ -773,16 +796,17 @@ fi
     alias ktn='kub top nodes'
     alias ktp='kub top pods'
 
+    alias dps='docker ps'
+    alias dps!='dps -a'
+    alias dex='() { docker exec -it "$1" "${@:2}"}'
+
     alias pk='pkill -f'
 
-    alias x=':context:command magalix'
     alias mk=':context:command minikube'
-
-    alias rtorrent=':rtorrent'
 
     alias cci='circleci-cli --token-file ~/.config/circleci-cli/token'
 
-    alias ssh!='rf ~/.ssh/connections/* && ssh'
+    alias ssh!='{ rf ~/.ssh/connections/* ;} 2>&1; ; ssh'
     alias ssha='() {
         eval "$(ssh-agent -s)"
         ssh-add
@@ -818,6 +842,8 @@ fi
 
     alias nocolor='sed -re ''s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g'''
 
+    alias py='python'
+
     :http() {
         http --follow "${@}"
     }
@@ -827,30 +853,33 @@ fi
     alias PUT=':http PUT'
     alias DELETE=':http DELETE'
 
-    alias standup='() { vim "$@" && xi "$@" } work/standups/$(date +%F+%T)/standup'
+    #alias standup='() { vim "$@" && xi "$@" } notes/standups/$(date +%F+%T)/standup'
 
-    hash-aliases:install
+    alias note='() {
+        vim ~/notes/.last;
+    }'
 
     context-aliases:match is_inside_git_repo
         alias d='git diff'
         alias w='git diff --cached'
         alias a='git-smart-add'
         alias s='git status -s'
-        alias o="git log --color=always --graph --all \
-            --format='format:%C(yellow)%h%Cblue %cr %Cred%d %Creset%s' \
-            --date=relative \
-            | sed -re 's/([^/ ])(HEAD)/\\1\x1b[48;5;53;38;5;15;1m \\2 \x1b[0;31m/' \
-            | sed -re 's/ ago //' \
-            | less -RSX"
+        alias o=":git:log:graph"
+        alias o!="o --all"
+        alias -- 'o?'="o! --simplify-by-decoration --committer=s.seletskiy@gmail.com"
         alias c='git-smart-commit --verbose --amend'
-        alias 'c#'='() { c $([ ! "$*" ] && echo --edit) "$(jid): $*" }'
+        alias 'c#'='() { c $([ ! "$*" ] && echo --edit) "$1: \`$(jid)\` ${@:2}" }'
         alias p='git-smart-push seletskiy'
         alias t='() { git tag -f "$@" }'
         alias t!='() { xargs -n1 <<< "$@" git tag -f && p -f "$@" }'
         alias k='git-smart-checkout --recurse-submodules'
-        alias j='k master'
-        alias j!='j && u'
-        alias j!!='j && ur'
+        alias k-='k -'
+        alias kk='k-'
+        alias j='() { git branch --format "%(refname:strip=2)" | grep -Fxq main && k main || k master }'
+        alias ju='j && u'
+        alias ju-='j && u && k -'
+        alias jk='j && u && k'
+        alias ju!='j && ur'
         alias ku=':git:checkout-and-update'
         alias r='git-smart-remote'
         alias e=':git:rebase-interactive'
@@ -866,32 +895,43 @@ fi
         alias ys='y --stat'
         alias q='git submodule update --init --recursive'
         alias n='git checkout -b'
+        alias n!='git checkout -B'
         alias r='u && p'
-        alias G='cd-pkgbuild'
         alias S='git stash -u && git stash drop'
         alias a!='git-smart-commit -a --amend'
-        alias c!='git-smart-commit --amend'
-        alias p!='git-smart-push seletskiy --force-with-lease  +`git symbolic-ref --short -q HEAD`'
+        alias 'c.'='() { git-smart-commit --no-verify "${@:-XXX}"; }'
+        alias 'c!'='git-smart-commit --amend'
+        alias 'c.!'='() { git-smart-commit --amend --no-verify "$@" }'
+        alias p!='git-smart-push seletskiy --force-with-lease +`git symbolic-ref --short -q HEAD`'
+        alias p!-='p! && k -'
         alias u='git-smart-pull --rebase'
-        alias g='k pkgbuild'
         alias gm='g && m'
         alias gmp='gm && pu'
         alias rs='git-smart-remote show'
         alias ru='git-smart-remote set-url'
-        alias kn='git checkout -b'
-        alias kj='git checkout -B'
         alias rso='git-smart-remote show origin'
         alias st='git stash'
         alias stp='st show -p'
         alias stp!='st pop'
         alias fk='hub fork'
         alias pr='hub pull-request'
+        alias -- 'prme?'='gh pr list -S "user-review-requested:@me"'
+        alias -- 'prmy?'='gh pr list -S "author:@me"'
+        alias -- 'pr?'='() { eval pr${1:-me}\? | gum filter }'
+        alias -- 'prl'='() { set -- "${(s.'$'\t''.)@}"; ku "$3"; vi +"Octo pr edit $1" }'
+        alias -- 'prme'='prl "$(pr? me)"'
+        alias -- 'prmy'='prl "$(pr? my)"'
         alias lk='github-browse'
         alias cln!='git clean -ffdx'
         alias cln='cln! -n'
         alias rst!='git reset --hard'
+        alias rsto!='git reset --hard $(git rev-parse --abbrev-ref --symbolic-full-name @{u})'
         alias mm='git-merge-with-rebase'
         alias me='git-remote-add-me'
+        alias -- 'j?'='git fetch origin master'
+        alias -- prre='() {
+            git reset $(git merge-base HEAD main)
+        }'
 
         alias pr!='p && pr'
 
@@ -912,7 +952,28 @@ fi
         }"
 
         #alias gg='() { git grep $1 $(git rev-list --all) -- ${@:2} }'
-        alias -- +mod='() { GO111MODULE=on "${@}"}'
+        alias -- 'n#'='() {
+            local prefix="$1"
+            local issue=$(jira issue list -a "$(jira me)" \
+                --plain --no-headers --columns key,summary --status "In Progress" | head -n1)
+            local issue_id issue_summary
+            read issue_id issue_summary <<< "$issue"
+
+            local issue_summary_tag=$(
+                echo -n "$issue_summary" | tr "[:upper:]" "[:lower:]" \
+                    | tr -c "[:alnum:]" "-" \
+                    | sed -re "s/-+/-/g"
+            )
+
+            n "${prefix:-seletskiy}/${issue_id}-${issue_summary_tag}"
+        }'
+
+    context-aliases:match "{ echo docker-compose*.y*ml; } 2>/dev/null | grep -q ."
+        alias du='docker compose up --wait'
+        alias dp!='du --build --remove-orphans'
+        alias dr='docker compose restart'
+        alias dr!='docker compose stop && dp!'
+        alias g='dr!'
 
     context-aliases:match "test -e PKGBUILD"
         alias g='go-makepkg-enhanced'
@@ -980,7 +1041,9 @@ fi
             return
         fi
 
-        sed-replace "${@}" '!'
+        if ! sed-replace "${@}" '!'; then
+            return 1
+        fi
 
         printf "\n"
         printf "%.0s=" {1..10}
@@ -1118,7 +1181,7 @@ fi
 
         printf "## watching %s files -> %s%s\n" \
             "${(j:, :)message[*]}" "${command[*]}" \
-            "${timeout:+ (with ${timeout}s timeout)}"
+            "${timeout:+ (with ${timeout}s timeout)}" >&2
 
         watcher -e close_write -t 0.2 \
             ${timeout:+-w$timeout} ${exclude:+-x$exclude} \
@@ -1184,51 +1247,6 @@ fi
     dotfiles-bootstrap-aur() {
         shift
         dotfiles-bootstrap https://aur.archlinux.org/packages/$1
-    }
-
-    dotfiles:migrate-to-deadfiles() {
-        local subject="$1"
-        shift
-
-        if [[ ! "$*" ]]; then
-            echo 'files argument required' >&2
-            return 1
-        fi
-
-        (
-            local dotfiles=$DOTFILES
-            local deadfiles=$DOTFILES/.deadfiles
-
-            cd $dotfiles
-            git stash
-            git pull --rebase origin master
-
-            cd $deadfiles
-            git stash
-            git pull --rebase origin master
-
-            for file in $@; do
-                install -DT $dotfiles/$file $deadfiles/$file
-                rm -r $dotfiles/$file
-            done
-
-            cd $deadfiles
-            git add .
-            git commit -m "$subject migrated from seletskiy/dotfiles"
-            git push origin master
-            git stash pop
-
-            cd $dotfiles
-            git add .
-            git commit -m "$subject migrated to deadcrew/deadfiles"
-            git push origin master
-            git stash pop
-        )
-    }
-
-
-    godoc-less() {
-        \godoc -ex "${@}" | less -SX
     }
 
     man-search() {
@@ -1468,7 +1486,7 @@ fi
 
 
     :vim-merge() {
-        vim -o $(git status -s | grep "^UU " | awk '{print $2}')
+        vim -o $(git status -s | grep -P "^(UU|DU|UA|AU) " | awk '{print $2}')
     }
 
     orgalorg:upload() {
@@ -1541,7 +1559,8 @@ fi
 
     :ps-grep() {
         if [[ "${*}" ]]; then
-            ps axfu | grep "${@}"
+            #ps axfu | grep "${@}"
+            pgrep -af "${@}"
         else
             ps axfu | less
         fi
@@ -1640,6 +1659,40 @@ fi
         todoist --color "$@"
     }
 
+    :note() {
+        local dir=$HOME/notes
+        if [[ "$*" =~ "^# " ]]; then
+            echo "${*:2}" >> $dir/.last
+        elif [[ "$*" =~ ^"#/" ]]; then
+            local is_first=true
+            while read filename; do
+                ! $is_first && print
+                print -n "\e[4;1m"
+                print -n "${$(basename "${filename%%.*}"):s/_/ }"
+                print -n "\e[0m"
+                print
+                GREP_COLORS="mt=38;2;253;253;53;48;2;0;0;87;1" grep --color=always -m 10 -P "${*:2}" "$filename"
+                is_first=false
+            done < <(grep -rlF "${*:2}" $dir | sort -n)
+        elif [[ "$*" =~ '^#\w' ]]; then
+            local file=$dir/$(date +%Y-%m-%d_%H:%M:%S).v1.note
+            echo "$*" > $file
+            ln -sf "$file" $dir/.last
+        elif [[ -t 0 ]]; then
+            cat >> $dir/.last
+        fi
+    }
+
+    :timer() {
+        local period="${1:?timer period should be specified}"; shift
+
+        if [[ "$period" =~ [0-9]$ ]]; then
+            period=${period}m
+        fi
+
+        systemd-run -Gq --user -u timer sh -c 'timer "$@" >/dev/null' --  ${period} "$@"
+    }
+
     _autocd() {
         if [[ "${BUFFER:0:1}" == " " ]]; then
             CURRENT=$((CURRENT + 1))
@@ -1647,14 +1700,6 @@ fi
         else
             _command_names
         fi
-    }
-
-    :rtorrent() {
-        sudo iptables -t nat -A OUTPUT -p tcp -m tcp --dport 80 -d 195.82.146.120/30 -j DNAT --to-destination 163.172.167.207:3128
-
-        command rtorrent "$@"
-
-        sudo iptables -t nat -D OUTPUT -p tcp -m tcp --dport 80 -d 195.82.146.120/30 -j DNAT
     }
 
     :vim-which() {
@@ -1668,8 +1713,41 @@ fi
             chmod +x "$file"
         fi
     }
+
+    :vim:pager() {
+        vim -R -u NONE -N +'
+            map <right> 2zl
+            map <left> 2zh
+            map q :qa<CR>
+            set nocp nonu sbo=hor scb nowrap ls=0 stl=\ 
+            1sp
+            winc w
+       '
+    }
+
+    :git:log:graph() {
+        git log --color=always --graph "$@" \
+            --format='format:%C(yellow)%h%Cblue %cr %Cred%d %Creset%s' \
+            --date=relative \
+            | sed -re 's/([^/ ])(HEAD)/\1\x1b[48;5;53;38;5;15;1m \2 \x1b[0;31m/' \
+            | sed -re 's/ ago //' \
+            | less -RSX
+    }
 }
 
 if ! :is-interactive; then
     zle -R
+else
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+    source /etc/profile.d/google-cloud-cli.sh
+
+    nvm() {
+        setopt no_aliases
+        [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+        source /usr/share/nvm/nvm.sh
+        source /usr/share/nvm/bash_completion
+        source /usr/share/nvm/install-nvm-exec
+        setopt aliases
+    }
 fi

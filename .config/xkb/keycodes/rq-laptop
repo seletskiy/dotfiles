@@ -1,0 +1,7 @@
+xkb_keycodes "rq-laptop" {
+    <NOOP> = 8;
+    <TAB> = 66;
+    <ESC> = 23;
+    <LWIN> = 64;
+    <LALT> = 133;
+};

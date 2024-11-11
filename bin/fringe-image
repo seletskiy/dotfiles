@@ -10,7 +10,11 @@ fi
 image_name="$1"
 border_size="$2"
 
-border_color=$(convert "$image_name" -crop 1x1+0+0 txt:- | grep -Po '#\w+')
+if [[ -n "${3:-}" ]]; then
+    border_color=$3
+else
+    border_color=$(convert "$image_name" -crop 1x1+0+0 txt:- | grep -Po '#\w+')
+fi
 
 echo "[DEBUG] will make border: ${border_size}x${border_size} of $border_color"
 

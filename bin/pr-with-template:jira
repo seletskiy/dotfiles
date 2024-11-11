@@ -1,0 +1,16 @@
+#!/bin/bash
+
+ticket=$(
+    batrak -Lwm -q "(status = '${1:-In Progress}')" -o "priority" \
+        | head -n 1 \
+        | sed -re 's/  +/\t/g'
+    )
+
+:field() {
+    cut -d$'\t' -f $1
+}
+
+export JIRA_TICKET_ID=$(:field 1 <<< "$ticket")
+export JIRA_TICKET_TITLE=$(:field 3 <<< "$ticket")
+
+pr-with-template -e '$TITLE_PREFIX $JIRA_TICKET_ID $JIRA_TICKET_TITLE'

@@ -1,3 +1,4 @@
-client.focused          #aaaaaa #aaaaaa #000000 #eeeeee
-client.focused_inactive #777777 #555555 #000000 #000000
-client.unfocused        #aaaaaa #555555 #000000 #000000
+client.focused          #68217A #AAAAAA #000000 #AE3FCA #68217A
+client.focused_inactive #381240 #555555 #000000 #AE3FCA #381240
+client.unfocused        #381240 #555555 #000000 #AE3FCA #381240
+client.urgent           #2F343A #900000 #FFFFFF #DD0000 #DD0000

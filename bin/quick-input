@@ -1,0 +1,39 @@
+#!/bin/bash
+
+:config() {
+    yq -cr "$@" ~/.config/quick-type.yaml
+}
+
+index=$(
+    :config ".[].name" \
+        | modal --no-description -- -lines 2 -format i -location 7 -width 10 -padding 10 -lines 2
+)
+
+[[ -z "$index" ]] && exit 1
+
+if (( index < 0 )); then
+    index=0
+fi
+
+:entry() {
+    jq -r $1' // ""' <<< "${@:2}"
+}
+
+:config ".[$index].text[]"
+
+while read -r entry; do
+    entry_type=$(:entry ".type" "$entry")
+    entry_key=$(:entry ".key" "$entry")
+    entry_delay=$(:entry ".delay" "$entry")
+
+    [[ "$entry_type" ]] && \
+        xclip -selection clipboard <<< "$entry_type" &&
+        xdotool key --clearmodifiers Shift+Insert
+
+    [[ "$entry_key" ]] && \
+        xdotool key --clearmodifiers $entry_key
+
+    [[ "$entry_delay" ]] && \
+        sleep $entry_delay
+
+done < <(:config ".[$index].text[]")

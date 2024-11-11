@@ -1,0 +1,6 @@
+#!/bin/bash
+
+while true; do
+    printf "\r%02d:%02d:%02d" $(($SECONDS/3600)) $(($SECONDS%3600/60)) $(($SECONDS%60))
+    sleep .$((10**9-10#$(date +%N)))
+done

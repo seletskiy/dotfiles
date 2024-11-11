@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec zoom -url="$(carcosa -p ~/.secrets/my -cG zoom/$1)"

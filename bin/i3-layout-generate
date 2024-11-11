@@ -1,0 +1,7 @@
+#!/bin/bash
+
+read left
+printf 'set $left %s\n' $left
+
+read right
+printf 'set $right %s\n' ${right:-$left}

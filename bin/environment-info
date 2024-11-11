@@ -1,19 +1,40 @@
 #!/bin/bash
 
-[ -n "$_LOCK" ] || _LOCK=x exec flock -n $0 $0 "$@"
+:restart() {
+    local pid_file=/run/user/$UID/environment-info.pid
+
+    if [[ -f $pid_file ]]; then
+        kill -- -$(cat $pid_file) $(cat $pid_file) 2>/dev/null
+    fi
+
+    echo $$ > $pid_file
+}
+
+#{ [ -n "$_LOCK" ] || :restart; } || _LOCK=x exec flock -n $0 $0 "$@"
+:restart
 
 :main() {
     bar='<span foreground="#335cf4">|</span>'
+    slash='<span foreground="#335cf4">/</span>'
+    dot='<span foreground="#C5AFA4">·</span>'
 
     text=()
 
     text=("$(
         :template \
-            "TIME" \
-            "LOC $bar <b>$(:date && echo -n '      ')</b>" \
-            "PST $bar $(TZ=America/Los_Angeles :date && echo -n '      ')" \
-            "UTC $bar $(TZ=UTC :date)"
+            "T" \
+            "<b>$(:date && echo -n ' ')</b>" \
+            "$(TZ=America/Los_Angeles :date:hm)${dot}<b>LA</b>" \
+            "$(TZ=Europe/Moscow :date:hm)${dot}<b>MO</b>" \
+            "$(echo -ne '\n  ' && TZ=Canada/Eastern :date:hm)${dot}<b>CA</b>" \
+            "$(TZ=UTC :date:hm)${dot}<b>UT</b>"
     )" "${text[@]}")
+
+    local timers=$(timer-active | sed -re '2,$s/^/       /g')
+
+    if [ "$timers" ]; then
+        text=("$(:template "T" "$timers")" "${text[@]}")
+    fi
 
     #local loadavg=$(cut -f1 -d' ' /proc/loadavg)
     local temperature=$(
@@ -27,6 +48,8 @@
     if (($temperature > 80)); then
         urgency=critical
     fi
+
+    temperature=$(:urgency "$urgency" "${temperature}°")
 
     local memory=$(
         printf "%1.1f" \
@@ -49,36 +72,75 @@
     local acpi=$(acpi -b | grep -v unavailable)
     local battery=$(
         cut -d: -f2- <<<"$acpi" \
-            | cut -d, -f2
-
+            | cut -d, -f2 \
+            | cut -b2-
     )
-    if grep -qiP "full|100%" <<<"$acpi"; then
-        battery="FULL"
+
+    if grep -qi "discharging" <<<"$acpi"; then
+        charging="󱦳"
+    else
+        local charging="󱐋"
+        if grep -qiP "full|100%|not charging" <<<"$acpi"; then
+            charging=""
+        fi
     fi
 
-    local charging="↑"
-    if grep -qi "discharging" <<<"$acpi"; then
-        charging="↓"
-    fi
+    battery=$(<<<$battery grep -oP '\d+')
 
     local urgency=normal
     if grep -qP '\W(1\d|\d)%' <<<"$battery"; then
         urgency=critical
     fi
 
+    remaining=$(
+        acpi -b | grep -oP '\d\d:\d\d(?=:\d\d (remaining|until charged))'
+    )
+
+    IFS=':' read remaining_h remaining_m <<<$remaining
+
+    remaining_h=$((remaining_h))
+
+    if [[ "$remaining_h" -ge 1 ]]; then
+        remaining="${remaining_h}h"
+    elif [[ "$remaining_m" ]]; then
+        remaining="${remaining_m}m"
+    fi
+
+    battery=$(sed <<<$battery -r \
+        -e 's/100|9[0-9]//' \
+        -e 's/[78][0-9]//' \
+        -e 's/[56][0-9]//' \
+        -e 's/[34][0-9]//' \
+        -e 's/[12]?[0-9]//'
+    )
+
+    battery=$(:urgency "$urgency" '<span letter_spacing="1024">'$battery'</span>'$charging'<span letter_spacing="-9216"> </span>'$remaining)
+
     text=("$(
         :template \
-            "STAT" \
-            $(:urgency "$urgency" "${battery} ${charging}") \
-            "$bar $(:urgency "$urgency" "${temperature}°C")" \
-            "$bar ${memory}$upwork"
+            "S" \
+            "$battery $temperature$bar${memory}" \
     )" "${text[@]}")
 
-    local ssid=$(iw dev | grep -Po 'ssid \K.*')
+    local ssid=$(
+        iw dev wlan0 link \
+            | grep -oP 'SSID: \K.*|signal: \K.*' \
+            | tac \
+            | sed -r \
+                -e 's/-([1-4]?[0-9]) dBm/󰤨 /' \
+                -e 's/-(5[0-9]) dBm/󰤥 /' \
+                -e 's/-(6[0-7]) dBm/󰤟 /' \
+                -e 's/-(6[8-9]) dBm/󰤠 /' \
+                -e 's/-(7[0-9]) dBm/󰤯 /' \
+                -e 's/-(8[0-9]) dBm/󰤫 /' \
+                -e 's/-[0-9]+ dBm/󰤮 /' \
+            | sed -re 's/^(\S{12})\S+(\S{12})/\1…\2/' \
+            | paste -sd ' '
+        )
 
     text=("$(
         :template \
-            "WIFI" \
+            "W" \
             ${ssid:-NONE}
     )" "${text[@]}")
 
@@ -87,20 +149,35 @@
     local battery
     local bluetooth=()
     while read -r mac name; do
-        battery=$(bluetooth-battery "$mac" 2>/dev/null)
+        [[ ! "$mac" ]] && break
+
+        battery=$(timeout 1s bluetooth-battery "$mac" 2>/dev/null)
         if [[ "$battery" ]]; then
             urgency=normal
             if ((battery < 20)); then
                 urgency=critical
             fi
-            bluetooth+=("$name $bar $(:urgency "$urgency" "$battery%")")
+
+            battery=$(sed <<<$battery -r \
+                -e 's/100/󰥈/' \
+                -e 's/(9[0-9])/󰥆/' \
+                -e 's/(8[0-9])/󰥅/' \
+                -e 's/(7[0-9])/󰥄/' \
+                -e 's/(6[0-9])/󰥃/' \
+                -e 's/(5[0-9])/󰥂/' \
+                -e 's/(4[0-9])/󰥁/' \
+                -e 's/(3[0-9])/󰥀/' \
+                -e 's/(2[0-9])/󰤿/' \
+                -e 's/(1?[0-9])/󰥇/' \
+            )
+            bluetooth+=('<span letter_spacing="-3584"> '$(:urgency "$urgency" "$battery")'</span> '$name)
         else
-            bluetooth+=("$name")
+            bluetooth+=('<span letter_spacing="-3584"> 󰥊</span> '$name)
         fi
     done <<<"$(bluetooth-device)"
 
     if [[ "$bluetooth" ]]; then
-        text=("$(:template "  BT" "${bluetooth[@]}")" "${text[@]}")
+        text=("$(:template "B" "${bluetooth[@]}")" "${text[@]}")
     fi
 
     local ping
@@ -111,7 +188,7 @@
 
     text=("$(
         :template \
-            "PING" \
+            "I" \
             $(:urgency "$urgency" "$ping")
     )" "${text[@]}")
 
@@ -126,8 +203,8 @@
 
     text=("$(
         :template \
-            "INET" \
-            $(:urgency "$urgency" "$(myip)")
+            "I" \
+            $(:urgency "$urgency" "$(myip | sed -re 's/^(\S{7,16})\s+(.{13}).*/\1 \2…/')")
     )" "${text[@]}")
 
     :notify:send "${text[@]}"
@@ -138,14 +215,18 @@
         | tr '[[:lower:]]' '[[:upper:]]'
 }
 
+:date:hm() {
+    date +"%H:%M"
+}
+
 :template() {
-    printf "<b>%s » </b>%s" "$1" "${*:2}"
+    printf '<b><span foreground="#1e94c2">» </span></b>%s' "${*:2}"
 }
 
 :urgency() {
     local urgency=$1
     if [[ "$urgency" == "critical" ]]; then
-        printf '<span background="#ff8c00" foreground="#8b0000"><b> %s </b></span>' \
+        printf '<span foreground="#FF9019"><b>%s</b></span>' \
             "${*:2}"
     else
         printf "%s" "${*:2}"
@@ -154,7 +235,7 @@
 
 :notify:send() {
     local IFS=$'\n'
-    notify-replace "environment-info" "" "$*"
+    notify-send -r 1 "ENV" "$*"
 }
 
 :main "$@"

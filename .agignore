@@ -4,3 +4,4 @@
 *.min.js
 /vendor/
 *.pb.go
+package-lock.json

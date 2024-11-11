@@ -4,7 +4,7 @@ Requires=i3.socket graphical.target
 After=i3.socket graphical.target
 
 [Service]
-ExecStart=/bin/env autorandr --change
+ExecStart=/bin/sh -c 'xrandr-auto | i3-layout-generate > ~/.i3/config.layout'
 ExecStart=/usr/bin/systemctl --user --no-block restart i3:config.service
 ExecStart=/usr/bin/systemctl --user --no-block restart dunst.service
 Type=oneshot

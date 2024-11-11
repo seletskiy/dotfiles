@@ -1,0 +1,90 @@
+#!/bin/bash
+
+### record-cast — record your screen.
+###
+### Usage:
+###   record-cast [-w<[<window_id>]] [-g[<geometry>]] [-c[<secs>]] [-a] [-m] <name>
+###   record-cast -h | --help
+###
+### Options:
+###   -w             Select window to record by clicking on it.
+###   -w<window_id>  Specify window ID to record.
+###   -g             Select rectangle to record with mouse.
+###   -g<geometry>   Specify region to record. Format: WxH+X+Y
+###   -a             Enable audio recording.
+###   -c<secs>       Countdown before recording [default: 3].
+###   -m             Track mouse.
+
+source '/usr/share/bash/opts/opts.bash'
+
+:help() {
+    sed -rn 's/^### ?//;T;p' "$0"
+    exit $1
+}
+
+declare -A opts
+declare -a args
+
+if ! opts:parse opts args -w:: -g:: -a -p -h -m -c:: --help -- "${@}"; then
+    echo && :help 1
+fi
+
+if [[ ${opts[-h]} || ${opts[--help]} ]]; then
+    :help 0
+fi
+
+select_window=${opts[-w]+1}
+window_id=${opts[-w]-}
+select_geometry=${opts[-g]}
+
+if [[ "${opts[-g]+1}" ]]; then
+    select_geometry=${opts[-g]}
+    if [[ -z "$select_geometry" ]]; then
+        select_geometry=$(slop)
+    fi
+fi
+
+audio=${opts[-a]+"-f pulse -ac 2 -i default"}
+track_mouse=${opts[-m]}
+countdown=${opts[-c]+1}
+countdown_timer=${opts[-c]-}
+
+if [[ ${#args[@]} != 2 ]]; then
+    :help 1
+fi
+
+if [[ $track_mouse ]]; then
+    track-mouse -t &
+    trap "kill $!" ERR EXIT INT QUIT
+fi
+
+name="${args[1]}"
+
+if [[ "$select_window" ]]; then
+    if [ -z "$window_id" ]; then
+        window_id=$(xwininfo | awk '/Window id/{print $4}')
+    fi
+    select_arg="-#$window_id"
+fi
+
+if [[ "$select_geometry" ]]; then
+    select_arg="-g $select_geometry"
+fi
+
+video="$name"
+
+# notify-send -r 16 -u critical -w "REC" "<b>START RECORDING</b>"
+#
+# {
+#     notify-send -r 16 -u critical -w "REC" "<b>RECORDING IN PROGRESS</b>"
+#     pkill -SIGQUIT ffmpeg
+# } &
+
+recording="$(mktemp --suffix .mp4)"
+
+ffcast $select_arg % \
+    ffmpeg $audio -vsync 0 -f x11grab -framerate 30 -video_size %s \
+    -i %D+%c -codec:v h264_nvenc -preset losslesshp \
+    -vf crop="iw-mod(iw\\,2):ih-mod(ih\\,2)" -y -c:a aac "$recording"
+
+ffmpeg -i "$recording" "$video"

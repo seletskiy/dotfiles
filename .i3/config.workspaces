@@ -1,6 +1,3 @@
-set $left DP-3
-set $right DP-0
-
 workspace a-1 output $left
 workspace a-2 output $left
 workspace b-1 output $left

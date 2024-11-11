@@ -1,0 +1,54 @@
+#!/bin/bash
+
+### pr-with-template - create GitHub PR with template.
+###
+### Tool requires [batrak] tool to be set up and configured.
+###
+### Tool will search for the template in the specified <template-dir> which ###
+### should be named same as a repository name. If no such template file is found,
+### `default` name will be used.
+###
+### Tool will interpolate given template with the environment variables list
+### given in the `-e` flag.
+###
+### Usage:
+###   pr-with-template [-d <template-dir>] [-e <env-list>]
+###
+### Options:
+###   -d <template-dir> Specify template dir.
+###                      [default: $HOME/.config/hub.templates
+###   -e <env-list>     Specify space-separate list of env variables
+###                      to be interpolated.
+
+set -euo pipefail
+
+source /usr/share/bash/opts/opts.bash
+
+declare -A opts
+declare -a args
+
+opts:parse opts args \
+    -e: -d: \
+    -- "${@}"
+
+template_directory_path="${opts["-d"]:-$HOME/.config/hub.templates}"
+env_list="${opts["-e"]:-}"
+
+repository_name=$(
+    git remote show origin -n \
+        | awk '/Fetch URL/ { print $3 }' \
+        | grep -Po '.*/\K[^/]+'
+)
+
+template_file_repository=$template_directory_path/$repository_name
+template_file_default=$template_directory_path/default
+
+template_file=$(
+    [ -f "$template_file_repository" ] \
+        && echo "$template_file_repository" \
+        || echo "$template_file_default"
+)
+
+hub pull-request -eF - < <(
+    envsubst "$env_list" < "$template_file"
+)

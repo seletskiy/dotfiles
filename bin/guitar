@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "${1-on}" == "off" ]; then
+    pactl unload-module module-loopback
+    pactl unload-module module-null-sink
+else
+    pactl load-module module-null-sink sink_name=combined sink_properties=device.description="Guitar+Mic"
+    pactl load-module module-loopback sink=combined source=alsa_input.pci-0000_00_1f.3.analog-stereo
+    pactl load-module module-loopback sink=combined source=alsa_input.usb-R__DE_Wireless_ME_RX_8002A0D3-01.iec958-stereo
+    pacmd set-default-source combined.monitor
+fi

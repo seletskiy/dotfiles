@@ -7,6 +7,9 @@
 "modal-run"
     Mod4 + w
 
+"screenshot deepin"
+    Mod4 + F1
+
 "with-lock volume down"
     Mod4 + F2
 
@@ -19,29 +22,29 @@
 "systemctl --user restart monitors"
     Mod4 + F8
 
-"translator"
-    Mod4 + k
-
-"with-lock kuake --terminal --bottom --bg-color '#000f03'"
-    Mod4 + grave
-
-"carcosa-ui"
-    Mod4 + x
-
-"carcosa-ui --mode=login-password"
-    Control+Mod4 + x
-
-"environment-info"
-    Mod4 + Execute
-
 "sudo with-lock brightness down"
     Mod4 + F11
 
 "sudo with-lock brightness up"
     Mod4 + F12
 
-"screenshot deepin"
-    Mod4 + backslash
+"translator"
+    Mod4 + k
+
+"tdrop -a --class kuake_terminal -y -201 -h 200 -w '50%' -x '25%' alacritty --class kuake_terminal"
+    Mod4 + Tab
+
+"carcosa-ui"
+    Mod4 + l
+
+"carcosa-ui --mode=login-password"
+    Control+Mod4 + l
+
+"quick-input"
+    Control+Mod4 + d
+
+"environment-info"
+    Mod4 + Shift + Tab
 
 "bookmarks"
     Mod4 + b
@@ -57,6 +60,3 @@
 
 "clipboard-copy-primary"
     Control+Shift + Insert
-
-"journal"
-    Mod4 + g
