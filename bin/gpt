@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### gpt — access OpenAI GPT features.
+### gpt — access LLM features (OpenAI/Anthropic).
 ###
 ### Usage:
 ###  gpt (+<flag>|<prompt>)...
@@ -13,14 +13,16 @@
 ### Flags:
 ###  +in         Read rest of the prompt from stdin.
 ###  +raw        Do not apply default system prompt.
+###  +sys        Treat prompt given in CLI arguments as system role prompt (default: user role).
 ###  +code       Switch to code prompt and extracts codeblock from ``` pair. Assumes +in.
-###  +chat       Chat mode. Assumes +in, + and ++. Reads stdin in format of back-and-forth chat history, where:
+###  +chat       Chat mode. Assumes +in, + and ++. Reads stdin in a format of back-and-forth chat history, where:
 ###               - Lines that begin with `<` considered to be user input.
 ###               - Lines that begin with `>` considered to be previous GPT output.
 ###  +           Outputs input first, then response from GPT. Assumes +in.
 ###  +3          Use GPT 3.5-turbo instead of GPT 4.
 ###  +4          Use GPT 4o instead of GPT 4.
 ###  +1          Use GPT o1 instead of GPT 4.
+###  +c          Use Claude Sonnet.
 ###  +t          Use temperature = 0.5.
 ###  +tt         Use temperature = 0.75.
 ###  +T          Use temperature = 1.
@@ -29,10 +31,12 @@
 ###  ++          Do not update any specified thread, only read chat history.
 ###
 ### Env:
-###  CARCOSA_SECRETS  Path to your secrets repo if you use carcosa. Default: `~/.secrets/my`.
-###  CARCOSA_TOKEN    Token to get API key from. Default: `api/beta.openai.com`.
-###  OPENAI_API_KEY   API key if you don't use `carcosa`.
-###  GPT_STORE_DIR    Data dir used for storing state (chat history). Default: `~/.local/gpt`
+###  CARCOSA_SECRETS          Path to your secrets repo if you use carcosa. Default: `~/.secrets/my`.
+###  OPENAI_CARCOSA_TOKEN     Token to get API key from. Default: `api/beta.openai.com`.
+###  OPENAI_API_KEY           API key if you don't use `carcosa`.
+###  ANTHROPIC_CARCOSA_TOKEN  Token to get API key from. Default: `api/api.anthropic.com`.
+###  ANTHROPIC_API_KEY        API key if you don't use `carcosa`.
+###  GPT_STORE_DIR            Data dir used for storing state (chat history). Default: `~/.local/gpt`
 
 set -euo pipefail && shopt -s extglob nullglob
 
@@ -45,10 +49,48 @@ set -euo pipefail && shopt -s extglob nullglob
 :dep jo "jo: mandatory dependency is missing."
 :dep jq "jq: mandatory dependency is missing."
 
-declare -r api_key=${OPENAI_API_KEY:-$(
-    :dep carcosa \
-        && carcosa -p ${CARCOSA_SECRETS-~/.secrets/my} -cG ${CARCOSA_TOKEN-api/beta.openai.com})}
-[ "${api_key:?API key must be provided.}" ]
+:carcosa() { :dep carcosa \
+    && carcosa -p ${CARCOSA_SECRETS-~/.secrets/my} -cG "$1"; }
+
+declare -r key_openai=${OPENAI_API_KEY:-$(:carcosa ${OPENAI_CARCOSA_TOKEN-api/beta.openai.com})}
+declare -r key_anthropic=${ANTHROPIC_API_KEY:-$(:carcosa ${ANTHROPIC_CARCOSA_TOKEN-api/api.anthropic.com})}
+
+declare -A flags=()
+declare -a threads=()
+declare -a prompt=()
+
+for word in "$@"; do
+    case "$word" in
+        +++(?)) threads+=("${word:2}") ;;
+        +*)     flags[$word]=$word      ;;
+        *)      prompt+=("$word")      ;;
+    esac
+done
+
+model=${flags['+1']+'gpt-o1-preview'}
+model=${flags['+3']+'gpt-3.5-turbo'}
+model=${flags['+4']+'gpt-4o'}
+model=${flags['+c']+'claude-3-5-sonnet-latest'}
+model=${model:-'gpt-4'}
+
+declare -a api_headers=()
+case "$model" in
+    gpt-*)    api_url="https://api.openai.com/v1/chat/completions"
+              api_headers=("-HAuthorization: Bearer ${key_openai?OpenAI API key must be provided.}")
+              api_jq_resp=".choices[0].message.content"
+              api_jq_body="." ;;
+
+    claude-*) api_url="https://api.anthropic.com/v1/messages"
+              api_headers=(
+                  "-Hx-api-key: ${key_anthropic?Anthropic API key must be provided.}"
+                  "-Hanthropic-version: 2023-06-01")
+              api_jq_resp=".content[0].text"
+              readarray api_jq_body <<-EOF
+				.system=([.messages[]|select(.role=="system")|.content]|join("\n")) |
+				.messages=[.messages[]|select(.role!="system")]
+				EOF
+			  ;;
+esac
 
 declare -r store=${GPT_STORE_DIR-~/.local/gpt}
 
@@ -56,34 +98,22 @@ declare -r store=${GPT_STORE_DIR-~/.local/gpt}
     || { mkdir -p "$store/t" \
          && :dep zstd && :data '#z64:' | base64 -d | zstd -d | tar -C "$store/t" -x; }
 
-declare -A cmds=()
-declare -a threads=()
-declare -a prompt=()
+flags['++']=${flags['+chat']-}
+flags['+']=${flags['+']-}
+flags['+in']=${flags['+in']-}${flags['+']-}${flags['+code']-}${flags['+chat']-}
 
-for word in "$@"; do
-    case "$word" in
-        +++(?)) threads+=("${word:2}") ;;
-        +*)     cmds[$word]=$word      ;;
-        *)      prompt+=("$word")      ;;
-    esac
-done
-
-cmds[++]=${cmds[+chat]-}
-cmds[+]=${cmds[+]-}
-cmds[+in]=${cmds[+in]-}${cmds[+]-}${cmds[+code]-}${cmds[+chat]-}
-
-[ "${cmds[+in]}" ] && input=$(cat)
+[ "${flags['+in']}" ] && input=$(cat)
 
 messages=()
 :msg() { [ $# -lt 2 ] || messages+=("$(jo role="$1" content=@<(printf "%s\n" "${@:2}"))"); }
 
-for thread in ${cmds[+raw]-:concise} ${cmds[+code]+:code} "${threads[@]}"; do
+for thread in ${flags['+raw']-:concise} ${flags['+code']+:code} "${threads[@]}"; do
     while read file; do
         IFS='@' read _ role <<<$file && :msg $role "$(cat "$file")"
     done < <(find $store/t/ -type f -wholename "$store/t/$thread/*" | sort)
 done
 
-[ ${#prompt[@]} -eq 0 -a ${#threads[@]} -gt 0 -a -z "${cmds[+in]-}" ] \
+[ ${#prompt[@]} -eq 0 -a ${#threads[@]} -gt 0 -a -z "${flags['+in']-}" ] \
     && <<<${messages[@]} jq -sr '[.[]
             | (({"user":"<","assistant":">"}[.role] // "?") + " ") as $sig
             | .content
@@ -93,8 +123,7 @@ done
     && exit
 
 role=system
-
-[ "${cmds[+chat]-}" ] \
+[ "${flags['+chat']-}" ] \
     && message=() \
     && while IFS=':' read side line; do
         case "$role$side" in
@@ -106,43 +135,40 @@ role=system
             *)    continue                                           ;;
         esac
         message+=("$line")
-    done < <(sed -re 's/^([<>]) /\1:/g' <<< $input) && :msg $role "${message[@]}"
+    done < <(sed -re 's/^([<>?]) /\1:/g' <<< $input) && :msg $role "${message[@]}"
 
-[ -z "${cmds[+chat]-}" -a "${cmds[+in]-}" ] && \
+[ -z "${flags['+chat']-}" -a "${flags['+in']-}" ] && \
     :msg user "$input"
 
-[ ${#prompt[@]} -gt 0 ] && :msg user "${prompt[*]}"
+[ ${#prompt[@]} -gt 0 ] \
+    && :msg "$([ "${flags['+sys']-}" ] && echo system || echo user)" "${prompt[*]}"
 
-model=${cmds[+1]+o1-preview}
-model=${cmds[+3]+3.5-turbo}
-model=${cmds[+4]+4o}
-model=${model:-4}
-
-temp=${cmds[+t]+0.5}
-temp=${cmds[+tt]+0.75}
-temp=${cmds[+T]+1}
+temp=${flags['+t']+0.5}
+temp=${flags['+tt']+0.75}
+temp=${flags['+T']+1}
 temp=${temp:-0}
 
 payload=$(jo \
     messages="$(jo -a "${messages[@]}")" \
-    model=gpt-$model \
-    temperature=$temp)
+    model=$model \
+    temperature=$temp \
+    max_tokens=1024 | jq "${api_jq_body[*]}")
 
 response=$(curl -s -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $api_key" \
+    "${api_headers[@]}" \
     --data "$payload" \
-    https://api.openai.com/v1/chat/completions)
+    "$api_url")
 
-answer=$(<<<$response jq -r '.choices[0].message.content // ""')
+answer=$(<<<$response jq -r "$api_jq_resp"' // ""')
 [ ! "$answer" ] && { jq <<<$payload && jq <<<$response; } >&2 && exit 1
 
-[ "${cmds[+code]-}" ] && answer=$(<<<$answer awk '_&&/```/{exit}_;/```/{_=1}')
-[ "${cmds[+chat]-}" ] && answer=$(echo && <<<$answer sed -re 's/^/> /g')
+[ "${flags['+code']-}" ] && answer=$(<<<$answer awk '_&&/```/{exit}_;/```/{_=1}')
+[ "${flags['+chat']-}" ] && answer=$(echo && <<<$answer sed -re 's/^/> /g')
 
-[ "${cmds[+]-}" ] && <<<$input cat; <<<$answer cat
+[ "${flags['+']-}" ] && <<<$input cat; <<<$answer cat
 
-[ "${#threads[@]}" -eq 0 -o "${cmds[++]-}" ] || {
+[ "${#threads[@]}" -eq 0 -o "${flags['++']-}" ] || {
     path="$store/t/${threads[-1]}" && mkdir -p "$path"
 
     [ "${prompt[*]-}" ] && IFS=$'\n' echo "${prompt[*]}" >"$path/$(:ts)0@user"
